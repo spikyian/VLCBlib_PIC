@@ -820,11 +820,11 @@ uint8_t findEvent(uint16_t nodeNumber, uint16_t eventNumber) {
     uint8_t chainIdx;
     for (chainIdx=0; chainIdx<EVENT_CHAIN_LENGTH; chainIdx++) {
         uint8_t tableIndex = eventChains[hash][chainIdx];
-        uint16_t nodeNumber, en;
+        uint16_t nn, en;
         if (tableIndex == NO_INDEX) return NO_INDEX;
-        nodeNumber = getNN(tableIndex);
+        nn = getNN(tableIndex);
         en = getEN(tableIndex);
-        if ((nn.word == nodeNumber) && (en == eventNumber)) {
+        if ((nn == nodeNumber) && (en == eventNumber)) {
             return tableIndex;
         }
     }

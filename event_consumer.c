@@ -164,25 +164,31 @@ static Processed consumerProcessMessage(Message *m) {
         case OPC_ASOF1:
         case OPC_ASOF2:
         case OPC_ASOF3:
-            start = PARAM_NUM_EV_EVENT;
-            end = HAPPENING_SIZE;
+            start = PARAM_NUM_EV_EVENT-ACTION_SIZE;
+            end = HAPPENING_SIZE-1;
             change = -ACTION_SIZE;
             break;
         default:
             return NOT_PROCESSED;
     }
     // get the list of actions and add then to the action queue
-    for (e=start; e<=end; e+=change) {
+    for (e=start; e!=end; e+=change) {
         int16_t ev;
         uint8_t evi;
+        uint8_t validEv = 1;
         
-        for (evi=0; evi<ACTION_SIZE; evi++) {
-            ev = getEv(tableIndex, e);
-            if (ev < 0) continue;
+        for (evi=0; evi<ACTION_SIZE; evi++) {   // build up the Action from the EVs
+            ev = getEv(tableIndex, e+evi);
+            if (ev < 0) {
+                validEv = 0;               
+                break;                          // skip if invalid EV
+            }
             a.a.bytes[evi] = (uint8_t)ev;
         }
-        a.state = (change>0);
-        pushAction(a);
+        if (validEv) {                          // Successfully got an Action
+            a.state = (change>0);
+            pushAction(a);
+        }
     }
 #else
     APP_processConsumedEvent(tableIndex, m);
