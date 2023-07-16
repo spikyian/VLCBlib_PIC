@@ -251,7 +251,7 @@ const Service eventTeachService = {
     NULL,               // highIsr
     NULL,               // lowIsr
     teachGetESDdata,    // get ESD data
-    NULL                // getDiagnostic
+    teachGetDiagnostic, // getDiagnostic
 };
 
 // Space for the event table and initialise to 0xFF
@@ -263,6 +263,11 @@ uint8_t eventChains[EVENT_HASH_LENGTH][EVENT_CHAIN_LENGTH];
 uint8_t happening2Event[MAX_HAPPENING+1];
 #endif
 #endif
+
+/**
+ * The diagnostic values supported by the MNS service.
+ */
+static DiagnosticVal teachDiagnostics[NUM_TEACH_DIAGNOSTICS];
 
 //
 // SERVICE FUNCTIONS
@@ -279,9 +284,14 @@ static void teachFactoryReset(void) {
  * Power up loads the RAM based hash tables from the non volatile event table.
  */
 static void teachPowerUp(void) {
+    uint8_t i;
 #ifdef EVENT_HASH_TABLE
     rebuildHashtable();
 #endif
+    // Clear the diagnostics
+    for (i=0; i< NUM_TEACH_DIAGNOSTICS; i++) {
+        teachDiagnostics[i].asInt = 0;
+    }
 }
 
 /**
@@ -417,6 +427,18 @@ static uint8_t teachGetESDdata(uint8_t id) {
         case 2: return PARAM_NUM_EV_EVENT;
         default: return 0;
     }
+}
+
+/**
+ * Provide the means to return the diagnostic data.
+ * @param index the diagnostic index 1..NUM_CAN_DIAGNOSTSICS
+ * @return a pointer to the diagnostic data or NULL if the data isn't available
+ */
+static DiagnosticVal * teachGetDiagnostic(uint8_t index) {
+    if ((index<1) || (index>NUM_TEACH_DIAGNOSTICS)) {
+        return NULL;
+    }
+    return &(teachDiagnostics[index-1]);
 }
 
 //
@@ -565,6 +587,7 @@ static void doEvlrn(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, ui
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, error);
         return;
     }
+    teachDiagnostics[TEACH_DIAG_NUM_TEACH].asUint++;
     sendMessage2(OPC_WRACK, nn.bytes.hi, nn.bytes.lo);
     return;
 }
