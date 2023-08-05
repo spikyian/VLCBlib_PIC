@@ -140,7 +140,7 @@ static Message rxBuffers[CAN_NUM_RXBUFFERS];
 static Queue rxQueue;
 static Message txBuffers[CAN_NUM_TXBUFFERS];
 static Queue txQueue;
-static Message message;
+//static Message message;
 
 /**
  * Variables for self enumeration of CANID 
@@ -152,8 +152,7 @@ static uint8_t    enumerationResults[ENUM_ARRAY_SIZE];
 #define arraySetBit( array, index ) ( array[index>>3] |= ( 1<<(index & 0x07) ) )
 
 // forward declarations
-static uint8_t messageAvailable(void);
-CanidResult setNewCanId(uint8_t newCanId);
+static CanidResult setNewCanId(uint8_t newCanId);
 static uint8_t * getBufferPointer(uint8_t b);
 static void canInterruptHandler(void);
 static void processEnumeration(void);
@@ -231,7 +230,7 @@ static void canPowerUp(void) {
     ECANCON   = 0b10110000;   // ECAN mode 2 with FIFO, FIFOWM = 1 (init when four spaces left), init to first RX buffer
     BSEL0     = 0;            // Use all 8 buffers for receive FIFO, as they do not work as a FIFO for transmit
   
-    /*  The CAN bit rates used for CBUS are calculated as follows:
+    /*  The CAN bit rates used for VLCB are calculated as follows:
      * Sync segment is fixed at 1 Tq
      * We are using propogation time of 7tq, phase 1 of 4Tq and phase2 of 4Tq.
      * Total bit time is Sync + prop + phase 1 + phase 2
@@ -308,7 +307,7 @@ static void canPowerUp(void) {
     TXBIEbits.TXB2IE = 0;
     CANCON = 0;               // Set normal operation mode
 
-    // Preload TXB0 with parameters ready for sending CBUS data packets
+    // Preload TXB0 with parameters ready for sending VLCB data packets
 
     TXB0CON = 0;
     TXB0CONbits.TXPRI0 = 0;                           // Set buffer priority, so will be sent after any self enumeration packets
@@ -321,7 +320,7 @@ static void canPowerUp(void) {
     // Preload TXB1 with RTR frame to initiate self enumeration when required
 
     TXB1CON = 0;
-    TXB1CONbits.TXPRI0 = 0;                           // Set buffer priority, so will be sent before any CBUS data packets but after any enumeration replies
+    TXB1CONbits.TXPRI0 = 0;                           // Set buffer priority, so will be sent before any VLCB data packets but after any enumeration replies
     TXB1CONbits.TXPRI1 = 1;
     TXB1DLC = 0x40;                                   // RTR packet with zero payload
     TXB1SIDH = canPri[pSUPER] | ((canId & 0x78) >> 3);    // Set CAN priority and ms 4 bits of can id
@@ -330,7 +329,7 @@ static void canPowerUp(void) {
     // Preload TXB2 with a zero length packet containing CANID for  use in self enumeration
 
     TXB2CON = 0;
-    TXB2CONbits.TXPRI0 = 1;                           // Set high buffer priority, so will be sent before any CBUS packets
+    TXB2CONbits.TXPRI0 = 1;                           // Set high buffer priority, so will be sent before any VLCB packets
     TXB2CONbits.TXPRI1 = 1;
     TXB2DLC = 0;                                      // Not RTR, zero payload
     TXB2SIDH = canPri[pSUPER] | ((canId & 0x78) >> 3);    // Set CAN priority and ms 8 bits of can id
@@ -420,9 +419,12 @@ static SendResult canSendMessage(Message * mp) {
     Message * m;
 #endif
     // first check to see if there are messages waiting in the TX queue
+    TXBnIE = 0;      // disable the TX buffer transmission complete interrupt
     if (quantity(&txQueue) == 0) {
+        // next check that the transmitter isn't busy
         if (TXB0CONbits.TXREQ == 0) {
-            // ECAN transmit buffer is free so nothing waiting
+            // ECAN transmit buffer is free so nothing waiting and can send immediately
+            TXBnIE = 1;      // re-enable TX buffer interrupt
             // write to ECAN
             if (mp->len >8) mp->len = 8;
             // TXB0 is the normal message transmit buffer
@@ -470,8 +472,10 @@ static SendResult canSendMessage(Message * mp) {
     if (push(&txQueue, mp) == QUEUE_FAIL) {
         canDiagnostics[CAN_DIAG_TX_BUFFER_OVERRUN].asUint++;
         updateModuleErrorStatus();
+        TXBnIE = 1;      // re-enable interrupt
         return SEND_FAILED;
     }
+    TXBnIE = 1;      // re-enable interrupt
     return SEND_OK;
 }
 
@@ -813,9 +817,6 @@ static void processEnumeration(void) {
                 if ((newCanId >= 1) && (newCanId <= 99)) {
                     canId = newCanId;
                     setNewCanId(canId);
-                    /* if (resultRequired) {
-                        cbusSendOpcMyNN( 0, OPC_NNACK, cbusMsg );   // this will get sent for all successful self enums but maybe only required for the ENUM command
-                    } */
                 } else {
                     canDiagnostics[CAN_DIAG_CANID_ENUMS_FAIL].asUint++;
                     updateModuleErrorStatus();
@@ -837,7 +838,7 @@ static void processEnumeration(void) {
  * Set a new can id. Update the diagnostic statistics.
  * @return CANID_OK upon success CANID_FAIL otherwise
  */
-CanidResult setNewCanId(uint8_t newCanId) {
+static CanidResult setNewCanId(uint8_t newCanId) {
     if ((newCanId >= 1) && (newCanId <= 99)) {
         canId = newCanId;
         // Update SIDH and SIDL for CANID in TXB1 and TXB2

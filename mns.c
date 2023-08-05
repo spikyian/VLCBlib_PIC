@@ -383,7 +383,12 @@ static Processed mnsProcessMessage(Message * m) {
     switch (m->opc) {
         case OPC_RQNPN: // request node parameter
             if (m->len < 4) {
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVRD, SERVICE_ID_MNS, CMDERR_INV_CMD);
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_RQNPN, SERVICE_ID_MNS, CMDERR_INV_CMD);
+                return PROCESSED;
+            }
+            if (m->bytes[2] > 20) {
+                sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_PARAM_IDX);
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_RQNPN, SERVICE_ID_MNS, CMDERR_INV_PARAM_IDX);
                 return PROCESSED;
             }
             switch(m->bytes[2]) {
@@ -584,6 +589,7 @@ static Processed mnsProcessMessage(Message * m) {
                     }
                     break;
             }
+            sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
             return PROCESSED;
 /*        case OPC_SQU:   // squelch
             // TO DO     Handle Squelch - no longer required

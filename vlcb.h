@@ -127,14 +127,14 @@
 //
 // Modes
 //
-#define MODE_UNINITIALISED      0   ///< Uninitialised mode
-#define MODE_SETUP      1   ///< Setup mode
-#define MODE_NORMAL     2   ///< Normal mode
-#define MODE_LEARN      3   ///< Learn mode
-#define MODE_EVENT_ACK  4   ///< Event acknowledgement mode
-#define MODE_BOOT       5   ///< Boot mode for FCU compatible bootloader
-#define MODE_BOOT2      6   ///< Boot mode for VLCB boot service
-#define MODE_NOHEARTB   7   ///< No heartbeat mode
+#define MODE_UNINITIALISED      0xFF   ///< Uninitialised mode
+#define MODE_SETUP      0   ///< Setup mode
+#define MODE_NORMAL     1   ///< Normal mode
+#define MODE_LEARN      2   ///< Learn mode
+#define MODE_EVENT_ACK  3   ///< Event acknowledgement mode
+#define MODE_BOOT       4   ///< Boot mode for FCU compatible bootloader
+#define MODE_BOOT2      5   ///< Boot mode for VLCB boot service
+#define MODE_NOHEARTB   6   ///< No heartbeat mode
 
 // 
 // Processor manufacturer codes

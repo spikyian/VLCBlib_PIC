@@ -575,12 +575,11 @@ static void doNnclr(void) {
  */
 static void doEvlrn(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8_t evVal) {
     uint8_t error;
-    // evNum starts at 1 - convert to zero based
-    if (evNum == 0) {
+    evNum--;    // convert VLCB message numbering (starts at 1) to internal numbering)
+    if (evNum >= PARAM_NUM_EV_EVENT) {
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_EV_IDX);
         return;
     }
-    evNum--;    // convert VLCB message numbering (starts at 1) to internal numbering)
     error = APP_addEvent(nodeNumber, eventNumber, evNum, evVal);
     if (error) {
         // validation error
@@ -638,8 +637,14 @@ static void doReval(uint8_t enNum, uint8_t evNum) {
  * @param eventNumber Event EN
  */
 static void doEvuln(uint16_t nodeNumber, uint16_t eventNumber) {
-    removeEvent(nodeNumber, eventNumber);
-    // Don't send a WRACK
+    uint8_t result;
+    result = removeEvent(nodeNumber, eventNumber);
+    if (result) {
+        sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, result);
+        return;
+    }
+    // Send a WRACK - difference from CBUS
+    sendMessage2(OPC_WRACK, nn.bytes.hi, nn.bytes.lo);
 }
 
 /**
@@ -1198,13 +1203,11 @@ void rebuildHashtable(void) {
         happening2Event[happening] = NO_INDEX;
     }
 #endif
-#ifdef CONSUMED_EVENTS
     for (hash=0; hash<EVENT_HASH_LENGTH; hash++) {
         for (chainIdx=0; chainIdx < EVENT_CHAIN_LENGTH; chainIdx++) {
             eventChains[hash][chainIdx] = NO_INDEX;
         }
     }
-#endif
     // now scan the event2Action table and populate the hash and lookup tables
     
     for (tableIndex=0; tableIndex<NUM_EVENTS; tableIndex++) {
@@ -1232,7 +1235,6 @@ void rebuildHashtable(void) {
                 happening2Event[happening] = tableIndex;
             } 
 #endif
-#ifdef CONSUMED_EVENTS
             hash = getHash(getNN(tableIndex), getEN(tableIndex));
                 
             for (chainIdx=0; chainIdx<EVENT_CHAIN_LENGTH; chainIdx++) {
@@ -1242,7 +1244,6 @@ void rebuildHashtable(void) {
                     break;
                 }
             }
-#endif
         }
     }
 }
