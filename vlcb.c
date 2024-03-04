@@ -44,6 +44,7 @@
 #include "hardware.h"
 #include "ticktime.h"
 #include "timedResponse.h"
+#include "statusLeds.h"
 #include "mns.h"
 
 /** @mainpage VLCB
@@ -609,7 +610,7 @@ uint8_t findServiceIndex(uint8_t serviceType) {
             return i;
         }
     }
-    return SERVICE_ID_NONE;
+    return SERVICE_ID_NOT_FOUND;
 }
 
 /**
@@ -661,10 +662,86 @@ static void powerUp(void) {
     // Initialise the Tick timer. Uses low priority interrupts
     initTicker(0);
     initTimedResponse();
+    leds_powerUp();
     
     for (i=0; i<NUM_SERVICES; i++) {
         if ((services[i] != NULL) && (services[i]->powerUp != NULL)) {
             services[i]->powerUp();
+        }
+    }
+}
+
+
+/**
+ * Time how long the pb is held down for, with a timeout.
+ * 
+ * @param timeout number of seconds to wait
+ * @return seconds pb held down or 0 for a timeout
+ */
+uint8_t pbDownTimer(uint8_t timeout) {
+    // determine how long the button is held for
+    pbTimer.val = tickGet();
+    while (APP_pbPressed()) {
+        if (tickTimeSince(pbTimer) > timeout*ONE_SECOND) {
+            return 0;   // timeout
+        }
+    }
+    // no longer pressed
+    return (uint8_t)(tickTimeSince(pbTimer)/ONE_SECOND);
+}
+
+/**
+ * Time how long the pb is released down for, with a timeout.
+ * 
+ * @param timeout number of seconds to wait
+ * @return seconds pb released or 0 for a timeout
+ */
+uint8_t pbUpTimer(uint8_t timeout) {
+    // determine how long the button is released for
+    pbTimer.val = tickGet();
+    while (! (APP_pbPressed())) {
+        if (tickTimeSince(pbTimer) > timeout*ONE_SECOND) {
+            return 0;   // timeout
+        }
+    }
+    // now pressed
+    return (uint8_t)(tickTimeSince(pbTimer)/ONE_SECOND);
+}
+
+/**
+ * Do checks to see if the push button was held down during power up. 
+ * Then call back into the application to do the relevant work.
+ * Test Mode
+ *   The push button is held down at power up for between 2 and 6 seconds then released.
+ *   If held down for more than 30 seconds then the module shall continue normal operation.
+ * Factory reset
+ *   The push button is held down at power up for between 10 and 30 seconds
+ *   then released and then pressed again for between 2 and 4 seconds.
+ */
+static void checkPowerOnPb(void) {
+    uint8_t i;
+    
+    // check for the push button being pressed at power up
+    if (APP_pbPressed()) {
+        // determine how long the button is held for
+        i = pbDownTimer(30);
+        if (i == 0) {
+            //Timeout
+            return;
+        } else if ((i>=2) && (i < 6)) {
+            APP_TestMode();
+        } else if (i >= 10) {
+            showStatus(STATUS_RESET_WARNING);
+            // wait for pb down max 5 seconds
+            i = pbUpTimer(5);
+            if (i == 0) {
+                // Timeout
+                return;
+            }
+            i = pbDownTimer(5);
+            if ((i>=2) && (i < 4)) {
+                factoryReset();
+            }
         }
     }
 }
@@ -696,18 +773,15 @@ static void poll(void) {
         }
     }
     
+    leds_poll();
+    
     // Handle any incoming messages from the transport
     handled = 0;
     if (transport != NULL) {
         if (transport->receiveMessage != NULL) {
             if (transport->receiveMessage(&m)) {
                 if (m.len > 0) {
-#if NUM_LEDS == 1
-                    ledState[0] = SINGLE_FLICKER_OFF;
-#endif
-#if NUM_LEDS == 2
-                    ledState[GREEN_LED] = SINGLE_FLICKER_ON;
-#endif
+                    showStatus(STATUS_MESSAGE_RECEIVED);
                     handled = APP_preProcessMessage(&m); // Call App to check for any opcodes to be handled. 
                     if (handled == 0) {
                         for (i=0; i<NUM_SERVICES; i++) {
@@ -727,12 +801,7 @@ static void poll(void) {
         }
     }
     if (handled) {
-#if NUM_LEDS == 1
-        ledState[0] = LONG_FLICKER_OFF;
-#endif
-#if NUM_LEDS == 2
-        ledState[GREEN_LED] = LONG_FLICKER_ON;
-#endif
+        showStatus(STATUS_MESSAGE_ACTED);
     }
 }
 
@@ -779,13 +848,14 @@ static void lowIsr(void) {
  * Checks that the required number of message bytes are present.
  * @param m the message to be checked
  * @param needed the number of bytes within the message needed including the opc
+ * @param service he service making the test
  * @return PROCESSED if it is an invalid message and should not be processed further
  */
-Processed checkLen(Message * m, uint8_t needed) {
+Processed checkLen(Message * m, uint8_t needed, uint8_t service) {
     if (m->len < needed) {
         if (m->len > 2) {
             if ((m->bytes[0] == nn.bytes.hi) && (m->bytes[1] == nn.bytes.lo)) {
-                sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_CMD);
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, m->opc, service, CMDERR_INV_CMD);
             }
         }
         return PROCESSED;
@@ -801,7 +871,7 @@ Processed checkLen(Message * m, uint8_t needed) {
  * Send a message with just OPC.
  * @param opc opcode
  */
-void sendMessage0(Opcode opc){
+void sendMessage0(VlcbOpCodes opc){
     sendMessage(opc, 1, 0,0,0,0,0,0,0);
 }
 
@@ -810,7 +880,7 @@ void sendMessage0(Opcode opc){
  * @param opc opcode
  * @param data1 data byte
  */
-void sendMessage1(Opcode opc, uint8_t data1){
+void sendMessage1(VlcbOpCodes opc, uint8_t data1){
     sendMessage(opc, 2, data1, 0,0,0,0,0,0);
 }
 
@@ -820,7 +890,7 @@ void sendMessage1(Opcode opc, uint8_t data1){
  * @param data1 data byte 1
  * @param data2 data byte 2
  */
-void sendMessage2(Opcode opc, uint8_t data1, uint8_t data2){
+void sendMessage2(VlcbOpCodes opc, uint8_t data1, uint8_t data2){
     sendMessage(opc, 3, data1, data2, 0,0,0,0,0);
 }
 
@@ -831,7 +901,7 @@ void sendMessage2(Opcode opc, uint8_t data1, uint8_t data2){
  * @param data2 data byte 2
  * @param data3 data byte 3
  */
-void sendMessage3(Opcode opc, uint8_t data1, uint8_t data2, uint8_t data3) {
+void sendMessage3(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3) {
     sendMessage(opc, 4, data1, data2, data3, 0,0,0,0);
 }
 
@@ -843,7 +913,7 @@ void sendMessage3(Opcode opc, uint8_t data1, uint8_t data2, uint8_t data3) {
  * @param data3 data byte 3
  * @param data4 data byte 4
  */
-void sendMessage4(Opcode opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4){
+void sendMessage4(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4){
     sendMessage(opc, 5, data1, data2, data3, data4, 0,0,0);
 }
 
@@ -856,7 +926,7 @@ void sendMessage4(Opcode opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8
  * @param data4 data byte 4
  * @param data5 data byte 5
  */
-void sendMessage5(Opcode opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5) {
+void sendMessage5(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5) {
     sendMessage(opc, 6, data1, data2, data3, data4, data5, 0,0);
 }
 
@@ -870,7 +940,7 @@ void sendMessage5(Opcode opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8
  * @param data5 data byte 5
  * @param data6 data byte 6
  */
-void sendMessage6(Opcode opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5, uint8_t data6) {
+void sendMessage6(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5, uint8_t data6) {
     sendMessage(opc, 7, data1, data2, data3, data4, data5, data6,0);
 }
 
@@ -885,7 +955,7 @@ void sendMessage6(Opcode opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8
  * @param data6 data byte 6
  * @param data7 data byte 7
  */
-void sendMessage7(Opcode opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5, uint8_t data6, uint8_t data7) {
+void sendMessage7(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5, uint8_t data6, uint8_t data7) {
     sendMessage(opc, 8, data1, data2, data3, data4, data5, data6, data7);
 }
 
@@ -901,7 +971,7 @@ void sendMessage7(Opcode opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8
  * @param data6
  * @param data7
  */
-void sendMessage(Opcode opc, uint8_t len, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5, uint8_t data6, uint8_t data7) {
+void sendMessage(VlcbOpCodes opc, uint8_t len, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5, uint8_t data6, uint8_t data7) {
     tmpMessage.opc = opc;
     tmpMessage.len = len;
     tmpMessage.bytes[0] = data1;
@@ -941,11 +1011,16 @@ void main(void) {
     // initialise the services
     powerUp();
     
+    // Check for PB held down at power up
+    bothEi();
+    checkPowerOnPb();
+    
     // call the application's init 
+    bothDi();
     setup();
     
     // enable the interrupts and ready to go
-    bothEi();   
+    bothEi();
     while(1) {
         // poll the services as quickly as possible.
         // up to service to ignore the polls it doesn't need.

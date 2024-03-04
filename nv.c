@@ -231,39 +231,39 @@ static Processed nvProcessMessage(Message * m) {
             return PROCESSED;
         case OPC_NVSET:
             if (m->len < 5) {
-                sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_CMD);
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVRD, SERVICE_ID_MNS, CMDERR_INV_CMD);
+//                sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_CMD);
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSET, SERVICE_ID_MNS, CMDERR_INV_CMD);
                 nvDiagnostics[NV_DIAGNOSTICS_NUM_FAIL].asUint++;
                 return PROCESSED;
             }
             valueOrError = setNV(m->bytes[2], m->bytes[3]);
             if (valueOrError >0) {
-                sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(-valueOrError));
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVRD, SERVICE_ID_MNS, (uint8_t)(-valueOrError));
+                sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(valueOrError));
+//                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSET, SERVICE_ID_MNS, (uint8_t)(valueOrError));
                 nvDiagnostics[NV_DIAGNOSTICS_NUM_FAIL].asUint++;
                 return PROCESSED;
             }
             sendMessage2(OPC_WRACK, nn.bytes.hi, nn.bytes.lo);
-            sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVRD, SERVICE_ID_MNS, GRSP_OK);
+            sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSET, SERVICE_ID_MNS, GRSP_OK);
             return PROCESSED;
         case OPC_NVSETRD:
             if (m->len < 5) {
-                sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_CMD);
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVRD, SERVICE_ID_MNS, CMDERR_INV_CMD);
+//                sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_CMD);
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSETRD, SERVICE_ID_MNS, CMDERR_INV_CMD);
                 nvDiagnostics[NV_DIAGNOSTICS_NUM_FAIL].asUint++;
                 return PROCESSED;
             }
             valueOrError = setNV(m->bytes[2], m->bytes[3]);
             if (valueOrError >0) {
-                sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(-valueOrError));
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVRD, SERVICE_ID_MNS, (uint8_t)(-valueOrError));
+                sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(valueOrError));
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSETRD, SERVICE_ID_MNS, (uint8_t)(valueOrError));
                 nvDiagnostics[NV_DIAGNOSTICS_NUM_FAIL].asUint++;
                 return PROCESSED;
             }
             valueOrError = getNV(m->bytes[2]);
             if (valueOrError < 0) {
                 sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(-valueOrError));
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVRD, SERVICE_ID_MNS, (uint8_t)(-valueOrError));
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSETRD, SERVICE_ID_MNS, (uint8_t)(-valueOrError));
                 nvDiagnostics[NV_DIAGNOSTICS_NUM_FAIL].asUint++;
                 return PROCESSED;
             }

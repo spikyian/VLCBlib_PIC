@@ -40,6 +40,7 @@
  */ 
 #define _MNS_H_
 #include "vlcb.h"
+#include "ticktime.h"
 #include "module.h"
 /**
  *
@@ -86,7 +87,7 @@
  *                      yellow) to the state specified. 1 is LED on.
  * - #define APP_writeLED2(state) This macro must be defined to set LED1 (normally
  *                      green) to the state specified. 1 is LED on.
- * - #define APP_pbState() This macro must be defined to read the push button
+ * - #define APP_pbPressed() This macro must be defined to read the push button
  *                      input, returning true when the push button is held down.
  * - #define NAME         The name of the module must be defined. Must be exactly 
  *                      7 characters. Shorter names should be padded on the right 
@@ -126,9 +127,14 @@ extern const Service mnsService;
  */
 extern Word nn;
 /*
- * the module's mode.
+ * the module's operational mode.
  */
-extern uint8_t mode;
+extern uint8_t mode_state;
+
+/**
+ * Module operating mode flags.
+ */
+extern uint8_t mode_flags;
 
 /*
  * MNS diagnostics
@@ -137,25 +143,6 @@ extern DiagnosticVal mnsDiagnostics[NUM_MNS_DIAGNOSTICS];
 
 extern void updateModuleErrorStatus(void);
 
-/**
- * The status of the module's LEDs.
- */
-typedef enum {
-    OFF,            ///< fixed OFF
-    ON,             ///< fixed ON
-    FLASH_50_1HZ,   ///< 50% duty cycle  1Hz
-    FLASH_50_HALF_HZ,   ///< 50% duty cycle 0.5Hz
-    SINGLE_FLICKER_OFF, ///< 250ms pulse off
-    SINGLE_FLICKER_ON,  ///< 250ms pulse on
-    LONG_FLICKER_OFF,   ///< 500ms pulse off
-    LONG_FLICKER_ON     ///< 500ms pulse on
-} LedState;
-
-// other externs
-extern LedState    ledState[NUM_LEDS];
-
-// LED identifiers
-#define GREEN_LED   0
-#define YELLOW_LED  1
+extern TickValue pbTimer;
 
 #endif

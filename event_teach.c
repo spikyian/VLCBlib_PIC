@@ -210,7 +210,8 @@ static Processed teachProcessMessage(Message * m);
 static uint8_t teachGetESDdata(uint8_t id);
 static DiagnosticVal * teachGetDiagnostic(uint8_t code);
 static void clearAllEvents(void);
-Processed checkLen(Message * m, uint8_t needed);
+Processed checkLen(Message * m, uint8_t needed, uint8_t service);
+static Processed teachCheckLen(Message * m, uint8_t needed);
 static uint8_t evtIdxToTableIndex(uint8_t evtIdx);
 TimedResponseResult nerdCallback(uint8_t type, uint8_t serviceIndex, uint8_t step);
 TimedResponseResult reqevCallback(uint8_t type, uint8_t serviceIndex, uint8_t step);
@@ -292,6 +293,7 @@ static void teachPowerUp(void) {
     for (i=0; i< NUM_TEACH_DIAGNOSTICS; i++) {
         teachDiagnostics[i].asInt = 0;
     }
+    mode_flags &= ~FLAG_MODE_LEARN; // revert to learn OFF on power up
 }
 
 /**
@@ -305,107 +307,102 @@ static Processed teachProcessMessage(Message* m) {
     switch(m->opc) {
         /* First mode changes. Another check if we are going into Learn or another node is going to Learn */
         case OPC_NNLRN:
-            if (checkLen(m, 3) == PROCESSED) return PROCESSED;
+            if (teachCheckLen(m, 3) == PROCESSED) return PROCESSED;
             if ((m->bytes[0] == nn.bytes.hi) && (m->bytes[1] == nn.bytes.lo)) {
-                mode = MODE_LEARN;
-            } else if (mode == MODE_LEARN) {
-                mode = MODE_NORMAL;
+                mode_flags |= FLAG_MODE_LEARN;
+            } else {
+                mode_state &= ~FLAG_MODE_LEARN;
             }
             return PROCESSED;
         case OPC_MODE:      // 76 MODE - NN, mode
-            if (checkLen(m, 4) == PROCESSED) return PROCESSED;
+            if (teachCheckLen(m, 4) == PROCESSED) return PROCESSED;
             if ((m->bytes[0] == nn.bytes.hi) && (m->bytes[1] == nn.bytes.lo)) {
-                if (m->len < 4) {
-                    sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_CMD);
-                    return PROCESSED;
-                }
-                if (m->bytes[2] == MODE_LEARN) {
+                if (m->bytes[2] == MODE_LEARN_ON) {
                     // Do enter Learn mode
-                    mode = MODE_LEARN;
-                } else if (mode == MODE_LEARN) {
+                    mode_flags |= FLAG_MODE_LEARN;
+                } else if (m->bytes[2] == MODE_LEARN_OFF) {
                     // Do exit Learn mode
-                    if (m->bytes[2] == MODE_NORMAL) {
-                        mode = MODE_NORMAL;
-                    }
+                    mode_flags &= ~FLAG_MODE_LEARN;
                 }
             } else {
                 // Another module going to Learn so we must exit learn
-                if (mode == MODE_LEARN) {
-                    mode = MODE_NORMAL;
-                }
+                mode_flags &= ~FLAG_MODE_LEARN;
             }
             return NOT_PROCESSED;   // mode probably processed by other services
         /* This block must be in Learn mode and NN doesn't need to match ours */
         case OPC_EVLRN:     // D2 EVLRN - NN, EN, EV#, EVval
-            if (checkLen(m, 7) == PROCESSED) return PROCESSED;
-            if (mode != MODE_LEARN) return PROCESSED;
+            if (teachCheckLen(m, 7) == PROCESSED) {
+                sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_CMD);
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVLRN, SERVICE_ID_TEACH, CMDERR_INV_CMD);
+                return PROCESSED;
+            }
+            if (! (mode_flags & FLAG_MODE_LEARN)) return PROCESSED;
             // Do learn
             doEvlrn((uint16_t)(m->bytes[0]<<8) | (m->bytes[1]), (uint16_t)(m->bytes[2]<<8) | (m->bytes[3]), m->bytes[4], m->bytes[5]);
             return PROCESSED;
         case OPC_EVULN:     // 95 EVULN - NN, EN
-            if (checkLen(m, 5) == PROCESSED) return PROCESSED;
-            if (mode != MODE_LEARN) return PROCESSED;
+            if (teachCheckLen(m, 5) == PROCESSED) return PROCESSED;
+            if (! (mode_flags & FLAG_MODE_LEARN)) return PROCESSED;
             // do unlearn
             doEvuln((uint16_t)(m->bytes[0]<<8) | (m->bytes[1]), (uint16_t)(m->bytes[2]<<8) | (m->bytes[3]));
             return PROCESSED;
         case OPC_REQEV:     // B2 REQEV - NN EN EV#
-            if (checkLen(m, 6) == PROCESSED) return PROCESSED;
-            if (mode != MODE_LEARN) return PROCESSED;
+            if (teachCheckLen(m, 6) == PROCESSED) return PROCESSED;
+            if (! (mode_flags & FLAG_MODE_LEARN)) return PROCESSED;
             // do read EV
             doReqev((uint16_t)(m->bytes[0]<<8) | (m->bytes[1]), (uint16_t)(m->bytes[2]<<8) | (m->bytes[3]), m->bytes[4]);
             return PROCESSED;
         /* This block contain an NN which needs to match our NN */
         case OPC_NNULN:     // 54 NNULN - NN
-            if (checkLen(m, 3) == PROCESSED) return PROCESSED;
+            if (teachCheckLen(m, 3) == PROCESSED) return PROCESSED;
             if ((m->bytes[0] != nn.bytes.hi) || (m->bytes[1] != nn.bytes.lo)) return PROCESSED;  // not us
             // Do exit Learn mode
-            if (mode == MODE_LEARN) {
-                mode = MODE_NORMAL;
-            }
+            mode_flags &= ~FLAG_MODE_LEARN;
             return PROCESSED;
         case OPC_NNCLR:     // 55 NNCLR - NN
-            if (checkLen(m, 3) == PROCESSED) return PROCESSED;
+            if (teachCheckLen(m, 3) == PROCESSED) return PROCESSED;
             if ((m->bytes[0] != nn.bytes.hi) || (m->bytes[1] != nn.bytes.lo)) return PROCESSED;  // not us
             /* Must be in Learn mode for this one */
-            if (mode != MODE_LEARN) {
+            if (! (mode_flags & FLAG_MODE_LEARN)) {
                 sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_NOT_LRN);
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NNCLR, SERVICE_ID_TEACH, CMDERR_NOT_LRN);
                 return PROCESSED;
             }
             // do NNCLR
             doNnclr();
             break;
         case OPC_NERD:      // 57 NERD - NN
-            if (checkLen(m, 3) == PROCESSED) return PROCESSED;
+            if (teachCheckLen(m, 3) == PROCESSED) return PROCESSED;
             if ((m->bytes[0] != nn.bytes.hi) || (m->bytes[1] != nn.bytes.lo)) return PROCESSED;  // not us
             // do NERD
             doNerd();
             return PROCESSED;
         case OPC_NNEVN:     // 56 NNEVN - NN
-            if (checkLen(m, 3) == PROCESSED) return PROCESSED;
+            if (teachCheckLen(m, 3) == PROCESSED) return PROCESSED;
             if ((m->bytes[0] != nn.bytes.hi) || (m->bytes[1] != nn.bytes.lo)) return PROCESSED;  // not us
             // do NNEVN
             doNnevn();
             return PROCESSED;
         case OPC_RQEVN:     // 58 RQEVN - NN
-            if (checkLen(m, 3) == PROCESSED) return PROCESSED;
+            if (teachCheckLen(m, 3) == PROCESSED) return PROCESSED;
             if ((m->bytes[0] != nn.bytes.hi) || (m->bytes[1] != nn.bytes.lo)) return PROCESSED;  // not us
             // do RQEVN
             doRqevn();
             return PROCESSED;
         case OPC_NENRD:     // 72 NENRD - NN, EN#
-            if (checkLen(m, 4) == PROCESSED) return PROCESSED;
+            if (teachCheckLen(m, 4) == PROCESSED) return PROCESSED;
             if ((m->bytes[0] != nn.bytes.hi) || (m->bytes[1] != nn.bytes.lo)) return PROCESSED;  // not us
             // do NENRD
             doNenrd(m->bytes[2]);
             return PROCESSED;
         case OPC_REVAL:     // 9C REVAL - NN, EN#, EV#
-            if (checkLen(m, 5) == PROCESSED) return PROCESSED;
+            if (teachCheckLen(m, 5) == PROCESSED) return PROCESSED;
             if ((m->bytes[0] != nn.bytes.hi) || (m->bytes[1] != nn.bytes.lo)) return PROCESSED;  // not us
             // do REVAL
             doReval(m->bytes[2], m->bytes[3]);
             return PROCESSED;
         case OPC_EVLRNI:    // F5 EVLRNI - NN, EN, EN#, EV#, EVval
-            if (checkLen(m, 8) == PROCESSED) return PROCESSED;
+            if (teachCheckLen(m, 8) == PROCESSED) return PROCESSED;
             if ((m->bytes[0] != nn.bytes.hi) || (m->bytes[1] != nn.bytes.lo)) return PROCESSED;  // not us
             // do EVLRNI
             doEvlrn((uint16_t)(m->bytes[0]<<8) | (m->bytes[1]), (uint16_t)(m->bytes[2]<<8) | (m->bytes[3]), m->bytes[5], m->bytes[6]);
@@ -414,6 +411,16 @@ static Processed teachProcessMessage(Message* m) {
             break;
     }
     return NOT_PROCESSED;
+}
+
+/**
+ * Check the message length
+ * @param m
+ * @param needed
+ * @return 
+ */
+static Processed teachCheckLen(Message * m, uint8_t needed) {
+    return checkLen(m, needed, SERVICE_ID_TEACH);
 }
 
 /**
@@ -523,7 +530,7 @@ static void doNenrd(uint8_t index) {
     tableIndex = evtIdxToTableIndex(index);
     // check this is a valid index
     if ( ! validStart(tableIndex)) {
-        sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INVALID_EVENT);
+        sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_EN_IDX);
             // DEBUG  
 //        cbusMsg[d7] = readNVM((uint16_t)(& (EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_ROW_WIDTH*i+EVENTTABLE_OFFSET_[tableIndex].flags.asByte))); 
 //        cbusSendOpcMyNN( 0, OPC_ENRSP, cbusMsg );
@@ -556,12 +563,8 @@ static void doRqevn(void) {
  * Clear all Events.
  */
 static void doNnclr(void) {
-    if (mode == MODE_LEARN) {
-        clearAllEvents();
-        sendMessage2(OPC_WRACK, nn.bytes.hi, nn.bytes.lo);
-    } else {
-            sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_NOT_LRN);
- 	}
+    clearAllEvents();
+    sendMessage2(OPC_WRACK, nn.bytes.hi, nn.bytes.lo);
 } //doNnclr
 
 /**
@@ -578,12 +581,14 @@ static void doEvlrn(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, ui
     evNum--;    // convert VLCB message numbering (starts at 1) to internal numbering)
     if (evNum >= PARAM_NUM_EV_EVENT) {
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_EV_IDX);
+        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVLRN, SERVICE_ID_TEACH, CMDERR_INV_EV_IDX);
         return;
     }
     error = APP_addEvent(nodeNumber, eventNumber, evNum, evVal);
     if (error) {
         // validation error
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, error);
+        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVLRN, SERVICE_ID_TEACH, error);
         return;
     }
     teachDiagnostics[TEACH_DIAG_NUM_TEACH].asUint++;
@@ -641,6 +646,7 @@ static void doEvuln(uint16_t nodeNumber, uint16_t eventNumber) {
     result = removeEvent(nodeNumber, eventNumber);
     if (result) {
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, result);
+        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVULN, SERVICE_ID_TEACH, result);
         return;
     }
     // Send a WRACK - difference from CBUS
@@ -659,10 +665,12 @@ static void doReqev(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum) {
     uint8_t tableIndex = findEvent(nodeNumber, eventNumber);
     if (tableIndex == NO_INDEX) {
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INVALID_EVENT);
+        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_TEACH, CMDERR_INVALID_EVENT);
         return;
     }
     if (evNum > PARAM_NUM_EV_EVENT) {
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_EV_IDX);
+        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_TEACH, CMDERR_INV_EV_IDX);
         return;
     }
     if (evNum == 0) {
@@ -677,10 +685,11 @@ static void doReqev(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum) {
     if (evVal < 0) {
         // a negative value is the error code
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(-evVal));
+        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_TEACH, (uint8_t)(-evVal));
         return;
     }
 
-    sendMessage6(OPC_EVANS, nn.bytes.hi, nn.bytes.lo, eventNumber>>8, eventNumber&0xFF, evNum, (uint8_t)evVal);
+    sendMessage6(OPC_EVANS, nodeNumber>>8, nodeNumber&0xFF, eventNumber>>8, eventNumber&0xFF, evNum, (uint8_t)evVal);
     return;
 }
 /**
@@ -720,7 +729,7 @@ TimedResponseResult reqevCallback(uint8_t tableIndex, uint8_t serviceIndex, uint
 uint8_t removeEvent(uint16_t nodeNumber, uint16_t eventNumber) {
     // need to delete this action from the Event table. 
     uint8_t tableIndex = findEvent(nodeNumber, eventNumber);
-    if (tableIndex == NO_INDEX) return CMDERR_INV_EV_IDX; // not found
+    if (tableIndex == NO_INDEX) return CMDERR_INVALID_EVENT; // not found
     // found the event to delete
     return removeTableEntry(tableIndex);
 }

@@ -55,6 +55,7 @@
  */
 
 static Processed ackEventProcessMessage(Message * m);
+static Processed ackEventCheckLen(Message * m, uint8_t needed);
 
 /**
  * The service descriptor for the Event Acknowledge service. The application must include this
@@ -83,8 +84,22 @@ static Processed ackEventProcessMessage(Message * m) {
     uint8_t eventIndex;
     int16_t ev;
     
+    if (m->opc == OPC_MODE) {      // 76 MODE - NN, mode
+        if (ackEventCheckLen(m, 4) == PROCESSED) return PROCESSED;
+        if ((m->bytes[0] == nn.bytes.hi) && (m->bytes[1] == nn.bytes.lo)) {
+            if (m->bytes[2] == MODE_EVENT_ACK_ON) {
+                // Do enter Learn mode
+                mode_flags |= FLAG_MODE_LEARN;
+            } else if (m->bytes[2] == MODE_EVENT_ACK_OFF) {
+                // Do exit Learn mode
+                mode_flags &= ~FLAG_MODE_LEARN;
+            }
+        } 
+        return NOT_PROCESSED;   // mode probably processed by other services
+    }       
+            
     // Check that the Event Ack mode is set
-    if (mode != MODE_EVENT_ACK) {
+    if (! (mode_flags & FLAG_MODE_EVENTACK)) {
         return NOT_PROCESSED;
     }
     // check that we have event consumption service
@@ -123,4 +138,14 @@ static Processed ackEventProcessMessage(Message * m) {
         }
     }
     return NOT_PROCESSED;
+}
+
+/**
+ * Check the message length
+ * @param m
+ * @param needed
+ * @return 
+ */
+static Processed ackEventCheckLen(Message * m, uint8_t needed) {
+    return checkLen(m, needed, SERVICE_ID_EVENTACK);
 }

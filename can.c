@@ -446,22 +446,24 @@ static SendResult canSendMessage(Message * mp) {
                 // If this is an event we are sending then put it onto the rx queue so
                 // we can consume our own events.
             if (isEvent(mp->opc)) {
-                // we can consume our own events.
-                m = getNextWriteMessage(&rxQueue);
-                if (m == NULL) {
-                    canDiagnostics[CAN_DIAG_RX_BUFFER_OVERRUN].asUint++;
-                    updateModuleErrorStatus();
-                } else {
-                    // copy ECAN buffer to message
-                    m->opc = mp->opc;
-                    m->len = mp->len;
-                    m->bytes[0] = mp->bytes[0];
-                    m->bytes[1] = mp->bytes[1];
-                    m->bytes[2] = mp->bytes[2];
-                    m->bytes[3] = mp->bytes[3];
-                    m->bytes[4] = mp->bytes[4];
-                    m->bytes[5] = mp->bytes[5];
-                    m->bytes[6] = mp->bytes[6];
+                if (have(SERVICE_ID_CONSUME_OWN_EVENTS)) {
+                    // we can consume our own events.
+                    m = getNextWriteMessage(&rxQueue);
+                    if (m == NULL) {
+                        canDiagnostics[CAN_DIAG_RX_BUFFER_OVERRUN].asUint++;
+                        updateModuleErrorStatus();
+                    } else {
+                        // copy ECAN buffer to message
+                        m->opc = mp->opc;
+                        m->len = mp->len;
+                        m->bytes[0] = mp->bytes[0];
+                        m->bytes[1] = mp->bytes[1];
+                        m->bytes[2] = mp->bytes[2];
+                        m->bytes[3] = mp->bytes[3];
+                        m->bytes[4] = mp->bytes[4];
+                        m->bytes[5] = mp->bytes[5];
+                        m->bytes[6] = mp->bytes[6];
+                    }
                 }
             }
 #endif

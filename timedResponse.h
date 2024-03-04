@@ -70,13 +70,14 @@ extern "C" {
 // These are the different timed response processes we can do
 // Although considered converting these to an enum eventually decided against
 // it as this would limit reuse.
-#define TIMED_RESPONSE_SOD  1
-#define TIMED_RESPONSE_NERD 2
-#define TIMED_RESPONSE_RQSD 3
-#define TIMED_RESPONSE_RDGN 4
-#define TIMED_RESPONSE_REQEV 5
-#define TIMED_RESPONSE_NVRD 6
-#define TIMED_RESPONSE_NONE 0xFF // must be an invalid tableIndex so same as NO_INDEX
+#define TIMED_RESPONSE_SOD      1
+#define TIMED_RESPONSE_NERD     2
+#define TIMED_RESPONSE_RQSD     3
+#define TIMED_RESPONSE_RDGN     4
+#define TIMED_RESPONSE_REQEV    5
+#define TIMED_RESPONSE_NVRD     6
+#define TIMED_RESPONSE_RQNPN    7
+#define TIMED_RESPONSE_NONE     0xFF // must be an invalid tableIndex so same as NO_INDEX
     
 // The different APP callback responses
 typedef enum {

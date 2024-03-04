@@ -46,6 +46,9 @@
 
 #define _ROMOPS_H_
 
+#include <xc.h>
+#include "vlcb.h"
+
 /**
  * @file
  * Non volatile memory functions

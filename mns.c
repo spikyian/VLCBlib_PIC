@@ -57,8 +57,7 @@
  * included by all module applications.
  * 
  * # Module.h definitions required for the MNS service
- * - #define NUM_SERVICES to be the number of services implemented by the module.
- *                      The application must put the services into the services array.
+ * - #define NUM_SERVICES with the number of service pointers in the services array.
  * - #define APP_NVM_VERSION the version number of the data structures stored in NVM
  *                      this is located where NV#0 is stored therefore NV_ADDRESS
  *                      and NV_NVM_TYPE must be defined even without the NV service.
@@ -83,7 +82,7 @@
  *                      yellow) to the state specified. 1 is LED on.
  * - #define APP_writeLED2(state) This macro must be defined to set LED1 (normally
  *                      green) to the state specified. 1 is LED on.
- * - #define APP_pbState() This macro must be defined to read the push button
+ * - #define APP_pbPressed() This macro must be defined to read the push button
  *                      input, returning true when the push button is held down.
  * - #define NAME         The name of the module must be defined. Must be exactly 
  *                      7 characters. Shorter names should be padded on the right 
@@ -102,6 +101,7 @@
  * 
  */
 #include <xc.h>
+#include "vlcbdefs_enum.h"
 #include "vlcb.h"
 #include "module.h"
 #include "mns.h"
@@ -110,6 +110,7 @@
 #include "romops.h"
 #include "devincs.h"
 #include "timedResponse.h"
+#include "statusDisplay.h"
 
 #define MNS_VERSION 1
 
@@ -120,6 +121,8 @@ static void mnsPoll(void);
 static Processed mnsProcessMessage(Message * m);
 static void mnsLowIsr(void);
 static DiagnosticVal * mnsGetDiagnostic(uint8_t index);
+static uint8_t getParameter(uint8_t);
+
 #ifdef PRODUCED_EVENTS
 #include "event_teach.h"
 #include "event_producer.h"
@@ -152,7 +155,14 @@ Word nn;            // node number
 /**
  * Module operating mode.
  */
-uint8_t mode; // operational mode
+uint8_t mode_state; // operational mode
+static uint8_t last_mode_state;
+/**
+ * Module operating mode flags.
+ */
+uint8_t mode_flags; // operational mode flags
+static uint8_t last_mode_flags;
+
 /**
  * The module's name. The NAME macro should be specified by the application 
  * code in module.h.
@@ -168,23 +178,12 @@ static uint8_t setupModePreviousMode;
  */
 static Word previousNN;
 
-// LED handling
-/**
- * NUM_LEDS must be specified by the application in module.h.
- * Each LED has a state here to indicate if it is on/off/flashing etc.
- */
-LedState    ledState[NUM_LEDS];     // the requested state
-/**
- * Counters to control on/off period.
- */
-static uint8_t flashCounter[NUM_LEDS];     // update every 10ms
-static TickValue ledTimer;
+
 /**
  * Module's push button handling.
  * Other UI options are not currently supported.
  */
-static uint8_t pbState;
-static TickValue pbTimer;
+TickValue pbTimer;
 /**
  * The diagnostic values supported by the MNS service.
  */
@@ -193,7 +192,6 @@ DiagnosticVal mnsDiagnostics[NUM_MNS_DIAGNOSTICS];
 /* Heartbeat controls */
 static uint8_t heartbeatSequence;
 static TickValue heartbeatTimer;
-static volatile uint8_t sendHeartbeatEventOn;
 
 /* Uptime controls */
 static TickValue uptimeTimer;
@@ -216,6 +214,31 @@ TimedResponseResult mnsTRserviceDiscoveryCallback(uint8_t type, uint8_t serviceI
  * @return indication if all the responses have been sent.
  */
 TimedResponseResult mnsTRallDiagnosticsCallback(uint8_t type, uint8_t serviceIndex, uint8_t step);
+/*
+ * Forward declaration for the TimedResponse callback function for sending
+ * Parameter responses.
+ * @param type type of TimedResponse
+ * @param serviceIndex the service
+ * @param step the TimedResponse step
+ * @return indication if all the responses have been sent.
+ */
+TimedResponseResult  mnsTRrqnpnCallback(uint8_t type, uint8_t serviceIndex, uint8_t step);
+
+/*
+ * Defines for the PNN flags byte
+ */
+#define PNN_FLAGS_CONSUMER  1
+#define PNN_FLAGS_PRODUCER  2
+#define PNN_FLAGS_NORMAL    4
+#define PNN_FLAGS_BOOT      8
+#define PNN_FLAGS_COE       16
+#define PNN_FLAGS_LEARN     32
+#define PNN_FLAGS_VLCB      64
+
+/*
+ * Forward declaration for getParameterFlags.
+ */
+uint8_t getParameterFlags(void);
 
 /*
  * The Service functions
@@ -229,8 +252,11 @@ static void mnsFactoryReset(void) {
     writeNVM(NN_NVM_TYPE, NN_ADDRESS, nn.bytes.hi);
     writeNVM(NN_NVM_TYPE, NN_ADDRESS+1, nn.bytes.lo);
     
-    mode = MODE_UNINITIALISED;
-    writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode);
+    last_mode_state = mode_state = MODE_UNINITIALISED;
+    writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode_state);
+
+    last_mode_flags = mode_flags = FLAG_MODE_HEARTBEAT;
+    writeNVM(MODE_FLAGS_NVM_TYPE, MODE_FLAGS_ADDRESS, mode_flags);
 }
 
 /**
@@ -242,7 +268,6 @@ static void mnsPowerUp(void) {
     int temp;
     uint8_t i;
     
-    sendHeartbeatEventOn = FALSE;
     temp = readNVM(NN_NVM_TYPE, NN_ADDRESS);
     if (temp < 0) {
         nn.bytes.hi = NN_HI_DEFAULT;
@@ -259,23 +284,21 @@ static void mnsPowerUp(void) {
     }
     temp = readNVM(MODE_NVM_TYPE, MODE_ADDRESS);
     if (temp < 0) {
-        mode = MODE_DEFAULT;
+        mode_state = MODE_DEFAULT;
     } else {
-        mode = (uint8_t)temp;
+        mode_state = (uint8_t)temp;
+    }
+    temp = readNVM(MODE_FLAGS_NVM_TYPE, MODE_FLAGS_ADDRESS);
+    if (temp < 0) {
+        mode_flags = FLAG_MODE_HEARTBEAT;
+    } else {
+        mode_flags = (uint8_t)temp;
     }
     
-    // Set up the LEDs
-    APP_setPortDirections();
-#if ((NUM_LEDS == 1) || (NUM_LEDS == 2))
-    flashCounter[GREEN_LED] = 0;
-#endif
-#if NUM_LEDS==2
-    flashCounter[YELLOW_LED] = 0;
-#endif
-    ledTimer.val = 0;
     setLEDsByMode();
-
-    pbState = 0;
+    
+    pbTimer.val = tickGet();
+    
     // Clear the diagnostics
     for (i=0; i< NUM_MNS_DIAGNOSTICS; i++) {
         mnsDiagnostics[i].asInt = 0;
@@ -302,7 +325,7 @@ static Processed mnsProcessMessage(Message * m) {
     // Now do the MNS opcodes
 
     // SETUP mode messages
-    if (mode == MODE_SETUP) {
+    if (mode_state == MODE_SETUP) {
         switch (m->opc) {
             case OPC_SNN:   // Set node number
                 if (m->len < 3) {
@@ -313,8 +336,8 @@ static Processed mnsProcessMessage(Message * m) {
                     writeNVM(NN_NVM_TYPE, NN_ADDRESS, nn.bytes.hi);
                     writeNVM(NN_NVM_TYPE, NN_ADDRESS+1, nn.bytes.lo);
                     
-                    mode = MODE_NORMAL;
-                    writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode);
+                    mode_state = MODE_NORMAL;
+//                    writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode_state);
                     
                     sendMessage2(OPC_NNACK, nn.bytes.hi, nn.bytes.lo);
                     mnsDiagnostics[MNS_DIAGNOSTICS_NNCHANGE].asUint++;
@@ -332,18 +355,7 @@ static Processed mnsProcessMessage(Message * m) {
                         name[4], name[5], name[6]);
                 return PROCESSED;
             case OPC_QNN:   // Query nodes
-                flags = 0;
-                if (have(SERVICE_ID_CONSUMER)) {
-                    flags |= 1;
-                }
-                if (have(SERVICE_ID_PRODUCER)) {
-                    flags |= 2;
-                }
-                if (flags == 3) flags |= 8;     // CoE
-                if (have(SERVICE_ID_BOOT)) {
-                    flags |= 16;
-                }
-                sendMessage5(OPC_PNN, 0,0, PARAM_MANU, PARAM_MODULE_ID, flags);
+                sendMessage5(OPC_PNN, 0,0, PARAM_MANU, PARAM_MODULE_ID, getParameterFlags());
                 return PROCESSED;
             default:
                 break;
@@ -365,10 +377,10 @@ static Processed mnsProcessMessage(Message * m) {
             if (have(SERVICE_ID_BOOT)) {
                 flags |= 16;    // BOOTABLE BIT
             }
-            if (mode == MODE_LEARN) {
+            if (mode_flags & FLAG_MODE_LEARN) {
                 flags |= 32;    // LEARN BIT
             }
-            sendMessage5(OPC_PNN, nn.bytes.hi,nn.bytes.lo, MANU_MERG, MTYP_VLCB, flags);
+            sendMessage5(OPC_PNN, nn.bytes.hi,nn.bytes.lo, PARAM_MANU, PARAM_MODULE_ID, flags);
             return PROCESSED;
         default:
             break;
@@ -391,102 +403,16 @@ static Processed mnsProcessMessage(Message * m) {
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_RQNPN, SERVICE_ID_MNS, CMDERR_INV_PARAM_IDX);
                 return PROCESSED;
             }
-            switch(m->bytes[2]) {
-                case PAR_NUM:       // Number of parameters
-                    i=20;
-                    break;
-                case PAR_MANU:      // Manufacturer id
-                    i=PARAM_MANU;
-                    break;
-                case PAR_MINVER:	// Minor version letter
-                    i=PARAM_MINOR_VERSION;
-                    break;
-                case PAR_MTYP:	 	// Module type code
-                    i=PARAM_MODULE_ID;
-                    break;
-                case PAR_EVTNUM:	// Number of events supported
-                    i=PARAM_NUM_EVENTS;
-                    break;
-                case PAR_EVNUM:		// Event variables per event
-                    i=PARAM_NUM_EV_EVENT;
-                    break;
-                case PAR_NVNUM:		// Number of Node variables
-                    i=PARAM_NUM_NV;
-                    break;
-                case PAR_MAJVER:	// Major version number
-                    i=PARAM_MAJOR_VERSION;
-                    break;
-                case PAR_FLAGS:		// Node flags
-                    i = 0;
-                    if (have(SERVICE_ID_CONSUMER)) {
-                        i |= 1;
-                    }
-                    if (have(SERVICE_ID_PRODUCER)) {
-                        i |= 2;
-                    }
-                    if (i == 3) i |= 8;     // CoE
-                    i |= 4; // NORMAL BIT
-                    if (have(SERVICE_ID_BOOT)) {
-                        i |= 16;
-                    }
-                    if (mode == MODE_LEARN) {
-                        i |= 32;
-                    }
-                    break;
-                case PAR_CPUID:		// Processor type
-                    i=CPU;
-                    break;
-                case PAR_BUSTYPE:	// Bus type
-                    i=0;
-                    if (have(SERVICE_ID_CAN)) {
-                        i=PB_CAN;
-                    }
-                    break;
-                case PAR_LOAD1:		// load address, 4 bytes
-                    i=0x00;
-                    break;
-                case PAR_LOAD2:		// load address, 4 bytes
-                    i=0x08;
-                    break;
-                case PAR_LOAD3:		// load address, 4 bytes
-                    i=0x00;
-                    break;
-                case PAR_LOAD4:		// load address, 4 bytes
-                    i=0x00;
-                    break;
-                case PAR_CPUMID:	// CPU manufacturer's id as read from the chip config space, 4 bytes (note - read from cpu at runtime, so not included in checksum)
-#ifdef _PIC18
-                    i=0;
-#else
-                    i = (*(const uint8_t*)0x3FFFFC; // Device revision byte 0
-#endif
-                    break;
-                case PAR_CPUMID+1:
-#ifdef _PIC18
-                    i=0;
-#else
-                    i = (*(const uint8_t*)0x3FFFFD; // Device recision byte 1
-#endif
-                    break;
-                case PAR_CPUMID+2:
-                    i = *(const uint8_t*)0x3FFFFE;  // Device ID byte 0
-                    break;
-                case PAR_CPUMID+3:
-                    i = *(const uint8_t*)0x3FFFFF;  // Device ID byte 1
-                    break;
-                case PAR_CPUMAN:	// CPU manufacturer code
-                    i=CPUM_MICROCHIP;
-                    break;
-                case PAR_BETA:		// Beta revision (numeric), or 0 if release
-                    i=PARAM_BUILD_VERSION;
-                    break;
-                default:
-                    i=0;
-            }
+            i = getParameter(m->bytes[2]);
             sendMessage4(OPC_PARAN, nn.bytes.hi, nn.bytes.lo, m->bytes[2], i);
+            if (m->bytes[2] == 0) {
+                startTimedResponse(TIMED_RESPONSE_RQNPN, findServiceIndex(SERVICE_ID_MNS), mnsTRrqnpnCallback);
+            }
             return PROCESSED;
         case OPC_NNRSM: // reset to manufacturer defaults
+            previousNN.word = nn.word;  // save the old NN
             factoryReset();
+            sendMessage2(OPC_NNREL, previousNN.bytes.hi, previousNN.bytes.lo);
             return PROCESSED;
         case OPC_RDGN:  // diagnostics
             if (m->len < 5) {
@@ -553,17 +479,19 @@ static Processed mnsProcessMessage(Message * m) {
                 return PROCESSED;
             }
             newMode = m->bytes[2];
+            previousNN.word = nn.word;  // save the old NN
             // check current mode
-            switch (mode) {
+            switch (mode_state) {
                 case MODE_UNINITIALISED:
                     if (newMode == MODE_SETUP) {
-                        mode = MODE_SETUP;
+                        mode_state = MODE_SETUP;
                         setupModePreviousMode = MODE_UNINITIALISED;
-                        pbTimer.val = tickGet();
                         //start the request for NN
                         sendMessage2(OPC_RQNN, nn.bytes.hi, nn.bytes.lo);
                         // Update the LEDs
                         setLEDsByMode();
+                        sendMessage5(OPC_GRSP, previousNN.bytes.hi, previousNN.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
+                        return PROCESSED;
                     }
                     break;
                 case MODE_SETUP:
@@ -572,25 +500,30 @@ static Processed mnsProcessMessage(Message * m) {
                     if (newMode == MODE_SETUP) {
                         // Do State transition from Normal to Setup
                         // release the NN
+                        sendMessage2(OPC_NNREL, nn.bytes.hi, nn.bytes.lo);
+                        // request new nn
                         sendMessage2(OPC_RQNN, nn.bytes.hi, nn.bytes.lo);
-                        previousNN.word = nn.word;  // save the old NN
+                        
                         nn.bytes.lo = nn.bytes.hi = 0;
+                        writeNVM(NN_NVM_TYPE, NN_ADDRESS, nn.bytes.hi);
+                        writeNVM(NN_NVM_TYPE, NN_ADDRESS+1, nn.bytes.lo);
                         //return to setup
-                        mode = MODE_SETUP;
+                        mode_state = MODE_SETUP;
                         setupModePreviousMode = MODE_NORMAL;
-                        pbTimer.val = tickGet();
                         // Update the LEDs
                         setLEDsByMode();
-                    } else if (newMode != MODE_UNINITIALISED) {
-                        // change between other modes
-                        // No special handling - JFDI
-                        mode = newMode;
-                        writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode);
-                    }
+//                        writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode_state);
+                        return PROCESSED;
+                    } 
                     break;
             }
-            sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
-            return PROCESSED;
+            // Now do heartbeat change
+            if (newMode == MODE_HEARTBEAT_ON) {
+                mode_flags |= FLAG_MODE_HEARTBEAT;
+            } else if (newMode == MODE_HEARTBEAT_OFF) {
+                mode_flags &= ~FLAG_MODE_HEARTBEAT;
+            }
+            return NOT_PROCESSED;
 /*        case OPC_SQU:   // squelch
             // TO DO     Handle Squelch - no longer required
             if (m->len < 4) {
@@ -612,16 +545,34 @@ static Processed mnsProcessMessage(Message * m) {
 }
 
 /**
+ * Get the current module status flags as reported by Parameter 8 and PNN.
+ * @return the current module status flags
+ */
+uint8_t getParameterFlags() {
+    uint8_t flags;
+    flags = 0;
+    if (have(SERVICE_ID_CONSUMER)) {
+        flags |= PNN_FLAGS_CONSUMER;
+    }
+    if (have(SERVICE_ID_PRODUCER)) {
+        flags |= PNN_FLAGS_PRODUCER;
+    }
+    if (flags == (PNN_FLAGS_PRODUCER & PNN_FLAGS_CONSUMER)) flags |= PNN_FLAGS_COE;     // CoE
+    if (have(SERVICE_ID_BOOT)) {
+        flags |= PNN_FLAGS_BOOT;
+    }
+    if (mode_flags & FLAG_MODE_LEARN) {
+        flags |= PNN_FLAGS_LEARN;
+    }
+    flags |= PNN_FLAGS_VLCB; // always add VLCB compatability
+    return flags;
+}
+
+/**
  * Update the module status with an error.
  * This is safe to be called from the CAN send function.
  */
 void updateModuleErrorStatus(void) {
-#ifdef PRODUCED_EVENTS
-    if (mnsDiagnostics[MNS_DIAGNOSTICS_STATUS].asBytes.lo == 0) {
-        // indicate that Heartbeat event ON needs to be sent
-        sendHeartbeatEventOn = TRUE;
-    }
-#endif
     if (mnsDiagnostics[MNS_DIAGNOSTICS_STATUS].asBytes.lo < 0xFF) {
         mnsDiagnostics[MNS_DIAGNOSTICS_STATUS].asBytes.lo++;
     }
@@ -633,29 +584,26 @@ void updateModuleErrorStatus(void) {
  */
 static void mnsPoll(void) {
     // Heartbeat message
-    if ((mode != MODE_SETUP) && (mode != MODE_UNINITIALISED) && (mode != MODE_NOHEARTB)) {
-        // don't send in NOHEARTB mode - or any others
+    if (mode_state == MODE_NORMAL) {
         if (tickTimeSince(heartbeatTimer) > 5*ONE_SECOND) {
-            if (mode != MODE_NOHEARTB) {
+            if (mode_flags & FLAG_MODE_HEARTBEAT) {
                 sendMessage5(OPC_HEARTB, nn.bytes.hi,nn.bytes.lo,heartbeatSequence++,mnsDiagnostics[MNS_DIAGNOSTICS_STATUS].asBytes.lo,0);
             }
             heartbeatTimer.val = tickGet();
             if (mnsDiagnostics[MNS_DIAGNOSTICS_STATUS].asBytes.lo > 0) {
                 mnsDiagnostics[MNS_DIAGNOSTICS_STATUS].asBytes.lo--;
-#ifdef PRODUCED_EVENTS
-                if (mnsDiagnostics[MNS_DIAGNOSTICS_STATUS].asBytes.lo == 0) {
-                    // Heartbeat event OFF
-                    sendProducedEvent(HEARTBEAT_HAPPENING, EVENT_OFF);
-                }
-#endif
             }
         }
     }
-    // Heartbeat event On
-    if (sendHeartbeatEventOn) {
-        // Heartbeat event OFF
-        sendProducedEvent(HEARTBEAT_HAPPENING, EVENT_ON);
-        sendHeartbeatEventOn = FALSE;
+    
+    // Update mode if app or any service has changed them
+    if (mode_flags != last_mode_flags) {
+        writeNVM(MODE_FLAGS_NVM_TYPE, MODE_FLAGS_ADDRESS, mode_flags);
+        last_mode_flags = mode_flags;
+    }
+    if (mode_state != last_mode_state) {
+        writeNVM(MODE_FLAGS_NVM_TYPE, MODE_ADDRESS, mode_state);
+        last_mode_state = mode_state;
     }
     
     // Module uptime
@@ -667,173 +615,75 @@ static void mnsPoll(void) {
         }
     }
     
-    // update the actual LEDs based upon their state
-    if (tickTimeSince(ledTimer) > TEN_MILI_SECOND) {
-#if ((NUM_LEDS == 1) || (NUM_LEDS == 2))
-        flashCounter[GREEN_LED]++;
-#endif
-#if NUM_LEDS==2
-        flashCounter[YELLOW_LED]++;
-#endif
-        ledTimer.val = tickGet();
-        
-    }
-#if NUM_LEDS == 2
-    switch (ledState[YELLOW_LED]) {
-        case ON:
-            APP_writeLED2(1);
-            flashCounter[YELLOW_LED] = 0;
-            break;
-        case OFF:
-            APP_writeLED2(0);
-            flashCounter[YELLOW_LED] = 0;
-            break;
-        case FLASH_50_1HZ:
-            // 1Hz (500ms per on or off is a count of 50 
-            APP_writeLED2(flashCounter[YELLOW_LED]/50); 
-            if (flashCounter[YELLOW_LED] >= 100) {
-                flashCounter[YELLOW_LED] = 0;
-            }
-            break;
-        case FLASH_50_HALF_HZ:
-            APP_writeLED2(flashCounter[YELLOW_LED]/100);
-            if (flashCounter[YELLOW_LED] >= 200) {
-                flashCounter[YELLOW_LED] = 0;
-            }
-            break;
-        case SINGLE_FLICKER_ON:
-            APP_writeLED2(1);
-            if (flashCounter[YELLOW_LED] >= 25) {     // 250ms
-                flashCounter[YELLOW_LED] = 0;
-                setLEDsByMode();
-            }
-            break;
-        case SINGLE_FLICKER_OFF:
-            APP_writeLED2(0);
-            if (flashCounter[YELLOW_LED] >= 25) {     // 250ms
-                flashCounter[YELLOW_LED] = 0;
-                setLEDsByMode();
-            }
-            break;
-        case LONG_FLICKER_ON:
-            APP_writeLED2(1);
-            if (flashCounter[YELLOW_LED] >= 50) {     // 500ms
-                flashCounter[YELLOW_LED] = 0;
-                setLEDsByMode();
-            }
-            break;
-        case LONG_FLICKER_OFF:
-            APP_writeLED2(0);
-            if (flashCounter[YELLOW_LED] >= 50) {     // 500ms
-                flashCounter[YELLOW_LED] = 0;
-                setLEDsByMode();
-            }
-            break;
-    }
-#endif
-#if ((NUM_LEDS == 1) || (NUM_LEDS == 2))
-    switch (ledState[GREEN_LED]) {
-        case ON:
-            APP_writeLED1(1);
-            flashCounter[GREEN_LED] = 0;
-            break;
-        case OFF:
-            APP_writeLED1(0);
-            flashCounter[GREEN_LED] = 0;
-            break;
-        case FLASH_50_1HZ:
-            // 1Hz (500ms per cycle is a count of 50 
-            APP_writeLED1(flashCounter[GREEN_LED]/50); 
-            if (flashCounter[GREEN_LED] >= 100) {
-                flashCounter[GREEN_LED] = 0;
-            }
-            break;
-        case FLASH_50_HALF_HZ:
-            APP_writeLED1(flashCounter[GREEN_LED]/100);
-            if (flashCounter[GREEN_LED] >= 200) {
-                flashCounter[GREEN_LED] = 0;
-            }
-            break;
-        case SINGLE_FLICKER_ON:
-            APP_writeLED1(1);
-            if (flashCounter[GREEN_LED] >= 25) {     // 250ms
-                flashCounter[GREEN_LED] = 0;
-                setLEDsByMode();
-            }
-            break;
-        case SINGLE_FLICKER_OFF:
-            APP_writeLED1(0);
-            if (flashCounter[GREEN_LED] >= 25) {     // 250ms
-                flashCounter[GREEN_LED] = 0;
-                setLEDsByMode();
-            }
-            break;
-        case LONG_FLICKER_ON:
-            APP_writeLED1(1);
-            if (flashCounter[GREEN_LED] >= 50) {     // 500ms
-                flashCounter[GREEN_LED] = 0;
-                setLEDsByMode();
-            }
-            break;
-        case LONG_FLICKER_OFF:
-            APP_writeLED1(0);
-            if (flashCounter[GREEN_LED] >= 50) {     // 500ms
-                flashCounter[GREEN_LED] = 0;
-                setLEDsByMode();
-            }
-            break;
-    }
-#endif
+    setLEDsByMode();
+    
     // Do the mode changes by push button
-    switch(mode) {
+    switch(mode_state) {
         case MODE_UNINITIALISED:
             // check the PB status
-            if (APP_pbState() == 0) {
+            if (APP_pbPressed() == 0) {
                 // pb has not been pressed
                 pbTimer.val = tickGet();
             } else {
+                // No need to release the PB
                 if (tickTimeSince(pbTimer) > 4*ONE_SECOND) {
                     // Do state transition from Uninitialised to Setup
-                    mode = MODE_SETUP;
+                    mode_state = MODE_SETUP;
                     setupModePreviousMode = MODE_UNINITIALISED;
-                    pbTimer.val = tickGet();
+                    pbTimer.val = tickGet();    // reset the timer ready for Setup mode
                     //start the request for NN
                     sendMessage2(OPC_RQNN, nn.bytes.hi, nn.bytes.lo);
                 }
             }
             break;
         case MODE_SETUP:
-            // check for 30secs in SETUP
+            /* 
+            // check for 30secs in SETUP and timeout back to previous state
             if (tickTimeSince(pbTimer) > 3*TEN_SECOND) {
                 // return to previous mode
-                mode = setupModePreviousMode;
-                writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode);
+                mode_state = setupModePreviousMode;
+                writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode_state);
                 // restore the NN
-                if (mode == MODE_NORMAL) {
+                if (mode_state == MODE_NORMAL) {
                     nn.word = previousNN.word;
                     sendMessage2(OPC_NNACK, nn.bytes.hi, nn.bytes.lo);
                     mnsDiagnostics[MNS_DIAGNOSTICS_NNCHANGE].asUint++;
                 }
+            } */
+            if (APP_pbPressed() == 0) {
+                // PB has been released
+                if (tickTimeSince(pbTimer) > 4*ONE_SECOND) {
+                    // was down for more than 4 sec
+                    // return to previous mode
+                    mode_state = setupModePreviousMode;
+//                    writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode_state);
+                    if (mode_state == MODE_NORMAL) {
+                        nn.word = previousNN.word;
+                        sendMessage2(OPC_NNACK, nn.bytes.hi, nn.bytes.lo);
+                        mnsDiagnostics[MNS_DIAGNOSTICS_NNCHANGE].asUint++;
+                    }
+                }
+                pbTimer.val = tickGet();
             }
             break;
-        default:    // Normal modes
+        default:    // Normal mode
             // check the PB status
-            if (APP_pbState() == 0) {
-                // pb has not been pressed
-                pbTimer.val = tickGet();
-            } else {
-                if (tickTimeSince(pbTimer) > 8*ONE_SECOND) {
+            if (APP_pbPressed() == 0) {
+                // PB has been released
+                if (tickTimeSince(pbTimer) > 4*ONE_SECOND) {
+                    // was down for more than 4 sec
                     // Do State transition from Normal to Setup
                     previousNN.word = nn.word;  // save the old NN
                     nn.bytes.lo = nn.bytes.hi = 0;
                     //return to setup
-                    mode = MODE_SETUP;
+                    mode_state = MODE_SETUP;
                     setupModePreviousMode = MODE_NORMAL;
                     pbTimer.val = tickGet();
                     //start the request for NN
                     sendMessage2(OPC_RQNN, previousNN.bytes.hi, previousNN.bytes.lo);
                 }
-            } 
+                pbTimer.val = tickGet();
+            }
     }
 }
 
@@ -872,34 +722,78 @@ static DiagnosticVal * mnsGetDiagnostic(uint8_t index) {
  * Set the LEDs according to the current mode.
  */
 void setLEDsByMode(void) {
-       switch (mode) {
+       switch (mode_state) {
         case MODE_UNINITIALISED:
- #if NUM_LEDS == 2
-            ledState[GREEN_LED] = ON;
-            ledState[YELLOW_LED] = OFF;
-#endif
-#if NUM_LEDS == 1
-            ledState[0] = FLASH_50_HALF_HZ;
-#endif
+            showStatus(STATUS_UNINITIALISED);
             break;
         case MODE_SETUP:
-#if NUM_LEDS == 2
-            ledState[GREEN_LED] = OFF;
-            ledState[YELLOW_LED] = FLASH_50_1HZ;
-#endif
-#if NUM_LEDS == 1
-            ledState[0] = FLASH_50_1HZ;
-#endif
+            showStatus(STATUS_SETUP);
             break;
         default:
-#if NUM_LEDS == 2
-            ledState[GREEN_LED] = OFF;
-            ledState[YELLOW_LED] = ON;
-#endif
-#if NUM_LEDS == 1
-            ledState[0] = ON;
-#endif
+            showStatus(STATUS_NORMAL);
             break;
+    }
+}
+
+uint8_t getParameter(uint8_t idx) {
+    uint8_t i;
+    switch(idx) {
+    case PAR_NUM:       // Number of parameters
+        return 20;
+    case PAR_MANU:      // Manufacturer id
+        return PARAM_MANU;
+    case PAR_MINVER:	// Minor version letter
+        return PARAM_MINOR_VERSION;
+    case PAR_MTYP:	 	// Module type code
+        return PARAM_MODULE_ID;
+    case PAR_EVTNUM:	// Number of events supported
+        return PARAM_NUM_EVENTS;
+    case PAR_EVNUM:		// Event variables per event
+        return PARAM_NUM_EV_EVENT;
+    case PAR_NVNUM:		// Number of Node variables
+        return PARAM_NUM_NV;
+        break;
+    case PAR_MAJVER:	// Major version number
+        i=PARAM_MAJOR_VERSION;
+    case PAR_FLAGS:		// Node flags
+        return getParameterFlags();
+    case PAR_CPUID:		// Processor type
+        return CPU;
+    case PAR_BUSTYPE:	// Bus type
+        if (have(SERVICE_ID_CAN)) {
+            return PB_CAN;
+        }
+        return 0;
+    case PAR_LOAD1:		// load address, 4 bytes
+        return 0x00;
+    case PAR_LOAD2:		// load address, 4 bytes
+        return 0x08;
+    case PAR_LOAD3:		// load address, 4 bytes
+        return 0x00;
+    case PAR_LOAD4:		// load address, 4 bytes
+        return 0x00;
+    case PAR_CPUMID:	// CPU manufacturer's id as read from the chip config space, 4 bytes (note - read from cpu at runtime, so not included in checksum)
+#ifdef _PIC18
+        return 0;
+#else
+        return (*(const uint8_t*)0x3FFFFC; // Device revision byte 0
+#endif
+    case PAR_CPUMID+1:
+#ifdef _PIC18
+        return 0;
+#else
+        return (*(const uint8_t*)0x3FFFFD; // Device recision byte 1
+#endif
+    case PAR_CPUMID+2:
+        return *(const uint8_t*)0x3FFFFE;  // Device ID byte 0
+    case PAR_CPUMID+3:
+        return *(const uint8_t*)0x3FFFFF;  // Device ID byte 1
+    case PAR_CPUMAN:	// CPU manufacturer code
+        return CPUM_MICROCHIP;
+    case PAR_BETA:		// Beta revision (numeric), or 0 if release
+        return PARAM_BUILD_VERSION;
+    default:
+        return 0;
     }
 }
 
@@ -938,5 +832,13 @@ TimedResponseResult mnsTRallDiagnosticsCallback(uint8_t type, uint8_t serviceInd
     }
     // it was a request for a single diagnostic from a single service
     sendMessage6(OPC_DGN, nn.bytes.hi, nn.bytes.lo, serviceIndex+1, step+1, d->asBytes.hi, d->asBytes.lo);
+    return TIMED_RESPONSE_RESULT_NEXT;
+}
+
+TimedResponseResult  mnsTRrqnpnCallback(uint8_t type, uint8_t serviceIndex, uint8_t step) {
+    if (step >= 20) {
+        return TIMED_RESPONSE_RESULT_FINISHED;
+    }
+    sendMessage4(OPC_PARAN, nn.bytes.hi, nn.bytes.lo, step+1, getParameter(step+1));
     return TIMED_RESPONSE_RESULT_NEXT;
 }
