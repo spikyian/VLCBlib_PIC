@@ -412,7 +412,9 @@ static Processed mnsProcessMessage(Message * m) {
         case OPC_NNRSM: // reset to manufacturer defaults
             previousNN.word = nn.word;  // save the old NN
             factoryReset();
-            sendMessage2(OPC_NNREL, previousNN.bytes.hi, previousNN.bytes.lo);
+            if (previousNN.word != 0) {
+                sendMessage2(OPC_NNREL, previousNN.bytes.hi, previousNN.bytes.lo);
+            }
             return PROCESSED;
         case OPC_RDGN:  // diagnostics
             if (m->len < 5) {
@@ -498,9 +500,10 @@ static Processed mnsProcessMessage(Message * m) {
                     break;
                 default:    // NORMAL modes
                     if (newMode == MODE_SETUP) {
+                        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
                         // Do State transition from Normal to Setup
                         // release the NN
-                        sendMessage2(OPC_NNREL, nn.bytes.hi, nn.bytes.lo);
+                        //sendMessage2(OPC_NNREL, nn.bytes.hi, nn.bytes.lo);
                         // request new nn
                         sendMessage2(OPC_RQNN, nn.bytes.hi, nn.bytes.lo);
                         
@@ -652,16 +655,23 @@ static void mnsPoll(void) {
             } */
             if (APP_pbPressed() == 0) {
                 // PB has been released
+
                 if (tickTimeSince(pbTimer) > 4*ONE_SECOND) {
                     // was down for more than 4 sec
                     // return to previous mode
                     mode_state = setupModePreviousMode;
-//                    writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode_state);
                     if (mode_state == MODE_NORMAL) {
                         nn.word = previousNN.word;
                         sendMessage2(OPC_NNACK, nn.bytes.hi, nn.bytes.lo);
                         mnsDiagnostics[MNS_DIAGNOSTICS_NNCHANGE].asUint++;
                     }
+                } else if (tickTimeSince(pbTimer) > ONE_SECOND) {
+                    // a short press returns to Uninitalised
+                    if (nn.word != 0) {
+                        sendMessage2(OPC_NNREL, nn.bytes.hi, nn.bytes.lo);
+                    }
+                    nn.word = 0;
+                    mode_state = MODE_UNINITIALISED;
                 }
                 pbTimer.val = tickGet();
             }

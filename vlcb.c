@@ -214,13 +214,33 @@
  * 3. A void loop(void) function to perform any regular processing required by
  *    the application.
  * 4. Callback functions required by the VLCB library depending upon the services used:
- *      uint8_t APP_nvDefault(uint8_t index)
- *      void APP_nvValueChanged(uint8_t index, uint8_t value, uint8_t oldValue)
- *      NvValidation APP_nvValidate(uint8_t index, uint8_t value)
- *      uint8_t APP_addEvent(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8_t evVal)
- *      ValidTime APP_isSuitableTimeToWriteFlash(void)
- *      Processed APP_preProcessMessage(Message * m)
- *      Processed APP_postProcessMessage(Message * m) 
+ *    + uint8_t APP_nvDefault(uint8_t index)
+ * function to provide a default value for an NV.
+ *    + void APP_nvValueChanged(uint8_t index, uint8_t value, uint8_t oldValue) 
+ * function called when an NV has its value changed.
+ *    + NvValidation APP_nvValidate(uint8_t index, uint8_t value) 
+ * function to allow the application to validate a new NV value.
+ *    + uint8_t APP_addEvent(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8_t evVal)*
+ * function to be provided by the application and is called when an event is added. 
+ * Typically this will just call the VLCB library addEvent(uint16_t nodeNumber, 
+ * uint16_t eventNumber, uint8_t evNum, uint8_t evVal) function.
+ *    + ValidTime APP_isSuitableTimeToWriteFlash(void) 
+ * called by the library to check whether the application is currently 
+ * performing any time critical operations or whether processing can be 
+ * temporarily suspended to write to Flash memory.
+ *    + Processed APP_preProcessMessage(Message * m)
+ * called before a received message is to be processed by the VLCB library.
+ * This allows and processing provided by the library to be replaced by 
+ * application specific handling.
+ *    + Processed APP_postProcessMessage(Message * m)
+ * called after a received message to checked by the VLCB library if the library
+ * does not handle the message.
+ *    + void APP_factoryReset(void)
+ * called when the module is performing a factory reset and allows the 
+ * application to set up any non volatile memory required.
+ *    + void APP_testMode(void)
+ * called by the library if the button was held down at power up to allow the
+ * application to perform special test facilities.
  * 
  * ## Module.h
  * The developer of an application must provide a module.h which has 
@@ -570,12 +590,46 @@ static Message tmpMessage;
  */
 static TickValue timedResponseTime;
 
-/** APP externs */
+/** 
+ * Function that must be provided by the application. 
+ * Called when a message is received and before the message is processed 
+ * by the VLCB library. 
+ * Allows the application to override VLCB functionality.
+ */
 extern Processed APP_preProcessMessage(Message * m);
+/** 
+ * Function that must be provided by the application. 
+ * Called when a message is received and after the message has been checked 
+ * by the VLCB library. Called only if the message is not processed by the 
+ * VLCB library.
+ * Allows the application to handle messages, including events.
+ */
 extern Processed APP_postProcessMessage(Message * m);
+/** 
+ * Function that must be provided by the application. 
+ * Called when the module is being reset back to manufacturer defaults.
+ * Allows the application to initialise its non volatile memory.
+ */
+extern void APP_factoryReset(void);
+/**
+ * Function that must be provided by the application.
+ * Called if the push button is held down during power up. 
+ * Allows the application to provide test functionality during construction or setup.
+ */
+extern void APP_testMode(void);
 
 // forward declarations
+/**
+ * Function that must be provided by the application.
+ * Called by the VLCB library upon power up after the library has initialised itself.
+ * Allows the application to perform its own initialisation.
+ */
 void setup(void);
+/**
+ * Function that must be provided by the application.
+ * Called by the VLCB library repeatedly to allow the application to perform 
+ * processing during normal operation.
+ */
 void loop(void);
 
 
@@ -646,6 +700,8 @@ void factoryReset(void) {
     }
     // now write the version number
     writeNVM(MODE_NVM_TYPE, NV_ADDRESS, APP_NVM_VERSION);
+    
+    APP_factoryReset();
 }
 
 /**
@@ -682,6 +738,7 @@ uint8_t pbDownTimer(uint8_t timeout) {
     // determine how long the button is held for
     pbTimer.val = tickGet();
     while (APP_pbPressed()) {
+        leds_poll();
         if (tickTimeSince(pbTimer) > timeout*ONE_SECOND) {
             return 0;   // timeout
         }
@@ -700,6 +757,7 @@ uint8_t pbUpTimer(uint8_t timeout) {
     // determine how long the button is released for
     pbTimer.val = tickGet();
     while (! (APP_pbPressed())) {
+        leds_poll();
         if (tickTimeSince(pbTimer) > timeout*ONE_SECOND) {
             return 0;   // timeout
         }
@@ -729,7 +787,7 @@ static void checkPowerOnPb(void) {
             //Timeout
             return;
         } else if ((i>=2) && (i < 6)) {
-            APP_TestMode();
+            APP_testMode();
         } else if (i >= 10) {
             showStatus(STATUS_RESET_WARNING);
             // wait for pb down max 5 seconds

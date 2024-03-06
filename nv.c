@@ -94,8 +94,17 @@ static DiagnosticVal nvDiagnostics[NUM_NV_DIAGNOSTICS];
 static uint8_t nvCache[NV_NUM+1];
 #endif
 
-/* externs back into APP */
+/**
+ * Function to be provided by the application to be called by the VLCB library
+ * whenever an NV value is changed.
+ * Allows the application to perform special actions upon NV change.
+ */
 extern void APP_nvValueChanged(uint8_t index, uint8_t value, uint8_t oldValue);
+/**
+ * Function to be provided by the application to be called by the VLCB library
+ * to determine the application's default value of an NV.
+ */
+extern uint8_t APP_nvDefault(uint8_t index);
 
 /**
  * The factoryReset for the NV service. Requests the application for defaults

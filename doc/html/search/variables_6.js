@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['priorities_0',['priorities',['../vlcb_8c.html#ad9c0663c54097bc7c55d5dcbbc556424',1,'priorities():&#160;vlcb.c'],['../vlcb_8h.html#ad9c0663c54097bc7c55d5dcbbc556424',1,'priorities():&#160;vlcb.c']]]
+  ['services_0',['services',['../vlcb_8h.html#a8d4c9b659f98c72e727bca232c257bfe',1,'vlcb.h']]]
 ];

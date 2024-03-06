@@ -4,5 +4,5 @@ var searchData=
   ['vlcb_1',['VLCB',['../index.html',1,'']]],
   ['vlcb_2ec_2',['vlcb.c',['../vlcb_8c.html',1,'']]],
   ['vlcb_2eh_3',['vlcb.h',['../vlcb_8h.html',1,'']]],
-  ['vlcblib_5fpic_4',['VLCBlib_PIC',['../md__r_e_a_d_m_e.html',1,'']]]
+  ['vlcblib_5fpic_4',['VLCBlib_PIC',['../md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html',1,'']]]
 ];

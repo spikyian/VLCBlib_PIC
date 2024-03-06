@@ -9,20 +9,11 @@ var mns_8h =
     [ "MNS_DIAGNOSTICS_UPTIMEH", "mns_8h.html#af23d00b578b6331b864c76ca71926609", null ],
     [ "MNS_DIAGNOSTICS_UPTIMEL", "mns_8h.html#a5a25d4cad4cd9217654172ac7ba0aa56", null ],
     [ "NUM_MNS_DIAGNOSTICS", "mns_8h.html#acf5ee9e09a5a5dd62715e8e01c3c941e", null ],
-    [ "LedState", "mns_8h.html#a406de9d429029db9e502b1c78c73d46e", [
-      [ "OFF", "mns_8h.html#a406de9d429029db9e502b1c78c73d46eaac132f2982b98bcaa3445e535a03ff75", null ],
-      [ "ON", "mns_8h.html#a406de9d429029db9e502b1c78c73d46ea977d478dacaae531f95695750d1e9d03", null ],
-      [ "FLASH_50_1HZ", "mns_8h.html#a406de9d429029db9e502b1c78c73d46ea3ad4c0ebd7b3895426b4c3b061605695", null ],
-      [ "FLASH_50_HALF_HZ", "mns_8h.html#a406de9d429029db9e502b1c78c73d46eabf2261a6165bc5d5076eb71a4e339110", null ],
-      [ "SINGLE_FLICKER_OFF", "mns_8h.html#a406de9d429029db9e502b1c78c73d46eaea2c7361f8d6b145c46eeb0a12317936", null ],
-      [ "SINGLE_FLICKER_ON", "mns_8h.html#a406de9d429029db9e502b1c78c73d46ea07fc242ae3ca0e0250803cb883df5952", null ],
-      [ "LONG_FLICKER_OFF", "mns_8h.html#a406de9d429029db9e502b1c78c73d46ea6740d4207fa6f23ef58d46cbb40cc094", null ],
-      [ "LONG_FLICKER_ON", "mns_8h.html#a406de9d429029db9e502b1c78c73d46eaac6f894c9e7e2237b584319b30572b83", null ]
-    ] ],
     [ "updateModuleErrorStatus", "mns_8h.html#a57807e6772d17598b2608951ef49bdc6", null ],
-    [ "ledState", "mns_8h.html#a9fd4b7a0481006ac6d2cd867df0e420b", null ],
     [ "mnsDiagnostics", "mns_8h.html#ad17d3f6b2c418e3d30a2797dcf6fda1d", null ],
     [ "mnsService", "mns_8h.html#a05160624e3e355535f7bc7dae4fad5a4", null ],
-    [ "mode", "mns_8h.html#a37e90f5e3bd99fac2021fb3a326607d4", null ],
-    [ "nn", "mns_8h.html#a349d18d214352e095455e139e1606cf5", null ]
+    [ "mode_flags", "mns_8h.html#ae11d61a51505b9b853796f1ea7a7a905", null ],
+    [ "mode_state", "mns_8h.html#a57751f3ccc9df6b53064e8a8546fd665", null ],
+    [ "nn", "mns_8h.html#a349d18d214352e095455e139e1606cf5", null ],
+    [ "pbTimer", "mns_8h.html#a025b9760b10bb4bcb169fb87678451d5", null ]
 ];
