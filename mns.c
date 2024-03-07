@@ -71,9 +71,6 @@
  *                      at which the mode variable is to be stored.
  * - #define MODE_NVM_TYPE This must be set to the type of the NVM where the mode
  *                      variable is to be stored.
- * - #define NUM_LEDS     The application must set this to either 1 or 2 to 
- *                      indicate the number of LEDs on the module for indicating
- *                      operating mode.
  * - #define APP_setPortDirections() This macro must be set to configure the 
  *                      processor's pins for output to the LEDs and input from the
  *                      push button. It should also enable digital I/O if required 

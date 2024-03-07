@@ -185,7 +185,9 @@
  * 
  * ## Other information
  *    - The module mode is available using the uint8_t mode global variable.
+ *    - The module submodes are available using the uint8_t mode_flags global variable.
  *    - The module's node number is available as Word nn global variable.
+ *    - A module should include either statusLeds1.c or statusLeds2.c depending whether it has one or two LEDs.
  *    - A module may define a function to process VLCB messages before being handled by the library.
  *    - A module may also define a function to process VLCB messages if not handled by the library. 
  *   

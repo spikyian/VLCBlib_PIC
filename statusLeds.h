@@ -56,7 +56,8 @@ typedef enum {
     SINGLE_FLICKER_OFF, ///< 250ms pulse off
     SINGLE_FLICKER_ON,  ///< 250ms pulse on
     LONG_FLICKER_OFF,   ///< 500ms pulse off
-    LONG_FLICKER_ON     ///< 500ms pulse on
+    LONG_FLICKER_ON,     ///< 500ms pulse on
+    OFF_1S              /// 1 second off
 } LedState;
 
 // other externs

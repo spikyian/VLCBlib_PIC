@@ -42,16 +42,14 @@
 
 /**
  * LED handling.
- * 
- * NUM_LEDS must be specified by the application in module.h.
+ * This file supports modules with two status LEDs. These are normally green and yellow.
+ * The green LED may be labelled SLiM and the yellow LED labelled FLiM.
  * Each LED has a state here to indicate if it is on/off/flashing etc.
  * 
- * In the future you could create separate 1 LED and 2 LEDs instances of this
- * instead of using #defines.
  * This looks a bit like a service but not exposed externally.
  * 
  */
-LedState    ledState[NUM_LEDS];     // the requested state
+LedState    ledState[2];     // the requested state
 // LED identifiers
 #define GREEN_LED   0
 #define YELLOW_LED  1
@@ -59,7 +57,7 @@ LedState    ledState[NUM_LEDS];     // the requested state
 /**
  * Counters to control on/off period.
  */
-static uint8_t flashCounter[NUM_LEDS];     // update every 10ms
+static uint8_t flashCounter[2];     // update every 10ms
 static TickValue ledTimer;
 
 void leds_powerUp(void) {
@@ -135,6 +133,13 @@ void leds_poll(void) {
                 ledState[YELLOW_LED] = ON;
             }
             break;
+        case OFF_1S:
+            APP_writeLED2(0);
+            if (flashCounter[YELLOW_LED] >= 100) {     // 500ms
+                flashCounter[YELLOW_LED] = 0;
+                ledState[YELLOW_LED] = ON;
+            }
+            break;
     }
 
     switch (ledState[GREEN_LED]) {
@@ -190,6 +195,13 @@ void leds_poll(void) {
         case LONG_FLICKER_OFF:
             APP_writeLED1(0);
             if (flashCounter[GREEN_LED] >= 50) {     // 500ms
+                flashCounter[GREEN_LED] = 0;
+                ledState[GREEN_LED] = ON;
+            }
+            break;
+        case OFF_1S:
+            APP_writeLED1(0);
+            if (flashCounter[GREEN_LED] >= 100) {     // 500ms
                 flashCounter[GREEN_LED] = 0;
                 ledState[GREEN_LED] = ON;
             }
