@@ -56,6 +56,7 @@
 
 static Processed ackEventProcessMessage(Message * m);
 static Processed ackEventCheckLen(Message * m, uint8_t needed);
+static DiagnosticVal * ackGetDiagnostic(uint8_t code);
 
 /**
  * The service descriptor for the Event Acknowledge service. The application must include this
@@ -73,8 +74,19 @@ const Service eventAckService = {
     NULL,               // highIsr
     NULL,               // lowIsr
     NULL,               // Get ESD data
-    NULL                // getDiagnostic
+    ackGetDiagnostic    // getDiagnostic
 };
+
+static DiagnosticVal ackDiagnostics[NUM_ACK_DIAGNOSTICS];
+
+static void ackPowerUp(void) {
+    uint8_t i;
+    
+    // Clear the diagnostics
+    for (i=0; i< NUM_ACK_DIAGNOSTICS; i++) {
+        ackDiagnostics[i].asInt = 0;
+    }
+}
 
 /**
  *  This only provides the functionality for event acknowledge.
@@ -135,6 +147,7 @@ static Processed ackEventProcessMessage(Message * m) {
         if (ev >= 0) {
             // sent the ack
             sendMessage7(OPC_ENACK, nn.bytes.hi, nn.bytes.lo, m->opc, m->bytes[0], m->bytes[1], m->bytes[2], m->bytes[3]);
+            ackDiagnostics[ACK_DIAG_NUM_ACKED].asInt++;
         }
     }
     return NOT_PROCESSED;
@@ -148,4 +161,16 @@ static Processed ackEventProcessMessage(Message * m) {
  */
 static Processed ackEventCheckLen(Message * m, uint8_t needed) {
     return checkLen(m, needed, SERVICE_ID_EVENTACK);
+}
+
+/**
+ * Provide the means to return the diagnostic data.
+ * @param index the diagnostic index 1..NUM_CAN_DIAGNOSTSICS
+ * @return a pointer to the diagnostic data or NULL if the data isn't available
+ */
+static DiagnosticVal * ackGetDiagnostic(uint8_t index) {
+    if ((index<1) || (index>NUM_ACK_DIAGNOSTICS)) {
+        return NULL;
+    }
+    return &(ackDiagnostics[index-1]);
 }

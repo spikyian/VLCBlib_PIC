@@ -60,4 +60,7 @@
 
 extern const Service eventAckService;
 
+#define NUM_ACK_DIAGNOSTICS 1      ///< The number of diagnostic values associated with this service
+#define ACK_DIAG_NUM_ACKED          0x00 ///< Number of teaches counter
+
 #endif
