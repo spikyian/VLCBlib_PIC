@@ -82,6 +82,10 @@ extern "C" {
     #define CPU P18F26K80
 #endif
 
+#if defined(_18F27Q83)
+    #define CPU P18F27Q83
+#endif
+
 #if defined(__18F2580)
     #define CPU P18F2580
 #endif

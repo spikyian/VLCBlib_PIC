@@ -57,6 +57,7 @@
 /** PIN configs are used to map between the channel number and the physical
  * PIC ports.
  */
+#if defined(_18F66K80_FAMILY_)
 const Config configs[] = {
     //PIN, PORT, PORT#, AN#
     {11, 'C', 0, 0xFF},   //0
@@ -77,6 +78,28 @@ const Config configs[] = {
     {7,  'A', 5, 4}       //15
 };
 #endif
+#if defined(_18FXXQ83_FAMILY_)
+const Config configs[] = {
+    //PIN, PORT, PORT#, AN#
+    {11, 'C', 0, 0xFF},   //0
+    {12, 'C', 1, 0xFF},   //1
+    {13, 'C', 2, 0xFF},   //2
+    {14, 'C', 3, 0xFF},   //3
+    {15, 'C', 4, 0xFF},   //4
+    {16, 'C', 5, 0xFF},   //5
+    {17, 'C', 6, 0xFF},   //6
+    {18, 'C', 7, 0xFF},   //7
+    {21, 'B', 0, 10},     //8
+    {22, 'B', 1, 8},      //9
+    {25, 'B', 4, 9},      //10
+    {26, 'B', 5, 0xFF},   //11
+    {3,  'A', 1, 1},      //12
+    {2,  'A', 0, 0},      //13
+    {5,  'A', 3, 3},      //14
+    {7,  'A', 5, 4}       //15
+};
+#endif
+#endif
 
 /**
  * Set the specified channel to the type as specified by mode.
@@ -84,23 +107,53 @@ const Config configs[] = {
  * @param mode the type of pin
  */
 void pinMode(uint8_t channel, PinMode mode) {
-    if (channel < sizeof(configs)/sizeof(Config)) {
+    if (channel < NUM_IO) {
         // set digital/analogue first
         switch (mode) {
             case INPUT:
             case OUTPUT:
+#if defined(_18F66K80_FAMILY_)
                 if (configs[channel].an < 8) {
                     ANCON0 &= ~(1 << configs[channel].an);
                 } else if (configs[channel].an < 16) {
                     ANCON1 &= ~(1 << (configs[channel].an - 8));
                 }
+#endif
+#if defined(_18FXXQ83_FAMILY_)
+                switch(configs[channel].port) {
+                    case 'A':
+                        ANSELA &= ~(1 << configs[channel].no);
+                        break;
+                    case 'B':
+                        ANSELB &= ~(1 << configs[channel].no);
+                        break;
+                    case 'C':
+                        ANSELC &= ~(1 << configs[channel].no);
+                        break;
+                }
+#endif
                 break;
             case ANALOGUE:
+#if defined(_18F66K80_FAMILY_)
                 if (configs[channel].an < 8) {
                     ANCON0 |= (1 << configs[channel].an);
                 } else if (configs[channel].an < 16) {
                     ANCON1 |= (1 << (configs[channel].an - 8));
                 }
+#endif
+#if defined(_18FXXQ83_FAMILY_)
+                                switch(configs[channel].port) {
+                    case 'A':
+                        ANSELA |= (1 << configs[channel].no);
+                        break;
+                    case 'B':
+                        ANSELB |= (1 << configs[channel].no);
+                        break;
+                    case 'C':
+                        ANSELC |= (1 << configs[channel].no);
+                        break;
+                }
+#endif
                 break;
         }
         // now set the digital port direction
@@ -154,7 +207,7 @@ void pinMode(uint8_t channel, PinMode mode) {
  * @param value the value to be written to the channel
  */
 void digitalWrite(uint8_t channel, uint8_t value) {
-    if (channel < sizeof(configs)/sizeof(Config)) {
+    if (channel < NUM_IO) {
         // now set the digital port value
         switch(configs[channel].port) {
             case 'A':
@@ -191,7 +244,7 @@ void digitalWrite(uint8_t channel, uint8_t value) {
  * @return the digital value
  */
 uint8_t digitalRead(uint8_t channel) {
-    if (channel < sizeof(configs)/sizeof(Config)) {
+    if (channel < NUM_IO) {
         // now get the digital port value
         switch(configs[channel].port) {
             case 'A':

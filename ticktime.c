@@ -113,8 +113,10 @@ void initTicker(uint8_t priority) {
     for (i=clkMHz;i>0;i>>=1) // Work out timer prescaler value from clock MHz
         divider++;
 
-#if defined(__18CXX) || defined (__XC8)
-    TMR_CON = (uint8_t)(0b00000000 | divider);     // Enable internal clock, prescaler on and set prescaler value
+#if defined(_18F66K80_FAMILY_)
+    TMR_PS = (uint8_t)(0b00000000 | divider);     // Enable clock prescaler on and set prescaler value
+    TMR_MODE = 0;       // 16 bit mode
+    TMR_CS = 0;         // Fosc clock source
     TMR_H = 0;          // clear the H buffer
     TMR_L = 0;          // write the L counter and load the H counter from buffer
     TMR_IP = priority;  // set interrupt priority
@@ -124,6 +126,20 @@ void initTicker(uint8_t priority) {
 
     timerExtension1 = 0;
     timerExtension2 = 0;
+#elif defined(_18FXXQ83_FAMILY_)
+    TMR_PS = (uint8_t)(0b00000000 | (divider+1));     // Enable internal clock, prescaler on and set prescaler value
+    TMR_MODE = 1;       // 16 bit mode
+    TMR_CS = 2;         // Fosc/4 clock source
+    TMR_H = 0;          // clear the H buffer
+    TMR_L = 0;          // write the L counter and load the H counter from buffer
+    TMR_IP = (__bit)priority;  // set interrupt priority
+    TMR_IF = 0;         // clear the flag
+    TMR_IE = 1;         // enable interrupts
+    TMR_ON = 1;         // start it running
+
+    timerExtension1 = 0;
+    timerExtension2 = 0;
+
 #elif defined(__dsPIC30F__) || defined(__dsPIC33F__) || defined(__PIC24F__) || defined(__PIC24FK__) || defined(__PIC24H__)
     T2CON = 0b0000000000001000 | CLOCK_DIVIDER_SETTING;
     T2CONbits.TON = 1;
@@ -134,7 +150,7 @@ void initTicker(uint8_t priority) {
     WritePeriod3(0xFFFF);
     OpenTimer2((T2_ON|T2_32BIT_MODE_ON|CLOCK_DIVIDER_SETTING),0xFFFFFFFF);     
 #else
-    #error " timer implementation required for stack usage."
+    #error "Invalid Processor defines in ticktime.c"
 #endif
 }
 
@@ -243,3 +259,23 @@ uint32_t tickGet(void) {
     return currentTime.val;
 } // tickGet
 
+#if defined(_18FXXQ83_FAMILY_)
+/**
+ * The ticktime interrupt service routine. Handles the tickTime overflow to update
+ * the extension bytes.
+ */
+void __interrupt(irq(TMR0), base(IVT_BASE)) TMR0_ISR(void)
+{
+    // Tick Timer interrupt
+    //check to see if the symbol timer overflowed
+    if(TMR_IF) {
+        /* there was a timer overflow */
+        TMR_IF = 0;
+        timerExtension1++;
+        if(timerExtension1 == 0) {
+            timerExtension2++;
+        }
+    }
+    return;
+}
+#endif

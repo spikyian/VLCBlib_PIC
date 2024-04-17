@@ -34,7 +34,7 @@
  */
 #define _VLCB_H_
 
-#include "vlcbdefs_enum.h"
+#include "vlcbdefs_enums.h"
 #include "romops.h"
 
 /**
@@ -262,10 +262,10 @@ typedef struct Service {
     void (* powerUp)(void);         // function called upon module power up
     Processed (* processMessage)(Message * m);    // process and handle any VLCB messages
     void (* poll)(void);    // called regularly 
+#if defined(_18F66K80_FAMILY_)
     void (* highIsr)(void); // handle any service specific high priority  interrupt service routine
     void (* lowIsr)(void);  // handle any service specific high priority  interrupt service routine
-    //void modes();
-    //void statusCodes();
+#endif
     uint8_t (* getESDdata)(uint8_t id);
     DiagnosticVal * (* getDiagnostic)(uint8_t index);   // pointer to function returning DiagnosticVal*
 } Service;

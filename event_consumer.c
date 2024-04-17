@@ -73,8 +73,10 @@ const Service eventConsumerService = {
     consumerPowerUp,               // powerUp
     consumerProcessMessage,               // processMessage
     NULL,               // poll
+#if defined(_18F66K80_FAMILY_)
     NULL,               // highIsr
     NULL,               // lowIsr
+#endif
     NULL,               // Get ESD data
     consumerGetDiagnostic                // getDiagnostic
 };

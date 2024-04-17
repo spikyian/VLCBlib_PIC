@@ -34,13 +34,19 @@
  */
 #define _HARDWARE_H_
 
-#ifdef _PIC18
+
 /**
  *  How to determine whether interrupts are enabled
  */
+#if defined(_18F66K80_FAMILY_)
 #define geti()  (INTCONbits.GIEH)
 #define bothEi()    {INTCONbits.GIEH = 1; INTCONbits.GIEL = 1;}
 #define bothDi()    {INTCONbits.GIEH = 0; INTCONbits.GIEL = 0;}
+#endif
+#if defined(_18FXXQ83_FAMILY_)
+#define geti()  (INTCON0bits.GIE)
+#define bothEi()    {INTCON0bits.GIE = 1;}
+#define bothDi()    {INTCON0bits.GIE = 0;}
 #endif
 
 #endif

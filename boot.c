@@ -79,8 +79,10 @@ const Service bootService = {
     NULL,               // powerUp
     bootProcessMessage, // processMessage
     NULL,               // poll
+#if defined(_18F66K80_FAMILY_)
     NULL,               // highIsr
     NULL,               // lowIsr
+#endif
     NULL,               // ESD data
     NULL                // getDiagnostic
 };

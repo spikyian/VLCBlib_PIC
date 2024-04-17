@@ -66,8 +66,10 @@ const Service eventCoeService = {
     NULL,               // powerUp
     NULL,               // processMessage
     NULL,               // poll
+#if defined(_18F66K80_FAMILY_)
     NULL,               // highIsr
     NULL,               // lowIsr
+#endif
     NULL,               // Get ESD data
     NULL                // getDiagnostic
 };

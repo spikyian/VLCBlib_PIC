@@ -40,6 +40,22 @@
  * @author Major rewrite  Ian Hogg  
  * @date Dec 2022
  * 
+ * EEPROM read and write are straightforward since the PIC offers byte read and 
+ * write access to the EEPROM so these routines just provide the necessary functionality
+ * and register access and write unlocking.
+ * 
+ * Flash read is also done using the PIC reading of a single byte of flash.
+ * 
+ * Flashing writing is complicated due to the PIC only supporting page writes and
+ * bits can only be cleared. If any bit needs to be set then the entire page needs 
+ * to be erased. To do this a RAM buffer is used to hold the current page's contents.
+ * Writing a byte to Flash involves checking if the current page in the buffer 
+ * is the correct page for the byte to be written, if it is not then the current page 
+ * may need to be flushed out before the correct page is read in and the byte modified.
+ * To flush the page then the buffer needs to be checked to see if it is dirty (been modified).
+ * If the buffer is dirty and bits have been cleared then the page first needs to 
+ * be erased before the whole page is is written.
+ * 
  */
 
 /**
@@ -60,9 +76,65 @@
 #include "romops.h"
 #include "mns.h"
 
-#ifdef _PIC18
-#define BLOCK_SIZE _FLASH_ERASE_SIZE
+#if defined(_18F66K80_FAMILY_)
+#define FLASH_PAGE_SIZE _FLASH_ERASE_SIZE
 #endif
+
+#if defined(_18FXXQ83_FAMILY_)
+
+/**
+ * Contains the size of a Flash page in bytes.
+ */
+#define FLASH_PAGE_SIZE          (256U)
+
+/**
+ * Contains the total size of Flash in bytes.
+ */
+#define PROGMEM_SIZE               (0x020000U)
+
+/**
+ * @ingroup nvm_driver
+ * @def BUFFER_RAM_START_ADDRESS
+ * Contains the starting address of the buffer RAM.
+ */
+#define BUFFER_RAM_START_ADDRESS   (0x3700U)
+
+/**
+ * @ingroup nvm_driver
+ * @def EEPROM_START_ADDRESS
+ * Contains the starting address of EEPROM.
+ */
+#define EEPROM_START_ADDRESS       (0x380000U)
+
+/**
+ * @ingroup nvm_driver
+ * @def EEPROM_SIZE
+ * Contains the size of EEPROM in bytes.
+ */
+#define EEPROM_SIZE                (1024U)
+#endif
+
+/**
+ * @ingroup nvm_driver
+ * @brief Data type for the Flash data.
+ */
+typedef uint8_t flash_data_t;
+/**
+ * @ingroup nvm_driver
+ * @brief Data type for the Flash address.
+ */
+typedef uint24_t flash_address_t;
+
+/**
+ * @ingroup nvm_driver
+ * @brief Data type for the EEPROM data.
+ */
+typedef uint8_t eeprom_data_t;
+/**
+ * @ingroup nvm_driver
+ * @brief Data type for the EEPROM address.
+ */
+typedef uint24_t eeprom_address_t;
 
 // Structure for tracking Flash operations
 static union
@@ -73,12 +145,17 @@ static union
         uint8_t eraseNeeded:1;  //flag if long write with block erase
     };
 } flashFlags;
-static uint8_t     flashBuffer[BLOCK_SIZE];    // Assumes that Erase and Write are the same size
-static uint24_t    flashBlock;     //address of current 64 byte flash block
 
-#define BLOCK(A)    (A&(uint24_t)(~(BLOCK_SIZE-1)))
-#define OFFSET(A)   (A&(BLOCK_SIZE-1))
+#if defined(_18F66K80_FAMILY_)
+static flash_data_t       flashBuffer[FLASH_PAGE_SIZE];    // Assumes that Erase and Write are the same size
+#endif
+#if defined(_18FXXQ83_FAMILY_)
+static flash_data_t       * flashBuffer = (flash_data_t *)BUFFER_RAM_START_ADDRESS;
+#endif
+static flash_address_t    flashBlock;     //address of current flash block
 
+#define BLOCK(A)    (A&(flash_address_t)(~(FLASH_PAGE_SIZE-1)))
+#define OFFSET(A)   (A&(FLASH_PAGE_SIZE-1))
 
 
 /**
@@ -86,7 +163,8 @@ static uint24_t    flashBlock;     //address of current 64 byte flash block
  * @param index the address
  * @return the value
  */
-int16_t read_eeprom(uint16_t index) {
+eeprom_data_t EEPROM_Read(eeprom_address_t index) {
+#if defined (_18F66K80_FAMILY_)
     // do read of EEPROM
     while (EECON1bits.WR)       // Errata says this is required
         ;
@@ -102,6 +180,26 @@ int16_t read_eeprom(uint16_t index) {
     asm("NOP");                 /* data available after a NOP */
 
     return EEDATA;
+#endif
+#if defined(_18FXXQ83_FAMILY_)
+    // ready?
+    while (NVMCON0bits.GO)
+        ;
+    //Load NVMADR with the desired byte address
+    NVMADRU = 0x38;
+    NVMADRH = (uint8_t) (index >> 8);
+    NVMADRL = (uint8_t) index;
+
+    //Set the byte read command
+    NVMCON1bits.NVMCMD = 0x00;
+    
+    //Start byte read
+    NVMCON0bits.GO = 1;
+    while (NVMCON0bits.GO)
+        ;
+
+    return NVMDATL;
+#endif
 }
 
 /**
@@ -110,11 +208,11 @@ int16_t read_eeprom(uint16_t index) {
  * @param value the value to be written
  * @return 0 for success or error otherwise
  */
-uint8_t write_eeprom(uint16_t index, uint8_t value) {
+uint8_t EEPROM_Write(eeprom_address_t index, eeprom_data_t value) {
     uint8_t interruptEnabled;
     interruptEnabled = geti(); // store current global interrupt state
     do {
-
+#if defined (_18F66K80_FAMILY_)
         SET_EADDRH((index >> 8)&0xFF);      // High byte of address to write
         EEADR = index & 0xFF;       	/* Low byte of Data Memory Address to write */
         EEDATA = value;
@@ -136,32 +234,77 @@ uint8_t write_eeprom(uint16_t index, uint8_t value) {
             bothEi();                  
         }
         EECON1bits.WREN = 0;		/* Disable writes */
-        if (read_eeprom(index) == value) {
-            // it is ok
+#endif
+#if defined(_18FXXQ83_FAMILY_)
+        // ready?
+        while (NVMCON0bits.GO)
+            ;
+        //Load NVMADR with the target address of the byte
+        NVMADRU = 0x38;
+        NVMADRH = (uint8_t) (index >> 8);
+        NVMADRL = (uint8_t) index;
+
+        //Load NVMDAT with the desired value
+        NVMDATL = value;
+
+        //Set the byte write command
+        NVMCON1bits.NVMCMD = 0x03;
+
+        //Disable global interrupt
+        bothDi();
+
+        //Perform the unlock sequence 
+        NVMLOCK = 0x55;
+        NVMLOCK = 0xAA;
+        
+        //Start byte write
+        NVMCON0bits.GO = 1;
+
+        if (interruptEnabled) {     // Only enable interrupts if they were enabled at function entry
+            /* Re-enable Interrupts */
+            bothEi();                  
+        }
+
+        //Clear the NVM Command
+        NVMCON1bits.NVMCMD = 0x00;
+#endif
+        // check that it worked
+        if (EEPROM_Read(index) == value) {
             break;
         }
         mnsDiagnostics[MNS_DIAGNOSTICS_MEMERRS].asUint++;
         updateModuleErrorStatus();
     } while (1);
-    
     return GRSP_OK;
 }
+
+
 
 /**
  * Read Flash. 
  * @param index the address
  * @return the value
  */
-int16_t read_flash(uint24_t index) {
+flash_data_t FLASH_Read(flash_address_t address) {
     // do read of Flash
-    if (BLOCK(index) == flashBlock) {
+    if (BLOCK(address) == flashBlock) {
         // if the block is the current one then get it directly
-        return flashBuffer[OFFSET(index)];
+        return flashBuffer[OFFSET(address)];
     } else {
         // we'll read single byte from flash
-        TBLPTR = index;
+#if defined (_18F66K80_FAMILY_)
+        TBLPTR = address;
         TBLPTRU = 0;
         asm("TBLRD");
+#endif
+#if defined (_18FXXQ83_FAMILY_)
+        //Load table pointer with the target address of the byte  
+        TBLPTRU = (uint8_t) (address >> 16);
+        TBLPTRH = (uint8_t) (address >> 8);
+        TBLPTRL = (uint8_t) address;
+        //Execute table read 
+        asm("TBLRD*");
+#endif
         return TABLAT;
     }
 }
@@ -178,6 +321,7 @@ void eraseFlashBlock(void) {
     while (! APP_isSuitableTimeToWriteFlash());
     
     interruptEnabled = geti(); // store current global interrupt state
+#if defined (_18F66K80_FAMILY_)
     TBLPTR = flashBlock;
     TBLPTRU = 0;
     EECON1bits.EEPGD = 1;   // 1=Program memory, 0=EEPROM
@@ -190,11 +334,30 @@ void eraseFlashBlock(void) {
     EECON1bits.WR = 1;      // start erasing
     while(EECON1bits.WR)    // wait to finish
         ;
+    EECON1bits.WREN = 0;    // disable write to memory
+#endif
+#if defined (_18FXXQ83_FAMILY_)
+    // ready?
+    while (NVMCON0bits.GO)
+        ;
+    //Load NVMADR with the any address in the memory page. NVMADRL is ignored
+    NVMADRU = (uint8_t) (flashBlock >> 16);
+    NVMADRH = (uint8_t) (flashBlock >> 8);
+
+    NVMCON1bits.NVMCMD = 0x06;      //Set the page erase command
+    bothDi();                       // disable all interrupts
+    //Perform the unlock sequence 
+    NVMLOCK = 0x55;
+    NVMLOCK = 0xAA;
+    NVMCON0bits.GO = 1;             //Start byte write
+    NVMCON1bits.NVMCMD = 0x00;      //Clear the NVM Command
+#endif
     if (interruptEnabled) {     // Only enable interrupts if they were enabled at function entry
         bothEi();                   /* Enable Interrupts */
     }
-    EECON1bits.WREN = 0;    // disable write to memory
+    
 }
+
 
 /**
  * Flush the current flash buffer out to flash.
@@ -202,8 +365,13 @@ void eraseFlashBlock(void) {
  */
 void flushFlashBlock(void) {
     uint8_t interruptEnabled;
+#if defined (_18F66K80_FAMILY_)
     TBLPTR = flashBlock; //force row boundary
     TBLPTRU = 0;
+#endif
+#if defined (_18FXXQ83_FAMILY_)
+    
+#endif
     if (! flashFlags.writeNeeded) return;
     if (flashFlags.eraseNeeded) {
         eraseFlashBlock();
@@ -211,7 +379,8 @@ void flushFlashBlock(void) {
     
     interruptEnabled = geti(); // store current global interrupt state
     bothDi();     // disable all interrupts ERRATA says this is needed before TBLWT
-    for (unsigned char i=0; i<BLOCK_SIZE; i++) {
+#if defined (_18F66K80_FAMILY_)
+    for (unsigned char i=0; i<FLASH_PAGE_SIZE; i++) {
         TABLAT = flashBuffer[i];
         asm("TBLWT*+");
     }
@@ -231,10 +400,28 @@ void flushFlashBlock(void) {
     EECON2 = 0x55;
     EECON2 = 0xAA;
     EECON1bits.WR = 1;
+    EECON1bits.WREN = 0;
+#endif
+#if defined(_18FXXQ83_FAMILY_)
+    // ready?
+    while (NVMCON0bits.GO)
+        ;
+    //Load NVMADR with the start address of the memory page
+    NVMADRU = (uint8_t) (flashBlock >> 16);
+    NVMADRH = (uint8_t) (flashBlock >> 8);
+    NVMADRL = (uint8_t) flashBlock;
+
+    NVMCON1bits.NVMCMD = 0x05;      //Set the page write command
+    //Perform the unlock sequence 
+    NVMLOCK = 0x55;
+    NVMLOCK = 0xAA;
+    NVMCON0bits.GO = 1;             //Start byte write
+    NVMCON1bits.NVMCMD = 0x00;      //Clear the NVM Command
+
+#endif
     if (interruptEnabled) {     // Only enable interrupts if they were enabled at function entry
         bothEi();                   /* Enable Interrupts */
     }
-    EECON1bits.WREN = 0;
     flashFlags.asByte = 0;  // no erase, no write
 }
 
@@ -242,6 +429,7 @@ void flushFlashBlock(void) {
  * Load an entire block of flash into the flash buffer.
  */
 void loadFlashBlock(void) {
+#if defined (_18F66K80_FAMILY_)
     EECON1=0X80;    // access to flash
     TBLPTR = flashBlock;
     TBLPTRU = 0;
@@ -252,6 +440,19 @@ void loadFlashBlock(void) {
     }
     TBLPTR = flashBlock;
     TBLPTRU = 0;
+#endif
+#if defined(_18FXXQ83_FAMILY_)
+    // ready?
+    while (NVMCON0bits.GO)
+        ;
+    //Load NVMADR with the starting address of the memory page
+    NVMADRU = (uint8_t) (flashBlock >> 16);
+    NVMADRH = (uint8_t) (flashBlock >> 8);
+    NVMADRL = (uint8_t) flashBlock;
+    NVMCON1bits.NVMCMD = 0x02;      //Set the page read command
+    NVMCON0bits.GO = 1;             //Start page read
+    NVMCON1bits.NVMCMD = 0x00;      //Clear the NVM Command
+#endif
     flashFlags.asByte = 0; // no erase, no write needed
 }
    
@@ -263,7 +464,7 @@ void loadFlashBlock(void) {
  * @param value the value to be written
  * @return 0 for success or error otherwise
  */
-uint8_t write_flash(uint24_t index, uint8_t value) {
+uint8_t FLASH_Write(flash_address_t index, flash_data_t value) {
     uint8_t oldValue;
     
     while (APP_isSuitableTimeToWriteFlash() == BAD_TIME)  // block awaiting a good time
@@ -312,9 +513,9 @@ uint8_t write_flash(uint24_t index, uint8_t value) {
 uint8_t writeNVM(NVMtype type, uint24_t index, uint8_t value) {
     switch(type) {
         case EEPROM_NVM_TYPE:
-            return write_eeprom((uint16_t)index, value);
+            return EEPROM_Write(index, value);
         case FLASH_NVM_TYPE:
-            return write_flash(index, value);
+            return FLASH_Write(index, value);
         default:
             return GRSP_UNKNOWN_NVM_TYPE;
     }
@@ -329,9 +530,9 @@ uint8_t writeNVM(NVMtype type, uint24_t index, uint8_t value) {
 int16_t readNVM(NVMtype type, uint24_t index) {
     switch(type) {
         case EEPROM_NVM_TYPE:
-            return read_eeprom((uint16_t)index);
+            return EEPROM_Read((uint16_t)index);
         case FLASH_NVM_TYPE:
-            return read_flash(index);
+            return FLASH_Read(index);
         default:
             return -GRSP_UNKNOWN_NVM_TYPE;
     }
@@ -345,6 +546,9 @@ void initRomOps(void) {
     flashBlock = 0x0000; // invalid but as long a write isn't needed it will be 
                          // ok. Next write will always be to a different block.
     TBLPTRU = 0;
+#if defined(_18FXXQ83_FAMILY_)
+    NVMCON1bits.WRERR = 0;
+#endif
 }
 
     

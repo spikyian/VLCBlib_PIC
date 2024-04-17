@@ -98,16 +98,17 @@
  * 
  */
 #include <xc.h>
-#include "vlcbdefs_enum.h"
+
 #include "vlcb.h"
 #include "module.h"
+#include "devincs.h"
+#include "vlcbdefs_enums.h"
 #include "mns.h"
-
 #include "ticktime.h"
 #include "romops.h"
-#include "devincs.h"
 #include "timedResponse.h"
 #include "statusDisplay.h"
+#include "statusLeds.h"
 
 #define MNS_VERSION 1
 
@@ -138,8 +139,10 @@ const Service mnsService = {
     mnsPowerUp,             // powerUp
     mnsProcessMessage,      // processMessage
     mnsPoll,                // poll
+#if defined(_18F66K80_FAMILY_)
     NULL,                   // highIsr
     mnsLowIsr,              // lowIsr
+#endif
     NULL,                   // get ESD data
     mnsGetDiagnostic        // getDiagnostic
 };
@@ -485,11 +488,11 @@ static Processed mnsProcessMessage(Message * m) {
                     if (newMode == MODE_SETUP) {
                         mode_state = MODE_SETUP;
                         setupModePreviousMode = MODE_UNINITIALISED;
+                        sendMessage5(OPC_GRSP, previousNN.bytes.hi, previousNN.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
                         //start the request for NN
                         sendMessage2(OPC_RQNN, nn.bytes.hi, nn.bytes.lo);
                         // Update the LEDs
                         setLEDsByMode();
-                        sendMessage5(OPC_GRSP, previousNN.bytes.hi, previousNN.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
                         return PROCESSED;
                     }
                     break;
@@ -499,8 +502,6 @@ static Processed mnsProcessMessage(Message * m) {
                     if (newMode == MODE_SETUP) {
                         sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
                         // Do State transition from Normal to Setup
-                        // release the NN
-                        //sendMessage2(OPC_NNREL, nn.bytes.hi, nn.bytes.lo);
                         // request new nn
                         sendMessage2(OPC_RQNN, nn.bytes.hi, nn.bytes.lo);
                         
@@ -512,7 +513,7 @@ static Processed mnsProcessMessage(Message * m) {
                         setupModePreviousMode = MODE_NORMAL;
                         // Update the LEDs
                         setLEDsByMode();
-//                        writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode_state);
+                        // Don't save SETUP to NVM
                         return PROCESSED;
                     } 
                     break;
@@ -520,24 +521,17 @@ static Processed mnsProcessMessage(Message * m) {
             // Now do heartbeat change
             if (newMode == MODE_HEARTBEAT_ON) {
                 mode_flags |= FLAG_MODE_HEARTBEAT;
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
+                return PROCESSED;
             } else if (newMode == MODE_HEARTBEAT_OFF) {
                 mode_flags &= ~FLAG_MODE_HEARTBEAT;
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
+                return PROCESSED;
             }
             return NOT_PROCESSED;
-/*        case OPC_SQU:   // squelch
-            // TO DO     Handle Squelch - no longer required
-            if (m->len < 4) {
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVRD, SERVICE_ID_MNS, CMDERR_INV_CMD);
-                return PROCESSED;
-            }
-            if (m->bytes[2] >100) {
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVRD, SERVICE_ID_MNS, CMDERR_INV_PARAM_IDX);
-                return PROCESSED;
-            }
-            return PROCESSED; */
         case OPC_NNRST: // reset CPU
             RESET();
-            return PROCESSED;
+            return PROCESSED;   // should never get here
         default:
             break;
     }
@@ -694,6 +688,7 @@ static void mnsPoll(void) {
     }
 }
 
+#if defined(_18F66K80_FAMILY_)
 /**
  * The MNS interrupt service routine. Handles the tickTime overflow to update
  * the extension bytes.
@@ -701,8 +696,7 @@ static void mnsPoll(void) {
 static void mnsLowIsr(void) {
     // Tick Timer interrupt
     //check to see if the symbol timer overflowed
-    if(TMR_IF)
-    {
+    if(TMR_IF) {
         /* there was a timer overflow */
         TMR_IF = 0;
         timerExtension1++;
@@ -712,6 +706,7 @@ static void mnsLowIsr(void) {
     }
     return;
 }
+#endif
 
 /**
  * Get the MNS diagnostic values.

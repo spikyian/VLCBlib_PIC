@@ -76,8 +76,10 @@ const Service eventProducerService = {
     NULL,               // powerUp
     producerProcessMessage,  // processMessage
     NULL,               // poll
+#if defined(_18F66K80_FAMILY_)
     NULL,               // highIsr
     NULL,               // lowIsr
+#endif
     NULL,               // Get ESD data
     producerGetDiagnostic                // getDiagnostic
 };

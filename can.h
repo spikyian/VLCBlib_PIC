@@ -94,7 +94,7 @@ extern const Transport canTransport;
 #define CAN_DIAG_RX_MESSAGES        0x08 ///< RX message counter 
 #define CAN_DIAG_ERROR_FRAMES_DET   0x09 ///< CAN error frames detected 
 #define CAN_DIAG_ERROR_FRAMES_GEN   0x0A ///< CAN error frames generated (both active and passive ?)
-#define CAN_DIAG_LOST_ARRBITARTAION 0x0B ///< Number of times CAN arbitration was lost
+#define CAN_DIAG_LOST_ARBITRATION   0x0B ///< Number of times CAN arbitration was lost
 #define CAN_DIAG_CANID_ENUMS        0x0C ///< number of CANID enumerations 
 #define CAN_DIAG_CANID_CONFLICTS    0x0D ///< number of CANID conflicts detected
 #define CAN_DIAG_CANID_CHANGES      0x0E ///< Number of CANID changes
@@ -117,7 +117,7 @@ typedef enum CanidResult {
     CANID_OK
 } CanidResult;
 
-#ifdef _PIC18
+#if defined(_18F66K80_FAMILY_)
     #define TXBnIE      PIE5bits.TXBnIE
     #define TXBnIF      PIR5bits.TXBnIF
     #define ERRIE       PIE5bits.ERRIE
@@ -127,7 +127,8 @@ typedef enum CanidResult {
     #define RXBnIF      PIR5bits.RXBnIF
     #define IRXIF       PIR5bits.IRXIF
     #define RXBnOVFL    COMSTATbits.RXB1OVFL
-#else
+#endif
+#if defined(_32_FAMILY_)
     #define TXBnIE      PIE3bits.TXBnIE
     #define TXBnIF      PIR3bits.TXBnIF
     #define ERRIE       PIE3bits.ERRIE
@@ -137,5 +138,57 @@ typedef enum CanidResult {
     #define RXBnIF      PIR3bits.RXBnIF
     #define IRXIF       PIR3bits.IRXIF
     #define RXBnOVFL    COMSTATbits.RXBnOVFL
+#endif
+
+/*******************************
+ * These copied from MCC generated code
+ ********************************/
+#if defined(_18FXXQ83_FAMILY_)
+/**
+ @ingroup  can_driver
+ @enum     CAN_OP_MODES
+ @brief    Defines the CAN operation modes that are available for the module to use.
+*/
+enum CAN_OP_MODES
+{
+    CAN_NORMAL_FD_MODE = 0x0,           /**< CAN FD Normal Operation Mode (Supported only in CAN FD mode) */
+    CAN_DISABLE_MODE = 0x1,             /**< CAN Disable Operation Mode */               
+    CAN_INTERNAL_LOOPBACK_MODE = 0x2,   /**< CAN Internal Loopback Operation Mode */
+    CAN_LISTEN_ONLY_MODE = 0x3,         /**< CAN Listen only Operation Mode */
+    CAN_CONFIGURATION_MODE = 0x4,       /**< CAN Configuration Operation Mode */
+    CAN_EXTERNAL_LOOPBACK_MODE = 0x5,   /**< CAN External Loopback Operation Mode */
+    CAN_NORMAL_2_0_MODE = 0x6,          /**< CAN 2.0 Operation Mode */
+    CAN_RESTRICTED_OPERATION_MODE =0x7  /**< CAN Restricted Operation Mode */
+}; 
+
+/**
+ @ingroup  can_driver
+ @enum     CAN_OP_MODE_STATUS
+ @brief    Defines the return status of CAN operation mode set API.
+*/
+enum CAN_OP_MODE_STATUS
+{
+    CAN_OP_MODE_REQUEST_SUCCESS,     /**< The requested operation mode set successfully */
+    CAN_OP_MODE_REQUEST_FAIL,        /**< The requested operation mode set failure */
+    CAN_OP_MODE_SYS_ERROR_OCCURED    /**< The system error occurred while setting operation mode. */
+};
+
+/**
+ * @ingroup can_driver
+ * @brief Sets the CAN1 Operation mode.
+ * @pre CAN1_Initialize() function is already called.
+ * @param [in] requestMode - CAN1 Operation mode as described in CAN_OP_MODES.
+ * @return Status of request to set the CAN1 Operation mode as described in CAN_OP_MODE_STATUS.
+ */
+enum CAN_OP_MODE_STATUS CAN1_OperationModeSet(const enum CAN_OP_MODES requestMode);
+
+/**
+ * @ingroup can_driver
+ * @brief Gets the CAN1 Operation mode.
+ * @pre CAN1_Initialize() function is already called.
+ * @param None.
+ * @return The present CAN1 Operation mode as described in CAN_OP_MODES.
+ */
+enum CAN_OP_MODES CAN1_OperationModeGet(void);
 #endif
 #endif

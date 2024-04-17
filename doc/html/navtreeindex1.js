@@ -1,5 +1,7 @@
 var NAVTREEINDEX1 =
 {
+"struct_event_table.html":[2,0,5],
+"struct_message.html":[2,0,7],
 "struct_queue.html":[2,0,8],
 "struct_service.html":[2,0,9],
 "struct_transport.html":[2,0,10],

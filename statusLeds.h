@@ -1,4 +1,4 @@
-#ifndef _LEDS2_H_
+#ifndef _STATUSLEDS_H_
 /**
  * @copyright Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
  */
@@ -38,7 +38,7 @@
  * @date Dec 2022
  * 
  */ 
-#define _LEDS2_H_
+#define _STATUSLEDS_H_
 #include "vlcb.h"
 #include "ticktime.h"
 #include "module.h"

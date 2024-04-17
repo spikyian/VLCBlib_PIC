@@ -38,7 +38,7 @@
  * @date Dec 2022
  * 
  */ 
-
+#if defined(_18F66K80_FAMILY_)
 /**
  * @file
  * Implementation of the VLCB CAN service. 
@@ -86,6 +86,7 @@ static void canPowerUp(void);
 static void canPoll(void);
 static Processed canProcessMessage(Message * m);
 static void canIsr(void);
+static uint8_t canEsdData(uint8_t id);
 static DiagnosticVal * canGetDiagnostic(uint8_t index);
 
 /**
@@ -103,7 +104,7 @@ const Service canService = {
     NULL,               // poll
     canIsr,             // highIsr
     canIsr,             // lowIsr
-    NULL,               // get ESD data
+    canEsdData,         // get ESD data
     canGetDiagnostic    // getDiagnostic
 };
 
@@ -130,6 +131,7 @@ static uint8_t canId;
  * The set of diagnostics for the CAN service
  */
 static DiagnosticVal canDiagnostics[NUM_CAN_DIAGNOSTICS];
+
 
 static TickValue  canTransmitTimeout;
 static uint8_t  canTransmitFailed;
@@ -223,10 +225,11 @@ static void canPowerUp(void) {
     canTransmitFailed=0;
     IPR5 = CAN_INTERRUPT_PRIORITY;    // CAN interrupts priority
     // Put module into Configuration mode.
+
     CANCON = 0b10000000;
     // Wait for config mode
     while (CANSTATbits.OPMODE2 == 0);
-
+    
     ECANCON   = 0b10110000;   // ECAN mode 2 with FIFO, FIFOWM = 1 (init when four spaces left), init to first RX buffer
     BSEL0     = 0;            // Use all 8 buffers for receive FIFO, as they do not work as a FIFO for transmit
   
@@ -389,6 +392,20 @@ static void canIsr(void) {
     
     // If TX then transfer next frame from TX buffer to CAN peripheral 
     canInterruptHandler();
+}
+
+/**
+ * Return the service extended definition bytes.
+ * @param id
+ * @return 
+ */
+uint8_t canEsdData(uint8_t id) {
+    switch(id) {
+        case 0:
+            return CAN_HW_PIC_ECAN;
+        default:
+            return 0;
+    }
 }
 
 /**
@@ -671,7 +688,7 @@ static void canTxError(void) {
         canTransmitFailed = 1;
         canTransmitTimeout.val = 0;
         TXB0CONbits.TXREQ = 0;
-        canDiagnostics[CAN_DIAG_LOST_ARRBITARTAION].asUint++;
+        canDiagnostics[CAN_DIAG_LOST_ARBITRATION].asUint++;
         updateModuleErrorStatus();
     }
     if (TXB0CONbits.TXERR) {	// bus error
@@ -860,3 +877,4 @@ static CanidResult setNewCanId(uint8_t newCanId) {
         return CANID_FAIL;
     }
 }
+#endif

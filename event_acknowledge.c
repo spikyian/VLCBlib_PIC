@@ -71,8 +71,10 @@ const Service eventAckService = {
     NULL,               // powerUp
     ackEventProcessMessage,                // processMessage
     NULL,               // poll
+#if defined(_18F66K80_FAMILY_)
     NULL,               // highIsr
     NULL,               // lowIsr
+#endif
     NULL,               // Get ESD data
     ackGetDiagnostic    // getDiagnostic
 };
@@ -102,9 +104,11 @@ static Processed ackEventProcessMessage(Message * m) {
             if (m->bytes[2] == MODE_EVENT_ACK_ON) {
                 // Do enter Learn mode
                 mode_flags |= FLAG_MODE_LEARN;
+                return PROCESSED;
             } else if (m->bytes[2] == MODE_EVENT_ACK_OFF) {
                 // Do exit Learn mode
                 mode_flags &= ~FLAG_MODE_LEARN;
+                return PROCESSED;
             }
         } 
         return NOT_PROCESSED;   // mode probably processed by other services

@@ -197,7 +197,9 @@ Module design</h2>
 Other information</h2>
 <ul>
 <li>The module mode is available using the uint8_t mode global variable.</li>
+<li>The module submodes are available using the uint8_t mode_flags global variable.</li>
 <li>The module's node number is available as <a class="el" href="union_word.html">Word</a> nn global variable.</li>
+<li>A module should include either statusLeds1.c or statusLeds2.c depending whether it has one or two LEDs.</li>
 <li>A module may define a function to process VLCB messages before being handled by the library.</li>
 <li>A module may also define a function to process VLCB messages if not handled by the library.</li>
 </ul>
@@ -216,11 +218,11 @@ Application source</h2>
 <div class="line">};</div>
 <div class="ttc" id="aboot_8c_html_a6a89fc238ad82ace7c465216a3e5575d"><div class="ttname"><a href="boot_8c.html#a6a89fc238ad82ace7c465216a3e5575d">bootService</a></div><div class="ttdeci">const Service bootService</div><div class="ttdef"><b>Definition</b> boot.c:75</div></div>
 <div class="ttc" id="acan_8c_html_a2710ddf8079472011d4b89bcdacd52a4"><div class="ttname"><a href="can_8c.html#a2710ddf8079472011d4b89bcdacd52a4">canService</a></div><div class="ttdeci">const Service canService</div><div class="ttdef"><b>Definition</b> can.c:97</div></div>
-<div class="ttc" id="aevent__acknowledge_8c_html_a8dace442c6fec52297eed2d68ed100d6"><div class="ttname"><a href="event__acknowledge_8c.html#a8dace442c6fec52297eed2d68ed100d6">eventAckService</a></div><div class="ttdeci">const Service eventAckService</div><div class="ttdef"><b>Definition</b> event_acknowledge.c:66</div></div>
+<div class="ttc" id="aevent__acknowledge_8c_html_a8dace442c6fec52297eed2d68ed100d6"><div class="ttname"><a href="event__acknowledge_8c.html#a8dace442c6fec52297eed2d68ed100d6">eventAckService</a></div><div class="ttdeci">const Service eventAckService</div><div class="ttdef"><b>Definition</b> event_acknowledge.c:67</div></div>
 <div class="ttc" id="aevent__consumer_8c_html_a00bee6233d82533e4e0bc10911787455"><div class="ttname"><a href="event__consumer_8c.html#a00bee6233d82533e4e0bc10911787455">eventConsumerService</a></div><div class="ttdeci">const Service eventConsumerService</div><div class="ttdef"><b>Definition</b> event_consumer.c:69</div></div>
 <div class="ttc" id="aevent__producer_8c_html_a6d039ebee6188cb69fc81dedf126c334"><div class="ttname"><a href="event__producer_8c.html#a6d039ebee6188cb69fc81dedf126c334">eventProducerService</a></div><div class="ttdeci">const Service eventProducerService</div><div class="ttdef"><b>Definition</b> event_producer.c:72</div></div>
 <div class="ttc" id="aevent__teach_8c_html_a25dbd341349525d3b0917340575378b7"><div class="ttname"><a href="event__teach_8c.html#a25dbd341349525d3b0917340575378b7">eventTeachService</a></div><div class="ttdeci">const Service eventTeachService</div><div class="ttdef"><b>Definition</b> event_teach.c:245</div></div>
-<div class="ttc" id="amns_8c_html_a05160624e3e355535f7bc7dae4fad5a4"><div class="ttname"><a href="mns_8c.html#a05160624e3e355535f7bc7dae4fad5a4">mnsService</a></div><div class="ttdeci">const Service mnsService</div><div class="ttdef"><b>Definition</b> mns.c:137</div></div>
+<div class="ttc" id="amns_8c_html_a05160624e3e355535f7bc7dae4fad5a4"><div class="ttname"><a href="mns_8c.html#a05160624e3e355535f7bc7dae4fad5a4">mnsService</a></div><div class="ttdeci">const Service mnsService</div><div class="ttdef"><b>Definition</b> mns.c:135</div></div>
 <div class="ttc" id="anv_8c_html_a54cb92ae67b344b1663b74af93adf6f0"><div class="ttname"><a href="nv_8c.html#a54cb92ae67b344b1663b74af93adf6f0">nvService</a></div><div class="ttdeci">const Service nvService</div><div class="ttdef"><b>Definition</b> nv.c:75</div></div>
 <div class="ttc" id="astruct_service_html"><div class="ttname"><a href="struct_service.html">Service</a></div><div class="ttdef"><b>Definition</b> vlcb.h:258</div></div>
 <div class="ttc" id="avlcb_8h_html_a8d4c9b659f98c72e727bca232c257bfe"><div class="ttname"><a href="vlcb_8h.html#a8d4c9b659f98c72e727bca232c257bfe">services</a></div><div class="ttdeci">const Service *const services[]</div></div>

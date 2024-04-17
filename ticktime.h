@@ -86,15 +86,28 @@
 //    #define SYMBOLS_TO_TICKS(a) (((DWORD)CLOCK_FREQ/100000) * a / ((DWORD)SYMBOL_TO_TICK_RATE/100000))
 //    #define TICKS_TO_SYMBOLS(a) (((DWORD)SYMBOL_TO_TICK_RATE/100000) * a / ((DWORD)CLOCK_FREQ/100000))
 
-
+#if defined(_18F66K80_FAMILY_)
     #define TMR_IF          INTCONbits.TMR0IF
     #define TMR_IE          INTCONbits.TMR0IE
     #define TMR_IP          INTCON2bits.TMR0IP
     #define TMR_ON          T0CONbits.TMR0ON
-    #define TMR_CON         T0CON
+    #define TMR_MODE        T0CONbits.T08BIT
+    #define TMR_PS          T0CON
+    #define TMR_CS          T0CONbits.T0CS
     #define TMR_L           TMR0L
     #define TMR_H           TMR0H
-    
+#endif
+#if defined(_18FXXQ83_FAMILY_)
+    #define TMR_IF          TMR0IF
+    #define TMR_IE          TMR0IE
+    #define TMR_IP          TMR0IP
+    #define TMR_ON          T0CON0bits.EN
+    #define TMR_MODE        T0CON0bits.MD16   
+    #define TMR_PS          T0CON1bits.CKPS
+    #define TMR_CS          T0CON1bits.CS
+    #define TMR_L           TMR0L
+    #define TMR_H           TMR0H
+#endif
     
 #elif defined(__dsPIC30F__) || defined(__dsPIC33F__) || defined(__PIC24F__) || defined(__PIC24FK__) || defined(__PIC24H__)
     /* this section is based on the Timer 2/3 module of the dsPIC33/PIC24 family */

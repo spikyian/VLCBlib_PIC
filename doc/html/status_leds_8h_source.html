@@ -101,7 +101,7 @@ $(function(){initNavTree('status_leds_8h_source.html',''); initResizable(); });
   <div class="headertitle"><div class="title">statusLeds.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef _LEDS2_H_</span></div>
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef _STATUSLEDS_H_</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">/*</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">  This work is licensed under the:</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">      Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</span></div>
@@ -133,7 +133,7 @@ $(function(){initNavTree('status_leds_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">    This software is distributed in the hope that it will be useful, but WITHOUT ANY</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#define _LEDS2_H_</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#define _STATUSLEDS_H_</span></div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#include &quot;<a class="code" href="vlcb_8h.html">vlcb.h</a>&quot;</span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#include &quot;<a class="code" href="ticktime_8h.html">ticktime.h</a>&quot;</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#include &quot;module.h&quot;</span></div>
@@ -148,15 +148,16 @@ $(function(){initNavTree('status_leds_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    SINGLE_FLICKER_OFF, </div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    SINGLE_FLICKER_ON,  </div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    LONG_FLICKER_OFF,   </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    LONG_FLICKER_ON     </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>} LedState;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment">// other externs</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keyword">extern</span> <span class="keywordtype">void</span> leds_powerUp(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keyword">extern</span> <span class="keywordtype">void</span> leds_poll(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="keyword">extern</span> <span class="keywordtype">void</span> showStatus(StatusDisplay s);</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    LONG_FLICKER_ON,     </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    OFF_1S              </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>} LedState;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">// other externs</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keyword">extern</span> <span class="keywordtype">void</span> leds_powerUp(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="keyword">extern</span> <span class="keywordtype">void</span> leds_poll(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keyword">extern</span> <span class="keywordtype">void</span> showStatus(StatusDisplay s);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aticktime_8h_html"><div class="ttname"><a href="ticktime_8h.html">ticktime.h</a></div></div>
 <div class="ttc" id="avlcb_8h_html"><div class="ttname"><a href="vlcb_8h.html">vlcb.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
