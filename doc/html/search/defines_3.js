@@ -1,5 +1,22 @@
 var searchData=
 [
-  ['enumeration_5fholdoff_0',['ENUMERATION_HOLDOFF',['../can_8h.html#aabc5c9ad540bf9ebad39f0db93725929',1,'can.h']]],
-  ['enumeration_5ftimeout_1',['ENUMERATION_TIMEOUT',['../can_8h.html#a11f43a49a8f7e14cef3ddc69baf10153',1,'can.h']]]
+  ['can_5fdiag_5fcanid_5fchanges_0',['CAN_DIAG_CANID_CHANGES',['../can_8h.html#ab85a18b52aeafd266cf464212c4468ba',1,'can.h']]],
+  ['can_5fdiag_5fcanid_5fconflicts_1',['CAN_DIAG_CANID_CONFLICTS',['../can_8h.html#a24cab90aab1e816693e5f241bf635d2d',1,'can.h']]],
+  ['can_5fdiag_5fcanid_5fenums_2',['CAN_DIAG_CANID_ENUMS',['../can_8h.html#ac886b41a379ae1eb1d64b07ea0f8fcba',1,'can.h']]],
+  ['can_5fdiag_5fcanid_5fenums_5ffail_3',['CAN_DIAG_CANID_ENUMS_FAIL',['../can_8h.html#a1ff3b85d3c40625fbadc111cfcba135f',1,'can.h']]],
+  ['can_5fdiag_5ferror_5fframes_5fdet_4',['CAN_DIAG_ERROR_FRAMES_DET',['../can_8h.html#a90e7ed2bf41c0d15961421f407f519d4',1,'can.h']]],
+  ['can_5fdiag_5ferror_5fframes_5fgen_5',['CAN_DIAG_ERROR_FRAMES_GEN',['../can_8h.html#a3a6ed46899cfcc6f3cacb6cc3d972941',1,'can.h']]],
+  ['can_5fdiag_5flost_5farbitration_6',['CAN_DIAG_LOST_ARBITRATION',['../can_8h.html#a6b0878bd8e838756116c22f6d5543fcc',1,'can.h']]],
+  ['can_5fdiag_5frx_5fbuffer_5foverrun_7',['CAN_DIAG_RX_BUFFER_OVERRUN',['../can_8h.html#a9f03a15224a6a652c36b68ecaec3a58e',1,'can.h']]],
+  ['can_5fdiag_5frx_5fbuffer_5fusage_8',['CAN_DIAG_RX_BUFFER_USAGE',['../can_8h.html#ab58387eaa0992391a0b61e9e0b71b81d',1,'can.h']]],
+  ['can_5fdiag_5frx_5ferrors_9',['CAN_DIAG_RX_ERRORS',['../can_8h.html#a6131de9191a5a84f7d5afca33f308f93',1,'can.h']]],
+  ['can_5fdiag_5frx_5fmessages_10',['CAN_DIAG_RX_MESSAGES',['../can_8h.html#ac9c16cc7bd223c3620ab0619a80499ff',1,'can.h']]],
+  ['can_5fdiag_5fstatus_11',['CAN_DIAG_STATUS',['../can_8h.html#a3186eead1026c930912e39f8e6b09624',1,'can.h']]],
+  ['can_5fdiag_5ftx_5fbuffer_5foverrun_12',['CAN_DIAG_TX_BUFFER_OVERRUN',['../can_8h.html#a76e1211bbd04388842e9bcd53485b6e3',1,'can.h']]],
+  ['can_5fdiag_5ftx_5fbuffer_5fusage_13',['CAN_DIAG_TX_BUFFER_USAGE',['../can_8h.html#a31f5c8765c09350c7651949cbe5772dc',1,'can.h']]],
+  ['can_5fdiag_5ftx_5ferrors_14',['CAN_DIAG_TX_ERRORS',['../can_8h.html#a6c9a7b523d0417237996566fb4ae4ad9',1,'can.h']]],
+  ['can_5fdiag_5ftx_5fmessages_15',['CAN_DIAG_TX_MESSAGES',['../can_8h.html#a84dd9b8b957af7b489bbc01030734817',1,'can.h']]],
+  ['can_5ftx_5ftimeout_16',['CAN_TX_TIMEOUT',['../can_8h.html#a74fd051d23e60127c82ee39caad0ea9a',1,'can.h']]],
+  ['canid_5fdefault_17',['CANID_DEFAULT',['../can_8h.html#a5b23147ec34d8dd40ada34aadeb30505',1,'can.h']]],
+  ['consumer_5fdiag_5fnumconsumed_18',['CONSUMER_DIAG_NUMCONSUMED',['../event__consumer_8h.html#ae3f7c7a95b07b482db77fcbbcce35f79',1,'event_consumer.h']]]
 ];

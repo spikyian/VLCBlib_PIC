@@ -41,6 +41,7 @@
 /**
  *
  * @file
+ * @brief
  * Implementation of the VLCB Minimum Module Service.
  * @details
  * MNS provides functionality required by all VLCB modules.
@@ -57,44 +58,44 @@
  * included by all module applications.
  * 
  * # Module.h definitions required for the MNS service
- * - #define NUM_SERVICES with the number of service pointers in the services array.
- * - #define APP_NVM_VERSION the version number of the data structures stored in NVM
+ * - \#define NUM_SERVICES with the number of service pointers in the services array.
+ * - \#define APP_NVM_VERSION the version number of the data structures stored in NVM
  *                      this is located where NV#0 is stored therefore NV_ADDRESS
  *                      and NV_NVM_TYPE must be defined even without the NV service.
- * - #define clkMHz       Must be set to the clock speed of the module. Typically 
+ * - \#define clkMHz       Must be set to the clock speed of the module. Typically 
  *                      this would be 4 or 16.
- * - #define NN_ADDRESS   This must be set to the address in non volatile memory
+ * - \#define NN_ADDRESS   This must be set to the address in non volatile memory
  *                      at which the node number is to be stored.
- * - #define NN_NVM_TYPE  This must be set to the type of the NVM where the node
+ * - \#define NN_NVM_TYPE  This must be set to the type of the NVM where the node
  *                      number is to be stored.
- * - #define MODE_ADDRESS This must be set to the address in non volatile memory
+ * - \#define MODE_ADDRESS This must be set to the address in non volatile memory
  *                      at which the mode variable is to be stored.
- * - #define MODE_NVM_TYPE This must be set to the type of the NVM where the mode
+ * - \#define MODE_NVM_TYPE This must be set to the type of the NVM where the mode
  *                      variable is to be stored.
- * - #define APP_setPortDirections() This macro must be set to configure the 
+ * - \#define APP_setPortDirections() This macro must be set to configure the 
  *                      processor's pins for output to the LEDs and input from the
  *                      push button. It should also enable digital I/O if required 
  *                      by the processor.
- * - #define APP_writeLED1(state) This macro must be defined to set LED1 (normally
+ * - \#define APP_writeLED1(state) This macro must be defined to set LED1 (normally
  *                      yellow) to the state specified. 1 is LED on.
- * - #define APP_writeLED2(state) This macro must be defined to set LED1 (normally
+ * - \#define APP_writeLED2(state) This macro must be defined to set LED1 (normally
  *                      green) to the state specified. 1 is LED on.
- * - #define APP_pbPressed() This macro must be defined to read the push button
+ * - \#define APP_pbPressed() This macro must be defined to read the push button
  *                      input, returning true when the push button is held down.
- * - #define NAME         The name of the module must be defined. Must be exactly 
+ * - \#define NAME         The name of the module must be defined. Must be exactly 
  *                      7 characters. Shorter names should be padded on the right 
  *                      with spaces. The name must leave off the communications 
  *                      protocol e.g. the CANMIO module would be set to "MIO    ".
  * 
  * The following parameter values are required to be defined for use by MNS:
- * - #define PARAM_MANU              See the manufacturer settings in vlcb.h
- * - #define PARAM_MAJOR_VERSION     The major version number
- * - #define PARAM_MINOR_VERSION     The minor version character. E.g. 'a'
- * - #define PARAM_BUILD_VERSION     The build version number
- * - #define PARAM_MODULE_ID         The module ID. Normally set to MTYP_VLCB
- * - #define PARAM_NUM_NV            The number of NVs. Normally set to NV_NUM
- * - #define PARAM_NUM_EVENTS        The number of events.
- * - #define PARAM_NUM_EV_EVENT      The number of EVs per event
+ * - \#define PARAM_MANU              See the manufacturer settings in vlcb.h
+ * - \#define PARAM_MAJOR_VERSION     The major version number
+ * - \#define PARAM_MINOR_VERSION     The minor version character. E.g. 'a'
+ * - \#define PARAM_BUILD_VERSION     The build version number
+ * - \#define PARAM_MODULE_ID         The module ID. Normally set to MTYP_VLCB
+ * - \#define PARAM_NUM_NV            The number of NVs. Normally set to NV_NUM
+ * - \#define PARAM_NUM_EVENTS        The number of events.
+ * - \#define PARAM_NUM_EV_EVENT      The number of EVs per event
  * 
  */
 #include <xc.h>
@@ -105,11 +106,12 @@
 #include "vlcbdefs_enums.h"
 #include "mns.h"
 #include "ticktime.h"
-#include "romops.h"
+#include "nvm.h"
 #include "timedResponse.h"
 #include "statusDisplay.h"
 #include "statusLeds.h"
 
+/** Version of this Service implementation.*/
 #define MNS_VERSION 1
 
 // Forward declarations
@@ -227,18 +229,25 @@ TimedResponseResult  mnsTRrqnpnCallback(uint8_t type, uint8_t serviceIndex, uint
 /*
  * Defines for the PNN flags byte
  */
+/** Parameter Flag bit for a Consumer module. */
 #define PNN_FLAGS_CONSUMER  1
+/** Parameter Flag bit for a Producer module. */
 #define PNN_FLAGS_PRODUCER  2
+/** Parameter Flag bit for a module in Normal mode. */
 #define PNN_FLAGS_NORMAL    4
+/** Parameter Flag bit for a module supporting the PIC Boot process. */
 #define PNN_FLAGS_BOOT      8
+/** Parameter Flag bit for a module which can consume its own events. */
 #define PNN_FLAGS_COE       16
+/** Parameter Flag bit for a module in Learn mode. */
 #define PNN_FLAGS_LEARN     32
+/** Parameter Flag bit for a module that is compliant with VLCB. */
 #define PNN_FLAGS_VLCB      64
 
 /*
  * Forward declaration for getParameterFlags.
  */
-uint8_t getParameterFlags(void);
+static uint8_t getParameterFlags(void);
 
 /*
  * The Service functions
@@ -255,7 +264,8 @@ static void mnsFactoryReset(void) {
     last_mode_state = mode_state = MODE_UNINITIALISED;
     writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode_state);
 
-    last_mode_flags = mode_flags = FLAG_MODE_HEARTBEAT;
+    //last_mode_flags = mode_flags = FLAG_MODE_HEARTBEAT; // heartbeat enabled by default
+    last_mode_flags = mode_flags = 0;       // heartbeat disabled by default
     writeNVM(MODE_FLAGS_NVM_TYPE, MODE_FLAGS_ADDRESS, mode_flags);
 }
 
@@ -365,23 +375,27 @@ static Processed mnsProcessMessage(Message * m) {
     // No NN but in Normal mode or equivalent message processing
     switch (m->opc) {
         case OPC_QNN:   // Query node
-            flags = 0;
-            if (have(SERVICE_ID_CONSUMER)) {
-                flags |= 1; // CONSUMER BIT
-            }
-            if (have(SERVICE_ID_PRODUCER)) {
-                flags |= 2; // PRODUCER BIT
-            }
-            if (flags == 3) flags |= 8;     // CoE BIT
-            flags |= 4; // NORMAL BIT
-            if (have(SERVICE_ID_BOOT)) {
-                flags |= 16;    // BOOTABLE BIT
-            }
-            if (mode_flags & FLAG_MODE_LEARN) {
-                flags |= 32;    // LEARN BIT
-            }
-            sendMessage5(OPC_PNN, nn.bytes.hi,nn.bytes.lo, PARAM_MANU, PARAM_MODULE_ID, flags);
+            sendMessage5(OPC_PNN, nn.bytes.hi,nn.bytes.lo, PARAM_MANU, PARAM_MODULE_ID, getParameterFlags());
             return PROCESSED;
+        case OPC_MODE:  // MODE
+            if (m->len < 4) {
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, CMDERR_INV_CMD);
+                return PROCESSED;
+            }
+            if ((m->bytes[0] == 0) && (m->bytes[1] == 0)) { // Global MODE
+                newMode = m->bytes[2];
+                // do heartbeat change
+                if (newMode == MODE_HEARTBEAT_ON) {
+                    mode_flags |= FLAG_MODE_HEARTBEAT;
+//                    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
+                    return PROCESSED;
+                } else if (newMode == MODE_HEARTBEAT_OFF) {
+                    mode_flags &= ~FLAG_MODE_HEARTBEAT;
+//                    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
+                    return PROCESSED;
+                }
+            }
+            break;
         default:
             break;
     }
@@ -542,7 +556,7 @@ static Processed mnsProcessMessage(Message * m) {
  * Get the current module status flags as reported by Parameter 8 and PNN.
  * @return the current module status flags
  */
-uint8_t getParameterFlags() {
+static uint8_t getParameterFlags() {
     uint8_t flags;
     flags = 0;
     if (have(SERVICE_ID_CONSUMER)) {
@@ -737,7 +751,12 @@ void setLEDsByMode(void) {
     }
 }
 
-uint8_t getParameter(uint8_t idx) {
+/**
+ * Return the parameter specified by idx. 
+ * @param idx the parameter number
+ * @return parameter value
+ */
+static uint8_t getParameter(uint8_t idx) {
     uint8_t i;
     switch(idx) {
     case PAR_NUM:       // Number of parameters
@@ -837,6 +856,13 @@ TimedResponseResult mnsTRallDiagnosticsCallback(uint8_t type, uint8_t serviceInd
     return TIMED_RESPONSE_RESULT_NEXT;
 }
 
+/**
+ * This is the callback used by the RQNPN Parameter responses. 
+ * @param type always set to TIMED_RESPONSE_RQNPN
+ * @param serviceIndex indicates the service requesting the responses
+ * @param step loops through each of the parameters
+ * @return whether all of the responses have been sent yet.
+ */
 TimedResponseResult  mnsTRrqnpnCallback(uint8_t type, uint8_t serviceIndex, uint8_t step) {
     if (step >= 20) {
         return TIMED_RESPONSE_RESULT_FINISHED;

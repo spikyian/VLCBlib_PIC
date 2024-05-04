@@ -47,6 +47,13 @@
 #ifndef DEVINCS_H
 #define	DEVINCS_H
 
+/**
+ * @file
+ * @brief
+ * Convert the XC8 processor defines to those used by the VLCBdefs so that the Parameters indicate the
+ * correct CPU.
+ */
+
 #ifdef	__cplusplus
 extern "C" {
 #endif

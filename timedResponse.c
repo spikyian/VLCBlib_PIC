@@ -29,7 +29,7 @@
 #include "vlcb.h"
 #include "module.h"
 #include "timedResponse.h"
-#include "romops.h"
+#include "nvm.h"
 
 /**
  * @author Ian Hogg  Created 8 December 2021
@@ -39,8 +39,10 @@
  */ 
 /**
  * @file
+ * @brief
  * TimedResponse records that a sequence of VLCB messages are to be sent at
  * a slow rate to allow receivers of these messages to process them.
+ * 
  * @details
  * startTimedResponse() is to be called to start the transmission. A callback
  * function is provided and that function is called with an incrementing step 
@@ -73,12 +75,11 @@ void initTimedResponse(void) {
     timedResponseType = TIMED_RESPONSE_NONE;
 }
 
-/**
+/*
  * Request callbacks at a regular rate.
  * 
  * @param type  indicate to the callback function the type of the callback.
- * @param serviceIndex passed to the user's callback function. 1..NUM_SERVICES. If SERVICE_ID_ALL is 
- * passed then the callback is repeatedly for each service.
+ * @param serviceIndex passed to the user's callback function. 1..NUM_SERVICES. If SERVICE_ID_ALL is passed then the callback is repeatedly for each service.
  * @param callback the user specific callback function
  */
 void startTimedResponse(uint8_t type, uint8_t serviceIndex, TimedResponseResult (*callback)(uint8_t type, uint8_t si, uint8_t step)) {

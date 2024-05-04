@@ -45,6 +45,7 @@
 
 /**
  * @file
+ * @brief
  * The functions here emulate some of the common Arduino functions. 
  * @details 
  * These may help some developers to feel more comfortable in developing software. 
@@ -55,22 +56,44 @@
  * PIC ports.
  */
 typedef struct {
-    uint8_t pin;
-    char port;
-    uint8_t no;
-    uint8_t an;
+    uint8_t pin;    ///< The pin number.
+    char port;      ///< The port letter PORT*port*.
+    uint8_t no;     ///< The port bit number PORTxbits*no*.
+    uint8_t an;     ///< The analogue port number AN*an*.
 } Config;
 
+/**
+ * The array of Configs to map each channel onto a physical pin.
+ */
 extern const Config configs[];
 
+/**
+ * The possible pin configurations.
+ */
 typedef enum PinMode {
     OUTPUT = 0,
     INPUT = 1,
     ANALOGUE = 2
 } PinMode;
 
-extern void pinMode(uint8_t pin, PinMode mode);
-extern uint8_t digitalRead(uint8_t pin);
-extern void digitalWrite(uint8_t pin, uint8_t value);
+/**
+ * Function to set a particular channel to the requested mode.
+ * @param channel channel number
+ * @param mode the requested mode
+ */
+extern void pinMode(uint8_t channel, PinMode mode);
+
+/**
+ * Read the value of a digital input channel.
+ * @param channel channel number
+ * @return 0 for a low voltage non zero for a high voltage
+ */
+extern uint8_t digitalRead(uint8_t channel);
+/**
+ * Set the output pin to the requested state.
+ * @param channel channel number
+ * @param value required channel output state, 0 for a Low output and non zero for a High output
+ */
+extern void digitalWrite(uint8_t channel, uint8_t value);
 
 #endif

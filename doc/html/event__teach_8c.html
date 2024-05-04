@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCBlib_PIC: C:/Users/ianwh/github/VLCBlib_PIC/event_teach.c File Reference</title>
+<title>VLCB library: event_teach.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,11 +26,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="VLCB.png"/></td>
   <td id="projectalign">
-   <div id="projectname">VLCBlib_PIC
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for module developemnt using PIC processors</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -99,22 +98,26 @@ $(function(){initNavTree('event__teach_8c.html',''); initResizable(); });
   <div class="headertitle"><div class="title">event_teach.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Implementation of the VLCB <a class="el" href="struct_event.html">Event</a> Teach <a class="el" href="struct_service.html">Service</a>.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;xc.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="vlcb_8h_source.html">vlcb.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="romops_8h_source.html">romops.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="nvm_8h_source.html">nvm.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="mns_8h_source.html">mns.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="timed_response_8h_source.html">timedResponse.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="event__teach_8h_source.html">event_teach.h</a>&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a9bf07c27105f7c54f030818acb9ad9d1" id="r_a9bf07c27105f7c54f030818acb9ad9d1"><td class="memItemLeft" align="right" valign="top">Processed&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9bf07c27105f7c54f030818acb9ad9d1">checkLen</a> (<a class="el" href="struct_message.html">Message</a> *m, uint8_t needed, uint8_t service)</td></tr>
+<tr class="memitem:a9bf07c27105f7c54f030818acb9ad9d1" id="r_a9bf07c27105f7c54f030818acb9ad9d1"><td class="memItemLeft" align="right" valign="top"><a id="a9bf07c27105f7c54f030818acb9ad9d1" name="a9bf07c27105f7c54f030818acb9ad9d1"></a>
+<a class="el" href="vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544">Processed</a>&#160;</td><td class="memItemRight" valign="bottom"><b>checkLen</b> (<a class="el" href="struct_message.html">Message</a> *m, uint8_t needed, uint8_t service)</td></tr>
 <tr class="separator:a9bf07c27105f7c54f030818acb9ad9d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7afd0605b0c9b64d0aec16c7e8ac562c" id="r_a7afd0605b0c9b64d0aec16c7e8ac562c"><td class="memItemLeft" align="right" valign="top">TimedResponseResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7afd0605b0c9b64d0aec16c7e8ac562c">nerdCallback</a> (uint8_t type, uint8_t serviceIndex, uint8_t step)</td></tr>
+<tr class="memitem:a7afd0605b0c9b64d0aec16c7e8ac562c" id="r_a7afd0605b0c9b64d0aec16c7e8ac562c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="timed_response_8h.html#a34f3661bc164f76318500bd6a0fafd48">TimedResponseResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7afd0605b0c9b64d0aec16c7e8ac562c">nerdCallback</a> (uint8_t type, uint8_t serviceIndex, uint8_t step)</td></tr>
 <tr class="separator:a7afd0605b0c9b64d0aec16c7e8ac562c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a119c32fa845221e45656dcbc493732c5" id="r_a119c32fa845221e45656dcbc493732c5"><td class="memItemLeft" align="right" valign="top">TimedResponseResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a119c32fa845221e45656dcbc493732c5">reqevCallback</a> (uint8_t type, uint8_t serviceIndex, uint8_t step)</td></tr>
+<tr class="memitem:a119c32fa845221e45656dcbc493732c5" id="r_a119c32fa845221e45656dcbc493732c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="timed_response_8h.html#a34f3661bc164f76318500bd6a0fafd48">TimedResponseResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a119c32fa845221e45656dcbc493732c5">reqevCallback</a> (uint8_t type, uint8_t serviceIndex, uint8_t step)</td></tr>
 <tr class="separator:a119c32fa845221e45656dcbc493732c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a722d9dbb962714dab2dbed9aee2cba" id="r_a4a722d9dbb962714dab2dbed9aee2cba"><td class="memItemLeft" align="right" valign="top">Boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a722d9dbb962714dab2dbed9aee2cba">validStart</a> (uint8_t tableIndex)</td></tr>
+<tr class="memitem:a4a722d9dbb962714dab2dbed9aee2cba" id="r_a4a722d9dbb962714dab2dbed9aee2cba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a722d9dbb962714dab2dbed9aee2cba">validStart</a> (uint8_t tableIndex)</td></tr>
 <tr class="separator:a4a722d9dbb962714dab2dbed9aee2cba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ecc0cd4c43c7100796706b8b415d9fc" id="r_a0ecc0cd4c43c7100796706b8b415d9fc"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ecc0cd4c43c7100796706b8b415d9fc">getNN</a> (uint8_t tableIndex)</td></tr>
 <tr class="separator:a0ecc0cd4c43c7100796706b8b415d9fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,14 +129,15 @@ Functions</h2></td></tr>
 <tr class="separator:a37e3faf0772321f16d80d7b2db753d92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef79de314cb4fdf348009d498ad5cbc6" id="r_aef79de314cb4fdf348009d498ad5cbc6"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aef79de314cb4fdf348009d498ad5cbc6">findEvent</a> (uint16_t nodeNumber, uint16_t eventNumber)</td></tr>
 <tr class="separator:aef79de314cb4fdf348009d498ad5cbc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad66c29cafca265754d755a5129120df7" id="r_ad66c29cafca265754d755a5129120df7"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad66c29cafca265754d755a5129120df7">writeEv</a> (uint8_t tableIndex, uint8_t evNum, uint8_t evVal)</td></tr>
-<tr class="separator:ad66c29cafca265754d755a5129120df7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86e94e6b99175b437fb4fadc603e54a2" id="r_a86e94e6b99175b437fb4fadc603e54a2"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a86e94e6b99175b437fb4fadc603e54a2">removeEvent</a> (uint16_t nodeNumber, uint16_t eventNumber)</td></tr>
 <tr class="separator:a86e94e6b99175b437fb4fadc603e54a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ccf826767b71505fb4b5ffb2b4ff5af" id="r_a2ccf826767b71505fb4b5ffb2b4ff5af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2ccf826767b71505fb4b5ffb2b4ff5af">checkRemoveTableEntry</a> (uint8_t tableIndex)</td></tr>
+<tr class="separator:a2ccf826767b71505fb4b5ffb2b4ff5af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84842311410155eccc83819eaf8ee985" id="r_a84842311410155eccc83819eaf8ee985"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a84842311410155eccc83819eaf8ee985">addEvent</a> (uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8_t evVal, uint8_t forceOwnNN)</td></tr>
 <tr class="separator:a84842311410155eccc83819eaf8ee985"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a275d5d58705f018ba8ea8a05477ba716" id="r_a275d5d58705f018ba8ea8a05477ba716"><td class="memItemLeft" align="right" valign="top"><a id="a275d5d58705f018ba8ea8a05477ba716" name="a275d5d58705f018ba8ea8a05477ba716"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>getEVs</b> (uint8_t tableIndex)</td></tr>
+<tr class="memitem:ad66c29cafca265754d755a5129120df7" id="r_ad66c29cafca265754d755a5129120df7"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad66c29cafca265754d755a5129120df7">writeEv</a> (uint8_t tableIndex, uint8_t evNum, uint8_t evVal)</td></tr>
+<tr class="separator:ad66c29cafca265754d755a5129120df7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a275d5d58705f018ba8ea8a05477ba716" id="r_a275d5d58705f018ba8ea8a05477ba716"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a275d5d58705f018ba8ea8a05477ba716">getEVs</a> (uint8_t tableIndex)</td></tr>
 <tr class="separator:a275d5d58705f018ba8ea8a05477ba716"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
@@ -144,12 +148,12 @@ Variables</h2></td></tr>
 <tr class="separator:a5e104ea2eb5211e43dd69e1092a236a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section copyright"><dt>Copyright</dt><dd>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. </dd></dl>
+<div class="textblock"><p>Implementation of the VLCB <a class="el" href="struct_event.html">Event</a> Teach <a class="el" href="struct_service.html">Service</a>. </p>
+<dl class="section copyright"><dt>Copyright</dt><dd>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Pete Brownlow </dd>
 <dd>
 Ian Hogg </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>Dec 2022</dd></dl>
-<p>Implementation of the VLCB <a class="el" href="struct_event.html">Event</a> Teach service.</p>
 <p><a class="el" href="struct_event.html">Event</a> teaching service The service definition object is called eventTeachService.</p>
 <p>The events are stored as a hash table in flash (flash is faster to read than EEPROM) There can be up to 255 events. Since the address in the hash table will be 16 bits, and the address of the whole event table can also be covered by a 16 bit address, there is no advantage in having a separate hashed index table pointing to the actual event table. Therefore the hashing algorithm produces the index into the actual event table, which can be shifted to give the address - each event table entry is 16 bytes. After the event number and hash table overhead, this allows up to 10 EVs per event.</p>
 <p>This generic code needs no knowledge of specific EV usage.</p>
@@ -207,38 +211,27 @@ BEWARE Concurrency: The functions which use the eventtable and hash/lookup must 
 
 </div>
 </div>
-<a id="a9bf07c27105f7c54f030818acb9ad9d1" name="a9bf07c27105f7c54f030818acb9ad9d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9bf07c27105f7c54f030818acb9ad9d1">&#9670;&#160;</a></span>checkLen()</h2>
+<a id="a2ccf826767b71505fb4b5ffb2b4ff5af" name="a2ccf826767b71505fb4b5ffb2b4ff5af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ccf826767b71505fb4b5ffb2b4ff5af">&#9670;&#160;</a></span>checkRemoveTableEntry()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Processed checkLen </td>
+          <td class="memname">void checkRemoveTableEntry </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_message.html">Message</a> *</td>          <td class="paramname"><span class="paramname"><em>m</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>tableIndex</em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>needed</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>service</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Checks that the required number of message bytes are present. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Check to see if any event entries can be removed. Entries can be removed if their EVs are all set to EV_FILL.</p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">m</td><td>the message to be checked </td></tr>
-    <tr><td class="paramname">needed</td><td>the number of bytes within the message needed including the opc </td></tr>
-    <tr><td class="paramname">service</td><td>he service making the test </td></tr>
+    <tr><td class="paramname">tableIndex</td><td></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>PROCESSED if it is an invalid message and should not be processed further </dd></dl>
 
 </div>
 </div>
@@ -327,6 +320,31 @@ BEWARE Concurrency: The functions which use the eventtable and hash/lookup must 
 
 </div>
 </div>
+<a id="a275d5d58705f018ba8ea8a05477ba716" name="a275d5d58705f018ba8ea8a05477ba716"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a275d5d58705f018ba8ea8a05477ba716">&#9670;&#160;</a></span>getEVs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t getEVs </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>tableIndex</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return all the EV values for an event. EVs are put into the global evs array.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tableIndex</td><td>the index of the start of an event </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the error code or 0 for no error </dd></dl>
+
+</div>
+</div>
 <a id="a0ecc0cd4c43c7100796706b8b415d9fc" name="a0ecc0cd4c43c7100796706b8b415d9fc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0ecc0cd4c43c7100796706b8b415d9fc">&#9670;&#160;</a></span>getNN()</h2>
 
@@ -359,7 +377,7 @@ BEWARE Concurrency: The functions which use the eventtable and hash/lookup must 
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">TimedResponseResult nerdCallback </td>
+          <td class="memname"><a class="el" href="timed_response_8h.html#a34f3661bc164f76318500bd6a0fafd48">TimedResponseResult</a> nerdCallback </td>
           <td>(</td>
           <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>type</em>, </span></td>
         </tr>
@@ -449,7 +467,7 @@ BEWARE Concurrency: The functions which use the eventtable and hash/lookup must 
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">TimedResponseResult reqevCallback </td>
+          <td class="memname"><a class="el" href="timed_response_8h.html#a34f3661bc164f76318500bd6a0fafd48">TimedResponseResult</a> reqevCallback </td>
           <td>(</td>
           <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>tableIndex</em>, </span></td>
         </tr>
@@ -484,7 +502,7 @@ BEWARE Concurrency: The functions which use the eventtable and hash/lookup must 
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Boolean validStart </td>
+          <td class="memname"><a class="el" href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a> validStart </td>
           <td>(</td>
           <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>tableIndex</em></span></td><td>)</td>
           <td></td>
@@ -551,14 +569,16 @@ BEWARE Concurrency: The functions which use the eventtable and hash/lookup must 
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    SERVICE_ID_TEACH,      </div>
+<div class="line">    SERVICE_ID_OLD_TEACH,      </div>
 <div class="line">    1,                  </div>
 <div class="line">    teachFactoryReset,  </div>
 <div class="line">    teachPowerUp,       </div>
 <div class="line">    teachProcessMessage,</div>
 <div class="line">    NULL,               </div>
+<div class="line"> </div>
 <div class="line">    NULL,               </div>
 <div class="line">    NULL,               </div>
+<div class="line"> </div>
 <div class="line">    teachGetESDdata,    </div>
 <div class="line">    teachGetDiagnostic, </div>
 <div class="line">}</div>
@@ -577,14 +597,7 @@ BEWARE Concurrency: The functions which use the eventtable and hash/lookup must 
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Return all the EV values for an event. EVs are put into the global evs array.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">tableIndex</td><td>the index of the start of an event </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the error code or 0 for no error </dd></dl>
+<p>The EVs for an event after calling <a class="el" href="#a275d5d58705f018ba8ea8a05477ba716">getEVs()</a> </p>
 
 </div>
 </div>
@@ -593,7 +606,7 @@ BEWARE Concurrency: The functions which use the eventtable and hash/lookup must 
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d522931ffa1371640980b621734a4381.html">Users</a></li><li class="navelem"><a class="el" href="dir_10e25e262c850a79f6760812285f1413.html">ianwh</a></li><li class="navelem"><a class="el" href="dir_b0b4633879bd5c761e47fc280b556d88.html">github</a></li><li class="navelem"><a class="el" href="dir_a1617414bc24890c12be9c4da14587d4.html">VLCBlib_PIC</a></li><li class="navelem"><a class="el" href="event__teach_8c.html">event_teach.c</a></li>
+    <li class="navelem"><a class="el" href="event__teach_8c.html">event_teach.c</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

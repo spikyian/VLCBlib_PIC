@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCBlib_PIC: EventTable Struct Reference</title>
+<title>VLCB library: EventTable Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,11 +26,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="VLCB.png"/></td>
   <td id="projectalign">
-   <div id="projectname">VLCBlib_PIC
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for module developemnt using PIC processors</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -94,29 +93,36 @@ $(function(){initNavTree('struct_event_table.html',''); initResizable(); });
 
 <div class="header">
   <div class="summary">
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="struct_event_table-members.html">List of all members</a>  </div>
+<a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle"><div class="title">EventTable Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="event__teach_8h_source.html">event_teach.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a67ba902720f3b11e975722334403da50" id="r_a67ba902720f3b11e975722334403da50"><td class="memItemLeft" align="right" valign="top"><a id="a67ba902720f3b11e975722334403da50" name="a67ba902720f3b11e975722334403da50"></a>
+Data Fields</h2></td></tr>
+<tr class="memitem:a01bcadeac5e13cb66052aebaf2d0ca32" id="r_a01bcadeac5e13cb66052aebaf2d0ca32"><td class="memItemLeft" align="right" valign="top"><a id="a01bcadeac5e13cb66052aebaf2d0ca32" name="a01bcadeac5e13cb66052aebaf2d0ca32"></a>
 <a class="el" href="union_event_table_flags.html">EventTableFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>flags</b></td></tr>
-<tr class="separator:a67ba902720f3b11e975722334403da50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0945fda5152d5c90e00252b97f865024" id="r_a0945fda5152d5c90e00252b97f865024"><td class="memItemLeft" align="right" valign="top"><a id="a0945fda5152d5c90e00252b97f865024" name="a0945fda5152d5c90e00252b97f865024"></a>
+<tr class="memdesc:a01bcadeac5e13cb66052aebaf2d0ca32"><td class="mdescLeft">&#160;</td><td class="mdescRight">put first so could potentially use the <a class="el" href="struct_event.html">Event</a> bytes for EVs in subsequent rows. <br /></td></tr>
+<tr class="separator:a01bcadeac5e13cb66052aebaf2d0ca32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c1777ff5a9d6448db88c226d0794d04" id="r_a4c1777ff5a9d6448db88c226d0794d04"><td class="memItemLeft" align="right" valign="top"><a id="a4c1777ff5a9d6448db88c226d0794d04" name="a4c1777ff5a9d6448db88c226d0794d04"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>next</b></td></tr>
-<tr class="separator:a0945fda5152d5c90e00252b97f865024"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affa8067352c681a5e476b985cfaf9369" id="r_affa8067352c681a5e476b985cfaf9369"><td class="memItemLeft" align="right" valign="top"><a id="affa8067352c681a5e476b985cfaf9369" name="affa8067352c681a5e476b985cfaf9369"></a>
+<tr class="memdesc:a4c1777ff5a9d6448db88c226d0794d04"><td class="mdescLeft">&#160;</td><td class="mdescRight">index to continuation also indicates if entry is free <br /></td></tr>
+<tr class="separator:a4c1777ff5a9d6448db88c226d0794d04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf61400dc69c74e927a476661f47141d" id="r_acf61400dc69c74e927a476661f47141d"><td class="memItemLeft" align="right" valign="top"><a id="acf61400dc69c74e927a476661f47141d" name="acf61400dc69c74e927a476661f47141d"></a>
 <a class="el" href="struct_event.html">Event</a>&#160;</td><td class="memItemRight" valign="bottom"><b>event</b></td></tr>
-<tr class="separator:affa8067352c681a5e476b985cfaf9369"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad139cd8cb23d7f645699f08021fc1271" id="r_ad139cd8cb23d7f645699f08021fc1271"><td class="memItemLeft" align="right" valign="top"><a id="ad139cd8cb23d7f645699f08021fc1271" name="ad139cd8cb23d7f645699f08021fc1271"></a>
+<tr class="memdesc:acf61400dc69c74e927a476661f47141d"><td class="mdescLeft">&#160;</td><td class="mdescRight">the NN and EN <br /></td></tr>
+<tr class="separator:acf61400dc69c74e927a476661f47141d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad66d6bde31242f395a31e4841ffb1bfe" id="r_ad66d6bde31242f395a31e4841ffb1bfe"><td class="memItemLeft" align="right" valign="top"><a id="ad66d6bde31242f395a31e4841ffb1bfe" name="ad66d6bde31242f395a31e4841ffb1bfe"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>evs</b> [EVENT_TABLE_WIDTH]</td></tr>
-<tr class="separator:ad139cd8cb23d7f645699f08021fc1271"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:ad66d6bde31242f395a31e4841ffb1bfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">EVENT_TABLE_WIDTH is maximum of 15 as we have 4 bits of maxEvUsed. <br /></td></tr>
+<tr class="separator:ad66d6bde31242f395a31e4841ffb1bfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this struct was generated from the following file:<ul>
-<li>C:/Users/ianwh/github/VLCBlib_PIC/<a class="el" href="event__teach_8h_source.html">event_teach.h</a></li>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Defines a row within the <a class="el" href="struct_event.html">Event</a> table. Each row consists of 1 byte of flags, an index into the table for the next row if this event is spread over multiple rows, the event and the events EVs. </p>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<li><a class="el" href="event__teach_8h_source.html">event_teach.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

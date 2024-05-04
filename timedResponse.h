@@ -1,4 +1,4 @@
-#ifndef TIMEDRESPONSE_H
+#ifndef _TIMEDRESPONSE_H
 /**
  * @copyright Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
  */
@@ -39,6 +39,7 @@
 
 /**
  * @file
+ * @brief
  * TimedResponse records that a sequence of VLCB messages are to be sent at
  * a slow rate to allow receivers of these messages to process them.
  * @details
@@ -60,7 +61,7 @@
  * the callback.
  */
 
-#define	TIMEDRESPONSE_H
+#define	_TIMEDRESPONSE_H
 
 #ifdef	__cplusplus
 extern "C" {
@@ -70,16 +71,18 @@ extern "C" {
 // These are the different timed response processes we can do
 // Although considered converting these to an enum eventually decided against
 // it as this would limit reuse.
-#define TIMED_RESPONSE_SOD      1
-#define TIMED_RESPONSE_NERD     2
-#define TIMED_RESPONSE_RQSD     3
-#define TIMED_RESPONSE_RDGN     4
-#define TIMED_RESPONSE_REQEV    5
-#define TIMED_RESPONSE_NVRD     6
-#define TIMED_RESPONSE_RQNPN    7
-#define TIMED_RESPONSE_NONE     0xFF // must be an invalid tableIndex so same as NO_INDEX
+#define TIMED_RESPONSE_SOD      1   ///< Identifier for a timedResponse for a SoD request.
+#define TIMED_RESPONSE_NERD     2   ///< Identifier for a timedResponse for a NERD request.
+#define TIMED_RESPONSE_RQSD     3   ///< Identifier for a timedResponse for a RQSD request.
+#define TIMED_RESPONSE_RDGN     4   ///< Identifier for a timedResponse for a RDGN request.
+#define TIMED_RESPONSE_REQEV    5   ///< Identifier for a timedResponse for a REQEV request.
+#define TIMED_RESPONSE_NVRD     6   ///< Identifier for a timedResponse for a NVRD request.
+#define TIMED_RESPONSE_RQNPN    7   ///< Identifier for a timedResponse for a RQNPN request.
+#define TIMED_RESPONSE_NONE     0xFF    ///< Identifier for an invalid or not in use timedResponse.
     
-// The different APP callback responses
+/**
+ *  The different APP callback responses.
+ */
 typedef enum {
     TIMED_RESPONSE_RESULT_FINISHED, // done everything - no need to call back again
     TIMED_RESPONSE_RESULT_RETRY,    // something went wrong, call back again later
@@ -92,21 +95,20 @@ typedef enum {
  */
 typedef TimedResponseResult (* TimedResponseCallback)(uint8_t type, const Service * service, uint8_t step);   // Callback is  pointer to function returning uint8_t
 
-/*
+/**
  * Initialsation routine.
  */
 extern void initTimedResponse(void);
 
-/*
+/**
  * Request callbacks at a regular rate.
  * @param type  indicate to the callback function the type of the callback.
- * @param serviceId passed to the user's callback function. If SERVICE_ID_ALL is 
- * passed then the callback is repeatedly for each service.
+ * @param serviceIndex passed to the user's callback function. If SERVICE_ID_ALL is passed then the callback is repeatedly for each service.
  * @param callback the user specific callback function
  */
 extern void startTimedResponse(uint8_t type, uint8_t serviceIndex, TimedResponseResult (*callback)(uint8_t type, uint8_t si, uint8_t step));
 
-/*
+/**
  * Call regularly to call the user's callback function. Handles the call back 
  * function's results to increment the step value and cycle through the services.
  */

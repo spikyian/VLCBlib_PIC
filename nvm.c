@@ -60,7 +60,9 @@
 
 /**
  * @file
- * Non volatile memory functions
+ * @brief
+ * Non volatile memory functions.
+ * 
  * @details
  * Functionality for reading and writing to EEPROM and Flash NVM.
  * Read and write to EEPROM is straightforward.
@@ -73,7 +75,7 @@
 #include <xc.h>
 #include "vlcb.h"
 #include "hardware.h"
-#include "romops.h"
+#include "nvm.h"
 #include "mns.h"
 
 #if defined(_18F66K80_FAMILY_)
@@ -114,27 +116,7 @@
 #define EEPROM_SIZE                (1024U)
 #endif
 
-/**
- * @ingroup nvm_driver
- * @brief Data type for the Flash data.
- */
-typedef uint8_t flash_data_t;
-/**
- * @ingroup nvm_driver
- * @brief Data type for the Flash address.
- */
-typedef uint24_t flash_address_t;
 
-/**
- * @ingroup nvm_driver
- * @brief Data type for the EEPROM data.
- */
-typedef uint8_t eeprom_data_t;
-/**
- * @ingroup nvm_driver
- * @brief Data type for the EEPROM address.
- */
-typedef uint24_t eeprom_address_t;
 
 // Structure for tracking Flash operations
 static union
@@ -150,13 +132,27 @@ static union
 static flash_data_t       flashBuffer[FLASH_PAGE_SIZE];    // Assumes that Erase and Write are the same size
 #endif
 #if defined(_18FXXQ83_FAMILY_)
-static flash_data_t       * flashBuffer = (flash_data_t *)BUFFER_RAM_START_ADDRESS;
+ flash_data_t        * flashBuffer = (flash_data_t *)BUFFER_RAM_START_ADDRESS;
 #endif
 static flash_address_t    flashBlock;     //address of current flash block
 
-#define BLOCK(A)    (A&(flash_address_t)(~(FLASH_PAGE_SIZE-1)))
+/** Provides the Flash Block number given an address.*/
+#define BLOCK(A)    (A&(~((flash_address_t)FLASH_PAGE_SIZE-1)))
+/** Provides the offset into a Flash Block given an address.*/
 #define OFFSET(A)   (A&(FLASH_PAGE_SIZE-1))
 
+/**
+ *  Initialise variables for Flash program tracking.
+ */
+void initRomOps(void) {
+    flashFlags.asByte = 0;  // no write and no erase
+    flashBlock = 0x0000; // invalid but as long a write isn't needed it will be 
+                         // ok. Next write will always be to a different block.
+    TBLPTRU = 0;
+#if defined(_18FXXQ83_FAMILY_)
+    NVMCON1bits.WRERR = 0;
+#endif
+}
 
 /**
  * Read EEPROM.  
@@ -282,10 +278,10 @@ uint8_t EEPROM_Write(eeprom_address_t index, eeprom_data_t value) {
 
 /**
  * Read Flash. 
- * @param index the address
+ * @param address the address
  * @return the value
  */
-flash_data_t FLASH_Read(flash_address_t address) {
+static flash_data_t FLASH_Read(flash_address_t address) {
     // do read of Flash
     if (BLOCK(address) == flashBlock) {
         // if the block is the current one then get it directly
@@ -350,12 +346,13 @@ void eraseFlashBlock(void) {
     NVMLOCK = 0x55;
     NVMLOCK = 0xAA;
     NVMCON0bits.GO = 1;             //Start byte write
+    while (NVMCON0bits.GO)          // Wait to complete
+        ;
     NVMCON1bits.NVMCMD = 0x00;      //Clear the NVM Command
 #endif
     if (interruptEnabled) {     // Only enable interrupts if they were enabled at function entry
         bothEi();                   /* Enable Interrupts */
     }
-    
 }
 
 
@@ -380,7 +377,7 @@ void flushFlashBlock(void) {
     interruptEnabled = geti(); // store current global interrupt state
     bothDi();     // disable all interrupts ERRATA says this is needed before TBLWT
 #if defined (_18F66K80_FAMILY_)
-    for (unsigned char i=0; i<FLASH_PAGE_SIZE; i++) {
+    for (uint8_t i=0; i<FLASH_PAGE_SIZE; i++) {
         TABLAT = flashBuffer[i];
         asm("TBLWT*+");
     }
@@ -416,6 +413,8 @@ void flushFlashBlock(void) {
     NVMLOCK = 0x55;
     NVMLOCK = 0xAA;
     NVMCON0bits.GO = 1;             //Start byte write
+    while (NVMCON0bits.GO)          // Wait to complete
+        ;
     NVMCON1bits.NVMCMD = 0x00;      //Clear the NVM Command
 
 #endif
@@ -451,6 +450,8 @@ void loadFlashBlock(void) {
     NVMADRL = (uint8_t) flashBlock;
     NVMCON1bits.NVMCMD = 0x02;      //Set the page read command
     NVMCON0bits.GO = 1;             //Start page read
+    while (NVMCON0bits.GO)          // Wait to complete
+        ;
     NVMCON1bits.NVMCMD = 0x00;      //Clear the NVM Command
 #endif
     flashFlags.asByte = 0; // no erase, no write needed
@@ -483,19 +484,21 @@ uint8_t FLASH_Write(flash_address_t index, flash_data_t value) {
      *
      */
     if (BLOCK(index) != flashBlock) {
-        // ok we want to write a different block so flush the current block 
-        if (flashFlags.eraseNeeded) {
-            eraseFlashBlock();
-            flashFlags.eraseNeeded = 0;
+        if (flashBlock != 0) {
+            // ok we want to write a different block so flush the current block 
+            if (flashFlags.eraseNeeded) {
+                eraseFlashBlock();
+                flashFlags.eraseNeeded = 0;
+            }
+
+            flushFlashBlock();
         }
-        
-        flushFlashBlock();
         
         // and load the new one
         flashBlock = BLOCK(index);
         loadFlashBlock();
     }
-    flashFlags.eraseNeeded = (value & ~flashBuffer[OFFSET(index)])?1:0;
+    flashFlags.eraseNeeded |= (value & ~flashBuffer[OFFSET(index)])?1:0;
     if (flashBuffer[OFFSET(index)] != value) {
         flashFlags.writeNeeded = 1;
         flashBuffer[OFFSET(index)] = value;
@@ -513,9 +516,9 @@ uint8_t FLASH_Write(flash_address_t index, flash_data_t value) {
 uint8_t writeNVM(NVMtype type, uint24_t index, uint8_t value) {
     switch(type) {
         case EEPROM_NVM_TYPE:
-            return EEPROM_Write(index, value);
+            return EEPROM_Write((eeprom_address_t)index, value);
         case FLASH_NVM_TYPE:
-            return FLASH_Write(index, value);
+            return FLASH_Write((flash_address_t)index, value);
         default:
             return GRSP_UNKNOWN_NVM_TYPE;
     }
@@ -532,23 +535,16 @@ int16_t readNVM(NVMtype type, uint24_t index) {
         case EEPROM_NVM_TYPE:
             return EEPROM_Read((uint16_t)index);
         case FLASH_NVM_TYPE:
+#if defined(_18F66K80_FAMILY_)
+            return FLASH_Read((uint16_t)index);
+#endif
+#if defined(_18FXXQ83_FAMILY_)
             return FLASH_Read(index);
+#endif
         default:
             return -GRSP_UNKNOWN_NVM_TYPE;
     }
 }
 
-/**
- *  Initialise variables for Flash program tracking.
- */
-void initRomOps(void) {
-    flashFlags.asByte = 0;  // no write and no erase
-    flashBlock = 0x0000; // invalid but as long a write isn't needed it will be 
-                         // ok. Next write will always be to a different block.
-    TBLPTRU = 0;
-#if defined(_18FXXQ83_FAMILY_)
-    NVMCON1bits.WRERR = 0;
-#endif
-}
 
     

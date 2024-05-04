@@ -35,10 +35,11 @@
 #define _VLCB_H_
 
 #include "vlcbdefs_enums.h"
-#include "romops.h"
+#include "nvm.h"
 
 /**
  * @file
+ * @brief
  * Baseline functionality required by VLCB and entry points into the application.
  * @details
  * The application must provide a void setup(void) function which is called during module
@@ -52,24 +53,25 @@
  */
 
 // Additional Service definitions
-#define SERVICE_ID_NOT_FOUND      0xFF
-#define SERVICE_ID_ALL       0
+#define SERVICE_ID_NOT_FOUND      0xFF      ///< Indicates that a service of the requested type was not found
+#define SERVICE_ID_ALL       0              ///< References all services
 
 // Additional parameter definitions
-#define PAR_LOAD1   PAR_LOAD
-#define PAR_LOAD2   (PAR_LOAD+1)
-#define PAR_LOAD3   (PAR_LOAD+2)
-#define PAR_LOAD4   (PAR_LOAD+3)
+#define PAR_LOAD1   PAR_LOAD                ///< Address for the first byte of the load address paramter.
+#define PAR_LOAD2   (PAR_LOAD+1)            ///< Address for the second byte of the load address paramter.
+#define PAR_LOAD3   (PAR_LOAD+2)            ///< Address for the third byte of the load address paramter.
+#define PAR_LOAD4   (PAR_LOAD+3)            ///< Address for the forth byte of the load address paramter.
 
 //
 /// MANUFACTURER  - Used in the parameter block. 
 #define MANU_VLCB	250
-/// MODULE ID    - Used in the parameter block. All VLCB modules have the same ID
+/** MODULE ID for the 16 Input module   - Used in the parameter block. All VLCB modules have the same ID. */
 #define MTYP_VLCB_16INP     0x01
+/** MODULE ID for the 16 Output module   - Used in the parameter block. All VLCB modules have the same ID. */
 #define MTYP_VLCB_16OUT     0x02
 
 
-/*
+/**
  * Message priorities
  */
 typedef enum Priority {
@@ -79,11 +81,17 @@ typedef enum Priority {
     pHIGH=3,
 } Priority;
 
+/**
+ * Logical boolean type.
+ */
 typedef enum Boolean {
     FALSE,
     TRUE
 } Boolean;
 
+/**
+ * Success or failure result.
+ */
 typedef enum Result {
     RESULT_FAIL,
     RESULT_SUCCESS
@@ -95,9 +103,9 @@ typedef enum Result {
  * len includes the opc and any bytes.
  */
 typedef struct Message {
-    uint8_t len;        // message total length including opc
-    VlcbOpCodes opc;        // The opcode
-    uint8_t bytes[7];   // any data bytes
+    uint8_t len;        ///< The message total length including opc.
+    VlcbOpCodes opc;    ///< The opcode.
+    uint8_t bytes[7];   ///< Any data bytes contained in the message.
 } Message;
 
 /**
@@ -105,11 +113,20 @@ typedef struct Message {
  */
 typedef union Word {
     struct {
-        uint8_t lo;
-        uint8_t hi;
+        uint8_t lo;     ///< The low byte.
+        uint8_t hi;     ///< The high byte.
     } bytes;
-    uint16_t word;
+    uint16_t word;      ///< The 16 bite value.
 } Word;
+
+
+/**
+ *  Indicates whether on ON event or OFF event
+ */
+typedef enum {
+    EVENT_OFF=0,
+    EVENT_ON=1
+} EventState;
 
 /**
  * Diagnostic value which may be accessed either as a uint16, int16 or a pair of
@@ -121,14 +138,17 @@ typedef union Word {
  * on the VLCB bus.
  */
 typedef union DiagnosticVal {
-    uint16_t    asUint;
-    int16_t     asInt;
+    uint16_t    asUint; ///< The diagnostic value as an unsigned 16bit value.
+    int16_t     asInt;  ///< The diagnostic value as a signed 16bit value.
     struct {
-        uint8_t lo;
-        uint8_t hi;
+        uint8_t lo;     ///< The low byte of the 16bit diagnostic value.
+        uint8_t hi;     ///< The high byte of the 16bit diagnostic value.
     } asBytes;
 } DiagnosticVal;
 
+/**
+ * Type used to indicate whether a message has been processed or not.
+ */
 typedef enum Processed {
     NOT_PROCESSED=0,
     PROCESSED=1
@@ -142,14 +162,14 @@ typedef enum Mode_state {
 } Mode_state;
 
 // Mode flags
-#define FLAG_MODE_LEARN     1
-#define FLAG_MODE_EVENTACK  2
-#define FLAG_MODE_HEARTBEAT 4
+#define FLAG_MODE_LEARN     1            ///< flag representing Learn mode.
+#define FLAG_MODE_EVENTACK  2            ///< flag representing Event Acknowledge mode.
+#define FLAG_MODE_HEARTBEAT 4            ///< flag representing Heartbeat mode.
 
 extern const Priority priorities[256];
 
 
-/*
+/**
  * Helper function to check a received message.
  * 
  * @param m received message
@@ -158,7 +178,18 @@ extern const Priority priorities[256];
  * @return Process if message isn't valid, NOT_PROCESSED if ok
  */
 extern Processed checkLen(Message * m, uint8_t needed, uint8_t service);
+/**
+ * Helper function to check for an event.
+ * @param opc the opcode
+ * @return TRUE for an event FALSE otherwise
+ */
+extern Boolean isEvent(uint8_t opc);
 
+/**
+ * Allows the application to control how quickly timed responses are sent.
+ * @param delay time between timed responses
+ */
+extern void setTimedResponseDelay(uint8_t delay);
 
 // Functions to send a VLCB message on any defined transport layer
 // XC8 doesn't support function overloading nor varargs
@@ -246,7 +277,7 @@ void sendMessage(VlcbOpCodes opc, uint8_t len, uint8_t data1, uint8_t data2, uin
 
 
 /* SERVICE INTERFACE */
-/*******************************************************************************
+/**
  * This is the service descriptor and the main entry point to a service. The 
  * module's application code should add the service descriptors to the services
  * array for any of the services which it requires to be implemented.
@@ -256,18 +287,18 @@ void sendMessage(VlcbOpCodes opc, uint8_t len, uint8_t data1, uint8_t data2, uin
  * singleton for the service that can be used by the module's application code.
  */
 typedef struct Service {
-    uint8_t serviceNo;      // Identifies the type of service
-    uint8_t version;        // version of the service definition (not the version of code))
-    void (* factoryReset)(void);    // function call for a new module
-    void (* powerUp)(void);         // function called upon module power up
-    Processed (* processMessage)(Message * m);    // process and handle any VLCB messages
-    void (* poll)(void);    // called regularly 
+    uint8_t serviceNo;          ///< Identifies the type of service.
+    uint8_t version;            ///< version of the service definition (not the version of code).
+    void (* factoryReset)(void);///< function call for a new module.
+    void (* powerUp)(void);     ///< function called upon module power up.
+    Processed (* processMessage)(Message * m);    ///< process and handle any VLCB messages.
+    void (* poll)(void);        ///< called regularly .
 #if defined(_18F66K80_FAMILY_)
-    void (* highIsr)(void); // handle any service specific high priority  interrupt service routine
-    void (* lowIsr)(void);  // handle any service specific high priority  interrupt service routine
+    void (* highIsr)(void);     ///< handle any service specific high priority  interrupt service routine.
+    void (* lowIsr)(void);      ///< handle any service specific high priority  interrupt service routine.
 #endif
-    uint8_t (* getESDdata)(uint8_t id);
-    DiagnosticVal * (* getDiagnostic)(uint8_t index);   // pointer to function returning DiagnosticVal*
+    uint8_t (* getESDdata)(uint8_t id); ///< To obtain any ESD bytes for the service.
+    DiagnosticVal * (* getDiagnostic)(uint8_t index);   ///< pointer to function returning DiagnosticVal*.
 } Service;
 
 /**
@@ -275,6 +306,9 @@ typedef struct Service {
  */
 extern const Service * const services[];
 
+/**
+ * Indicates whether a service is present.
+ */
 typedef enum ServicePresent {
     NOT_PRESENT=0,
     PRESENT=1
@@ -331,30 +365,36 @@ extern void factoryReset(void);
 //extern void poll(void);
 
 /*
- * VLCB function to handle high priority interrupts. A service wanting 
+ * VLCB function to handle high priority interrupts. An App wanting 
  * to use interrupts should enable the interrupts in hardware and then provide 
  * a highIsr function. Care must to taken to ensure that the cause of the 
  * interrupt is cleared within the Isr and that minimum time is spent in the 
  * Isr. It is preferable to set a flag within the Isr and then perform longer
  * processing within poll().
  */
-//extern void highIsr(void);
+extern void APP_highIsr(void);
 
-/*
- * VLCB function to handle low priority interrupts. A service wanting 
+/**
+ * VLCB function to handle low priority interrupts. An App wanting 
  * to use interrupts should enable the interrupts in hardware and then provide 
  * a lowIsr function. Care must to taken to ensure that the cause of the 
  * interrupt is cleared within the Isr and that minimum time is spent in the 
  * Isr. It is preferable to set a flag within the Isr and then perform longer
  * processing within poll().
  */
-//extern void lowIsr(void);
+extern void APP_lowIsr(void);
 
+/**
+ * Indicates whether a message has been received and is ready to be processed.
+ */
 typedef enum MessageReceived {
     NOT_RECEIVED=0,
     RECEIVED=1
 } MessageReceived;
 
+/**
+ * Indicates the result of attempting to send a message.
+ */
 typedef enum SendResult {
     SEND_FAILED=0,
     SEND_OK
@@ -366,10 +406,10 @@ typedef enum SendResult {
  * 
  */
 typedef struct Transport {
-    SendResult (* sendMessage)(Message * m);   // function call to send a message
-    MessageReceived (* receiveMessage)(Message * m); // check to see if message is available and return in the structure provided
- //   void (* releaseMessage)(Message * m);   // App has finished with message
+    SendResult (* sendMessage)(Message * m);   ///< function call to send a message.
+    MessageReceived (* receiveMessage)(Message * m); ///< check to see if message is available and return in the structure provided.
 } Transport;
+
 /**
  * The application must set const Transport * transport to the particular transport
  * interface to be used by the VLCBlib.
@@ -392,11 +432,11 @@ extern const Transport * transport;
  */
 extern ValidTime APP_isSuitableTimeToWriteFlash(void);
 
-/**
+/*
  * The default value for the node number.
  */
-#define NN_HI_DEFAULT  0
-#define NN_LO_DEFAULT  0
+#define NN_HI_DEFAULT  0    ///< Default node number high byte
+#define NN_LO_DEFAULT  0    ///< Default node number low byte
 
 /**
  * The default mode for a freshly installed module.
@@ -404,9 +444,9 @@ extern ValidTime APP_isSuitableTimeToWriteFlash(void);
 #define MODE_DEFAULT    MODE_UNINITIALISED
 
 /* Event opcs */
-#define     EVENT_SET_MASK   0b10010000
-#define     EVENT_CLR_MASK   0b00000110
-#define     EVENT_ON_MASK    0b00000001
-#define     EVENT_SHORT_MASK 0b00001000
+#define     EVENT_SET_MASK   0b10010000    ///< OPC bit mask to test for event.
+#define     EVENT_CLR_MASK   0b00000110    ///< OPC bit mask to test for event.
+#define     EVENT_ON_MASK    0b00000001    ///< OPC bit mask to test for ON events.
+#define     EVENT_SHORT_MASK 0b00001000    ///< OPC bit mask to test for short events.
 
 #endif

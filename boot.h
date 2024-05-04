@@ -43,6 +43,7 @@
 
 /**
  * @file
+ * @brief
  * Implementation of the VLCB BOOT service, supports the FCU and CBUS (PIC based)
  * bootloading protocol.
  * @details
@@ -64,13 +65,13 @@
  * must include the MNS service.
  * 
  * # Module.h definitions required for the Boot service
- * - #define BOOT_FLAG_ADDRESS This should be set to where the module's bootloader
+ * - \#define BOOT_FLAG_ADDRESS This should be set to where the module's bootloader
  *                      places the bootflag.
- * - #define BOOT_FLAG_NVM_TYPE This should be set to be the type of NVM where the
+ * - \#define BOOT_FLAG_NVM_TYPE This should be set to be the type of NVM where the
  *                      bootloader stores the boot flag. This can be set to be 
  *                      either EEPROM_NVM_TYPE or FLASH_NVM_TYPE. The PIC
  *                      modules normally have this set to EEPROM_NVM_TYPE.
- * - #define BOOTLOADER_PRESENT The module should define, as opposed to undefine, 
+ * - \#define BOOTLOADER_PRESENT The module should define, as opposed to undefine, 
  *                      this to indicate that the application should be 
  *                      compiled to start at 0x800 to allow room for the bootloader 
  *                      between 0x000 and 0x7FF.

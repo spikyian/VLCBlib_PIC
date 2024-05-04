@@ -39,8 +39,19 @@
  * 
  */ 
 
+/**
+ * @file
+ * @brief 
+ * Definition of the different indications possible with the LEDs.
+ * 
+ */
+
 #define _STATUS_DISPLAY_H_
 
+/**
+ * The enumeration for each of the different state displays. These may be mapped
+ * for example onto 1 or 2 LEDs or a LCD text display. 
+ */
 typedef enum StatusDisplay {
     STATUS_OFF,
     STATUS_UNINITIALISED,

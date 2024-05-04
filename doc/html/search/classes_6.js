@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['queue_0',['Queue',['../struct_queue.html',1,'']]]
+  ['service_0',['Service',['../struct_service.html',1,'']]]
 ];

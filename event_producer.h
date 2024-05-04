@@ -34,6 +34,8 @@
     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
  */
 #include "module.h"
+#include "event_teach.h"
+
 #define _EVENT_PRODUCER_H_
 /**
  * @author Ian Hogg 
@@ -43,6 +45,7 @@
 
 /**
  * @file
+ * @brief
  * Implementation of the VLCB Event Producer service.
  * @details
  * Handle the production of events.
@@ -63,8 +66,8 @@
  * ACON/ACOF and ASON/ASOF event messages directly from the application.
  * 
  * # Module.h definitions required for the Event Producer service
- * - #define PRODUCED_EVENTS    Always defined whenever the Event Producer service is included
- * - #define HAPPENING_SIZE        Set to the number of bytes to hold a Happening.
+ * - \#define PRODUCED_EVENTS    Always defined whenever the Event Producer service is included
+ * - \#define HAPPENING_SIZE        Set to the number of bytes to hold a Happening.
  *                               Can be either 1 or 2.
  * 
  */
@@ -80,7 +83,8 @@ extern uint8_t happening2Event[MAX_HAPPENING+1];
 #define PRODUCER_DIAG_NUMPRODUCED   0   ///< Number of events produced
 
 
-extern Boolean sendProducedEvent(Happening h, EventState state); 
+extern Boolean sendProducedEvent(Happening h, EventState state);
+extern void deleteHappeningRange(Happening happening, uint8_t number);
 
 //AREQ stuff
 /**

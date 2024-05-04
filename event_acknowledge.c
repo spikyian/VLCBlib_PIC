@@ -47,13 +47,14 @@
 
 /**
  * @file
- * Implementation of the VLCB EventAcknowledge service.
+ * @brief
+ * Implementation of the VLCB EventAcknowledge Service.
  * @details
  * This service will send a ENACK message if the module has been taught to
  * consume the received event. The module must be in EVENT ACK mode. 
  * The service definition object is called eventAckService.
  */
-
+static void ackPowerUp(void);
 static Processed ackEventProcessMessage(Message * m);
 static Processed ackEventCheckLen(Message * m, uint8_t needed);
 static DiagnosticVal * ackGetDiagnostic(uint8_t code);
@@ -68,7 +69,7 @@ const Service eventAckService = {
     SERVICE_ID_EVENTACK,// id
     1,                  // version
     NULL,               // factoryReset
-    NULL,               // powerUp
+    ackPowerUp,         // powerUp
     ackEventProcessMessage,                // processMessage
     NULL,               // poll
 #if defined(_18F66K80_FAMILY_)
@@ -91,7 +92,7 @@ static void ackPowerUp(void) {
 }
 
 /**
- *  This only provides the functionality for event acknowledge.
+ * This only provides the functionality for event acknowledge.
  */
 static Processed ackEventProcessMessage(Message * m) {
     Word eventNN, eventEN;
@@ -158,10 +159,10 @@ static Processed ackEventProcessMessage(Message * m) {
 }
 
 /**
- * Check the message length
- * @param m
- * @param needed
- * @return 
+ * Check the message length is sufficient for the opcode.
+ * @param m the message
+ * @param needed the number of bytes needed
+ * @return PROCESSED if the message is invalid and should not be processed further
  */
 static Processed ackEventCheckLen(Message * m, uint8_t needed) {
     return checkLen(m, needed, SERVICE_ID_EVENTACK);

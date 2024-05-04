@@ -45,6 +45,7 @@
 /**
  *
  * @file
+ * @brief
  * Implementation of the VLCB Minimum Module Service.
  * @details
  * MNS provides functionality required by all VLCB modules.
@@ -61,50 +62,50 @@
  * included by all module applications.
  * 
  * # Module.h definitions required for the MNS service
- * - #define NUM_SERVICES to be the number of services implemented by the module.
+ * - \#define NUM_SERVICES to be the number of services implemented by the module.
  *                      The application must put the services into the services array.
- * - #define APP_NVM_VERSION the version number of the data structures stored in NVM
+ * - \#define APP_NVM_VERSION the version number of the data structures stored in NVM
  *                      this is located where NV#0 is stored therefore NV_ADDRESS
  *                      and NV_NVM_TYPE must be defined even without the NV service.
- * - #define clkMHz       Must be set to the clock speed of the module. Typically 
+ * - \#define clkMHz       Must be set to the clock speed of the module. Typically 
  *                      this would be 4 or 16.
- * - #define NN_ADDRESS   This must be set to the address in non volatile memory
+ * - \#define NN_ADDRESS   This must be set to the address in non volatile memory
  *                      at which the node number is to be stored.
- * - #define NN_NVM_TYPE  This must be set to the type of the NVM where the node
+ * - \#define NN_NVM_TYPE  This must be set to the type of the NVM where the node
  *                      number is to be stored.
- * - #define MODE_ADDRESS This must be set to the address in non volatile memory
+ * - \#define MODE_ADDRESS This must be set to the address in non volatile memory
  *                      at which the mode variable is to be stored.
- * - #define MODE_NVM_TYPE This must be set to the type of the NVM where the mode
+ * - \#define MODE_NVM_TYPE This must be set to the type of the NVM where the mode
  *                      variable is to be stored.
- * - #define APP_setPortDirections() This macro must be set to configure the 
+ * - \#define APP_setPortDirections() This macro must be set to configure the 
  *                      processor's pins for output to the LEDs and input from the
  *                      push button. It should also enable digital I/O if required 
  *                      by the processor.
- * - #define APP_writeLED1(state) This macro must be defined to set LED1 (normally
+ * - \#define APP_writeLED1(state) This macro must be defined to set LED1 (normally
  *                      yellow) to the state specified. 1 is LED on.
- * - #define APP_writeLED2(state) This macro must be defined to set LED1 (normally
+ * - \#define APP_writeLED2(state) This macro must be defined to set LED1 (normally
  *                      green) to the state specified. 1 is LED on.
- * - #define APP_pbPressed() This macro must be defined to read the push button
+ * - \#define APP_pbPressed() This macro must be defined to read the push button
  *                      input, returning true when the push button is held down.
- * - #define NAME         The name of the module must be defined. Must be exactly 
+ * - \#define NAME         The name of the module must be defined. Must be exactly 
  *                      7 characters. Shorter names should be padded on the right 
  *                      with spaces. The name must leave off the communications 
  *                      protocol e.g. the CANMIO module would be set to "MIO    ".
  * 
  * The following parameter values are required to be defined for use by MNS:
- * - #define PARAM_MANU              See the manufacturer settings in vlcb.h
- * - #define PARAM_MAJOR_VERSION     The major version number
- * - #define PARAM_MINOR_VERSION     The minor version character. E.g. 'a'
- * - #define PARAM_BUILD_VERSION     The build version number
- * - #define PARAM_MODULE_ID         The module ID. Normally set to MTYP_VLCB
- * - #define PARAM_NUM_NV            The number of NVs. Normally set to NV_NUM
- * - #define PARAM_NUM_EVENTS        The number of events.
- * - #define PARAM_NUM_EV_EVENT      The number of EVs per event
+ * - \#define PARAM_MANU              See the manufacturer settings in vlcb.h
+ * - \#define PARAM_MAJOR_VERSION     The major version number
+ * - \#define PARAM_MINOR_VERSION     The minor version character. E.g. 'a'
+ * - \#define PARAM_BUILD_VERSION     The build version number
+ * - \#define PARAM_MODULE_ID         The module ID. Normally set to MTYP_VLCB
+ * - \#define PARAM_NUM_NV            The number of NVs. Normally set to NV_NUM
+ * - \#define PARAM_NUM_EVENTS        The number of events.
+ * - \#define PARAM_NUM_EV_EVENT      The number of EVs per event
  * 
  */
 
 
-/*
+/**
  * Expose the service descriptor for MNS.
  */
 extern const Service mnsService;

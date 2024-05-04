@@ -45,6 +45,7 @@
 #include "event_teach.h"
 /**
  * @file
+ * @brief
  * Implementation of the VLCB Event Consumer service.
  * @details
  * The service definition object is called eventConsumerService.
@@ -58,7 +59,6 @@ static DiagnosticVal consumerDiagnostics[NUM_CONSUMER_DIAGNOSTICS];
 static void consumerPowerUp(void);
 static Processed consumerProcessMessage(Message * m);
 static DiagnosticVal * consumerGetDiagnostic(uint8_t index); 
-Boolean pushAction(Action a);
         
 /**
  * The service descriptor for the eventConsumer service. The application must include this
@@ -82,9 +82,10 @@ const Service eventConsumerService = {
 };
 
 #ifdef COMSUMER_EVS_AS_ACTIONS
-static Action actionQueue[ACTION_QUEUE_SIZE];
+static ActionAndState actionQueue[ACTION_QUEUE_SIZE];
 static uint8_t areader;
 static uint8_t awriter;
+Boolean pushAction(ActionAndState a);
 #endif
 
 static void consumerPowerUp(void) {
@@ -108,64 +109,42 @@ static Processed consumerProcessMessage(Message *m) {
     uint8_t tableIndex;
     int8_t change;
     uint8_t e;
-    Action a;
+    ActionAndState a;
     
     if (m->len < 5) return NOT_PROCESSED;
     
+    tableIndex = findEvent(((uint16_t)m->bytes[0])*256+m->bytes[1], ((uint16_t)m->bytes[2])*256+m->bytes[3]);
+    if (tableIndex == NO_INDEX) return NOT_PROCESSED;
+
     switch (m->opc) {
         case OPC_ACON:
-        case OPC_ACOF:
 #ifdef HANDLE_DATA_EVENTS
-        case OPC_ACON1:
-        case OPC_ACOF1:
-        case OPC_ACON2:
-        case OPC_ACOF2:
-        case OPC_ACON3:
-        case OPC_ACOF3:
-#endif
-            tableIndex = findEvent(((uint16_t)m->bytes[0])*256+m->bytes[1], ((uint16_t)m->bytes[2])*256+m->bytes[3]);
-            if (tableIndex == NO_INDEX) return NOT_PROCESSED;
-            
-            break;
-        case OPC_ASON:
-        case OPC_ASOF:
-#ifdef HANDLE_DATA_EVENTS
-        case OPC_ASON1:
-        case OPC_ASOF1:
-        case OPC_ASON2:
-        case OPC_ASOF2:
-        case OPC_ASON3:
-        case OPC_ASOF3:
-#endif
-            tableIndex = findEvent(((uint16_t)m->bytes[0])*256+m->bytes[1], ((uint16_t)m->bytes[2])*256+m->bytes[3]);
-            if (tableIndex == NO_INDEX) return NOT_PROCESSED;
-            
-            break;
-        default:
-            return NOT_PROCESSED;
-    }
-#ifdef COMSUMER_EVS_AS_ACTIONS
-    switch (m->opc) {
-        case OPC_ACON:
         case OPC_ACON1:
         case OPC_ACON2:
         case OPC_ACON3:
+#endif
         case OPC_ASON:
+#ifdef HANDLE_DATA_EVENTS
         case OPC_ASON1:
         case OPC_ASON2:
         case OPC_ASON3:
+#endif
             start = HAPPENING_SIZE;
             end = PARAM_NUM_EV_EVENT;
             change = ACTION_SIZE;
             break;
         case OPC_ACOF:
+#ifdef HANDLE_DATA_EVENTS
         case OPC_ACOF1:
         case OPC_ACOF2:
         case OPC_ACOF3:
+#endif
         case OPC_ASOF:
+#ifdef HANDLE_DATA_EVENTS
         case OPC_ASOF1:
         case OPC_ASOF2:
         case OPC_ASOF3:
+#endif
             start = PARAM_NUM_EV_EVENT-ACTION_SIZE;
             end = HAPPENING_SIZE-1;
             change = -ACTION_SIZE;
@@ -173,6 +152,7 @@ static Processed consumerProcessMessage(Message *m) {
         default:
             return NOT_PROCESSED;
     }
+#ifdef CONSUMER_EVS_AS_ACTIONS
     // get the list of actions and add then to the action queue
     for (e=start; e!=end; e+=change) {
         int16_t ev;
@@ -217,7 +197,7 @@ static DiagnosticVal * consumerGetDiagnostic(uint8_t index) {
  * @param a the Action
  * @return TRUE for success FALSE for buffer full
  */
-Boolean pushAction(Action a) {
+Boolean pushAction(ActionAndState a) {
     if (((awriter+1)&(ACTION_QUEUE_SIZE-1)) == areader) return FALSE;	// buffer full
     actionQueue[awriter++] = a;
     if (awriter >= ACTION_QUEUE_SIZE) awriter = 0;
@@ -233,8 +213,8 @@ Boolean pushAction(Action a) {
  *
  * @return the next action of NULL if the queue was empty
  */
-Action * popAction(void) {
-    Action * ret;
+ActionAndState * popAction(void) {
+    ActionAndState * ret;
 	if (awriter == areader) {
         return NULL;	// buffer empty
     }
@@ -242,3 +222,36 @@ Action * popAction(void) {
 	if (areader >= ACTION_QUEUE_SIZE) areader = 0;
 	return ret;
 }
+
+/**
+ * Delete all occurrences of the consumer action.
+ * @param action the start of the Action range to be deleted.
+ * @param number the size of the rangel of Action values
+ */
+void deleteActionRange(Action action, uint8_t number) {
+    uint8_t tableIndex;
+    for (tableIndex=0; tableIndex < NUM_EVENTS; tableIndex++) {
+        if (validStart(tableIndex)) {
+            Boolean updated = FALSE;
+            unsigned char e;
+            if (getEVs(tableIndex)) {
+                return;
+            }
+                
+            for (e=1; e<PARAM_NUM_EV_EVENT; e++) {
+                if ((evs[e] >= action) && (evs[e] < action+number)) {
+                    writeEv(tableIndex, e, EV_FILL);
+                    updated = TRUE;
+                }
+            }
+            if (updated) {
+                checkRemoveTableEntry(tableIndex);
+            }
+        }
+    }
+    flushFlashImage();
+#ifdef HASH_TABLE
+    rebuildHashtable();                
+#endif
+}
+

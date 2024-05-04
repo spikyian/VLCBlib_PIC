@@ -45,19 +45,24 @@
 #include "statusDisplay.h"
 
 /**
+ * @file
+ * @brief
+ * Definitions for the status of a single LED.
+ */
+/**
  * The status of the module's LEDs.
  */
 typedef enum {
-    OFF,            ///< fixed OFF
-    ON,             ///< fixed ON
-    FLASH_50_2HZ,   ///< 50% duty cycle  2Hz
-    FLASH_50_1HZ,   ///< 50% duty cycle  1Hz
-    FLASH_50_HALF_HZ,   ///< 50% duty cycle 0.5Hz
-    SINGLE_FLICKER_OFF, ///< 250ms pulse off
-    SINGLE_FLICKER_ON,  ///< 250ms pulse on
-    LONG_FLICKER_OFF,   ///< 500ms pulse off
-    LONG_FLICKER_ON,     ///< 500ms pulse on
-    OFF_1S              /// 1 second off
+    LED_OFF,            ///< fixed OFF
+    LED_ON,             ///< fixed ON
+    LED_FLASH_50_2HZ,   ///< 50% duty cycle  2Hz
+    LED_FLASH_50_1HZ,   ///< 50% duty cycle  1Hz
+    LED_FLASH_50_HALF_HZ,   ///< 50% duty cycle 0.5Hz
+    LED_SINGLE_FLICKER_OFF, ///< 250ms pulse off
+    LED_SINGLE_FLICKER_ON,  ///< 250ms pulse on
+    LED_LONG_FLICKER_OFF,   ///< 500ms pulse off
+    LED_LONG_FLICKER_ON,     ///< 500ms pulse on
+    LED_OFF_1S              /// 1 second off
 } LedState;
 
 // other externs

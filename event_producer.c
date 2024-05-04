@@ -41,13 +41,17 @@
 
 /**
  * @file
- * Implementation of the VLCB Event Produer service.
+ * @brief
+ * Implementation of the VLCB Event Producer Service.
  * @details
  * Handle the production of events.
  * If EVENT_HASH_TABLE is defined then an additional lookup table 
  * uint8_t action2Event[NUM_HAPPENINGS] is used to obtain an Event 
- * using a Happening stored in the first EVs. This table is also populated using 
- * rebuildHashTable(). Given a Happening this table can be used to obtain the 
+ * using a Happening stored in the first EVs. This table is populated using 
+ * rebuildHashTable(). 
+ * The function Boolean sendProducedEvent(Happening happening, EventState onOff)
+ * is used to transmit an event lokked up using a Happening.
+ * Given a Happening this table can be used to obtain the 
  * index into the EventTable for the Happening so the Event at that index in the 
  * EventTable can be transmitted.
  */
@@ -86,6 +90,13 @@ const Service eventProducerService = {
 
 static DiagnosticVal producerDiagnostics[NUM_PRODUCER_DIAGNOSTICS];
 
+/**
+ * Process and events associated with the eventProduction service.
+ * This handles the processing of the AREQ and ASRQ requests.
+ * 
+ * @param m the received message
+ * @return PROCESSED if the message was handled by this function
+ */
 static Processed producerProcessMessage(Message *m) {
     uint8_t index;
     Happening h;
@@ -156,7 +167,7 @@ static DiagnosticVal * producerGetDiagnostic(uint8_t index) {
  * 
  * @param happening used to lookup the event to be sent
  * @param onOff TRUE for an ON event, FALSE for an OFF event
- * @return TRUE if the produced event is found
+ * @return TRUE if the produced event is found FALSE otherwise
  */
 Boolean sendProducedEvent(Happening happening, EventState onOff) {
     Word producedEventNN;
@@ -220,3 +231,27 @@ Boolean sendProducedEvent(Happening happening, EventState onOff) {
     return FALSE;
 }
 
+/**
+ * Delete all occurrences of a range of Happenings.
+ * @param happening the start of the Happening range
+ * @param number the number of Happening in the range
+ */
+void deleteHappeningRange(Happening happening, uint8_t number) {
+    uint8_t tableIndex;
+    for (tableIndex=0; tableIndex < NUM_EVENTS; tableIndex++) {
+        if ( validStart(tableIndex)) {
+            EventTableFlags f;
+            Happening h;
+            f.asByte = (uint8_t)readNVM(EVENT_TABLE_NVM_TYPE, 
+                    EVENT_TABLE_ADDRESS + EVENTTABLE_ROW_WIDTH*tableIndex+EVENTTABLE_OFFSET_FLAGS);
+            h = (Happening)readNVM(EVENT_TABLE_NVM_TYPE, 
+                    EVENT_TABLE_ADDRESS + EVENTTABLE_ROW_WIDTH*tableIndex+EVENTTABLE_OFFSET_EVS);
+            if ((h >= happening) && (h < happening+number)) {
+                writeEv(tableIndex, 0, EV_FILL);
+                checkRemoveTableEntry(tableIndex);
+            }                
+        }
+    }
+    flushFlashBlock();
+    rebuildHashtable();
+}

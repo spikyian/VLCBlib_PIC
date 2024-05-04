@@ -9,6 +9,7 @@ var vlcb_8c =
     [ "findService", "vlcb_8c.html#af44fc8f3b49febc2bdc5e3ea969b7267", null ],
     [ "findServiceIndex", "vlcb_8c.html#a6b339d4f1bff6cc621db58445da1618a", null ],
     [ "have", "vlcb_8c.html#a51f53c29510e479d44d84336fbfa67a4", null ],
+    [ "isEvent", "vlcb_8c.html#a38cce02004be097334eb440d61ba88a4", null ],
     [ "loop", "vlcb_8c.html#a0b33edabd7f1c4e4a0bf32c67269be2f", null ],
     [ "main", "vlcb_8c.html#a6288eba0f8e8ad3ab1544ad731eb7667", null ],
     [ "pbDownTimer", "vlcb_8c.html#a44c244b308a4241ebe4b847481882686", null ],
@@ -22,6 +23,7 @@ var vlcb_8c =
     [ "sendMessage5", "vlcb_8c.html#ae20dd964b2b398b638516b983576ad92", null ],
     [ "sendMessage6", "vlcb_8c.html#ad5d047b1eca2bdc28bd9ccf366442efe", null ],
     [ "sendMessage7", "vlcb_8c.html#a25c844c608900c79ab802c2b4fbbd71a", null ],
+    [ "setTimedResponseDelay", "vlcb_8c.html#a3955f63350a3bbb9d97fb88653182497", null ],
     [ "setup", "vlcb_8c.html#a7dfd9b79bc5a37d7df40207afbc5431f", null ],
     [ "priorities", "vlcb_8c.html#ad9c0663c54097bc7c55d5dcbbc556424", null ],
     [ "transport", "vlcb_8c.html#a3b936eacf5488a640c02f68564f54372", null ]

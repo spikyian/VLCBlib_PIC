@@ -1,4 +1,4 @@
-#ifndef _ROMOPS_H_
+#ifndef _NVM_H_
 /**
  * @copyright Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
  */
@@ -44,13 +44,13 @@
  * 
  */
 
-#define _ROMOPS_H_
+#define _NVM_H_
 
 #include <xc.h>
-#include "vlcb.h"
 
 /**
  * @file
+ * @brief
  * Non volatile memory functions
  * @details
  * Functionality for reading and writing to EEPROM and Flash NVM.
@@ -61,16 +61,69 @@
  * and the entire block written back.
  */
 
-// NVM types
+/**
+ *  NVM types. These facilitate the Application code to easily control whether
+ * persistent data is stored in Flash or EEPROM.
+ */
 typedef enum {
     EEPROM_NVM_TYPE,
     FLASH_NVM_TYPE
 } NVMtype;
 
+/**
+ * Indicates whether the current time is good or bad. 
+ */
 typedef enum ValidTime {
     BAD_TIME=0,
     GOOD_TIME=1
 } ValidTime;
+
+#if defined(_18FXXQ83_FAMILY_)
+/**
+ * @ingroup nvm_driver
+ * @brief Data type for the Flash data.
+ */
+typedef uint8_t flash_data_t;
+/**
+ * @ingroup nvm_driver
+ * @brief Data type for the Flash address.
+ */
+typedef uint24_t flash_address_t;
+
+/**
+ * @ingroup nvm_driver
+ * @brief Data type for the EEPROM data.
+ */
+typedef uint8_t eeprom_data_t;
+/**
+ * @ingroup nvm_driver
+ * @brief Data type for the EEPROM address.
+ */
+typedef uint24_t eeprom_address_t;
+#endif
+#if defined(_18F66K80_FAMILY_)
+/**
+ * @ingroup nvm_driver
+ * @brief Data type for the Flash data.
+ */
+typedef uint8_t flash_data_t;
+/**
+ * @ingroup nvm_driver
+ * @brief Data type for the Flash address.
+ */
+typedef uint16_t flash_address_t;
+
+/**
+ * @ingroup nvm_driver
+ * @brief Data type for the EEPROM data.
+ */
+typedef uint8_t eeprom_data_t;
+/**
+ * @ingroup nvm_driver
+ * @brief Data type for the EEPROM address.
+ */
+typedef uint16_t eeprom_address_t;
+#endif
 
 /*
  * Processor specific settings
@@ -88,7 +141,9 @@ typedef enum ValidTime {
 #endif
 
 
-
+/**
+ * Ensure that the current Flash cached in RAM is written out.
+ */
 extern void flushFlashBlock(void);
 
 /*

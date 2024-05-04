@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCBlib_PIC: C:/Users/ianwh/github/VLCBlib_PIC/mns.h Source File</title>
+<title>VLCB library: mns.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,11 +26,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="VLCB.png"/></td>
   <td id="projectalign">
-   <div id="projectname">VLCBlib_PIC
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for module developemnt using PIC processors</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -137,62 +136,59 @@ $(function(){initNavTree('mns_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#include &quot;<a class="code" href="vlcb_8h.html">vlcb.h</a>&quot;</span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#include &quot;<a class="code" href="ticktime_8h.html">ticktime.h</a>&quot;</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#include &quot;module.h&quot;</span></div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment"> * Expose the service descriptor for MNS.</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="keyword">extern</span> <span class="keyword">const</span> <a class="code hl_struct" href="struct_service.html">Service</a> <a class="code hl_variable" href="mns_8h.html#a05160624e3e355535f7bc7dae4fad5a4">mnsService</a>;</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment">/* The list of the diagnostics supported */</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="mns_8h.html#acf5ee9e09a5a5dd62715e8e01c3c941e">  113</a></span><span class="preprocessor">#define NUM_MNS_DIAGNOSTICS 6   </span></div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="mns_8h.html#a0feb2ac3a4c895ebe269507c6c8220fb">  114</a></span><span class="preprocessor">#define MNS_DIAGNOSTICS_ALL         0x00    </span></div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="mns_8h.html#a36acd7d7e074e15a9d25a4b4b1923a11">  115</a></span><span class="preprocessor">#define MNS_DIAGNOSTICS_STATUS      0x00    </span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="mns_8h.html#af23d00b578b6331b864c76ca71926609">  116</a></span><span class="preprocessor">#define MNS_DIAGNOSTICS_UPTIMEH     0x01    </span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="mns_8h.html#a5a25d4cad4cd9217654172ac7ba0aa56">  117</a></span><span class="preprocessor">#define MNS_DIAGNOSTICS_UPTIMEL     0x02    </span></div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="mns_8h.html#a506d91d40f7dfa90cc579e21ed0c6850">  118</a></span><span class="preprocessor">#define MNS_DIAGNOSTICS_MEMERRS     0x03    </span></div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="mns_8h.html#a5614b154854a19ddb37c88b6adad8598">  119</a></span><span class="preprocessor">#define MNS_DIAGNOSTICS_NNCHANGE    0x04    </span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="mns_8h.html#a95540f9efe2e4c00e4b27c8c420c34d4">  120</a></span><span class="preprocessor">#define MNS_DIAGNOSTICS_RXMESS      0x05    </span></div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="comment"> * The module&#39;s node number.</span></div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="keyword">extern</span> <a class="code hl_union" href="union_word.html">Word</a> <a class="code hl_variable" href="mns_8h.html#a349d18d214352e095455e139e1606cf5">nn</a>;</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="comment"> * the module&#39;s operational mode.</span></div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="keyword">extern</span> uint8_t <a class="code hl_variable" href="mns_8h.html#a57751f3ccc9df6b53064e8a8546fd665">mode_state</a>;</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="keyword">extern</span> uint8_t <a class="code hl_variable" href="mns_8h.html#ae11d61a51505b9b853796f1ea7a7a905">mode_flags</a>;</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="comment"> * MNS diagnostics</span></div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="keyword">extern</span> <a class="code hl_union" href="union_diagnostic_val.html">DiagnosticVal</a> <a class="code hl_variable" href="mns_8h.html#ad17d3f6b2c418e3d30a2797dcf6fda1d">mnsDiagnostics</a>[<a class="code hl_define" href="mns_8h.html#acf5ee9e09a5a5dd62715e8e01c3c941e">NUM_MNS_DIAGNOSTICS</a>];</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="mns_8h.html#a57807e6772d17598b2608951ef49bdc6">updateModuleErrorStatus</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="keyword">extern</span> <a class="code hl_union" href="union___tick_value.html">TickValue</a> <a class="code hl_variable" href="mns_8h.html#a025b9760b10bb4bcb169fb87678451d5">pbTimer</a>;</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="amns_8h_html_a025b9760b10bb4bcb169fb87678451d5"><div class="ttname"><a href="mns_8h.html#a025b9760b10bb4bcb169fb87678451d5">pbTimer</a></div><div class="ttdeci">TickValue pbTimer</div><div class="ttdef"><b>Definition</b> mns.c:184</div></div>
-<div class="ttc" id="amns_8h_html_a05160624e3e355535f7bc7dae4fad5a4"><div class="ttname"><a href="mns_8h.html#a05160624e3e355535f7bc7dae4fad5a4">mnsService</a></div><div class="ttdeci">const Service mnsService</div><div class="ttdef"><b>Definition</b> mns.c:135</div></div>
-<div class="ttc" id="amns_8h_html_a349d18d214352e095455e139e1606cf5"><div class="ttname"><a href="mns_8h.html#a349d18d214352e095455e139e1606cf5">nn</a></div><div class="ttdeci">Word nn</div><div class="ttdef"><b>Definition</b> mns.c:152</div></div>
-<div class="ttc" id="amns_8h_html_a57751f3ccc9df6b53064e8a8546fd665"><div class="ttname"><a href="mns_8h.html#a57751f3ccc9df6b53064e8a8546fd665">mode_state</a></div><div class="ttdeci">uint8_t mode_state</div><div class="ttdef"><b>Definition</b> mns.c:156</div></div>
-<div class="ttc" id="amns_8h_html_a57807e6772d17598b2608951ef49bdc6"><div class="ttname"><a href="mns_8h.html#a57807e6772d17598b2608951ef49bdc6">updateModuleErrorStatus</a></div><div class="ttdeci">void updateModuleErrorStatus(void)</div><div class="ttdef"><b>Definition</b> mns.c:576</div></div>
-<div class="ttc" id="amns_8h_html_acf5ee9e09a5a5dd62715e8e01c3c941e"><div class="ttname"><a href="mns_8h.html#acf5ee9e09a5a5dd62715e8e01c3c941e">NUM_MNS_DIAGNOSTICS</a></div><div class="ttdeci">#define NUM_MNS_DIAGNOSTICS</div><div class="ttdoc">The number of diagnostic values for this service.</div><div class="ttdef"><b>Definition</b> mns.h:113</div></div>
-<div class="ttc" id="amns_8h_html_ad17d3f6b2c418e3d30a2797dcf6fda1d"><div class="ttname"><a href="mns_8h.html#ad17d3f6b2c418e3d30a2797dcf6fda1d">mnsDiagnostics</a></div><div class="ttdeci">DiagnosticVal mnsDiagnostics[NUM_MNS_DIAGNOSTICS]</div><div class="ttdef"><b>Definition</b> mns.c:188</div></div>
-<div class="ttc" id="amns_8h_html_ae11d61a51505b9b853796f1ea7a7a905"><div class="ttname"><a href="mns_8h.html#ae11d61a51505b9b853796f1ea7a7a905">mode_flags</a></div><div class="ttdeci">uint8_t mode_flags</div><div class="ttdef"><b>Definition</b> mns.c:161</div></div>
-<div class="ttc" id="astruct_service_html"><div class="ttname"><a href="struct_service.html">Service</a></div><div class="ttdef"><b>Definition</b> vlcb.h:258</div></div>
-<div class="ttc" id="aticktime_8h_html"><div class="ttname"><a href="ticktime_8h.html">ticktime.h</a></div></div>
-<div class="ttc" id="aunion___tick_value_html"><div class="ttname"><a href="union___tick_value.html">_TickValue</a></div><div class="ttdef"><b>Definition</b> ticktime.h:186</div></div>
-<div class="ttc" id="aunion_diagnostic_val_html"><div class="ttname"><a href="union_diagnostic_val.html">DiagnosticVal</a></div><div class="ttdef"><b>Definition</b> vlcb.h:123</div></div>
-<div class="ttc" id="aunion_word_html"><div class="ttname"><a href="union_word.html">Word</a></div><div class="ttdef"><b>Definition</b> vlcb.h:106</div></div>
-<div class="ttc" id="avlcb_8h_html"><div class="ttname"><a href="vlcb_8h.html">vlcb.h</a></div></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="keyword">extern</span> <span class="keyword">const</span> <a class="code hl_struct" href="struct_service.html">Service</a> <a class="code hl_variable" href="mns_8h.html#a05160624e3e355535f7bc7dae4fad5a4">mnsService</a>;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="comment">/* The list of the diagnostics supported */</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="mns_8h.html#acf5ee9e09a5a5dd62715e8e01c3c941e">  114</a></span><span class="preprocessor">#define NUM_MNS_DIAGNOSTICS 6   </span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="mns_8h.html#a0feb2ac3a4c895ebe269507c6c8220fb">  115</a></span><span class="preprocessor">#define MNS_DIAGNOSTICS_ALL         0x00    </span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="mns_8h.html#a36acd7d7e074e15a9d25a4b4b1923a11">  116</a></span><span class="preprocessor">#define MNS_DIAGNOSTICS_STATUS      0x00    </span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="mns_8h.html#af23d00b578b6331b864c76ca71926609">  117</a></span><span class="preprocessor">#define MNS_DIAGNOSTICS_UPTIMEH     0x01    </span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="mns_8h.html#a5a25d4cad4cd9217654172ac7ba0aa56">  118</a></span><span class="preprocessor">#define MNS_DIAGNOSTICS_UPTIMEL     0x02    </span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="mns_8h.html#a506d91d40f7dfa90cc579e21ed0c6850">  119</a></span><span class="preprocessor">#define MNS_DIAGNOSTICS_MEMERRS     0x03    </span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="mns_8h.html#a5614b154854a19ddb37c88b6adad8598">  120</a></span><span class="preprocessor">#define MNS_DIAGNOSTICS_NNCHANGE    0x04    </span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="mns_8h.html#a95540f9efe2e4c00e4b27c8c420c34d4">  121</a></span><span class="preprocessor">#define MNS_DIAGNOSTICS_RXMESS      0x05    </span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="comment"> * The module&#39;s node number.</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="keyword">extern</span> <a class="code hl_union" href="union_word.html">Word</a> <a class="code hl_variable" href="mns_8h.html#a349d18d214352e095455e139e1606cf5">nn</a>;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="comment"> * the module&#39;s operational mode.</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="keyword">extern</span> uint8_t <a class="code hl_variable" href="mns_8h.html#a57751f3ccc9df6b53064e8a8546fd665">mode_state</a>;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="keyword">extern</span> uint8_t <a class="code hl_variable" href="mns_8h.html#ae11d61a51505b9b853796f1ea7a7a905">mode_flags</a>;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="comment"> * MNS diagnostics</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="keyword">extern</span> <a class="code hl_union" href="union_diagnostic_val.html">DiagnosticVal</a> <a class="code hl_variable" href="mns_8h.html#ad17d3f6b2c418e3d30a2797dcf6fda1d">mnsDiagnostics</a>[<a class="code hl_define" href="mns_8h.html#acf5ee9e09a5a5dd62715e8e01c3c941e">NUM_MNS_DIAGNOSTICS</a>];</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="mns_8h.html#a57807e6772d17598b2608951ef49bdc6">updateModuleErrorStatus</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="keyword">extern</span> <a class="code hl_union" href="union___tick_value.html">TickValue</a> <a class="code hl_variable" href="mns_8h.html#a025b9760b10bb4bcb169fb87678451d5">pbTimer</a>;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="amns_8h_html_a025b9760b10bb4bcb169fb87678451d5"><div class="ttname"><a href="mns_8h.html#a025b9760b10bb4bcb169fb87678451d5">pbTimer</a></div><div class="ttdeci">TickValue pbTimer</div><div class="ttdef"><b>Definition</b> mns.c:188</div></div>
+<div class="ttc" id="amns_8h_html_a05160624e3e355535f7bc7dae4fad5a4"><div class="ttname"><a href="mns_8h.html#a05160624e3e355535f7bc7dae4fad5a4">mnsService</a></div><div class="ttdeci">const Service mnsService</div><div class="ttdef"><b>Definition</b> mns.c:137</div></div>
+<div class="ttc" id="amns_8h_html_a349d18d214352e095455e139e1606cf5"><div class="ttname"><a href="mns_8h.html#a349d18d214352e095455e139e1606cf5">nn</a></div><div class="ttdeci">Word nn</div><div class="ttdef"><b>Definition</b> mns.c:156</div></div>
+<div class="ttc" id="amns_8h_html_a57751f3ccc9df6b53064e8a8546fd665"><div class="ttname"><a href="mns_8h.html#a57751f3ccc9df6b53064e8a8546fd665">mode_state</a></div><div class="ttdeci">uint8_t mode_state</div><div class="ttdef"><b>Definition</b> mns.c:160</div></div>
+<div class="ttc" id="amns_8h_html_a57807e6772d17598b2608951ef49bdc6"><div class="ttname"><a href="mns_8h.html#a57807e6772d17598b2608951ef49bdc6">updateModuleErrorStatus</a></div><div class="ttdeci">void updateModuleErrorStatus(void)</div><div class="ttdef"><b>Definition</b> mns.c:583</div></div>
+<div class="ttc" id="amns_8h_html_acf5ee9e09a5a5dd62715e8e01c3c941e"><div class="ttname"><a href="mns_8h.html#acf5ee9e09a5a5dd62715e8e01c3c941e">NUM_MNS_DIAGNOSTICS</a></div><div class="ttdeci">#define NUM_MNS_DIAGNOSTICS</div><div class="ttdoc">The number of diagnostic values for this service.</div><div class="ttdef"><b>Definition</b> mns.h:114</div></div>
+<div class="ttc" id="amns_8h_html_ad17d3f6b2c418e3d30a2797dcf6fda1d"><div class="ttname"><a href="mns_8h.html#ad17d3f6b2c418e3d30a2797dcf6fda1d">mnsDiagnostics</a></div><div class="ttdeci">DiagnosticVal mnsDiagnostics[NUM_MNS_DIAGNOSTICS]</div><div class="ttdef"><b>Definition</b> mns.c:192</div></div>
+<div class="ttc" id="amns_8h_html_ae11d61a51505b9b853796f1ea7a7a905"><div class="ttname"><a href="mns_8h.html#ae11d61a51505b9b853796f1ea7a7a905">mode_flags</a></div><div class="ttdeci">uint8_t mode_flags</div><div class="ttdef"><b>Definition</b> mns.c:165</div></div>
+<div class="ttc" id="astruct_service_html"><div class="ttname"><a href="struct_service.html">Service</a></div><div class="ttdef"><b>Definition</b> vlcb.h:289</div></div>
+<div class="ttc" id="aticktime_8h_html"><div class="ttname"><a href="ticktime_8h.html">ticktime.h</a></div><div class="ttdoc">This file provides access to all of the time management functions.</div></div>
+<div class="ttc" id="aunion___tick_value_html"><div class="ttname"><a href="union___tick_value.html">_TickValue</a></div><div class="ttdef"><b>Definition</b> ticktime.h:211</div></div>
+<div class="ttc" id="aunion_diagnostic_val_html"><div class="ttname"><a href="union_diagnostic_val.html">DiagnosticVal</a></div><div class="ttdef"><b>Definition</b> vlcb.h:140</div></div>
+<div class="ttc" id="aunion_word_html"><div class="ttname"><a href="union_word.html">Word</a></div><div class="ttdef"><b>Definition</b> vlcb.h:114</div></div>
+<div class="ttc" id="avlcb_8h_html"><div class="ttname"><a href="vlcb_8h.html">vlcb.h</a></div><div class="ttdoc">Baseline functionality required by VLCB and entry points into the application.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d522931ffa1371640980b621734a4381.html">Users</a></li><li class="navelem"><a class="el" href="dir_10e25e262c850a79f6760812285f1413.html">ianwh</a></li><li class="navelem"><a class="el" href="dir_b0b4633879bd5c761e47fc280b556d88.html">github</a></li><li class="navelem"><a class="el" href="dir_a1617414bc24890c12be9c4da14587d4.html">VLCBlib_PIC</a></li><li class="navelem"><a class="el" href="mns_8h.html">mns.h</a></li>
+    <li class="navelem"><a class="el" href="mns_8h.html">mns.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

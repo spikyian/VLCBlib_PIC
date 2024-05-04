@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCBlib_PIC: C:/Users/ianwh/github/VLCBlib_PIC/vlcb.c File Reference</title>
+<title>VLCB library: vlcb.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,11 +26,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="VLCB.png"/></td>
   <td id="projectalign">
-   <div id="projectname">VLCBlib_PIC
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for module developemnt using PIC processors</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -99,21 +98,24 @@ $(function(){initNavTree('vlcb_8c.html',''); initResizable(); });
   <div class="headertitle"><div class="title">vlcb.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Baseline functionality required by VLCB and entry points into the application.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;xc.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="vlcb_8h_source.html">vlcb.h</a>&quot;</code><br />
 <code>#include &quot;module.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="romops_8h_source.html">romops.h</a>&quot;</code><br />
-<code>#include &quot;hardware.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="nvm_8h_source.html">nvm.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="hardware_8h_source.html">hardware.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ticktime_8h_source.html">ticktime.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="timed_response_8h_source.html">timedResponse.h</a>&quot;</code><br />
-<code>#include &quot;statusLeds.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="status_leds_8h_source.html">statusLeds.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="mns_8h_source.html">mns.h</a>&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a7b80b521ea40399b62af546746ecd769" id="r_a7b80b521ea40399b62af546746ecd769"><td class="memItemLeft" align="right" valign="top">Processed&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b80b521ea40399b62af546746ecd769">APP_preProcessMessage</a> (<a class="el" href="struct_message.html">Message</a> *m)</td></tr>
+<tr class="memitem:a7b80b521ea40399b62af546746ecd769" id="r_a7b80b521ea40399b62af546746ecd769"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544">Processed</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b80b521ea40399b62af546746ecd769">APP_preProcessMessage</a> (<a class="el" href="struct_message.html">Message</a> *m)</td></tr>
 <tr class="separator:a7b80b521ea40399b62af546746ecd769"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a664c7f5e506993130616dcf9604601d9" id="r_a664c7f5e506993130616dcf9604601d9"><td class="memItemLeft" align="right" valign="top">Processed&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a664c7f5e506993130616dcf9604601d9">APP_postProcessMessage</a> (<a class="el" href="struct_message.html">Message</a> *m)</td></tr>
+<tr class="memitem:a664c7f5e506993130616dcf9604601d9" id="r_a664c7f5e506993130616dcf9604601d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544">Processed</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a664c7f5e506993130616dcf9604601d9">APP_postProcessMessage</a> (<a class="el" href="struct_message.html">Message</a> *m)</td></tr>
 <tr class="separator:a664c7f5e506993130616dcf9604601d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaefa2e9d7f924327aa066ed75aca0319" id="r_aaefa2e9d7f924327aa066ed75aca0319"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaefa2e9d7f924327aa066ed75aca0319">APP_factoryReset</a> (void)</td></tr>
 <tr class="separator:aaefa2e9d7f924327aa066ed75aca0319"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,16 +129,20 @@ Functions</h2></td></tr>
 <tr class="separator:af44fc8f3b49febc2bdc5e3ea969b7267"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b339d4f1bff6cc621db58445da1618a" id="r_a6b339d4f1bff6cc621db58445da1618a"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b339d4f1bff6cc621db58445da1618a">findServiceIndex</a> (uint8_t serviceType)</td></tr>
 <tr class="separator:a6b339d4f1bff6cc621db58445da1618a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51f53c29510e479d44d84336fbfa67a4" id="r_a51f53c29510e479d44d84336fbfa67a4"><td class="memItemLeft" align="right" valign="top">ServicePresent&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a51f53c29510e479d44d84336fbfa67a4">have</a> (uint8_t id)</td></tr>
+<tr class="memitem:a51f53c29510e479d44d84336fbfa67a4" id="r_a51f53c29510e479d44d84336fbfa67a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vlcb_8h.html#a854c33a3bc2b495fc2e3c229b661becf">ServicePresent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a51f53c29510e479d44d84336fbfa67a4">have</a> (uint8_t id)</td></tr>
 <tr class="separator:a51f53c29510e479d44d84336fbfa67a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d811d6a4354a941b197ed88623d0b7f" id="r_a5d811d6a4354a941b197ed88623d0b7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d811d6a4354a941b197ed88623d0b7f">factoryReset</a> (void)</td></tr>
 <tr class="separator:a5d811d6a4354a941b197ed88623d0b7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3955f63350a3bbb9d97fb88653182497" id="r_a3955f63350a3bbb9d97fb88653182497"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3955f63350a3bbb9d97fb88653182497">setTimedResponseDelay</a> (uint8_t delay)</td></tr>
+<tr class="separator:a3955f63350a3bbb9d97fb88653182497"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44c244b308a4241ebe4b847481882686" id="r_a44c244b308a4241ebe4b847481882686"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44c244b308a4241ebe4b847481882686">pbDownTimer</a> (uint8_t timeout)</td></tr>
 <tr class="separator:a44c244b308a4241ebe4b847481882686"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9bd3ac03ad976ef69a501e76a97c0132" id="r_a9bd3ac03ad976ef69a501e76a97c0132"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9bd3ac03ad976ef69a501e76a97c0132">pbUpTimer</a> (uint8_t timeout)</td></tr>
 <tr class="separator:a9bd3ac03ad976ef69a501e76a97c0132"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bf07c27105f7c54f030818acb9ad9d1" id="r_a9bf07c27105f7c54f030818acb9ad9d1"><td class="memItemLeft" align="right" valign="top">Processed&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9bf07c27105f7c54f030818acb9ad9d1">checkLen</a> (<a class="el" href="struct_message.html">Message</a> *m, uint8_t needed, uint8_t service)</td></tr>
+<tr class="memitem:a9bf07c27105f7c54f030818acb9ad9d1" id="r_a9bf07c27105f7c54f030818acb9ad9d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544">Processed</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9bf07c27105f7c54f030818acb9ad9d1">checkLen</a> (<a class="el" href="struct_message.html">Message</a> *m, uint8_t needed, uint8_t service)</td></tr>
 <tr class="separator:a9bf07c27105f7c54f030818acb9ad9d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38cce02004be097334eb440d61ba88a4" id="r_a38cce02004be097334eb440d61ba88a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a38cce02004be097334eb440d61ba88a4">isEvent</a> (uint8_t opc)</td></tr>
+<tr class="separator:a38cce02004be097334eb440d61ba88a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29dc097f840bdf4656a07cd47db11418" id="r_a29dc097f840bdf4656a07cd47db11418"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29dc097f840bdf4656a07cd47db11418">sendMessage0</a> (VlcbOpCodes opc)</td></tr>
 <tr class="separator:a29dc097f840bdf4656a07cd47db11418"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76660800f92d4cb8908f57f3079aa4ab" id="r_a76660800f92d4cb8908f57f3079aa4ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a76660800f92d4cb8908f57f3079aa4ab">sendMessage1</a> (VlcbOpCodes opc, uint8_t data1)</td></tr>
@@ -157,16 +163,25 @@ Functions</h2></td></tr>
 <tr class="separator:a53a16cd2ff2166ac7a6990bb10fb53a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6288eba0f8e8ad3ab1544ad731eb7667" id="r_a6288eba0f8e8ad3ab1544ad731eb7667"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6288eba0f8e8ad3ab1544ad731eb7667">main</a> (void)</td></tr>
 <tr class="separator:a6288eba0f8e8ad3ab1544ad731eb7667"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9512ff448563b799ab6e598a514be5d2" id="r_a9512ff448563b799ab6e598a514be5d2"><td class="memItemLeft" align="right" valign="top"><a id="a9512ff448563b799ab6e598a514be5d2" name="a9512ff448563b799ab6e598a514be5d2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>__interrupt</b> (high_priority)</td></tr>
+<tr class="separator:a9512ff448563b799ab6e598a514be5d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dcd02fd709478d6a7b3ec4c17d8433a" id="r_a5dcd02fd709478d6a7b3ec4c17d8433a"><td class="memItemLeft" align="right" valign="top"><a id="a5dcd02fd709478d6a7b3ec4c17d8433a" name="a5dcd02fd709478d6a7b3ec4c17d8433a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>__interrupt</b> (low_priority)</td></tr>
+<tr class="separator:a5dcd02fd709478d6a7b3ec4c17d8433a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ffd32451b3cdb2e6187bacb3e023944" id="r_a7ffd32451b3cdb2e6187bacb3e023944"><td class="memItemLeft" align="right" valign="top"><a id="a7ffd32451b3cdb2e6187bacb3e023944" name="a7ffd32451b3cdb2e6187bacb3e023944"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>__interrupt</b> (irq(default), base(IVT_BASE))</td></tr>
+<tr class="separator:a7ffd32451b3cdb2e6187bacb3e023944"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ad9c0663c54097bc7c55d5dcbbc556424" id="r_ad9c0663c54097bc7c55d5dcbbc556424"><td class="memItemLeft" align="right" valign="top">const Priority&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9c0663c54097bc7c55d5dcbbc556424">priorities</a> [256]</td></tr>
+<tr class="memitem:ad9c0663c54097bc7c55d5dcbbc556424" id="r_ad9c0663c54097bc7c55d5dcbbc556424"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="vlcb_8h.html#a315655b1bb5848c063491adffde62b15">Priority</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9c0663c54097bc7c55d5dcbbc556424">priorities</a> [256]</td></tr>
 <tr class="separator:ad9c0663c54097bc7c55d5dcbbc556424"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b936eacf5488a640c02f68564f54372" id="r_a3b936eacf5488a640c02f68564f54372"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_transport.html">Transport</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b936eacf5488a640c02f68564f54372">transport</a></td></tr>
 <tr class="separator:a3b936eacf5488a640c02f68564f54372"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Baseline functionality required by VLCB and entry points into the application.</p>
+<div class="textblock"><p>Baseline functionality required by VLCB and entry points into the application. </p>
 <p>Provides the functionality for <a class="el" href="#a6288eba0f8e8ad3ab1544ad731eb7667">main()</a> and interrupt processing. Also contains the functionality to handle the list of services. Contains the PIC CONFIG settings. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="aaefa2e9d7f924327aa066ed75aca0319" name="aaefa2e9d7f924327aa066ed75aca0319"></a>
@@ -205,7 +220,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Processed APP_postProcessMessage </td>
+          <td class="memname"><a class="el" href="vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544">Processed</a> APP_postProcessMessage </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_message.html">Message</a> *</td>          <td class="paramname"><span class="paramname"><em>m</em></span></td><td>)</td>
           <td></td>
@@ -231,7 +246,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Processed APP_preProcessMessage </td>
+          <td class="memname"><a class="el" href="vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544">Processed</a> APP_preProcessMessage </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_message.html">Message</a> *</td>          <td class="paramname"><span class="paramname"><em>m</em></span></td><td>)</td>
           <td></td>
@@ -280,7 +295,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Processed checkLen </td>
+          <td class="memname"><a class="el" href="vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544">Processed</a> checkLen </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_message.html">Message</a> *</td>          <td class="paramname"><span class="paramname"><em>m</em>, </span></td>
         </tr>
@@ -296,15 +311,16 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Checks that the required number of message bytes are present. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Helper function to check a received message.</p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">m</td><td>the message to be checked </td></tr>
-    <tr><td class="paramname">needed</td><td>the number of bytes within the message needed including the opc </td></tr>
-    <tr><td class="paramname">service</td><td>he service making the test </td></tr>
+    <tr><td class="paramname">m</td><td>received message </td></tr>
+    <tr><td class="paramname">needed</td><td>number of bytes in message </td></tr>
+    <tr><td class="paramname">service</td><td>he service making the request </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>PROCESSED if it is an invalid message and should not be processed further </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Process if message isn't valid, NOT_PROCESSED if ok </dd></dl>
 
 </div>
 </div>
@@ -322,7 +338,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Perform the factory reset for all services and VLCB base. VLCB function to perform necessary factory reset functionality and also call the factoryReset function for each service. </p>
+<p>Perform the factory reset for all services and VLCB base. VLCB function to perform necessary factory reset functionality and also call the factoryReset function for each service followed by the Application factory reset <a class="el" href="#aaefa2e9d7f924327aa066ed75aca0319">APP_factoryReset()</a>. </p>
 
 </div>
 </div>
@@ -381,7 +397,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">ServicePresent have </td>
+          <td class="memname"><a class="el" href="vlcb_8h.html#a854c33a3bc2b495fc2e3c229b661becf">ServicePresent</a> have </td>
           <td>(</td>
           <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
@@ -394,7 +410,31 @@ Variables</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>1 if the service is present 0 otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>PRESENT if the service is present NOT_PRESENT otherwise </dd></dl>
+
+</div>
+</div>
+<a id="a38cce02004be097334eb440d61ba88a4" name="a38cce02004be097334eb440d61ba88a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38cce02004be097334eb440d61ba88a4">&#9670;&#160;</a></span>isEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a> isEvent </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>opc</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Helper function to check for an event. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">opc</td><td>the opcode </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>TRUE for an event FALSE otherwise </dd></dl>
 
 </div>
 </div>
@@ -430,7 +470,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This is the VLCB application start. Do some initialisation, call the <a class="el" href="#a5d811d6a4354a941b197ed88623d0b7f">factoryReset()</a> if necessary, call the powerUp() service routines. Then call the user's <a class="el" href="#a7dfd9b79bc5a37d7df40207afbc5431f">setup()</a> before entering the main loop which calls the user's <a class="el" href="#a0b33edabd7f1c4e4a0bf32c67269be2f">loop()</a> and service poll(). </p>
+<p>This is the VLCB application start. Do some initialisation, call the <a class="el" href="#a5d811d6a4354a941b197ed88623d0b7f">factoryReset()</a> if necessary, call the powerUp() service routines. Then call the Application's <a class="el" href="#a7dfd9b79bc5a37d7df40207afbc5431f">setup()</a> before entering the main loop which calls the Application's <a class="el" href="#a0b33edabd7f1c4e4a0bf32c67269be2f">loop()</a> and each service poll(). </p>
 
 </div>
 </div>
@@ -899,6 +939,29 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a3955f63350a3bbb9d97fb88653182497" name="a3955f63350a3bbb9d97fb88653182497"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3955f63350a3bbb9d97fb88653182497">&#9670;&#160;</a></span>setTimedResponseDelay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setTimedResponseDelay </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>delay</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Allows the application to control how quickly timed responses are sent. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">delay</td><td>time between timed responses </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a7dfd9b79bc5a37d7df40207afbc5431f" name="a7dfd9b79bc5a37d7df40207afbc5431f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7dfd9b79bc5a37d7df40207afbc5431f">&#9670;&#160;</a></span>setup()</h2>
 
@@ -925,7 +988,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const Priority priorities[256]</td>
+          <td class="memname">const <a class="el" href="vlcb_8h.html#a315655b1bb5848c063491adffde62b15">Priority</a> priorities[256]</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -953,7 +1016,7 @@ Variables</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d522931ffa1371640980b621734a4381.html">Users</a></li><li class="navelem"><a class="el" href="dir_10e25e262c850a79f6760812285f1413.html">ianwh</a></li><li class="navelem"><a class="el" href="dir_b0b4633879bd5c761e47fc280b556d88.html">github</a></li><li class="navelem"><a class="el" href="dir_a1617414bc24890c12be9c4da14587d4.html">VLCBlib_PIC</a></li><li class="navelem"><a class="el" href="vlcb_8c.html">vlcb.c</a></li>
+    <li class="navelem"><a class="el" href="vlcb_8c.html">vlcb.c</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

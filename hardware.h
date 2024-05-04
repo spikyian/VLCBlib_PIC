@@ -34,6 +34,11 @@
  */
 #define _HARDWARE_H_
 
+/**
+ * @file
+ * @brief
+ * Macros for enabling and disabling interrupts.
+ */
 
 /**
  *  How to determine whether interrupts are enabled

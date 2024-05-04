@@ -44,6 +44,7 @@
 #include "ticktime.h"
 /**
  * @file
+ * @brief
  * Implementation of the VLCB CAN service. 
  * @details
  * Uses Controller Area Network to carry VLCB messages.
@@ -61,25 +62,30 @@
  * must include the MNS service.
  * 
  * # Module.h definitions required for the CAN service
- * - #define CANID_ADDRESS The address of the CANID. PIC modules normally stored 
+ * - \#define CANID_ADDRESS The address of the CANID. PIC modules normally stored 
  *                      this at TOP-1.
- * - #define CANID_NVM_TYPE The type of NVM where to store the CANID. This can be
+ * - \#define CANID_NVM_TYPE The type of NVM where to store the CANID. This can be
  *                      set to be either EEPROM_NVM_TYPE or FLASH_NVM_TYPE. The
  *                      PIC modules normally have this set to EEPROM_NVM_TYPE.
- * - #define CAN_INTERRUPT_PRIORITY 0 for low priority, 1 for high priotity
- * - #define CAN_NUM_RXBUFFERS the number of receive message buffers to be created. A
+ * - \#define CAN_INTERRUPT_PRIORITY 0 for low priority, 1 for high priotity
+ * - \#define CAN_NUM_RXBUFFERS the number of receive message buffers to be created. A
  *                      larger number of buffers will reduce the chance of missing
  *                      messages but will need to be balanced with the amount of 
  *                      RAM available.
- * - #define CAN_NUM_TXBUFFERS the number of transmit buffers to be created. Fewer 
+ * - \#define CAN_NUM_TXBUFFERS the number of transmit buffers to be created. Fewer 
  *                      transmit buffers will be needed then receive buffers, 
  *                      the timedResponse mechanism means that 4 or fewer buffers
  *                      should be sufficient.
  * 
  * 
  */
-
+/**
+ * The Handle for the CAN Service descriptor.
+ */
 extern const Service canService;
+/**
+ * The handle for the Transport.
+ */
 extern const Transport canTransport;
 
 #define NUM_CAN_DIAGNOSTICS 16      ///< The number of diagnostic values associated with this service
@@ -104,14 +110,17 @@ extern const Transport canTransport;
 /**
  * The default value of the CANID.
  */
-#define CANID_DEFAULT       1
-#define ENUMERATION_TIMEOUT HUNDRED_MILI_SECOND     ///< Wait time for enumeration responses before setting canid
-#define ENUMERATION_HOLDOFF 2 * HUNDRED_MILI_SECOND ///< Delay afer receiving conflict before initiating our own self enumeration
-#define MAX_CANID           0x7F
-#define ENUM_ARRAY_SIZE     (MAX_CANID/8)+1         // Size of array for enumeration results
-#define LARB_RETRIES    10                          // Number of retries for lost arbitration
-#define CAN_TX_TIMEOUT  ONE_SECOND                  ///< Time for CAN transmit timeout (will resolve to one second intervals due to timer interrupt period)
+#define CANID_DEFAULT       0                       ///< Setting to zero will trigger an enumeration on first send.
+#define ENUMERATION_TIMEOUT HUNDRED_MILI_SECOND     ///< Wait time for enumeration responses before setting CANID.
+#define ENUMERATION_HOLDOFF 2 * HUNDRED_MILI_SECOND ///< Delay afer receiving conflict before initiating our own self enumeration.
+#define MAX_CANID           0x7F                    ///< Theorhetical maximum value of a CANID.
+#define ENUM_ARRAY_SIZE     (MAX_CANID/8)+1         ///< Size of array for enumeration results.
+#define LARB_RETRIES    10                          ///< Number of retries for lost arbitration.
+#define CAN_TX_TIMEOUT  ONE_SECOND                  ///< Time for CAN transmit timeout (will resolve to one second intervals due to timer interrupt period).
 
+/**
+ * Indicates whether a self enumeration was successful.
+ */
 typedef enum CanidResult {
     CANID_FAIL,
     CANID_OK

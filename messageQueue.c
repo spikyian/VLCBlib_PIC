@@ -41,11 +41,12 @@
 
 /**
  * @file
+ * @brief
  * Implementation of message queues used for receive and transmit buffers.
  */
 #include <xc.h>
 #include "vlcb.h"
-#include "queue.h"
+#include "messageQueue.h"
 
 /**
  * Push a message onto the message queue.
@@ -53,7 +54,7 @@
  * @param m the message
  * @return QUEUE_SUCCESS for success QUEUE_FAIL for buffer full
  */
-Qresult push(Queue * q, Message * m) {
+Qresult push(MessageQueue * q, Message * m) {
     if (((q->writeIndex+1)&((q->size)-1)) == q->readIndex) return QUEUE_FAIL;	// buffer full
     (q->messages[q->writeIndex]).opc = m->opc;
     (q->messages[q->writeIndex]).bytes[0] = m->bytes[0];
@@ -75,7 +76,7 @@ Qresult push(Queue * q, Message * m) {
  * @param q the queue
  * @return a message pointer
  */
-Message * getNextWriteMessage(Queue * q) {
+Message * getNextWriteMessage(MessageQueue * q) {
     uint8_t wr;
     if (((q->writeIndex+1)&((q->size)-1)) == q->readIndex) return NULL;	// buffer full
     wr = q->writeIndex;
@@ -86,12 +87,12 @@ Message * getNextWriteMessage(Queue * q) {
 
 
 /**
- * Pull the next message from the queue.
+ * Pull and return the next message from the queue.
  *
  * @param q the queue
  * @return the next message
  */
-Message * pop(Queue * q) {
+Message * pop(MessageQueue * q) {
     Message * ret;
 	if (q->writeIndex == q->readIndex) {
         return NULL;	// buffer empty
@@ -108,7 +109,7 @@ Message * pop(Queue * q) {
  * @param index the position into the queue
  * @return the message
  */
-Message * peek(Queue * q, unsigned char index) {
+Message * peek(MessageQueue * q, uint8_t index) {
     if (q->readIndex == q->writeIndex) return NULL;    // empty
     index += q->readIndex;
 //    index -= 1;
@@ -125,7 +126,7 @@ Message * peek(Queue * q, unsigned char index) {
  * @param q the queue
  * @return the number of items
  */
-unsigned char quantity(Queue * q) {
+uint8_t quantity(MessageQueue * q) {
     return (q->writeIndex - q->readIndex) & (q->size -1);
 }
 

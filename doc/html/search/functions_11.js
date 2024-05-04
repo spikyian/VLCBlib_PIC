@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['validstart_0',['validStart',['../event__teach_8c.html#a4a722d9dbb962714dab2dbed9aee2cba',1,'validStart(uint8_t tableIndex):&#160;event_teach.c'],['../event__teach_8h.html#a7258999884749a6c568598ee0037c2eb',1,'validStart(uint8_t index):&#160;event_teach.c']]]
+  ['updatemoduleerrorstatus_0',['updateModuleErrorStatus',['../mns_8c.html#a57807e6772d17598b2608951ef49bdc6',1,'updateModuleErrorStatus(void):&#160;mns.c'],['../mns_8h.html#a57807e6772d17598b2608951ef49bdc6',1,'updateModuleErrorStatus(void):&#160;mns.c']]]
 ];

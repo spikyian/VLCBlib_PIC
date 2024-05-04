@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCBlib_PIC: C:/Users/ianwh/github/VLCBlib_PIC/vlcb.h Source File</title>
+<title>VLCB library: vlcb.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,11 +26,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="VLCB.png"/></td>
   <td id="projectalign">
-   <div id="projectname">VLCBlib_PIC
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for module developemnt using PIC processors</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -138,291 +137,322 @@ $(function(){initNavTree('vlcb_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#define _VLCB_H_</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#include &quot;vlcbdefs_enums.h&quot;</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#include &quot;<a class="code" href="romops_8h.html">romops.h</a>&quot;</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#include &quot;<a class="code" href="nvm_8h.html">nvm.h</a>&quot;</span></div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">// Additional Service definitions</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#define SERVICE_ID_NOT_FOUND      0xFF</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#define SERVICE_ID_ALL       0</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">// Additional parameter definitions</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#define PAR_LOAD1   PAR_LOAD</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#define PAR_LOAD2   (PAR_LOAD+1)</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#define PAR_LOAD3   (PAR_LOAD+2)</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">#define PAR_LOAD4   (PAR_LOAD+3)</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">//</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a80cb0124451e7f73bf7a95694045ea27">   66</a></span><span class="preprocessor">#define MANU_VLCB   250</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="vlcb_8h.html#ae87acb3854722fc2ec59aa21fb47bf4b">   68</a></span><span class="preprocessor">#define MTYP_VLCB_16INP     0x01</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">#define MTYP_VLCB_16OUT     0x02</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment"> * Message priorities</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="keyword">typedef</span> <span class="keyword">enum</span> Priority {</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    pLOW=0,</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    pNORMAL=1,</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    pABOVE=2,</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    pHIGH=3,</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>} Priority;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="keyword">typedef</span> <span class="keyword">enum</span> Boolean {</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    FALSE,</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    TRUE</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>} Boolean;</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="keyword">typedef</span> <span class="keyword">enum</span> Result {</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    RESULT_FAIL,</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    RESULT_SUCCESS</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>} Result;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">// Additional Service definitions</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a9a82ed58543deac142c125962348c5e7">   56</a></span><span class="preprocessor">#define SERVICE_ID_NOT_FOUND      0xFF      </span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a8628c68948100f63909f5e070a052f05">   57</a></span><span class="preprocessor">#define SERVICE_ID_ALL       0              </span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">// Additional parameter definitions</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a68ccbed9e2d14d1ca8788ffa73bf3731">   60</a></span><span class="preprocessor">#define PAR_LOAD1   PAR_LOAD                </span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a4312b935149206355000cacba615d595">   61</a></span><span class="preprocessor">#define PAR_LOAD2   (PAR_LOAD+1)            </span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a1847f1523370bde4536946669908838a">   62</a></span><span class="preprocessor">#define PAR_LOAD3   (PAR_LOAD+2)            </span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="vlcb_8h.html#ac4741010037ed25bea06561ca1442852">   63</a></span><span class="preprocessor">#define PAR_LOAD4   (PAR_LOAD+3)            </span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">//</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a80cb0124451e7f73bf7a95694045ea27">   67</a></span><span class="preprocessor">#define MANU_VLCB   250</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="vlcb_8h.html#ae87acb3854722fc2ec59aa21fb47bf4b">   69</a></span><span class="preprocessor">#define MTYP_VLCB_16INP     0x01</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="vlcb_8h.html#accba88edc3be81b6ebda0f9ce1a3da0d">   71</a></span><span class="preprocessor">#define MTYP_VLCB_16OUT     0x02</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="foldopen" id="foldopen00077" data-start="{" data-end="};">
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a315655b1bb5848c063491adffde62b15">   77</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code hl_enumeration" href="vlcb_8h.html#a315655b1bb5848c063491adffde62b15">Priority</a> {</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    pLOW=0,</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    pNORMAL=1,</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    pABOVE=2,</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    pHIGH=3,</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="vlcb_8h.html#af6030e60c7d8f9f8920ecaeb41ae4c31">   82</a></span>} <a class="code hl_enumeration" href="vlcb_8h.html#a315655b1bb5848c063491adffde62b15">Priority</a>;</div>
+</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="foldopen" id="foldopen00087" data-start="{" data-end="};">
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">   87</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code hl_enumeration" href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a> {</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    FALSE,</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    TRUE</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="vlcb_8h.html#ad665bd4a0bff725979ec9dfbda92f5f5">   90</a></span>} <a class="code hl_enumeration" href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a>;</div>
+</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="foldopen" id="foldopen00097" data-start="{" data-end="};">
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="struct_message.html">   97</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="struct_message.html">Message</a> {</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    uint8_t len;        <span class="comment">// message total length including opc</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    VlcbOpCodes opc;        <span class="comment">// The opcode</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    uint8_t bytes[7];   <span class="comment">// any data bytes</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a82fffef6ac8d8a796ab35b7d6a7a0dcb">  101</a></span>} <a class="code hl_typedef" href="vlcb_8h.html#a82fffef6ac8d8a796ab35b7d6a7a0dcb">Message</a>;</div>
+<div class="foldopen" id="foldopen00095" data-start="{" data-end="};">
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a28287671eaf7406afd604bd055ba4066">   95</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code hl_enumeration" href="vlcb_8h.html#a28287671eaf7406afd604bd055ba4066">Result</a> {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    RESULT_FAIL,</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    RESULT_SUCCESS</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a390119df9e05caa22ea298f619044749">   98</a></span>} <a class="code hl_enumeration" href="vlcb_8h.html#a28287671eaf7406afd604bd055ba4066">Result</a>;</div>
 </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="foldopen" id="foldopen00106" data-start="{" data-end="};">
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="union_word.html">  106</a></span><span class="keyword">typedef</span> <span class="keyword">union </span><a class="code hl_union" href="union_word.html">Word</a> {</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        uint8_t lo;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        uint8_t hi;</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    } bytes;</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    uint16_t word;</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a4bbd0c6dc7d668b55f6a3eb986929862">  112</a></span>} <a class="code hl_typedef" href="vlcb_8h.html#a4bbd0c6dc7d668b55f6a3eb986929862">Word</a>;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="foldopen" id="foldopen00105" data-start="{" data-end="};">
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="struct_message.html">  105</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="struct_message.html">Message</a> {</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="struct_message.html#a5723e60ffd628510c699eddbce90be23">  106</a></span>    uint8_t <a class="code hl_variable" href="struct_message.html#a5723e60ffd628510c699eddbce90be23">len</a>;        </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="struct_message.html#a76ea350f61acd31e0daa2525b772e248">  107</a></span>    VlcbOpCodes <a class="code hl_variable" href="struct_message.html#a76ea350f61acd31e0daa2525b772e248">opc</a>;    </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="struct_message.html#a1b8c98231315d836ed93643efb0dac9d">  108</a></span>    uint8_t <a class="code hl_variable" href="struct_message.html#a1b8c98231315d836ed93643efb0dac9d">bytes</a>[7];   </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a82fffef6ac8d8a796ab35b7d6a7a0dcb">  109</a></span>} <a class="code hl_typedef" href="vlcb_8h.html#a82fffef6ac8d8a796ab35b7d6a7a0dcb">Message</a>;</div>
 </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="foldopen" id="foldopen00123" data-start="{" data-end="};">
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="union_diagnostic_val.html">  123</a></span><span class="keyword">typedef</span> <span class="keyword">union </span><a class="code hl_union" href="union_diagnostic_val.html">DiagnosticVal</a> {</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    uint16_t    asUint;</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    int16_t     asInt;</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        uint8_t lo;</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        uint8_t hi;</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    } asBytes;</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="vlcb_8h.html#ab90c1a42242042feb599bbd102d1f596">  130</a></span>} <a class="code hl_typedef" href="vlcb_8h.html#ab90c1a42242042feb599bbd102d1f596">DiagnosticVal</a>;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="foldopen" id="foldopen00114" data-start="{" data-end="};">
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="union_word.html">  114</a></span><span class="keyword">typedef</span> <span class="keyword">union </span><a class="code hl_union" href="union_word.html">Word</a> {</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="union_word.html#a9d0956f4e4e86bda245a8a68c0086d9b">  116</a></span>        uint8_t <a class="code hl_variable" href="union_word.html#a9d0956f4e4e86bda245a8a68c0086d9b">lo</a>;     </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="union_word.html#a0d1d96c56b6ee924149d67a64b8b1416">  117</a></span>        uint8_t <a class="code hl_variable" href="union_word.html#a0d1d96c56b6ee924149d67a64b8b1416">hi</a>;     </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    } bytes;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="union_word.html#af9036114e498c9fcb670232e4227341a">  119</a></span>    uint16_t <a class="code hl_variable" href="union_word.html#af9036114e498c9fcb670232e4227341a">word</a>;      </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a4bbd0c6dc7d668b55f6a3eb986929862">  120</a></span>} <a class="code hl_typedef" href="vlcb_8h.html#a4bbd0c6dc7d668b55f6a3eb986929862">Word</a>;</div>
 </div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="keyword">typedef</span> <span class="keyword">enum</span> Processed {</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    NOT_PROCESSED=0,</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    PROCESSED=1</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>} Processed;</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
-<div class="foldopen" id="foldopen00138" data-start="{" data-end="};">
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a11444bb1686f1beb6cdf0482278a7c7f">  138</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code hl_enumeration" href="vlcb_8h.html#a11444bb1686f1beb6cdf0482278a7c7f">Mode_state</a> {</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    EMODE_UNITIALISED,</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    EMODE_SETUP,</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    EMODE_NORMAL</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a66aa255b79f3ce6375c015e8db0f04b6">  142</a></span>} <a class="code hl_enumeration" href="vlcb_8h.html#a11444bb1686f1beb6cdf0482278a7c7f">Mode_state</a>;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="foldopen" id="foldopen00126" data-start="{" data-end="};">
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="vlcb_8h.html#ab951f47efbc96e7b5586e5a45b4aaa93">  126</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    EVENT_OFF=0,</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    EVENT_ON=1</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>} <a class="code hl_enumeration" href="vlcb_8h.html#ab951f47efbc96e7b5586e5a45b4aaa93">EventState</a>;</div>
 </div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="comment">// Mode flags</span></div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="preprocessor">#define FLAG_MODE_LEARN     1</span></div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="preprocessor">#define FLAG_MODE_EVENTACK  2</span></div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="preprocessor">#define FLAG_MODE_HEARTBEAT 4</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="foldopen" id="foldopen00140" data-start="{" data-end="};">
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno"><a class="line" href="union_diagnostic_val.html">  140</a></span><span class="keyword">typedef</span> <span class="keyword">union </span><a class="code hl_union" href="union_diagnostic_val.html">DiagnosticVal</a> {</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="union_diagnostic_val.html#adfb693f2e83c79b8b327a9c655c15f64">  141</a></span>    uint16_t    <a class="code hl_variable" href="union_diagnostic_val.html#adfb693f2e83c79b8b327a9c655c15f64">asUint</a>; </div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="union_diagnostic_val.html#ad5a02e3975fa26daf341f6d8ffeffd9b">  142</a></span>    int16_t     <a class="code hl_variable" href="union_diagnostic_val.html#ad5a02e3975fa26daf341f6d8ffeffd9b">asInt</a>;  </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno"><a class="line" href="union_diagnostic_val.html#a9d0956f4e4e86bda245a8a68c0086d9b">  144</a></span>        uint8_t <a class="code hl_variable" href="union_diagnostic_val.html#a9d0956f4e4e86bda245a8a68c0086d9b">lo</a>;     </div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="union_diagnostic_val.html#a0d1d96c56b6ee924149d67a64b8b1416">  145</a></span>        uint8_t <a class="code hl_variable" href="union_diagnostic_val.html#a0d1d96c56b6ee924149d67a64b8b1416">hi</a>;     </div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    } asBytes;</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="vlcb_8h.html#ab90c1a42242042feb599bbd102d1f596">  147</a></span>} <a class="code hl_typedef" href="vlcb_8h.html#ab90c1a42242042feb599bbd102d1f596">DiagnosticVal</a>;</div>
+</div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="keyword">extern</span> <span class="keyword">const</span> Priority <a class="code hl_variable" href="vlcb_8h.html#ad9c0663c54097bc7c55d5dcbbc556424">priorities</a>[256];</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="comment"> * Helper function to check a received message.</span></div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="comment"> * </span></div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="comment"> * @param m received message</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="comment"> * @param needed number of bytes in message</span></div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="comment"> * @param service he service making the request</span></div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="comment"> * @return Process if message isn&#39;t valid, NOT_PROCESSED if ok</span></div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="keyword">extern</span> Processed <a class="code hl_function" href="vlcb_8h.html#a9bf07c27105f7c54f030818acb9ad9d1">checkLen</a>(<a class="code hl_struct" href="struct_message.html">Message</a> * m, uint8_t needed, uint8_t service);</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="comment">// Functions to send a VLCB message on any defined transport layer</span></div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="comment">// XC8 doesn&#39;t support function overloading nor varargs</span></div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#a29dc097f840bdf4656a07cd47db11418">sendMessage0</a>(VlcbOpCodes opc);</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#a76660800f92d4cb8908f57f3079aa4ab">sendMessage1</a>(VlcbOpCodes opc, uint8_t data1);</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#a80b4eacc5227afe9b3e70d38fbf1c70b">sendMessage2</a>(VlcbOpCodes opc, uint8_t data1, uint8_t data2);</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#af22b4eac8fd0c14d09eb8419cccfa5e0">sendMessage3</a>(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3);</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#ab6d32b97976fbdbbec8af21ab59fd47c">sendMessage4</a>(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4);</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#ae20dd964b2b398b638516b983576ad92">sendMessage5</a>(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5);</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#ad5d047b1eca2bdc28bd9ccf366442efe">sendMessage6</a>(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5, uint8_t data6);</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span><span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#a25c844c608900c79ab802c2b4fbbd71a">sendMessage7</a>(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5, uint8_t data6, uint8_t data7);</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span><span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#a53a16cd2ff2166ac7a6990bb10fb53a9">sendMessage</a>(VlcbOpCodes opc, uint8_t len, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5, uint8_t data6, uint8_t data7);</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="comment">/* SERVICE INTERFACE */</span></div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span><span class="comment">/*******************************************************************************</span></div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="comment"> * This is the service descriptor and the main entry point to a service. The </span></div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="comment"> * module&#39;s application code should add the service descriptors to the services</span></div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span><span class="comment"> * array for any of the services which it requires to be implemented.</span></div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="comment"> * The VLCB library code then uses the pointers in the service descriptor to</span></div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="comment"> * access the service&#39;s functionality.</span></div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="comment"> * It is the responsibility of the writer of the service to provide a populated</span></div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="comment"> * singleton for the service that can be used by the module&#39;s application code.</span></div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="comment"> */</span></div>
-<div class="foldopen" id="foldopen00258" data-start="{" data-end="};">
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno"><a class="line" href="struct_service.html">  258</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="struct_service.html">Service</a> {</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    uint8_t serviceNo;      <span class="comment">// Identifies the type of service</span></div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    uint8_t version;        <span class="comment">// version of the service definition (not the version of code))</span></div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    void (* factoryReset)(void);    <span class="comment">// function call for a new module</span></div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    void (* powerUp)(void);         <span class="comment">// function called upon module power up</span></div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    Processed (* processMessage)(<a class="code hl_struct" href="struct_message.html">Message</a> * m);    <span class="comment">// process and handle any VLCB messages</span></div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    void (* poll)(void);    <span class="comment">// called regularly </span></div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    void (* highIsr)(void); <span class="comment">// handle any service specific high priority  interrupt service routine</span></div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    void (* lowIsr)(void);  <span class="comment">// handle any service specific high priority  interrupt service routine</span></div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    <span class="comment">//void modes();</span></div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>    <span class="comment">//void statusCodes();</span></div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    uint8_t (* getESDdata)(uint8_t id);</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    <a class="code hl_union" href="union_diagnostic_val.html">DiagnosticVal</a> * (* getDiagnostic)(uint8_t index);   <span class="comment">// pointer to function returning DiagnosticVal*</span></div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>} <a class="code hl_struct" href="struct_service.html">Service</a>;</div>
+<div class="foldopen" id="foldopen00152" data-start="{" data-end="};">
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544">  152</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code hl_enumeration" href="vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544">Processed</a> {</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    NOT_PROCESSED=0,</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    PROCESSED=1</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a9aa490af7b5c08b0b76e2cd558c7d587">  155</a></span>} <a class="code hl_enumeration" href="vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544">Processed</a>;</div>
 </div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="keyword">extern</span> <span class="keyword">const</span> <a class="code hl_struct" href="struct_service.html">Service</a> * <span class="keyword">const</span> <a class="code hl_variable" href="vlcb_8h.html#a8d4c9b659f98c72e727bca232c257bfe">services</a>[];</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="foldopen" id="foldopen00158" data-start="{" data-end="};">
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a11444bb1686f1beb6cdf0482278a7c7f">  158</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code hl_enumeration" href="vlcb_8h.html#a11444bb1686f1beb6cdf0482278a7c7f">Mode_state</a> {</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    EMODE_UNITIALISED,</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    EMODE_SETUP,</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    EMODE_NORMAL</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a66aa255b79f3ce6375c015e8db0f04b6">  162</a></span>} <a class="code hl_enumeration" href="vlcb_8h.html#a11444bb1686f1beb6cdf0482278a7c7f">Mode_state</a>;</div>
+</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="comment">// Mode flags</span></div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a200fefa4b58ef24b6ef79283f1dc3d54">  165</a></span><span class="preprocessor">#define FLAG_MODE_LEARN     1            </span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="vlcb_8h.html#ad6e7393de68571c21c3f75400cef993f">  166</a></span><span class="preprocessor">#define FLAG_MODE_EVENTACK  2            </span></div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a25c7c3b061c39ecfddd3e724dedffdbc">  167</a></span><span class="preprocessor">#define FLAG_MODE_HEARTBEAT 4            </span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="keyword">extern</span> <span class="keyword">const</span> <a class="code hl_enumeration" href="vlcb_8h.html#a315655b1bb5848c063491adffde62b15">Priority</a> <a class="code hl_variable" href="vlcb_8h.html#ad9c0663c54097bc7c55d5dcbbc556424">priorities</a>[256];</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="keyword">extern</span> <a class="code hl_enumeration" href="vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544">Processed</a> <a class="code hl_function" href="vlcb_8h.html#a9bf07c27105f7c54f030818acb9ad9d1">checkLen</a>(<a class="code hl_struct" href="struct_message.html">Message</a> * m, uint8_t needed, uint8_t service);</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="keyword">extern</span> <a class="code hl_enumeration" href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a> <a class="code hl_function" href="vlcb_8h.html#a38cce02004be097334eb440d61ba88a4">isEvent</a>(uint8_t opc);</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#a3955f63350a3bbb9d97fb88653182497">setTimedResponseDelay</a>(uint8_t delay);</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="comment">// Functions to send a VLCB message on any defined transport layer</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="comment">// XC8 doesn&#39;t support function overloading nor varargs</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#a29dc097f840bdf4656a07cd47db11418">sendMessage0</a>(VlcbOpCodes opc);</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#a76660800f92d4cb8908f57f3079aa4ab">sendMessage1</a>(VlcbOpCodes opc, uint8_t data1);</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#a80b4eacc5227afe9b3e70d38fbf1c70b">sendMessage2</a>(VlcbOpCodes opc, uint8_t data1, uint8_t data2);</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#af22b4eac8fd0c14d09eb8419cccfa5e0">sendMessage3</a>(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3);</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#ab6d32b97976fbdbbec8af21ab59fd47c">sendMessage4</a>(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4);</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span><span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#ae20dd964b2b398b638516b983576ad92">sendMessage5</a>(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5);</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#ad5d047b1eca2bdc28bd9ccf366442efe">sendMessage6</a>(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5, uint8_t data6);</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span><span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#a25c844c608900c79ab802c2b4fbbd71a">sendMessage7</a>(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5, uint8_t data6, uint8_t data7);</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#a53a16cd2ff2166ac7a6990bb10fb53a9">sendMessage</a>(VlcbOpCodes opc, uint8_t len, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5, uint8_t data6, uint8_t data7);</div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span> </div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="keyword">typedef</span> <span class="keyword">enum</span> ServicePresent {</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    NOT_PRESENT=0,</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    PRESENT=1</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>}ServicePresent; </div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="comment"> * Helper function to obtain a service descriptor given a service type identifier.</span></div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="comment"> * @param id the service type identifier</span></div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="comment"> * @return the service descriptor of NULL if the module doesn&#39;t support the </span></div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><span class="comment"> * specified service type.</span></div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="keyword">extern</span> <span class="keyword">const</span> <a class="code hl_struct" href="struct_service.html">Service</a> * <a class="code hl_function" href="vlcb_8h.html#af44fc8f3b49febc2bdc5e3ea969b7267">findService</a>(uint8_t <span class="keywordtype">id</span>);</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span><span class="comment"> * Tests whether a module supports the specified service.</span></div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span><span class="comment"> * @param id the service type identifier</span></div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="comment"> * @return 1 if the service is supported, 0 otherwise</span></div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="keyword">extern</span> ServicePresent <a class="code hl_function" href="vlcb_8h.html#a51f53c29510e479d44d84336fbfa67a4">have</a>(uint8_t <span class="keywordtype">id</span>);</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span><span class="comment"> * Returns the index into the services array of the specified service.</span></div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span><span class="comment"> * @param id the service type identifier</span></div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span><span class="comment"> * @return the array index or SERVICE_ID_NONE if the service is not present</span></div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span><span class="keyword">extern</span> uint8_t <a class="code hl_function" href="vlcb_8h.html#a6083db54e880361e151944b0352a1a28">findServiceIndex</a>(uint8_t <span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="comment">/* SERVICE INTERFACE */</span></div>
+<div class="foldopen" id="foldopen00289" data-start="{" data-end="};">
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno"><a class="line" href="struct_service.html">  289</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="struct_service.html">Service</a> {</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno"><a class="line" href="struct_service.html#ad84a6446609bbb0d7bcd196f61d5972b">  290</a></span>    uint8_t <a class="code hl_variable" href="struct_service.html#ad84a6446609bbb0d7bcd196f61d5972b">serviceNo</a>;          </div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno"><a class="line" href="struct_service.html#ab22abc2906422da61885ac6c8e6a1a59">  291</a></span>    uint8_t <a class="code hl_variable" href="struct_service.html#ab22abc2906422da61885ac6c8e6a1a59">version</a>;            </div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno"><a class="line" href="struct_service.html#a2a73d072c49644eb3551211297ed112a">  292</a></span>    void (* <a class="code hl_variable" href="struct_service.html#a2a73d072c49644eb3551211297ed112a">factoryReset</a>)(void);</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno"><a class="line" href="struct_service.html#ab5bdbd09900220e0331b366801327e63">  293</a></span>    void (* <a class="code hl_variable" href="struct_service.html#ab5bdbd09900220e0331b366801327e63">powerUp</a>)(void);     </div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno"><a class="line" href="struct_service.html#a0a13dd2e7b5f65c1781f1441ad2a3765">  294</a></span>    <a class="code hl_enumeration" href="vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544">Processed</a> (* <a class="code hl_variable" href="struct_service.html#a0a13dd2e7b5f65c1781f1441ad2a3765">processMessage</a>)(<a class="code hl_struct" href="struct_message.html">Message</a> * m);    </div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno"><a class="line" href="struct_service.html#a9d5017fbe19bbcb67455b16ed63308a1">  295</a></span>    void (* <a class="code hl_variable" href="struct_service.html#a9d5017fbe19bbcb67455b16ed63308a1">poll</a>)(void);        </div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span><span class="preprocessor">#if defined(_18F66K80_FAMILY_)</span></div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno"><a class="line" href="struct_service.html#a5faca701d3b14fb32cfebd3d12d3e1b2">  297</a></span>    void (* <a class="code hl_variable" href="struct_service.html#a5faca701d3b14fb32cfebd3d12d3e1b2">highIsr</a>)(void);     </div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno"><a class="line" href="struct_service.html#a26e02f43ae5891ef33d126221e63d1c8">  298</a></span>    void (* <a class="code hl_variable" href="struct_service.html#a26e02f43ae5891ef33d126221e63d1c8">lowIsr</a>)(void);      </div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno"><a class="line" href="struct_service.html#ac1af4dbef3cebf8d4a896f3da2341944">  300</a></span>    uint8_t (* <a class="code hl_variable" href="struct_service.html#ac1af4dbef3cebf8d4a896f3da2341944">getESDdata</a>)(uint8_t id); </div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno"><a class="line" href="struct_service.html#aad806094933376394fc241ebcc31899b">  301</a></span>    <a class="code hl_union" href="union_diagnostic_val.html">DiagnosticVal</a> * (* getDiagnostic)(uint8_t index);   </div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a24ee4146cd03b57b0a4c23a33e476da9">  302</a></span>} <a class="code hl_typedef" href="vlcb_8h.html#a24ee4146cd03b57b0a4c23a33e476da9">Service</a>;</div>
+</div>
 <div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span><span class="comment">/* Service function declarations */</span></div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span><span class="comment"> * VLCB function to perform necessary factory reset functionality and also</span></div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><span class="comment"> * call the factoryReset function for each service.</span></div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#a5d811d6a4354a941b197ed88623d0b7f">factoryReset</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span> </div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span><span class="comment">//extern void powerUp(void);</span></div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span> </div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span><span class="comment"> * VLCB function to call the processMessage function for each service</span></div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span><span class="comment"> * until one of the services has managed to handle the message.</span></div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span><span class="comment"> * Also calls back to the application to module specific handling.</span></div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><span class="keyword">extern</span> <span class="keyword">const</span> <a class="code hl_struct" href="struct_service.html">Service</a> * <span class="keyword">const</span> <a class="code hl_variable" href="vlcb_8h.html#a8d4c9b659f98c72e727bca232c257bfe">services</a>[];</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
+<div class="foldopen" id="foldopen00312" data-start="{" data-end="};">
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a854c33a3bc2b495fc2e3c229b661becf">  312</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code hl_enumeration" href="vlcb_8h.html#a854c33a3bc2b495fc2e3c229b661becf">ServicePresent</a> {</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>    NOT_PRESENT=0,</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>    PRESENT=1</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno"><a class="line" href="vlcb_8h.html#ac61d37a9f9fe57e353805a08abe13134">  315</a></span>}<a class="code hl_enumeration" href="vlcb_8h.html#a854c33a3bc2b495fc2e3c229b661becf">ServicePresent</a>; </div>
+</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span><span class="comment"> * Helper function to obtain a service descriptor given a service type identifier.</span></div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span><span class="comment"> * @param id the service type identifier</span></div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span><span class="comment"> * @return the service descriptor of NULL if the module doesn&#39;t support the </span></div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span><span class="comment"> * specified service type.</span></div>
 <div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span><span class="comment">//extern void processMessage(Message *);</span></div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span><span class="keyword">extern</span> <span class="keyword">const</span> <a class="code hl_struct" href="struct_service.html">Service</a> * <a class="code hl_function" href="vlcb_8h.html#af44fc8f3b49febc2bdc5e3ea969b7267">findService</a>(uint8_t <span class="keywordtype">id</span>);</div>
 <div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span> </div>
 <div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span><span class="comment"> * VLCB function to perform necessary poll functionality and regularly </span></div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span><span class="comment"> * poll each service.</span></div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span><span class="comment"> * Polling occurs as frequently as possible. It is the responsibility of the</span></div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span><span class="comment"> * service&#39;s poll function to ensure that any actions are performed at the </span></div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span><span class="comment"> * correct rate, for example by using tickTimeSince(lastTime).</span></div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span><span class="comment">//extern void poll(void);</span></div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span> </div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span><span class="comment"> * VLCB function to handle high priority interrupts. A service wanting </span></div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span><span class="comment"> * to use interrupts should enable the interrupts in hardware and then provide </span></div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span><span class="comment"> * a highIsr function. Care must to taken to ensure that the cause of the </span></div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span><span class="comment"> * interrupt is cleared within the Isr and that minimum time is spent in the </span></div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span><span class="comment"> * Isr. It is preferable to set a flag within the Isr and then perform longer</span></div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span><span class="comment"> * processing within poll().</span></div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span><span class="comment">//extern void highIsr(void);</span></div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span> </div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span><span class="comment"> * VLCB function to handle low priority interrupts. A service wanting </span></div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span><span class="comment"> * to use interrupts should enable the interrupts in hardware and then provide </span></div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span><span class="comment"> * a lowIsr function. Care must to taken to ensure that the cause of the </span></div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span><span class="comment"> * interrupt is cleared within the Isr and that minimum time is spent in the </span></div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span><span class="comment"> * Isr. It is preferable to set a flag within the Isr and then perform longer</span></div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span><span class="comment"> * processing within poll().</span></div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span><span class="comment">//extern void lowIsr(void);</span></div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span> </div>
-<div class="foldopen" id="foldopen00353" data-start="{" data-end="};">
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno"><a class="line" href="vlcb_8h.html#abdc1a2463d076f24a8b77a7223a22fe0">  353</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code hl_enumeration" href="vlcb_8h.html#abdc1a2463d076f24a8b77a7223a22fe0">MessageReceived</a> {</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>    NOT_RECEIVED=0,</div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>    RECEIVED=1</div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno"><a class="line" href="vlcb_8h.html#ac86cce95c833e0b474dfd99d0afa0399">  356</a></span>} <a class="code hl_enumeration" href="vlcb_8h.html#abdc1a2463d076f24a8b77a7223a22fe0">MessageReceived</a>;</div>
-</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span><span class="comment"> * Tests whether a module supports the specified service.</span></div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span><span class="comment"> * @param id the service type identifier</span></div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span><span class="comment"> * @return 1 if the service is supported, 0 otherwise</span></div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span><span class="keyword">extern</span> <a class="code hl_enumeration" href="vlcb_8h.html#a854c33a3bc2b495fc2e3c229b661becf">ServicePresent</a> <a class="code hl_function" href="vlcb_8h.html#a51f53c29510e479d44d84336fbfa67a4">have</a>(uint8_t <span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span> </div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span><span class="comment"> * Returns the index into the services array of the specified service.</span></div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span><span class="comment"> * @param id the service type identifier</span></div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span><span class="comment"> * @return the array index or SERVICE_ID_NONE if the service is not present</span></div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span><span class="keyword">extern</span> uint8_t <a class="code hl_function" href="vlcb_8h.html#a6083db54e880361e151944b0352a1a28">findServiceIndex</a>(uint8_t <span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span><span class="comment">/* Service function declarations */</span></div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span><span class="comment"> * VLCB function to perform necessary factory reset functionality and also</span></div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span><span class="comment"> * call the factoryReset function for each service.</span></div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#a5d811d6a4354a941b197ed88623d0b7f">factoryReset</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span> </div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span><span class="comment">//extern void powerUp(void);</span></div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span> </div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span><span class="comment"> * VLCB function to call the processMessage function for each service</span></div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span><span class="comment"> * until one of the services has managed to handle the message.</span></div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span><span class="comment"> * Also calls back to the application to module specific handling.</span></div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span><span class="comment">//extern void processMessage(Message *);</span></div>
 <div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span> </div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span><span class="keyword">typedef</span> <span class="keyword">enum</span> SendResult {</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>    SEND_FAILED=0,</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>    SEND_OK</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>} SendResult;</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span> </div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span><span class="comment">/* TRANSPORT INTERFACE */</span></div>
-<div class="foldopen" id="foldopen00368" data-start="{" data-end="};">
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno"><a class="line" href="struct_transport.html">  368</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="struct_transport.html">Transport</a> {</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>    SendResult (* sendMessage)(<a class="code hl_struct" href="struct_message.html">Message</a> * m);   <span class="comment">// function call to send a message</span></div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>    <a class="code hl_enumeration" href="vlcb_8h.html#abdc1a2463d076f24a8b77a7223a22fe0">MessageReceived</a> (* receiveMessage)(<a class="code hl_struct" href="struct_message.html">Message</a> * m); <span class="comment">// check to see if message is available and return in the structure provided</span></div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span> <span class="comment">//   void (* releaseMessage)(Message * m);   // App has finished with message</span></div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a783c8ee2ab0be96ceb090ded8ba8d8bc">  372</a></span>} <a class="code hl_typedef" href="vlcb_8h.html#a783c8ee2ab0be96ceb090ded8ba8d8bc">Transport</a>;</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span><span class="comment"> * VLCB function to perform necessary poll functionality and regularly </span></div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span><span class="comment"> * poll each service.</span></div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span><span class="comment"> * Polling occurs as frequently as possible. It is the responsibility of the</span></div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span><span class="comment"> * service&#39;s poll function to ensure that any actions are performed at the </span></div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span><span class="comment"> * correct rate, for example by using tickTimeSince(lastTime).</span></div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span><span class="comment">//extern void poll(void);</span></div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span> </div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span><span class="comment"> * VLCB function to handle high priority interrupts. An App wanting </span></div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span><span class="comment"> * to use interrupts should enable the interrupts in hardware and then provide </span></div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span><span class="comment"> * a highIsr function. Care must to taken to ensure that the cause of the </span></div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span><span class="comment"> * interrupt is cleared within the Isr and that minimum time is spent in the </span></div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span><span class="comment"> * Isr. It is preferable to set a flag within the Isr and then perform longer</span></div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span><span class="comment"> * processing within poll().</span></div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a98e396438d2f7a1c8c1ef1b537b71878">  375</a></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#a98e396438d2f7a1c8c1ef1b537b71878">APP_highIsr</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span> </div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno"><a class="line" href="vlcb_8h.html#ae7ea9ef134a9df19b9ef7541a3bbf5eb">  385</a></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="vlcb_8h.html#ae7ea9ef134a9df19b9ef7541a3bbf5eb">APP_lowIsr</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span> </div>
+<div class="foldopen" id="foldopen00390" data-start="{" data-end="};">
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno"><a class="line" href="vlcb_8h.html#abdc1a2463d076f24a8b77a7223a22fe0">  390</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code hl_enumeration" href="vlcb_8h.html#abdc1a2463d076f24a8b77a7223a22fe0">MessageReceived</a> {</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    NOT_RECEIVED=0,</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>    RECEIVED=1</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno"><a class="line" href="vlcb_8h.html#ac86cce95c833e0b474dfd99d0afa0399">  393</a></span>} <a class="code hl_enumeration" href="vlcb_8h.html#abdc1a2463d076f24a8b77a7223a22fe0">MessageReceived</a>;</div>
 </div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span><span class="keyword">extern</span> <span class="keyword">const</span> <a class="code hl_struct" href="struct_transport.html">Transport</a> * <a class="code hl_variable" href="vlcb_8h.html#a3b936eacf5488a640c02f68564f54372">transport</a>;</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span> </div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span> </div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno"><a class="line" href="vlcb_8h.html#ae34d4d879380e8085b5e975b6186f58e">  393</a></span><span class="keyword">extern</span> ValidTime <a class="code hl_function" href="vlcb_8h.html#ae34d4d879380e8085b5e975b6186f58e">APP_isSuitableTimeToWriteFlash</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span> </div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno"><a class="line" href="vlcb_8h.html#ad4c0e050545da1fdb2b5ef23167c461d">  398</a></span><span class="preprocessor">#define NN_HI_DEFAULT  0</span></div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span><span class="preprocessor">#define NN_LO_DEFAULT  0</span></div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span> </div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno"><a class="line" href="vlcb_8h.html#aa2ac0f45d353352c766262721c40e3b8">  404</a></span><span class="preprocessor">#define MODE_DEFAULT    MODE_UNINITIALISED</span></div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span> </div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span><span class="comment">/* Event opcs */</span></div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span><span class="preprocessor">#define     EVENT_SET_MASK   0b10010000</span></div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span><span class="preprocessor">#define     EVENT_CLR_MASK   0b00000110</span></div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span><span class="preprocessor">#define     EVENT_ON_MASK    0b00000001</span></div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span><span class="preprocessor">#define     EVENT_SHORT_MASK 0b00001000</span></div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span> </div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aromops_8h_html"><div class="ttname"><a href="romops_8h.html">romops.h</a></div></div>
-<div class="ttc" id="astruct_message_html"><div class="ttname"><a href="struct_message.html">Message</a></div><div class="ttdef"><b>Definition</b> vlcb.h:97</div></div>
-<div class="ttc" id="astruct_service_html"><div class="ttname"><a href="struct_service.html">Service</a></div><div class="ttdef"><b>Definition</b> vlcb.h:258</div></div>
-<div class="ttc" id="astruct_transport_html"><div class="ttname"><a href="struct_transport.html">Transport</a></div><div class="ttdef"><b>Definition</b> vlcb.h:368</div></div>
-<div class="ttc" id="aunion_diagnostic_val_html"><div class="ttname"><a href="union_diagnostic_val.html">DiagnosticVal</a></div><div class="ttdef"><b>Definition</b> vlcb.h:123</div></div>
-<div class="ttc" id="aunion_word_html"><div class="ttname"><a href="union_word.html">Word</a></div><div class="ttdef"><b>Definition</b> vlcb.h:106</div></div>
-<div class="ttc" id="avlcb_8h_html_a11444bb1686f1beb6cdf0482278a7c7f"><div class="ttname"><a href="vlcb_8h.html#a11444bb1686f1beb6cdf0482278a7c7f">Mode_state</a></div><div class="ttdeci">Mode_state</div><div class="ttdef"><b>Definition</b> vlcb.h:138</div></div>
-<div class="ttc" id="avlcb_8h_html_a25c844c608900c79ab802c2b4fbbd71a"><div class="ttname"><a href="vlcb_8h.html#a25c844c608900c79ab802c2b4fbbd71a">sendMessage7</a></div><div class="ttdeci">void sendMessage7(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5, uint8_t data6, uint8_t data7)</div><div class="ttdef"><b>Definition</b> vlcb.c:1018</div></div>
-<div class="ttc" id="avlcb_8h_html_a29dc097f840bdf4656a07cd47db11418"><div class="ttname"><a href="vlcb_8h.html#a29dc097f840bdf4656a07cd47db11418">sendMessage0</a></div><div class="ttdeci">void sendMessage0(VlcbOpCodes opc)</div><div class="ttdef"><b>Definition</b> vlcb.c:934</div></div>
-<div class="ttc" id="avlcb_8h_html_a3b936eacf5488a640c02f68564f54372"><div class="ttname"><a href="vlcb_8h.html#a3b936eacf5488a640c02f68564f54372">transport</a></div><div class="ttdeci">const Transport * transport</div><div class="ttdef"><b>Definition</b> vlcb.c:587</div></div>
+<div class="foldopen" id="foldopen00398" data-start="{" data-end="};">
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a7b0624c89056fe132221a16028024f5e">  398</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code hl_enumeration" href="vlcb_8h.html#a7b0624c89056fe132221a16028024f5e">SendResult</a> {</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>    SEND_FAILED=0,</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>    SEND_OK</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a89171d4a07dcd92005a1e416c34e709d">  401</a></span>} <a class="code hl_enumeration" href="vlcb_8h.html#a7b0624c89056fe132221a16028024f5e">SendResult</a>;</div>
+</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span> </div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span><span class="comment">/* TRANSPORT INTERFACE */</span></div>
+<div class="foldopen" id="foldopen00408" data-start="{" data-end="};">
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno"><a class="line" href="struct_transport.html">  408</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="struct_transport.html">Transport</a> {</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno"><a class="line" href="struct_transport.html#aad1c2bd0c7c8ed47d7a0e81af894a27f">  409</a></span>    <a class="code hl_enumeration" href="vlcb_8h.html#a7b0624c89056fe132221a16028024f5e">SendResult</a> (* <a class="code hl_variable" href="struct_transport.html#aad1c2bd0c7c8ed47d7a0e81af894a27f">sendMessage</a>)(<a class="code hl_struct" href="struct_message.html">Message</a> * m);   </div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno"><a class="line" href="struct_transport.html#a4e4e4159a1e9d2b63334ac19ef8cccaa">  410</a></span>    <a class="code hl_enumeration" href="vlcb_8h.html#abdc1a2463d076f24a8b77a7223a22fe0">MessageReceived</a> (* <a class="code hl_variable" href="struct_transport.html#a4e4e4159a1e9d2b63334ac19ef8cccaa">receiveMessage</a>)(<a class="code hl_struct" href="struct_message.html">Message</a> * m); </div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a783c8ee2ab0be96ceb090ded8ba8d8bc">  411</a></span>} <a class="code hl_typedef" href="vlcb_8h.html#a783c8ee2ab0be96ceb090ded8ba8d8bc">Transport</a>;</div>
+</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span> </div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span><span class="keyword">extern</span> <span class="keyword">const</span> <a class="code hl_struct" href="struct_transport.html">Transport</a> * <a class="code hl_variable" href="vlcb_8h.html#a3b936eacf5488a640c02f68564f54372">transport</a>;</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span> </div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span> </div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno"><a class="line" href="vlcb_8h.html#ae34d4d879380e8085b5e975b6186f58e">  433</a></span><span class="keyword">extern</span> <a class="code hl_enumeration" href="nvm_8h.html#a0f9845fc137a58b7863796abd20e7b05">ValidTime</a> <a class="code hl_function" href="vlcb_8h.html#ae34d4d879380e8085b5e975b6186f58e">APP_isSuitableTimeToWriteFlash</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span> </div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span><span class="comment"> * The default value for the node number.</span></div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno"><a class="line" href="vlcb_8h.html#ad4c0e050545da1fdb2b5ef23167c461d">  438</a></span><span class="preprocessor">#define NN_HI_DEFAULT  0    </span></div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a85628095cdb1b03744499866a5bf84f8">  439</a></span><span class="preprocessor">#define NN_LO_DEFAULT  0    </span></div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span> </div>
+<div class="line"><a id="l00444" name="l00444"></a><span class="lineno"><a class="line" href="vlcb_8h.html#aa2ac0f45d353352c766262721c40e3b8">  444</a></span><span class="preprocessor">#define MODE_DEFAULT    MODE_UNINITIALISED</span></div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span> </div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span><span class="comment">/* Event opcs */</span></div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a5599ca1c7dbab5832ab986e73eddc913">  447</a></span><span class="preprocessor">#define     EVENT_SET_MASK   0b10010000    </span></div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a23612a14a15126da904d4b84fa851e82">  448</a></span><span class="preprocessor">#define     EVENT_CLR_MASK   0b00000110    </span></div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno"><a class="line" href="vlcb_8h.html#aae21a70035c121d75ba6e48ad6dd2e0e">  449</a></span><span class="preprocessor">#define     EVENT_ON_MASK    0b00000001    </span></div>
+<div class="line"><a id="l00450" name="l00450"></a><span class="lineno"><a class="line" href="vlcb_8h.html#a1fc4b29ff184ee7bc9bd9e81fb16e68a">  450</a></span><span class="preprocessor">#define     EVENT_SHORT_MASK 0b00001000    </span></div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span> </div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="anvm_8h_html"><div class="ttname"><a href="nvm_8h.html">nvm.h</a></div><div class="ttdoc">Non volatile memory functions.</div></div>
+<div class="ttc" id="anvm_8h_html_a0f9845fc137a58b7863796abd20e7b05"><div class="ttname"><a href="nvm_8h.html#a0f9845fc137a58b7863796abd20e7b05">ValidTime</a></div><div class="ttdeci">ValidTime</div><div class="ttdef"><b>Definition</b> nvm.h:76</div></div>
+<div class="ttc" id="astruct_message_html"><div class="ttname"><a href="struct_message.html">Message</a></div><div class="ttdef"><b>Definition</b> vlcb.h:105</div></div>
+<div class="ttc" id="astruct_message_html_a1b8c98231315d836ed93643efb0dac9d"><div class="ttname"><a href="struct_message.html#a1b8c98231315d836ed93643efb0dac9d">Message::bytes</a></div><div class="ttdeci">uint8_t bytes[7]</div><div class="ttdoc">Any data bytes contained in the message.</div><div class="ttdef"><b>Definition</b> vlcb.h:108</div></div>
+<div class="ttc" id="astruct_message_html_a5723e60ffd628510c699eddbce90be23"><div class="ttname"><a href="struct_message.html#a5723e60ffd628510c699eddbce90be23">Message::len</a></div><div class="ttdeci">uint8_t len</div><div class="ttdoc">The message total length including opc.</div><div class="ttdef"><b>Definition</b> vlcb.h:106</div></div>
+<div class="ttc" id="astruct_message_html_a76ea350f61acd31e0daa2525b772e248"><div class="ttname"><a href="struct_message.html#a76ea350f61acd31e0daa2525b772e248">Message::opc</a></div><div class="ttdeci">VlcbOpCodes opc</div><div class="ttdoc">The opcode.</div><div class="ttdef"><b>Definition</b> vlcb.h:107</div></div>
+<div class="ttc" id="astruct_service_html"><div class="ttname"><a href="struct_service.html">Service</a></div><div class="ttdef"><b>Definition</b> vlcb.h:289</div></div>
+<div class="ttc" id="astruct_service_html_a0a13dd2e7b5f65c1781f1441ad2a3765"><div class="ttname"><a href="struct_service.html#a0a13dd2e7b5f65c1781f1441ad2a3765">Service::processMessage</a></div><div class="ttdeci">Processed(* processMessage)(Message *m)</div><div class="ttdoc">process and handle any VLCB messages.</div><div class="ttdef"><b>Definition</b> vlcb.h:294</div></div>
+<div class="ttc" id="astruct_service_html_a26e02f43ae5891ef33d126221e63d1c8"><div class="ttname"><a href="struct_service.html#a26e02f43ae5891ef33d126221e63d1c8">Service::lowIsr</a></div><div class="ttdeci">void(* lowIsr)(void)</div><div class="ttdoc">handle any service specific high priority interrupt service routine.</div><div class="ttdef"><b>Definition</b> vlcb.h:298</div></div>
+<div class="ttc" id="astruct_service_html_a2a73d072c49644eb3551211297ed112a"><div class="ttname"><a href="struct_service.html#a2a73d072c49644eb3551211297ed112a">Service::factoryReset</a></div><div class="ttdeci">void(* factoryReset)(void)</div><div class="ttdoc">function call for a new module.</div><div class="ttdef"><b>Definition</b> vlcb.h:292</div></div>
+<div class="ttc" id="astruct_service_html_a5faca701d3b14fb32cfebd3d12d3e1b2"><div class="ttname"><a href="struct_service.html#a5faca701d3b14fb32cfebd3d12d3e1b2">Service::highIsr</a></div><div class="ttdeci">void(* highIsr)(void)</div><div class="ttdoc">handle any service specific high priority interrupt service routine.</div><div class="ttdef"><b>Definition</b> vlcb.h:297</div></div>
+<div class="ttc" id="astruct_service_html_a9d5017fbe19bbcb67455b16ed63308a1"><div class="ttname"><a href="struct_service.html#a9d5017fbe19bbcb67455b16ed63308a1">Service::poll</a></div><div class="ttdeci">void(* poll)(void)</div><div class="ttdoc">called regularly .</div><div class="ttdef"><b>Definition</b> vlcb.h:295</div></div>
+<div class="ttc" id="astruct_service_html_ab22abc2906422da61885ac6c8e6a1a59"><div class="ttname"><a href="struct_service.html#ab22abc2906422da61885ac6c8e6a1a59">Service::version</a></div><div class="ttdeci">uint8_t version</div><div class="ttdoc">version of the service definition (not the version of code).</div><div class="ttdef"><b>Definition</b> vlcb.h:291</div></div>
+<div class="ttc" id="astruct_service_html_ab5bdbd09900220e0331b366801327e63"><div class="ttname"><a href="struct_service.html#ab5bdbd09900220e0331b366801327e63">Service::powerUp</a></div><div class="ttdeci">void(* powerUp)(void)</div><div class="ttdoc">function called upon module power up.</div><div class="ttdef"><b>Definition</b> vlcb.h:293</div></div>
+<div class="ttc" id="astruct_service_html_ac1af4dbef3cebf8d4a896f3da2341944"><div class="ttname"><a href="struct_service.html#ac1af4dbef3cebf8d4a896f3da2341944">Service::getESDdata</a></div><div class="ttdeci">uint8_t(* getESDdata)(uint8_t id)</div><div class="ttdoc">To obtain any ESD bytes for the service.</div><div class="ttdef"><b>Definition</b> vlcb.h:300</div></div>
+<div class="ttc" id="astruct_service_html_ad84a6446609bbb0d7bcd196f61d5972b"><div class="ttname"><a href="struct_service.html#ad84a6446609bbb0d7bcd196f61d5972b">Service::serviceNo</a></div><div class="ttdeci">uint8_t serviceNo</div><div class="ttdoc">Identifies the type of service.</div><div class="ttdef"><b>Definition</b> vlcb.h:290</div></div>
+<div class="ttc" id="astruct_transport_html"><div class="ttname"><a href="struct_transport.html">Transport</a></div><div class="ttdef"><b>Definition</b> vlcb.h:408</div></div>
+<div class="ttc" id="astruct_transport_html_a4e4e4159a1e9d2b63334ac19ef8cccaa"><div class="ttname"><a href="struct_transport.html#a4e4e4159a1e9d2b63334ac19ef8cccaa">Transport::receiveMessage</a></div><div class="ttdeci">MessageReceived(* receiveMessage)(Message *m)</div><div class="ttdoc">check to see if message is available and return in the structure provided.</div><div class="ttdef"><b>Definition</b> vlcb.h:410</div></div>
+<div class="ttc" id="astruct_transport_html_aad1c2bd0c7c8ed47d7a0e81af894a27f"><div class="ttname"><a href="struct_transport.html#aad1c2bd0c7c8ed47d7a0e81af894a27f">Transport::sendMessage</a></div><div class="ttdeci">SendResult(* sendMessage)(Message *m)</div><div class="ttdoc">function call to send a message.</div><div class="ttdef"><b>Definition</b> vlcb.h:409</div></div>
+<div class="ttc" id="aunion_diagnostic_val_html"><div class="ttname"><a href="union_diagnostic_val.html">DiagnosticVal</a></div><div class="ttdef"><b>Definition</b> vlcb.h:140</div></div>
+<div class="ttc" id="aunion_diagnostic_val_html_a0d1d96c56b6ee924149d67a64b8b1416"><div class="ttname"><a href="union_diagnostic_val.html#a0d1d96c56b6ee924149d67a64b8b1416">DiagnosticVal::hi</a></div><div class="ttdeci">uint8_t hi</div><div class="ttdoc">The high byte of the 16bit diagnostic value.</div><div class="ttdef"><b>Definition</b> vlcb.h:145</div></div>
+<div class="ttc" id="aunion_diagnostic_val_html_a9d0956f4e4e86bda245a8a68c0086d9b"><div class="ttname"><a href="union_diagnostic_val.html#a9d0956f4e4e86bda245a8a68c0086d9b">DiagnosticVal::lo</a></div><div class="ttdeci">uint8_t lo</div><div class="ttdoc">The low byte of the 16bit diagnostic value.</div><div class="ttdef"><b>Definition</b> vlcb.h:144</div></div>
+<div class="ttc" id="aunion_diagnostic_val_html_ad5a02e3975fa26daf341f6d8ffeffd9b"><div class="ttname"><a href="union_diagnostic_val.html#ad5a02e3975fa26daf341f6d8ffeffd9b">DiagnosticVal::asInt</a></div><div class="ttdeci">int16_t asInt</div><div class="ttdoc">The diagnostic value as a signed 16bit value.</div><div class="ttdef"><b>Definition</b> vlcb.h:142</div></div>
+<div class="ttc" id="aunion_diagnostic_val_html_adfb693f2e83c79b8b327a9c655c15f64"><div class="ttname"><a href="union_diagnostic_val.html#adfb693f2e83c79b8b327a9c655c15f64">DiagnosticVal::asUint</a></div><div class="ttdeci">uint16_t asUint</div><div class="ttdoc">The diagnostic value as an unsigned 16bit value.</div><div class="ttdef"><b>Definition</b> vlcb.h:141</div></div>
+<div class="ttc" id="aunion_word_html"><div class="ttname"><a href="union_word.html">Word</a></div><div class="ttdef"><b>Definition</b> vlcb.h:114</div></div>
+<div class="ttc" id="aunion_word_html_a0d1d96c56b6ee924149d67a64b8b1416"><div class="ttname"><a href="union_word.html#a0d1d96c56b6ee924149d67a64b8b1416">Word::hi</a></div><div class="ttdeci">uint8_t hi</div><div class="ttdoc">The high byte.</div><div class="ttdef"><b>Definition</b> vlcb.h:117</div></div>
+<div class="ttc" id="aunion_word_html_a9d0956f4e4e86bda245a8a68c0086d9b"><div class="ttname"><a href="union_word.html#a9d0956f4e4e86bda245a8a68c0086d9b">Word::lo</a></div><div class="ttdeci">uint8_t lo</div><div class="ttdoc">The low byte.</div><div class="ttdef"><b>Definition</b> vlcb.h:116</div></div>
+<div class="ttc" id="aunion_word_html_af9036114e498c9fcb670232e4227341a"><div class="ttname"><a href="union_word.html#af9036114e498c9fcb670232e4227341a">Word::word</a></div><div class="ttdeci">uint16_t word</div><div class="ttdoc">The 16 bite value.</div><div class="ttdef"><b>Definition</b> vlcb.h:119</div></div>
+<div class="ttc" id="avlcb_8h_html_a11444bb1686f1beb6cdf0482278a7c7f"><div class="ttname"><a href="vlcb_8h.html#a11444bb1686f1beb6cdf0482278a7c7f">Mode_state</a></div><div class="ttdeci">Mode_state</div><div class="ttdef"><b>Definition</b> vlcb.h:158</div></div>
+<div class="ttc" id="avlcb_8h_html_a24ee4146cd03b57b0a4c23a33e476da9"><div class="ttname"><a href="vlcb_8h.html#a24ee4146cd03b57b0a4c23a33e476da9">Service</a></div><div class="ttdeci">struct Service Service</div></div>
+<div class="ttc" id="avlcb_8h_html_a25c844c608900c79ab802c2b4fbbd71a"><div class="ttname"><a href="vlcb_8h.html#a25c844c608900c79ab802c2b4fbbd71a">sendMessage7</a></div><div class="ttdeci">void sendMessage7(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5, uint8_t data6, uint8_t data7)</div><div class="ttdef"><b>Definition</b> vlcb.c:1206</div></div>
+<div class="ttc" id="avlcb_8h_html_a28287671eaf7406afd604bd055ba4066"><div class="ttname"><a href="vlcb_8h.html#a28287671eaf7406afd604bd055ba4066">Result</a></div><div class="ttdeci">Result</div><div class="ttdef"><b>Definition</b> vlcb.h:95</div></div>
+<div class="ttc" id="avlcb_8h_html_a29dc097f840bdf4656a07cd47db11418"><div class="ttname"><a href="vlcb_8h.html#a29dc097f840bdf4656a07cd47db11418">sendMessage0</a></div><div class="ttdeci">void sendMessage0(VlcbOpCodes opc)</div><div class="ttdef"><b>Definition</b> vlcb.c:1122</div></div>
+<div class="ttc" id="avlcb_8h_html_a315655b1bb5848c063491adffde62b15"><div class="ttname"><a href="vlcb_8h.html#a315655b1bb5848c063491adffde62b15">Priority</a></div><div class="ttdeci">Priority</div><div class="ttdef"><b>Definition</b> vlcb.h:77</div></div>
+<div class="ttc" id="avlcb_8h_html_a38cce02004be097334eb440d61ba88a4"><div class="ttname"><a href="vlcb_8h.html#a38cce02004be097334eb440d61ba88a4">isEvent</a></div><div class="ttdeci">Boolean isEvent(uint8_t opc)</div><div class="ttdef"><b>Definition</b> vlcb.c:1114</div></div>
+<div class="ttc" id="avlcb_8h_html_a3955f63350a3bbb9d97fb88653182497"><div class="ttname"><a href="vlcb_8h.html#a3955f63350a3bbb9d97fb88653182497">setTimedResponseDelay</a></div><div class="ttdeci">void setTimedResponseDelay(uint8_t delay)</div><div class="ttdef"><b>Definition</b> vlcb.c:900</div></div>
+<div class="ttc" id="avlcb_8h_html_a3b936eacf5488a640c02f68564f54372"><div class="ttname"><a href="vlcb_8h.html#a3b936eacf5488a640c02f68564f54372">transport</a></div><div class="ttdeci">const Transport * transport</div><div class="ttdef"><b>Definition</b> vlcb.c:739</div></div>
 <div class="ttc" id="avlcb_8h_html_a4bbd0c6dc7d668b55f6a3eb986929862"><div class="ttname"><a href="vlcb_8h.html#a4bbd0c6dc7d668b55f6a3eb986929862">Word</a></div><div class="ttdeci">union Word Word</div></div>
-<div class="ttc" id="avlcb_8h_html_a51f53c29510e479d44d84336fbfa67a4"><div class="ttname"><a href="vlcb_8h.html#a51f53c29510e479d44d84336fbfa67a4">have</a></div><div class="ttdeci">ServicePresent have(uint8_t id)</div><div class="ttdef"><b>Definition</b> vlcb.c:677</div></div>
-<div class="ttc" id="avlcb_8h_html_a53a16cd2ff2166ac7a6990bb10fb53a9"><div class="ttname"><a href="vlcb_8h.html#a53a16cd2ff2166ac7a6990bb10fb53a9">sendMessage</a></div><div class="ttdeci">void sendMessage(VlcbOpCodes opc, uint8_t len, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5, uint8_t data6, uint8_t data7)</div><div class="ttdef"><b>Definition</b> vlcb.c:1034</div></div>
-<div class="ttc" id="avlcb_8h_html_a5d811d6a4354a941b197ed88623d0b7f"><div class="ttname"><a href="vlcb_8h.html#a5d811d6a4354a941b197ed88623d0b7f">factoryReset</a></div><div class="ttdeci">void factoryReset(void)</div><div class="ttdef"><b>Definition</b> vlcb.c:695</div></div>
-<div class="ttc" id="avlcb_8h_html_a6083db54e880361e151944b0352a1a28"><div class="ttname"><a href="vlcb_8h.html#a6083db54e880361e151944b0352a1a28">findServiceIndex</a></div><div class="ttdeci">uint8_t findServiceIndex(uint8_t id)</div><div class="ttdef"><b>Definition</b> vlcb.c:662</div></div>
-<div class="ttc" id="avlcb_8h_html_a76660800f92d4cb8908f57f3079aa4ab"><div class="ttname"><a href="vlcb_8h.html#a76660800f92d4cb8908f57f3079aa4ab">sendMessage1</a></div><div class="ttdeci">void sendMessage1(VlcbOpCodes opc, uint8_t data1)</div><div class="ttdef"><b>Definition</b> vlcb.c:943</div></div>
+<div class="ttc" id="avlcb_8h_html_a51f53c29510e479d44d84336fbfa67a4"><div class="ttname"><a href="vlcb_8h.html#a51f53c29510e479d44d84336fbfa67a4">have</a></div><div class="ttdeci">ServicePresent have(uint8_t id)</div><div class="ttdef"><b>Definition</b> vlcb.c:837</div></div>
+<div class="ttc" id="avlcb_8h_html_a53a16cd2ff2166ac7a6990bb10fb53a9"><div class="ttname"><a href="vlcb_8h.html#a53a16cd2ff2166ac7a6990bb10fb53a9">sendMessage</a></div><div class="ttdeci">void sendMessage(VlcbOpCodes opc, uint8_t len, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5, uint8_t data6, uint8_t data7)</div><div class="ttdef"><b>Definition</b> vlcb.c:1222</div></div>
+<div class="ttc" id="avlcb_8h_html_a5d811d6a4354a941b197ed88623d0b7f"><div class="ttname"><a href="vlcb_8h.html#a5d811d6a4354a941b197ed88623d0b7f">factoryReset</a></div><div class="ttdeci">void factoryReset(void)</div><div class="ttdef"><b>Definition</b> vlcb.c:856</div></div>
+<div class="ttc" id="avlcb_8h_html_a60587b24892ebc76ee16bbfdb4d52544"><div class="ttname"><a href="vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544">Processed</a></div><div class="ttdeci">Processed</div><div class="ttdef"><b>Definition</b> vlcb.h:152</div></div>
+<div class="ttc" id="avlcb_8h_html_a6083db54e880361e151944b0352a1a28"><div class="ttname"><a href="vlcb_8h.html#a6083db54e880361e151944b0352a1a28">findServiceIndex</a></div><div class="ttdeci">uint8_t findServiceIndex(uint8_t id)</div><div class="ttdef"><b>Definition</b> vlcb.c:822</div></div>
+<div class="ttc" id="avlcb_8h_html_a76660800f92d4cb8908f57f3079aa4ab"><div class="ttname"><a href="vlcb_8h.html#a76660800f92d4cb8908f57f3079aa4ab">sendMessage1</a></div><div class="ttdeci">void sendMessage1(VlcbOpCodes opc, uint8_t data1)</div><div class="ttdef"><b>Definition</b> vlcb.c:1131</div></div>
 <div class="ttc" id="avlcb_8h_html_a783c8ee2ab0be96ceb090ded8ba8d8bc"><div class="ttname"><a href="vlcb_8h.html#a783c8ee2ab0be96ceb090ded8ba8d8bc">Transport</a></div><div class="ttdeci">struct Transport Transport</div></div>
-<div class="ttc" id="avlcb_8h_html_a80b4eacc5227afe9b3e70d38fbf1c70b"><div class="ttname"><a href="vlcb_8h.html#a80b4eacc5227afe9b3e70d38fbf1c70b">sendMessage2</a></div><div class="ttdeci">void sendMessage2(VlcbOpCodes opc, uint8_t data1, uint8_t data2)</div><div class="ttdef"><b>Definition</b> vlcb.c:953</div></div>
+<div class="ttc" id="avlcb_8h_html_a7b0624c89056fe132221a16028024f5e"><div class="ttname"><a href="vlcb_8h.html#a7b0624c89056fe132221a16028024f5e">SendResult</a></div><div class="ttdeci">SendResult</div><div class="ttdef"><b>Definition</b> vlcb.h:398</div></div>
+<div class="ttc" id="avlcb_8h_html_a80b4eacc5227afe9b3e70d38fbf1c70b"><div class="ttname"><a href="vlcb_8h.html#a80b4eacc5227afe9b3e70d38fbf1c70b">sendMessage2</a></div><div class="ttdeci">void sendMessage2(VlcbOpCodes opc, uint8_t data1, uint8_t data2)</div><div class="ttdef"><b>Definition</b> vlcb.c:1141</div></div>
 <div class="ttc" id="avlcb_8h_html_a82fffef6ac8d8a796ab35b7d6a7a0dcb"><div class="ttname"><a href="vlcb_8h.html#a82fffef6ac8d8a796ab35b7d6a7a0dcb">Message</a></div><div class="ttdeci">struct Message Message</div></div>
+<div class="ttc" id="avlcb_8h_html_a854c33a3bc2b495fc2e3c229b661becf"><div class="ttname"><a href="vlcb_8h.html#a854c33a3bc2b495fc2e3c229b661becf">ServicePresent</a></div><div class="ttdeci">ServicePresent</div><div class="ttdef"><b>Definition</b> vlcb.h:312</div></div>
 <div class="ttc" id="avlcb_8h_html_a8d4c9b659f98c72e727bca232c257bfe"><div class="ttname"><a href="vlcb_8h.html#a8d4c9b659f98c72e727bca232c257bfe">services</a></div><div class="ttdeci">const Service *const services[]</div></div>
-<div class="ttc" id="avlcb_8h_html_a9bf07c27105f7c54f030818acb9ad9d1"><div class="ttname"><a href="vlcb_8h.html#a9bf07c27105f7c54f030818acb9ad9d1">checkLen</a></div><div class="ttdeci">Processed checkLen(Message *m, uint8_t needed, uint8_t service)</div><div class="ttdef"><b>Definition</b> vlcb.c:914</div></div>
-<div class="ttc" id="avlcb_8h_html_ab6d32b97976fbdbbec8af21ab59fd47c"><div class="ttname"><a href="vlcb_8h.html#ab6d32b97976fbdbbec8af21ab59fd47c">sendMessage4</a></div><div class="ttdeci">void sendMessage4(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4)</div><div class="ttdef"><b>Definition</b> vlcb.c:976</div></div>
+<div class="ttc" id="avlcb_8h_html_a98e396438d2f7a1c8c1ef1b537b71878"><div class="ttname"><a href="vlcb_8h.html#a98e396438d2f7a1c8c1ef1b537b71878">APP_highIsr</a></div><div class="ttdeci">void APP_highIsr(void)</div></div>
+<div class="ttc" id="avlcb_8h_html_a9bf07c27105f7c54f030818acb9ad9d1"><div class="ttname"><a href="vlcb_8h.html#a9bf07c27105f7c54f030818acb9ad9d1">checkLen</a></div><div class="ttdeci">Processed checkLen(Message *m, uint8_t needed, uint8_t service)</div><div class="ttdef"><b>Definition</b> vlcb.c:1094</div></div>
+<div class="ttc" id="avlcb_8h_html_ab6d32b97976fbdbbec8af21ab59fd47c"><div class="ttname"><a href="vlcb_8h.html#ab6d32b97976fbdbbec8af21ab59fd47c">sendMessage4</a></div><div class="ttdeci">void sendMessage4(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4)</div><div class="ttdef"><b>Definition</b> vlcb.c:1164</div></div>
 <div class="ttc" id="avlcb_8h_html_ab90c1a42242042feb599bbd102d1f596"><div class="ttname"><a href="vlcb_8h.html#ab90c1a42242042feb599bbd102d1f596">DiagnosticVal</a></div><div class="ttdeci">union DiagnosticVal DiagnosticVal</div></div>
-<div class="ttc" id="avlcb_8h_html_abdc1a2463d076f24a8b77a7223a22fe0"><div class="ttname"><a href="vlcb_8h.html#abdc1a2463d076f24a8b77a7223a22fe0">MessageReceived</a></div><div class="ttdeci">MessageReceived</div><div class="ttdef"><b>Definition</b> vlcb.h:353</div></div>
-<div class="ttc" id="avlcb_8h_html_ad5d047b1eca2bdc28bd9ccf366442efe"><div class="ttname"><a href="vlcb_8h.html#ad5d047b1eca2bdc28bd9ccf366442efe">sendMessage6</a></div><div class="ttdeci">void sendMessage6(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5, uint8_t data6)</div><div class="ttdef"><b>Definition</b> vlcb.c:1003</div></div>
-<div class="ttc" id="avlcb_8h_html_ad9c0663c54097bc7c55d5dcbbc556424"><div class="ttname"><a href="vlcb_8h.html#ad9c0663c54097bc7c55d5dcbbc556424">priorities</a></div><div class="ttdeci">const Priority priorities[256]</div><div class="ttdef"><b>Definition</b> vlcb.c:267</div></div>
-<div class="ttc" id="avlcb_8h_html_ae20dd964b2b398b638516b983576ad92"><div class="ttname"><a href="vlcb_8h.html#ae20dd964b2b398b638516b983576ad92">sendMessage5</a></div><div class="ttdeci">void sendMessage5(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5)</div><div class="ttdef"><b>Definition</b> vlcb.c:989</div></div>
+<div class="ttc" id="avlcb_8h_html_ab951f47efbc96e7b5586e5a45b4aaa93"><div class="ttname"><a href="vlcb_8h.html#ab951f47efbc96e7b5586e5a45b4aaa93">EventState</a></div><div class="ttdeci">EventState</div><div class="ttdef"><b>Definition</b> vlcb.h:126</div></div>
+<div class="ttc" id="avlcb_8h_html_abdc1a2463d076f24a8b77a7223a22fe0"><div class="ttname"><a href="vlcb_8h.html#abdc1a2463d076f24a8b77a7223a22fe0">MessageReceived</a></div><div class="ttdeci">MessageReceived</div><div class="ttdef"><b>Definition</b> vlcb.h:390</div></div>
+<div class="ttc" id="avlcb_8h_html_ad5d047b1eca2bdc28bd9ccf366442efe"><div class="ttname"><a href="vlcb_8h.html#ad5d047b1eca2bdc28bd9ccf366442efe">sendMessage6</a></div><div class="ttdeci">void sendMessage6(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5, uint8_t data6)</div><div class="ttdef"><b>Definition</b> vlcb.c:1191</div></div>
+<div class="ttc" id="avlcb_8h_html_ad9c0663c54097bc7c55d5dcbbc556424"><div class="ttname"><a href="vlcb_8h.html#ad9c0663c54097bc7c55d5dcbbc556424">priorities</a></div><div class="ttdeci">const Priority priorities[256]</div><div class="ttdef"><b>Definition</b> vlcb.c:475</div></div>
+<div class="ttc" id="avlcb_8h_html_ae20dd964b2b398b638516b983576ad92"><div class="ttname"><a href="vlcb_8h.html#ae20dd964b2b398b638516b983576ad92">sendMessage5</a></div><div class="ttdeci">void sendMessage5(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5)</div><div class="ttdef"><b>Definition</b> vlcb.c:1177</div></div>
 <div class="ttc" id="avlcb_8h_html_ae34d4d879380e8085b5e975b6186f58e"><div class="ttname"><a href="vlcb_8h.html#ae34d4d879380e8085b5e975b6186f58e">APP_isSuitableTimeToWriteFlash</a></div><div class="ttdeci">ValidTime APP_isSuitableTimeToWriteFlash(void)</div></div>
-<div class="ttc" id="avlcb_8h_html_af22b4eac8fd0c14d09eb8419cccfa5e0"><div class="ttname"><a href="vlcb_8h.html#af22b4eac8fd0c14d09eb8419cccfa5e0">sendMessage3</a></div><div class="ttdeci">void sendMessage3(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3)</div><div class="ttdef"><b>Definition</b> vlcb.c:964</div></div>
-<div class="ttc" id="avlcb_8h_html_af44fc8f3b49febc2bdc5e3ea969b7267"><div class="ttname"><a href="vlcb_8h.html#af44fc8f3b49febc2bdc5e3ea969b7267">findService</a></div><div class="ttdeci">const Service * findService(uint8_t id)</div><div class="ttdef"><b>Definition</b> vlcb.c:647</div></div>
+<div class="ttc" id="avlcb_8h_html_ae7d38601dfbd73adbe5c1b3ec34e0e13"><div class="ttname"><a href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a></div><div class="ttdeci">Boolean</div><div class="ttdef"><b>Definition</b> vlcb.h:87</div></div>
+<div class="ttc" id="avlcb_8h_html_ae7ea9ef134a9df19b9ef7541a3bbf5eb"><div class="ttname"><a href="vlcb_8h.html#ae7ea9ef134a9df19b9ef7541a3bbf5eb">APP_lowIsr</a></div><div class="ttdeci">void APP_lowIsr(void)</div></div>
+<div class="ttc" id="avlcb_8h_html_af22b4eac8fd0c14d09eb8419cccfa5e0"><div class="ttname"><a href="vlcb_8h.html#af22b4eac8fd0c14d09eb8419cccfa5e0">sendMessage3</a></div><div class="ttdeci">void sendMessage3(VlcbOpCodes opc, uint8_t data1, uint8_t data2, uint8_t data3)</div><div class="ttdef"><b>Definition</b> vlcb.c:1152</div></div>
+<div class="ttc" id="avlcb_8h_html_af44fc8f3b49febc2bdc5e3ea969b7267"><div class="ttname"><a href="vlcb_8h.html#af44fc8f3b49febc2bdc5e3ea969b7267">findService</a></div><div class="ttdeci">const Service * findService(uint8_t id)</div><div class="ttdef"><b>Definition</b> vlcb.c:807</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d522931ffa1371640980b621734a4381.html">Users</a></li><li class="navelem"><a class="el" href="dir_10e25e262c850a79f6760812285f1413.html">ianwh</a></li><li class="navelem"><a class="el" href="dir_b0b4633879bd5c761e47fc280b556d88.html">github</a></li><li class="navelem"><a class="el" href="dir_a1617414bc24890c12be9c4da14587d4.html">VLCBlib_PIC</a></li><li class="navelem"><a class="el" href="vlcb_8h.html">vlcb.h</a></li>
+    <li class="navelem"><a class="el" href="vlcb_8h.html">vlcb.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

@@ -40,6 +40,7 @@
 
 /**
  * @file
+ * @brief
  * Implementation of the VLCB Event Teach service.
  * @details
  * Event teaching service
@@ -77,21 +78,21 @@
  * must include the MNS service.
  * 
  * # Module.h definitions required for the Event Teach service
- * - #define EVENT_TABLE_WIDTH   This the the width of the table - not the 
+ * - \#define EVENT_TABLE_WIDTH   This the the width of the table - not the 
  *                       number of EVs per event as multiple rows in
  *                       the table can be used to store an event.
- * - #define NUM_EVENTS          The number of rows in the event table. The
+ * - \#define NUM_EVENTS          The number of rows in the event table. The
  *                        actual number of events may be less than this
  *                        if any events use more the 1 row.
- * - #define EVENT_TABLE_ADDRESS   The address where the event table is stored. 
- * - #define EVENT_TABLE_NVM_TYPE  Set to be either FLASH_NVM_TYPE or EEPROM_NVM_TYPE
- * - #define EVENT_HASH_TABLE      If defined then hash tables will be used for
+ * - \#define EVENT_TABLE_ADDRESS   The address where the event table is stored. 
+ * - \#define EVENT_TABLE_NVM_TYPE  Set to be either FLASH_NVM_TYPE or EEPROM_NVM_TYPE
+ * - \#define EVENT_HASH_TABLE      If defined then hash tables will be used for
  *                        quicker lookup of events at the expense of additional RAM.
- * - #define EVENT_HASH_LENGTH     If hash tables are used then this sets the length
+ * - \#define EVENT_HASH_LENGTH     If hash tables are used then this sets the length
  *                        of the hash.
- * - #define EVENT_CHAIN_LENGTH    If hash tables are used then this sets the number
+ * - \#define EVENT_CHAIN_LENGTH    If hash tables are used then this sets the number
  *                        of events in the hash chain.
- * - #define MAX_HAPPENING         Set to be the maximum Happening value
+ * - \#define MAX_HAPPENING         Set to be the maximum Happening value
  * 
  */
 extern const Service eventTeachService;
@@ -103,12 +104,16 @@ extern const Service eventTeachService;
  * @param eventNumber the event's EN
  * @param evNum the index of the EVs
  * @param evVal the EV value
+ * @param forceOwnNN indicates whether the event's NN changes if the module's NN changes
  * @return error number or 0 for success
  */
-extern uint8_t APP_addEvent(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8_t evVal);
+extern uint8_t APP_addEvent(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8_t evVal, Boolean forceOwnNN);
 
 extern Boolean validStart(uint8_t index);
 extern int16_t getEv(uint8_t tableIndex, uint8_t evIndex);
+extern uint8_t getEVs(uint8_t tableIndex);
+extern uint8_t evs[PARAM_NUM_EV_EVENT];
+extern uint8_t writeEv(uint8_t tableIndex, uint8_t evNum, uint8_t evVal);
 extern uint16_t getNN(uint8_t tableIndex);
 extern uint16_t getEN(uint8_t tableIndex);
 extern uint8_t findEvent(uint16_t nodeNumber, uint16_t eventNumber);
@@ -117,6 +122,7 @@ extern uint8_t addEvent(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum
 extern void rebuildHashtable(void);
 extern uint8_t getHash(uint16_t nodeNumber, uint16_t eventNumber);
 #endif
+extern void checkRemoveTableEntry(uint8_t tableIndex);
 
 #if HAPPENING_SIZE == 2
 typedef Word Happening;
@@ -126,48 +132,60 @@ typedef uint8_t Happening;
 #endif
 
 
-// A helper structure to store the details of an event.
+/**
+ * A structure to store the details of an event.
+ * Contains the Node Number and the Event Number.
+ */
 typedef struct {
-    uint16_t NN;
-    uint16_t EN;
+    uint16_t NN;    ///< The Node Number.
+    uint16_t EN;    ///< The Event Number.
 } Event;
 
-// Indicates whether on ON event or OFF event
-typedef enum {
-    EVENT_OFF=0,
-    EVENT_ON=1
-} EventState;
-
-
+/**
+ * The flags containing information about the event table entry.
+ * A union provides access as bits or as a complete byte.
+ */
 typedef union
 {
     struct
     {
-        unsigned char eVsUsed:4;  // How many of the EVs in this row are used. Only valid if continued is clear
-        uint8_t    continued:1;    // there is another entry 
-        uint8_t    continuation:1; // Continuation of previous event entry
-        uint8_t    forceOwnNN:1;   // Ignore the specified NN and use module's own NN
-        uint8_t    freeEntry:1;    // this row in the table is not used - takes priority over other flags
+        uint8_t    eVsUsed:4;  ///< How many of the EVs in this row are used. Only valid if continued is clear
+        uint8_t    continued:1;    ///< there is another entry 
+        uint8_t    continuation:1; ///< Continuation of previous event entry
+        uint8_t    forceOwnNN:1;   ///< Ignore the specified NN and use module's own NN
+        uint8_t    freeEntry:1;    ///< this row in the table is not used - takes priority over other flags
     };
-    uint8_t    asByte;       // Set to 0xFF for free entry, initially set to zero for entry in use, then producer flag set if required.
+    uint8_t    asByte;       ///< Set to 0xFF for free entry, initially set to zero for entry in use, then producer flag set if required.
 } EventTableFlags;
 
+/**
+ * Defines a row within the Event table.
+ * Each row consists of 1 byte of flags, an index into the table for the next
+ * row if this event is spread over multiple rows, the event and the events EVs.
+ */
 typedef struct {
-    EventTableFlags flags;          // put first so could potentially use the Event bytes for EVs in subsequent rows.
-    uint8_t next;                   // index to continuation also indicates if entry is free
-    Event event;                    // the NN and EN
-    uint8_t evs[EVENT_TABLE_WIDTH]; // EVENT_TABLE_WIDTH is maximum of 15 as we have 4 bits of maxEvUsed
+    EventTableFlags flags;          ///< put first so could potentially use the Event bytes for EVs in subsequent rows.
+    uint8_t next;                   ///< index to continuation also indicates if entry is free
+    Event event;                    ///< the NN and EN
+    uint8_t evs[EVENT_TABLE_WIDTH]; ///< EVENT_TABLE_WIDTH is maximum of 15 as we have 4 bits of maxEvUsed
 } EventTable;
 
+/** Byte index into an EventTable row to access the flags element.*/
 #define EVENTTABLE_OFFSET_FLAGS    0
+/** Byte index into an EventTable row to access the next element.*/
 #define EVENTTABLE_OFFSET_NEXT     1
+/** Byte index into an EventTable row to access the event nn element.*/
 #define EVENTTABLE_OFFSET_NN       2
+/** Byte index into an EventTable row to access the event en element.*/
 #define EVENTTABLE_OFFSET_EN       4
+/** Byte index into an EventTable row to access the event variables.*/
 #define EVENTTABLE_OFFSET_EVS      6
+/** Total number of bytes in an EventTable row.*/
 #define EVENTTABLE_ROW_WIDTH       16
 
+/** Represents an invalid index into the EventTable.*/
 #define NO_INDEX            0xff
-#define EV_FILL             0xff
+
 
 // EVENT DECODING
 //    An event opcode has bits 4 and 7 set, bits 1 and 2 clear
@@ -199,9 +217,13 @@ typedef struct {
 // Long/Short     determined by d3
 // num data bytes determined by d7,d6
 //
+/** Mask used to determine whether an opcode is an event.*/
 #define     EVENT_SET_MASK   0b10010000
+/** Mask used to determine whether an opcode is an event.*/
 #define     EVENT_CLR_MASK   0b00000110
+/** Mask used to determine whether an opcode is an ON event.*/
 #define     EVENT_ON_MASK    0b00000001
+/** Mask used to determine whether an opcode is a Short event.*/
 #define     EVENT_SHORT_MASK 0b00001000
 
 #define NUM_TEACH_DIAGNOSTICS 1      ///< The number of diagnostic values associated with this service

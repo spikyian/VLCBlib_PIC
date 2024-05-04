@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCBlib_PIC: C:/Users/ianwh/github/VLCBlib_PIC/arduino.h Source File</title>
+<title>VLCB library: arduino.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,11 +26,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="VLCB.png"/></td>
   <td id="projectalign">
-   <div id="projectname">VLCBlib_PIC
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for module developemnt using PIC processors</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -138,39 +137,48 @@ $(function(){initNavTree('arduino_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#include &lt;xc.h&gt;</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#include &quot;<a class="code" href="vlcb_8h.html">vlcb.h</a>&quot;</span></div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="foldopen" id="foldopen00057" data-start="{" data-end="};">
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="struct_config.html">   57</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    uint8_t pin;</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordtype">char</span> port;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    uint8_t no;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    uint8_t an;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>} <a class="code hl_struct" href="struct_config.html">Config</a>;</div>
+<div class="foldopen" id="foldopen00058" data-start="{" data-end="};">
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="struct_config.html">   58</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="struct_config.html#ab40a673fb19c1e650e1f79de91788aa5">   59</a></span>    uint8_t <a class="code hl_variable" href="struct_config.html#ab40a673fb19c1e650e1f79de91788aa5">pin</a>;    </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="struct_config.html#a4b20c17190582b367bfba9b9bd5ea962">   60</a></span>    <span class="keywordtype">char</span> <a class="code hl_variable" href="struct_config.html#a4b20c17190582b367bfba9b9bd5ea962">port</a>;      </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="struct_config.html#af76c87939bfc1ccd7e8d8a702254b238">   61</a></span>    uint8_t <a class="code hl_variable" href="struct_config.html#af76c87939bfc1ccd7e8d8a702254b238">no</a>;     </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="struct_config.html#ae820a1586ac8b78a7248c8c225276d7b">   62</a></span>    uint8_t <a class="code hl_variable" href="struct_config.html#ae820a1586ac8b78a7248c8c225276d7b">an</a>;     </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>} <a class="code hl_struct" href="struct_config.html">Config</a>;</div>
 </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keyword">extern</span> <span class="keyword">const</span> <a class="code hl_struct" href="struct_config.html">Config</a> configs[];</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keyword">typedef</span> <span class="keyword">enum</span> PinMode {</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    OUTPUT = 0,</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    INPUT = 1,</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    ANALOGUE = 2</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>} PinMode;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="arduino_8h.html#a6b5cf95984325e3acbe2f5544f41b6fd">pinMode</a>(uint8_t pin, PinMode mode);</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="keyword">extern</span> uint8_t <a class="code hl_function" href="arduino_8h.html#af34f72641c4724c3fe3a1dc82011fe1a">digitalRead</a>(uint8_t pin);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="arduino_8h.html#ae2d36ef66ff3d8970304e7aaf716712d">digitalWrite</a>(uint8_t pin, uint8_t value);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aarduino_8h_html_a6b5cf95984325e3acbe2f5544f41b6fd"><div class="ttname"><a href="arduino_8h.html#a6b5cf95984325e3acbe2f5544f41b6fd">pinMode</a></div><div class="ttdeci">void pinMode(uint8_t pin, PinMode mode)</div><div class="ttdef"><b>Definition</b> arduino.c:86</div></div>
-<div class="ttc" id="aarduino_8h_html_ae2d36ef66ff3d8970304e7aaf716712d"><div class="ttname"><a href="arduino_8h.html#ae2d36ef66ff3d8970304e7aaf716712d">digitalWrite</a></div><div class="ttdeci">void digitalWrite(uint8_t pin, uint8_t value)</div><div class="ttdef"><b>Definition</b> arduino.c:156</div></div>
-<div class="ttc" id="aarduino_8h_html_af34f72641c4724c3fe3a1dc82011fe1a"><div class="ttname"><a href="arduino_8h.html#af34f72641c4724c3fe3a1dc82011fe1a">digitalRead</a></div><div class="ttdeci">uint8_t digitalRead(uint8_t pin)</div><div class="ttdef"><b>Definition</b> arduino.c:193</div></div>
-<div class="ttc" id="astruct_config_html"><div class="ttname"><a href="struct_config.html">Config</a></div><div class="ttdef"><b>Definition</b> arduino.h:57</div></div>
-<div class="ttc" id="avlcb_8h_html"><div class="ttname"><a href="vlcb_8h.html">vlcb.h</a></div></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keyword">extern</span> <span class="keyword">const</span> <a class="code hl_struct" href="struct_config.html">Config</a> <a class="code hl_variable" href="arduino_8h.html#afed3d5203c86edb7d044f801610636f3">configs</a>[];</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="foldopen" id="foldopen00073" data-start="{" data-end="};">
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="arduino_8h.html#a15c0c34a3baec6b9d2390a426bd3ba96">   73</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code hl_enumeration" href="arduino_8h.html#a15c0c34a3baec6b9d2390a426bd3ba96">PinMode</a> {</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    OUTPUT = 0,</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    INPUT = 1,</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    ANALOGUE = 2</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="arduino_8h.html#a9ba86b17c1a6e2a896dbfd7f8ecb272e">   77</a></span>} <a class="code hl_enumeration" href="arduino_8h.html#a15c0c34a3baec6b9d2390a426bd3ba96">PinMode</a>;</div>
+</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="arduino_8h.html#a25f16a4ef666b1bd1b632a3ecaeb4c58">pinMode</a>(uint8_t channel, <a class="code hl_enumeration" href="arduino_8h.html#a15c0c34a3baec6b9d2390a426bd3ba96">PinMode</a> mode);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="keyword">extern</span> uint8_t <a class="code hl_function" href="arduino_8h.html#abced5d6e8a99364e785e40f90af06720">digitalRead</a>(uint8_t channel);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="arduino_8h.html#a6fb7d5ffc5b52012f0bc4604308e01e4">digitalWrite</a>(uint8_t channel, uint8_t value);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aarduino_8h_html_a15c0c34a3baec6b9d2390a426bd3ba96"><div class="ttname"><a href="arduino_8h.html#a15c0c34a3baec6b9d2390a426bd3ba96">PinMode</a></div><div class="ttdeci">PinMode</div><div class="ttdef"><b>Definition</b> arduino.h:73</div></div>
+<div class="ttc" id="aarduino_8h_html_a25f16a4ef666b1bd1b632a3ecaeb4c58"><div class="ttname"><a href="arduino_8h.html#a25f16a4ef666b1bd1b632a3ecaeb4c58">pinMode</a></div><div class="ttdeci">void pinMode(uint8_t channel, PinMode mode)</div><div class="ttdef"><b>Definition</b> arduino.c:110</div></div>
+<div class="ttc" id="aarduino_8h_html_a6fb7d5ffc5b52012f0bc4604308e01e4"><div class="ttname"><a href="arduino_8h.html#a6fb7d5ffc5b52012f0bc4604308e01e4">digitalWrite</a></div><div class="ttdeci">void digitalWrite(uint8_t channel, uint8_t value)</div><div class="ttdef"><b>Definition</b> arduino.c:210</div></div>
+<div class="ttc" id="aarduino_8h_html_abced5d6e8a99364e785e40f90af06720"><div class="ttname"><a href="arduino_8h.html#abced5d6e8a99364e785e40f90af06720">digitalRead</a></div><div class="ttdeci">uint8_t digitalRead(uint8_t channel)</div><div class="ttdef"><b>Definition</b> arduino.c:247</div></div>
+<div class="ttc" id="aarduino_8h_html_afed3d5203c86edb7d044f801610636f3"><div class="ttname"><a href="arduino_8h.html#afed3d5203c86edb7d044f801610636f3">configs</a></div><div class="ttdeci">const Config configs[]</div></div>
+<div class="ttc" id="astruct_config_html"><div class="ttname"><a href="struct_config.html">Config</a></div><div class="ttdef"><b>Definition</b> arduino.h:58</div></div>
+<div class="ttc" id="astruct_config_html_a4b20c17190582b367bfba9b9bd5ea962"><div class="ttname"><a href="struct_config.html#a4b20c17190582b367bfba9b9bd5ea962">Config::port</a></div><div class="ttdeci">char port</div><div class="ttdoc">The port letter PORT*port*.</div><div class="ttdef"><b>Definition</b> arduino.h:60</div></div>
+<div class="ttc" id="astruct_config_html_ab40a673fb19c1e650e1f79de91788aa5"><div class="ttname"><a href="struct_config.html#ab40a673fb19c1e650e1f79de91788aa5">Config::pin</a></div><div class="ttdeci">uint8_t pin</div><div class="ttdoc">The pin number.</div><div class="ttdef"><b>Definition</b> arduino.h:59</div></div>
+<div class="ttc" id="astruct_config_html_ae820a1586ac8b78a7248c8c225276d7b"><div class="ttname"><a href="struct_config.html#ae820a1586ac8b78a7248c8c225276d7b">Config::an</a></div><div class="ttdeci">uint8_t an</div><div class="ttdoc">The analogue port number AN*an*.</div><div class="ttdef"><b>Definition</b> arduino.h:62</div></div>
+<div class="ttc" id="astruct_config_html_af76c87939bfc1ccd7e8d8a702254b238"><div class="ttname"><a href="struct_config.html#af76c87939bfc1ccd7e8d8a702254b238">Config::no</a></div><div class="ttdeci">uint8_t no</div><div class="ttdoc">The port bit number PORTxbits*no*.</div><div class="ttdef"><b>Definition</b> arduino.h:61</div></div>
+<div class="ttc" id="avlcb_8h_html"><div class="ttname"><a href="vlcb_8h.html">vlcb.h</a></div><div class="ttdoc">Baseline functionality required by VLCB and entry points into the application.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d522931ffa1371640980b621734a4381.html">Users</a></li><li class="navelem"><a class="el" href="dir_10e25e262c850a79f6760812285f1413.html">ianwh</a></li><li class="navelem"><a class="el" href="dir_b0b4633879bd5c761e47fc280b556d88.html">github</a></li><li class="navelem"><a class="el" href="dir_a1617414bc24890c12be9c4da14587d4.html">VLCBlib_PIC</a></li><li class="navelem"><a class="el" href="arduino_8h.html">arduino.h</a></li>
+    <li class="navelem"><a class="el" href="arduino_8h.html">arduino.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCBlib_PIC: C:/Users/ianwh/github/VLCBlib_PIC/statusLeds.h Source File</title>
+<title>VLCB library: statusLeds.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,11 +26,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="VLCB.png"/></td>
   <td id="projectalign">
-   <div id="projectname">VLCBlib_PIC
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for module developemnt using PIC processors</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -101,7 +100,7 @@ $(function(){initNavTree('status_leds_8h_source.html',''); initResizable(); });
   <div class="headertitle"><div class="title">statusLeds.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef _STATUSLEDS_H_</span></div>
+<a href="status_leds_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef _STATUSLEDS_H_</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">/*</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">  This work is licensed under the:</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">      Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</span></div>
@@ -133,39 +132,57 @@ $(function(){initNavTree('status_leds_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">    This software is distributed in the hope that it will be useful, but WITHOUT ANY</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#define _STATUSLEDS_H_</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="status_leds_8h.html#a3d7c68d2da2e5df947f79d980067fb6c">   41</a></span><span class="preprocessor">#define _STATUSLEDS_H_</span></div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#include &quot;<a class="code" href="vlcb_8h.html">vlcb.h</a>&quot;</span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#include &quot;<a class="code" href="ticktime_8h.html">ticktime.h</a>&quot;</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#include &quot;module.h&quot;</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#include &quot;statusDisplay.h&quot;</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#include &quot;<a class="code" href="status_display_8h.html">statusDisplay.h</a>&quot;</span></div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    OFF,            </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    ON,             </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    FLASH_50_2HZ,   </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    FLASH_50_1HZ,   </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    FLASH_50_HALF_HZ,   </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    SINGLE_FLICKER_OFF, </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    SINGLE_FLICKER_ON,  </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    LONG_FLICKER_OFF,   </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    LONG_FLICKER_ON,     </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    OFF_1S              </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>} LedState;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">// other externs</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keyword">extern</span> <span class="keywordtype">void</span> leds_powerUp(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="keyword">extern</span> <span class="keywordtype">void</span> leds_poll(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keyword">extern</span> <span class="keywordtype">void</span> showStatus(StatusDisplay s);</div>
+<div class="foldopen" id="foldopen00055" data-start="{" data-end="};">
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46e">   55</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eafc0ca8cc6cbe215fd3f1ae6d40255b40">   56</a></span>    <a class="code hl_enumvalue" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eafc0ca8cc6cbe215fd3f1ae6d40255b40">LED_OFF</a>,            </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eadd01b80eb93658fb4cf7eb9aceb89a1d">   57</a></span>    <a class="code hl_enumvalue" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eadd01b80eb93658fb4cf7eb9aceb89a1d">LED_ON</a>,             </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eacfb27484da699272fd7fb270370305eb">   58</a></span>    <a class="code hl_enumvalue" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eacfb27484da699272fd7fb270370305eb">LED_FLASH_50_2HZ</a>,   </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eaaa47056165faeaa14ac45cdb3dcbbf0e">   59</a></span>    <a class="code hl_enumvalue" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eaaa47056165faeaa14ac45cdb3dcbbf0e">LED_FLASH_50_1HZ</a>,   </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46ea682b0a1795994f6bef8073a31a3577a4">   60</a></span>    <a class="code hl_enumvalue" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46ea682b0a1795994f6bef8073a31a3577a4">LED_FLASH_50_HALF_HZ</a>,   </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46ea8bb1d7e0e328880ccd4ec781b0ccab5c">   61</a></span>    <a class="code hl_enumvalue" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46ea8bb1d7e0e328880ccd4ec781b0ccab5c">LED_SINGLE_FLICKER_OFF</a>, </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eadbcfa1eed62ae2570a6fbeacb301b07c">   62</a></span>    <a class="code hl_enumvalue" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eadbcfa1eed62ae2570a6fbeacb301b07c">LED_SINGLE_FLICKER_ON</a>,  </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46ea5bcc997738c6f7cd8aca7abcf17657e8">   63</a></span>    <a class="code hl_enumvalue" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46ea5bcc997738c6f7cd8aca7abcf17657e8">LED_LONG_FLICKER_OFF</a>,   </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46ea1b2c9f330e2cf0873bbcb74928686032">   64</a></span>    <a class="code hl_enumvalue" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46ea1b2c9f330e2cf0873bbcb74928686032">LED_LONG_FLICKER_ON</a>,     </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <a class="code hl_enumvalue" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eab626da237d36e2718b0ef82078268d29">LED_OFF_1S</a>              </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eab626da237d36e2718b0ef82078268d29">   66</a></span>} <a class="code hl_enumeration" href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46e">LedState</a>;</div>
+</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aticktime_8h_html"><div class="ttname"><a href="ticktime_8h.html">ticktime.h</a></div></div>
-<div class="ttc" id="avlcb_8h_html"><div class="ttname"><a href="vlcb_8h.html">vlcb.h</a></div></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">// other externs</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="status_leds_8h.html#a59fcfd22c1ffa1a62242b1854ddbc685">leds_powerUp</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="status_leds_8h.html#a1356190e73bdabc63810e671813ebea6">leds_poll</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="status_leds_8h.html#a1e73ed92d0d1815a0149fff1d8bdb385">showStatus</a>(<a class="code hl_enumeration" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902e">StatusDisplay</a> s);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="astatus_display_8h_html"><div class="ttname"><a href="status_display_8h.html">statusDisplay.h</a></div><div class="ttdoc">Definition of the different indications possible with the LEDs.</div></div>
+<div class="ttc" id="astatus_display_8h_html_a02c5b571a84044d3d1e6ab3dd848902e"><div class="ttname"><a href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902e">StatusDisplay</a></div><div class="ttdeci">StatusDisplay</div><div class="ttdef"><b>Definition</b> statusDisplay.h:55</div></div>
+<div class="ttc" id="astatus_leds_8h_html_a1356190e73bdabc63810e671813ebea6"><div class="ttname"><a href="status_leds_8h.html#a1356190e73bdabc63810e671813ebea6">leds_poll</a></div><div class="ttdeci">void leds_poll(void)</div><div class="ttdef"><b>Definition</b> statusLeds1.c:72</div></div>
+<div class="ttc" id="astatus_leds_8h_html_a1e73ed92d0d1815a0149fff1d8bdb385"><div class="ttname"><a href="status_leds_8h.html#a1e73ed92d0d1815a0149fff1d8bdb385">showStatus</a></div><div class="ttdeci">void showStatus(StatusDisplay s)</div><div class="ttdef"><b>Definition</b> statusLeds1.c:146</div></div>
+<div class="ttc" id="astatus_leds_8h_html_a406de9d429029db9e502b1c78c73d46e"><div class="ttname"><a href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46e">LedState</a></div><div class="ttdeci">LedState</div><div class="ttdef"><b>Definition</b> statusLeds.h:55</div></div>
+<div class="ttc" id="astatus_leds_8h_html_a406de9d429029db9e502b1c78c73d46ea1b2c9f330e2cf0873bbcb74928686032"><div class="ttname"><a href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46ea1b2c9f330e2cf0873bbcb74928686032">LED_LONG_FLICKER_ON</a></div><div class="ttdeci">@ LED_LONG_FLICKER_ON</div><div class="ttdoc">500ms pulse on</div><div class="ttdef"><b>Definition</b> statusLeds.h:64</div></div>
+<div class="ttc" id="astatus_leds_8h_html_a406de9d429029db9e502b1c78c73d46ea5bcc997738c6f7cd8aca7abcf17657e8"><div class="ttname"><a href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46ea5bcc997738c6f7cd8aca7abcf17657e8">LED_LONG_FLICKER_OFF</a></div><div class="ttdeci">@ LED_LONG_FLICKER_OFF</div><div class="ttdoc">500ms pulse off</div><div class="ttdef"><b>Definition</b> statusLeds.h:63</div></div>
+<div class="ttc" id="astatus_leds_8h_html_a406de9d429029db9e502b1c78c73d46ea682b0a1795994f6bef8073a31a3577a4"><div class="ttname"><a href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46ea682b0a1795994f6bef8073a31a3577a4">LED_FLASH_50_HALF_HZ</a></div><div class="ttdeci">@ LED_FLASH_50_HALF_HZ</div><div class="ttdoc">50% duty cycle 0.5Hz</div><div class="ttdef"><b>Definition</b> statusLeds.h:60</div></div>
+<div class="ttc" id="astatus_leds_8h_html_a406de9d429029db9e502b1c78c73d46ea8bb1d7e0e328880ccd4ec781b0ccab5c"><div class="ttname"><a href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46ea8bb1d7e0e328880ccd4ec781b0ccab5c">LED_SINGLE_FLICKER_OFF</a></div><div class="ttdeci">@ LED_SINGLE_FLICKER_OFF</div><div class="ttdoc">250ms pulse off</div><div class="ttdef"><b>Definition</b> statusLeds.h:61</div></div>
+<div class="ttc" id="astatus_leds_8h_html_a406de9d429029db9e502b1c78c73d46eaaa47056165faeaa14ac45cdb3dcbbf0e"><div class="ttname"><a href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eaaa47056165faeaa14ac45cdb3dcbbf0e">LED_FLASH_50_1HZ</a></div><div class="ttdeci">@ LED_FLASH_50_1HZ</div><div class="ttdoc">50% duty cycle 1Hz</div><div class="ttdef"><b>Definition</b> statusLeds.h:59</div></div>
+<div class="ttc" id="astatus_leds_8h_html_a406de9d429029db9e502b1c78c73d46eab626da237d36e2718b0ef82078268d29"><div class="ttname"><a href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eab626da237d36e2718b0ef82078268d29">LED_OFF_1S</a></div><div class="ttdeci">@ LED_OFF_1S</div><div class="ttdoc">1 second off</div><div class="ttdef"><b>Definition</b> statusLeds.h:65</div></div>
+<div class="ttc" id="astatus_leds_8h_html_a406de9d429029db9e502b1c78c73d46eacfb27484da699272fd7fb270370305eb"><div class="ttname"><a href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eacfb27484da699272fd7fb270370305eb">LED_FLASH_50_2HZ</a></div><div class="ttdeci">@ LED_FLASH_50_2HZ</div><div class="ttdoc">50% duty cycle 2Hz</div><div class="ttdef"><b>Definition</b> statusLeds.h:58</div></div>
+<div class="ttc" id="astatus_leds_8h_html_a406de9d429029db9e502b1c78c73d46eadbcfa1eed62ae2570a6fbeacb301b07c"><div class="ttname"><a href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eadbcfa1eed62ae2570a6fbeacb301b07c">LED_SINGLE_FLICKER_ON</a></div><div class="ttdeci">@ LED_SINGLE_FLICKER_ON</div><div class="ttdoc">250ms pulse on</div><div class="ttdef"><b>Definition</b> statusLeds.h:62</div></div>
+<div class="ttc" id="astatus_leds_8h_html_a406de9d429029db9e502b1c78c73d46eadd01b80eb93658fb4cf7eb9aceb89a1d"><div class="ttname"><a href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eadd01b80eb93658fb4cf7eb9aceb89a1d">LED_ON</a></div><div class="ttdeci">@ LED_ON</div><div class="ttdoc">fixed ON</div><div class="ttdef"><b>Definition</b> statusLeds.h:57</div></div>
+<div class="ttc" id="astatus_leds_8h_html_a406de9d429029db9e502b1c78c73d46eafc0ca8cc6cbe215fd3f1ae6d40255b40"><div class="ttname"><a href="status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eafc0ca8cc6cbe215fd3f1ae6d40255b40">LED_OFF</a></div><div class="ttdeci">@ LED_OFF</div><div class="ttdoc">fixed OFF</div><div class="ttdef"><b>Definition</b> statusLeds.h:56</div></div>
+<div class="ttc" id="astatus_leds_8h_html_a59fcfd22c1ffa1a62242b1854ddbc685"><div class="ttname"><a href="status_leds_8h.html#a59fcfd22c1ffa1a62242b1854ddbc685">leds_powerUp</a></div><div class="ttdeci">void leds_powerUp(void)</div><div class="ttdef"><b>Definition</b> statusLeds1.c:64</div></div>
+<div class="ttc" id="aticktime_8h_html"><div class="ttname"><a href="ticktime_8h.html">ticktime.h</a></div><div class="ttdoc">This file provides access to all of the time management functions.</div></div>
+<div class="ttc" id="avlcb_8h_html"><div class="ttname"><a href="vlcb_8h.html">vlcb.h</a></div><div class="ttdoc">Baseline functionality required by VLCB and entry points into the application.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d522931ffa1371640980b621734a4381.html">Users</a></li><li class="navelem"><a class="el" href="dir_10e25e262c850a79f6760812285f1413.html">ianwh</a></li><li class="navelem"><a class="el" href="dir_b0b4633879bd5c761e47fc280b556d88.html">github</a></li><li class="navelem"><a class="el" href="dir_a1617414bc24890c12be9c4da14587d4.html">VLCBlib_PIC</a></li><li class="navelem"><b>statusLeds.h</b></li>
+    <li class="navelem"><a class="el" href="status_leds_8h.html">statusLeds.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

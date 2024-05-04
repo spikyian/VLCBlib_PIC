@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['quantity_0',['quantity',['../queue_8c.html#ac9f394f417ab5fe70c70e1944db9be30',1,'quantity(Queue *q):&#160;queue.c'],['../queue_8h.html#a8827cc006ef80d10d7541a19378a74f9',1,'quantity(Queue *q):&#160;queue.c']]]
+  ['quantity_0',['quantity',['../message_queue_8c.html#a56f3a8598434bcd450ad1491c0376e8e',1,'quantity(MessageQueue *q):&#160;messageQueue.c'],['../message_queue_8h.html#a56f3a8598434bcd450ad1491c0376e8e',1,'quantity(MessageQueue *q):&#160;messageQueue.c']]]
 ];

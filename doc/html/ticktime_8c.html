@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCBlib_PIC: C:/Users/ianwh/github/VLCBlib_PIC/ticktime.c File Reference</title>
+<title>VLCB library: ticktime.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,11 +26,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="VLCB.png"/></td>
   <td id="projectalign">
-   <div id="projectname">VLCBlib_PIC
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for module developemnt using PIC processors</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -99,30 +98,32 @@ $(function(){initNavTree('ticktime_8c.html',''); initResizable(); });
   <div class="headertitle"><div class="title">ticktime.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Functions to provide timing.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;xc.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="ticktime_8h_source.html">ticktime.h</a>&quot;</code><br />
 <code>#include &quot;module.h&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a87ce5e04a5e34bb8e8b876714c84f371" id="r_a87ce5e04a5e34bb8e8b876714c84f371"><td class="memItemLeft" align="right" valign="top"><a id="a87ce5e04a5e34bb8e8b876714c84f371" name="a87ce5e04a5e34bb8e8b876714c84f371"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initTicker</b> (uint8_t priority)</td></tr>
+<tr class="memitem:a87ce5e04a5e34bb8e8b876714c84f371" id="r_a87ce5e04a5e34bb8e8b876714c84f371"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87ce5e04a5e34bb8e8b876714c84f371">initTicker</a> (uint8_t priority)</td></tr>
 <tr class="separator:a87ce5e04a5e34bb8e8b876714c84f371"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb90f0fa7746a4911053a4351e7846d2" id="r_aeb90f0fa7746a4911053a4351e7846d2"><td class="memItemLeft" align="right" valign="top"><a id="aeb90f0fa7746a4911053a4351e7846d2" name="aeb90f0fa7746a4911053a4351e7846d2"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>tickGet</b> (void)</td></tr>
+<tr class="memitem:aeb90f0fa7746a4911053a4351e7846d2" id="r_aeb90f0fa7746a4911053a4351e7846d2"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeb90f0fa7746a4911053a4351e7846d2">tickGet</a> (void)</td></tr>
 <tr class="separator:aeb90f0fa7746a4911053a4351e7846d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad778ad0c3eea73fc4aa9a11e6c7c3564" id="r_ad778ad0c3eea73fc4aa9a11e6c7c3564"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad778ad0c3eea73fc4aa9a11e6c7c3564">__interrupt</a> (irq(TMR0), base(IVT_BASE))</td></tr>
+<tr class="separator:ad778ad0c3eea73fc4aa9a11e6c7c3564"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a9defbf70987a03170d67e1549dab3584" id="r_a9defbf70987a03170d67e1549dab3584"><td class="memItemLeft" align="right" valign="top"><a id="a9defbf70987a03170d67e1549dab3584" name="a9defbf70987a03170d67e1549dab3584"></a>
-volatile uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>timerExtension1</b></td></tr>
+<tr class="memitem:a9defbf70987a03170d67e1549dab3584" id="r_a9defbf70987a03170d67e1549dab3584"><td class="memItemLeft" align="right" valign="top">volatile uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9defbf70987a03170d67e1549dab3584">timerExtension1</a></td></tr>
 <tr class="separator:a9defbf70987a03170d67e1549dab3584"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6210ec7cb0201ec7f5e1c05e75a469d2" id="r_a6210ec7cb0201ec7f5e1c05e75a469d2"><td class="memItemLeft" align="right" valign="top"><a id="a6210ec7cb0201ec7f5e1c05e75a469d2" name="a6210ec7cb0201ec7f5e1c05e75a469d2"></a>
-volatile uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>timerExtension2</b></td></tr>
+<tr class="memitem:a6210ec7cb0201ec7f5e1c05e75a469d2" id="r_a6210ec7cb0201ec7f5e1c05e75a469d2"><td class="memItemLeft" align="right" valign="top">volatile uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6210ec7cb0201ec7f5e1c05e75a469d2">timerExtension2</a></td></tr>
 <tr class="separator:a6210ec7cb0201ec7f5e1c05e75a469d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section copyright"><dt>Copyright</dt><dd>Copyright © 2007-2010 Microchip Technology Inc. All rights reserved. </dd></dl>
+<div class="textblock"><p>Functions to provide timing. </p>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright © 2007-2010 Microchip Technology Inc. All rights reserved. </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Copyright © 2007-2010 Microchip Technology Inc. All rights reserved. </dd>
 <dd>
 Copyright © 2015 Pete Brownlow for changes Jan 2015 </dd>
@@ -131,13 +132,107 @@ Ported to XC8 by Ian Hogg 23/5/2017 </dd>
 <dd>
 Updated for VLCB Ian Hogg Nov 2022 </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>Nov 2022</dd></dl>
-<p>Functions to provide timing. Uses 16bit PIC Timer0. Extends this to 32bit using timerExtension which is incremented on timer0 overflow. Times are stored as TickValue. Functions are provided to measure time since a time value was recorded. </p>
-</div></div><!-- contents -->
+<p>Uses 16bit PIC Timer0. Extends this to 32bit using timerExtension which is incremented on timer0 overflow. Times are stored as TickValue. Functions are provided to measure time since a time value was recorded. </p>
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="ad778ad0c3eea73fc4aa9a11e6c7c3564" name="ad778ad0c3eea73fc4aa9a11e6c7c3564"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad778ad0c3eea73fc4aa9a11e6c7c3564">&#9670;&#160;</a></span>__interrupt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void __interrupt </td>
+          <td>(</td>
+          <td class="paramtype">irq(TMR0)</td>          <td class="paramname"><span class="paramname">, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">base(IVT_BASE)</td>          <td class="paramname"><span class="paramname"></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The ticktime interrupt service routine. Handles the tickTime overflow to update the extension bytes. </p>
+
+</div>
+</div>
+<a id="a87ce5e04a5e34bb8e8b876714c84f371" name="a87ce5e04a5e34bb8e8b876714c84f371"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87ce5e04a5e34bb8e8b876714c84f371">&#9670;&#160;</a></span>initTicker()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void initTicker </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>priority</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Initialise the tick timer using the specified interrupt priority. Function: void InitTicker()</p>
+<p>TMR0 for PIC18 is configured for calculating the correct symbol times. <br  />
+ The timer interrupt is enabled causing the timer roll over calculations. <br  />
+ Interrupts are required to be enabled in order to extend the timer to 4 bytes in PIC18. PIC24/dsPIC version do not enable or require interrupts. </p>
+
+</div>
+</div>
+<a id="aeb90f0fa7746a4911053a4351e7846d2" name="aeb90f0fa7746a4911053a4351e7846d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb90f0fa7746a4911053a4351e7846d2">&#9670;&#160;</a></span>tickGet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t tickGet </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the current tick time. PIC18 only: the timer interrupt is disabled for several instruction cycles while the timer value is grabbed. This is to prevent a rollover from incrementing the timer extenders during the read of their values.</p>
+<dl class="section return"><dt>Returns</dt><dd>the 32bit timer value </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a9defbf70987a03170d67e1549dab3584" name="a9defbf70987a03170d67e1549dab3584"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9defbf70987a03170d67e1549dab3584">&#9670;&#160;</a></span>timerExtension1</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint8_t timerExtension1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Variable used to hold the upper bytes of the timeVal. Extends the hardware counter from 16bits to 32bits. </p>
+
+</div>
+</div>
+<a id="a6210ec7cb0201ec7f5e1c05e75a469d2" name="a6210ec7cb0201ec7f5e1c05e75a469d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6210ec7cb0201ec7f5e1c05e75a469d2">&#9670;&#160;</a></span>timerExtension2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint8_t timerExtension2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Timer0 provides a 16bit counter. The timerExtension variables extend the count to 32bit. timerExtension2 provides the top most byte. </p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d522931ffa1371640980b621734a4381.html">Users</a></li><li class="navelem"><a class="el" href="dir_10e25e262c850a79f6760812285f1413.html">ianwh</a></li><li class="navelem"><a class="el" href="dir_b0b4633879bd5c761e47fc280b556d88.html">github</a></li><li class="navelem"><a class="el" href="dir_a1617414bc24890c12be9c4da14587d4.html">VLCBlib_PIC</a></li><li class="navelem"><a class="el" href="ticktime_8c.html">ticktime.c</a></li>
+    <li class="navelem"><a class="el" href="ticktime_8c.html">ticktime.c</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

@@ -30,6 +30,7 @@
 
 /**
  * @file
+ * @brief
  * The functions here emulate some of the common Arduino functions. 
  * @details 
  * These may help some developers to feel more comfortable in developing software. 
@@ -101,7 +102,7 @@ const Config configs[] = {
 #endif
 #endif
 
-/**
+/*
  * Set the specified channel to the type as specified by mode.
  * @param channel the channel number
  * @param mode the type of pin
@@ -200,7 +201,7 @@ void pinMode(uint8_t channel, PinMode mode) {
     }
 }
 
-/**
+/*
  * Write the specified value to the channel pin. Does not check that the channel is
  * configured to be in OUTPUT mode.
  * @param channel the channel number
@@ -209,7 +210,7 @@ void pinMode(uint8_t channel, PinMode mode) {
 void digitalWrite(uint8_t channel, uint8_t value) {
     if (channel < NUM_IO) {
         // now set the digital port value
-        switch(configs[channel].port) {
+       switch(configs[channel].port) {
             case 'A':
                 if (value) {
                     LATA |= (1 << configs[channel].no);
@@ -237,9 +238,9 @@ void digitalWrite(uint8_t channel, uint8_t value) {
     }
 }
 
-/**
+/*
  * Read a pin to obtain the current digital input value. Does not check that the
- * channel pin is operating in INPUT mode.
+ * channel is operating in INPUT mode.
  * @param channel the channel number
  * @return the digital value
  */

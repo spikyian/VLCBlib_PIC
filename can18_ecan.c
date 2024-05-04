@@ -41,7 +41,8 @@
 #if defined(_18F66K80_FAMILY_)
 /**
  * @file
- * Implementation of the VLCB CAN service. 
+ * @brief
+ * Implementation of the VLCB CAN Service for the PIC ECAN peripheral. 
  * @details
  * Uses Controller Area Network to carry VLCB messages.
  * This implementation works with the PIC18 ECAN.
@@ -58,9 +59,9 @@
 #include "can.h"
 #include "mns.h"
 
-#include "romops.h"
+#include "nvm.h"
 #include "ticktime.h"
-#include "queue.h"
+#include "messageQueue.h"
 
 //
 // ECAN registers
@@ -88,6 +89,10 @@ static Processed canProcessMessage(Message * m);
 static void canIsr(void);
 static uint8_t canEsdData(uint8_t id);
 static DiagnosticVal * canGetDiagnostic(uint8_t index);
+// ISR functions
+static void canTxError(void);
+static void checkTxFifo(void);
+static void checkCANTimeout(void);
 
 /**
  * The service descriptor for the CAN service. The application must include this
@@ -139,9 +144,9 @@ static uint8_t  canTransmitFailed;
  *  Tx and Rx buffers
  */
 static Message rxBuffers[CAN_NUM_RXBUFFERS];
-static Queue rxQueue;
+static MessageQueue rxQueue;
 static Message txBuffers[CAN_NUM_TXBUFFERS];
-static Queue txQueue;
+static MessageQueue txQueue;
 //static Message message;
 
 /**
@@ -386,12 +391,17 @@ static Processed canProcessMessage(Message * m) {
  * Handle the interrupts from the CAN peripheral. 
  */
 static void canIsr(void) {
-    // If RX then transfer frame from CAN peripheral to RX message buffer
-    // handle enumeration frame
-    // check for CANID clash and start self enumeration process
-    
     // If TX then transfer next frame from TX buffer to CAN peripheral 
-    canInterruptHandler();
+    if (FIFOWMIF) {      // Receive buffer high water mark, so move data into software fifo
+        canFillRxFifo();
+    }
+    if (ERRIF) {        //handle errors
+        canTxError();
+    }
+    if (TXBnIF) {
+        checkTxFifo();
+    }
+    checkCANTimeout();
 }
 
 /**
@@ -420,9 +430,6 @@ static DiagnosticVal * canGetDiagnostic(uint8_t index) {
     return &(canDiagnostics[index-1]);
 }
 
-static uint8_t isEvent(uint8_t opc) {
-    return (((opc & EVENT_SET_MASK) == EVENT_SET_MASK) && ((~opc & EVENT_CLR_MASK)== EVENT_CLR_MASK));
-}
 
 /*            TRANSPORT INTERFACE             */
 /**
@@ -593,7 +600,7 @@ static uint8_t * getBufferPointer(uint8_t b) {
 }
 
 /**
- *  Called by ISR to handle tx buffer interrupt.
+ * Called by ISR to handle tx buffer interrupt.
  * If there is another message waiting in the TX buffers then copy that to the
  * TXB0 ECAN and start the transmission.
  */
@@ -704,21 +711,6 @@ static void canTxError(void) {
     ERRIF = 0;
 }
 
-/**
- * This routine is called to manage the CAN interrupts.
- */
-static void canInterruptHandler(void) {
-    if (FIFOWMIF) {      // Receive buffer high water mark, so move data into software fifo
-        canFillRxFifo();
-    }
-    if (ERRIF) {
-        canTxError();
-    }
-    if (TXBnIF) {
-        checkTxFifo();
-    }
-    checkCANTimeout();
-}
 
 /**
  * Start or respond to self-enumeration process.

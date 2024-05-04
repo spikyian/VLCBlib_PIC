@@ -41,7 +41,8 @@
 #if defined(_18FXXQ83_FAMILY_)
 /**
  * @file
- * Implementation of the VLCB CAN service. 
+ * @brief
+ * Implementation of the VLCB CAN Service. 
  * @details
  * Uses Controller Area Network to carry VLCB messages.
  * This implementation works with the PIC18 CAN_2.0 peripheral.
@@ -67,9 +68,9 @@
 #include "can.h"
 #include "mns.h"
 
-#include "romops.h"
+#include "nvm.h"
 #include "ticktime.h"
-#include "queue.h"
+#include "messageQueue.h"
 
 #define CAN1_BUFFERS_BASE_ADDRESS           0x3BB0  // Allows for 0x450 of CAN buffers (4+1+32+32)*(16) = 69*16 = 0x450
 // High priority transmit queue
@@ -136,7 +137,7 @@ const Transport canTransport = {
 };
 
 /**
- * The CANID.
+ * The CANID. This is persisted in non-volatile memory.
  */
 static uint8_t canId;
 /**
@@ -150,7 +151,7 @@ static uint8_t  canTransmitFailed;
  *  Rx buffers used to store self consumed events
  */
 static Message rxBuffers[CAN_NUM_RXBUFFERS];
-static Queue rxQueue;
+static MessageQueue rxQueue;
 
 /**
  * Variables for self enumeration of CANID 
@@ -158,7 +159,8 @@ static Queue rxQueue;
 enum EnumerationState {
     NO_ENUMERATION,
     ENUMERATION_REQUIRED,
-    ENUMERATION_IN_PROGRESS
+    ENUMERATION_IN_PROGRESS,
+    ENUMERATION_IN_PROGRESS_TX_WAITING
 } EnumerationState;
 static TickValue  enumerationStartTime;
 static enum EnumerationState enumerationState; 
@@ -167,8 +169,8 @@ static uint8_t    enumerationResults[ENUM_ARRAY_SIZE];
 
 // forward declarations
 static CanidResult setNewCanId(uint8_t newCanId);
-
 static void canInterruptHandler(void);
+static void startEnumeration(Boolean txWaiting);
 static void processEnumeration(void);
 static void handleSelfEnumeration(uint8_t canid);
 static void canFillRxFifo(void);
@@ -198,7 +200,7 @@ static void canFactoryReset(void) {
     writeNVM(CANID_NVM_TYPE, CANID_ADDRESS, canId);
 }
 
-/*
+/**
  * Do the CAN power up. Get the saved CANID, provision the CAN peripheral.
  * The CAN is configured for 125Kbs clocked from Fosc
  * 
@@ -276,24 +278,13 @@ static void canPowerUp(void) {
         /* Initialise the C1FIFOBA with the start address of the CAN FIFO message object area. */
         C1FIFOBA = CAN1_BUFFERS_BASE_ADDRESS;
 
-        /*
-        C1CONL = 0x80;      // CLKSEL0 enabled; DeviceNet filter disabled
-        C1CONH = 0x87;      // ON enabled; SIDL disabled; BUSY disabled; WFT T11 Filter; WAKFIL enabled;
-        C1CONU = 0x10;      // TXQEN enabled; STEF disabled; SERR2LOM disabled; ESIGM disabled; RTXAT disabled;
-        C1CONT = 0x50;      // TXBWS=5; ABAT=0; REQOP=0
-                
-        C1NBTCFGL = 0x00;   // SJW 1;
-        C1NBTCFGH = 0x03;   // TSEG2 4;
-        C1NBTCFGU = 0x02;   // TSEG1 3;
-        C1NBTCFGT = 0x0F;   // BRP 15;
-        */
         C1CONL = 0x00;      // CLKSEL0 disabled; DeviceNet filter disabled
         C1CONH = 0x87;      // ON enabled; SIDL disabled; BUSY disabled; WFT T11 Filter; WAKFIL enabled;
         C1CONU = 0x10;      // TXQEN enabled; STEF disabled; SERR2LOM disabled; ESIGM disabled; RTXAT disabled;
         C1CONT = 0x50;      // TXBWS=5; ABAT=0; REQOP=0
-        C1NBTCFGL = 0x00; //0x02;   // SJW 1;
-        C1NBTCFGH = 0x03; //0x02;   // TSEG2 4;
-        C1NBTCFGU = 0x02; //0x03;   // TSEG1 3;
+        C1NBTCFGL = 0x00;   // SJW 1;
+        C1NBTCFGH = 0x03;   // TSEG2 4;
+        C1NBTCFGU = 0x02;   // TSEG1 3;
         C1NBTCFGT = 0x3F;   // BRP 15;
         // Used to transmit the RTR self enum request
         C1TXQCONL = 0x10;   // TXATIE enabled; TXQEIE disabled; TXQNIE disabled;
@@ -303,7 +294,7 @@ static void canPowerUp(void) {
                         (CAN1_TXQ_PAYLOAD_SIZE==32) ? 5 : 
                                                 (CAN1_TXQ_PAYLOAD_SIZE/16)+3) <<5 ) | (CAN1_TXQ_SIZE-1);   // PLSIZE 8; FSIZE 4;
 
-        // used to automatically transmit the zero data length response to RTR
+        // used to transmit the zero data length response to RTR
         C1FIFOCON1L = 0x80; // TXEN enabled; RTREN enabled; RXTSEN disabled; TXATIE disabled; RXOVIE disabled; TFERFFIE enabled; TFHRFHIE disabled; TFNRFNIE disabled;
         C1FIFOCON1H = 0x04; // FRESET enabled; TXREQ disabled; UINC disabled;
         C1FIFOCON1U = 0x6F; // TXAT unlimited retransmission attempts; TXPRI 15 (high);
@@ -358,7 +349,7 @@ static void canPowerUp(void) {
 }
 
 /**
- * Handle the RX overrun interrupt.
+ * Handle the RX overrun and receive error interrupts.
  */
 void __interrupt(irq(IRQ_CAN), base(IVT_BASE)) receiveOverrun(void) {
     if (C1FIFOSTA3Lbits.RXOVIF == 1) {
@@ -421,6 +412,12 @@ static Processed canProcessMessage(Message * m) {
     return NOT_PROCESSED;
 }
 
+/**
+ * The poll routine just continues any self enumeration that is in progress.
+ * I originally also tried to extend the error counters from 8bit to 16bit for
+ * the diagnostic counters but this is probably unnecessary and takes too much
+ * CPU time.
+ */
 void canPoll() {
     uint8_t t8;
     
@@ -442,8 +439,8 @@ void canPoll() {
 
 /**
  * Return the service extended definition bytes.
- * @param id
- * @return 
+ * @param id identifier for the extended service definition data
+ * @return the ESD data
  */
 uint8_t canEsdData(uint8_t id) {
     switch(id) {
@@ -521,9 +518,6 @@ static DiagnosticVal * canGetDiagnostic(uint8_t index) {
     return &(canDiagnostics[index-1]);
 }
 
-static uint8_t isEvent(uint8_t opc) {
-    return (((opc & EVENT_SET_MASK) == EVENT_SET_MASK) && ((~opc & EVENT_CLR_MASK)== EVENT_CLR_MASK));
-}
 
 /*            TRANSPORT INTERFACE             */
 /**
@@ -590,16 +584,23 @@ static SendResult canSendMessage(Message * mp) {
     txFifoObj[13] = mp->bytes[4];  // data5
     txFifoObj[14] = mp->bytes[5];  // data6
     txFifoObj[15] = mp->bytes[6];  // data7
-       
-    C1FIFOCON2H |= (_C1FIFOCON2H_TXREQ_MASK | _C1FIFOCON2H_UINC_MASK); // transmit
+    
     canDiagnostics[CAN_DIAG_TX_MESSAGES].asUint++;
+    C1FIFOCON2H |= _C1FIFOCON2H_UINC_MASK; // add to TX queue
+    if (canId == 0) {
+        // Not ready to send as we don't yet have a CANID so start the self enumeration
+        startEnumeration(1);
+    } else {
+        // ready to send as we have a CANID
+        C1FIFOCON2H |= _C1FIFOCON2H_TXREQ_MASK; // transmit
+    }
     return SEND_OK;
 }
 
 /** 
  * Initiate a self enumeration by sending a RTR frame using the TXQ.
  */
-void sendRTR(void) {
+static void sendRTR(void) {
     uint8_t* txFifoObj = (uint8_t*) C1TXQUA;
     txFifoObj[0] = (canId & 0x7F);      // Put ID
     txFifoObj[1] = 0;       // high priority
@@ -679,19 +680,36 @@ C1FIFOSTA3.RXOVIF // RX Overruns
 C1FIFOSTA2.TXATIF // TX attempts
  */
 
+/**
+ * Start a Self Enumeration.
+ * @param txWaiting set to true if this self enumeration was triggered by a transmit request without a valid CANID.
+ */
+static void startEnumeration(Boolean txWaiting) {
+    uint8_t i;
+    
+    for (i=1; i< ENUM_ARRAY_SIZE; i++) {
+        enumerationResults[i] = 0;
+    }
+    enumerationResults[0] = 1;  // Don't allocate canid 0
 
+    enumerationState = txWaiting ? ENUMERATION_IN_PROGRESS_TX_WAITING : ENUMERATION_IN_PROGRESS;
+    enumerationStartTime.val = tickGet();
+    canDiagnostics[CAN_DIAG_CANID_ENUMS].asUint++;
+    sendRTR();              // Send RTR frame to initiate self enumeration
+}
 
 /**
  * Start or respond to self-enumeration process.
  * Checks received frame in case CANID matches our own then will start a self enum process.
  * If self enum is in progress then save the CANIDs from any responses.
  * 
- * @param p pointer to the ECAN registers.
+ * @param receivedCanId a CANID received from another module.
  */
 static void handleSelfEnumeration(uint8_t receivedCanId) {
     // Check incoming Canid and initiate self enumeration if it is the same as our own
     switch (enumerationState) {
         case ENUMERATION_IN_PROGRESS:
+        case ENUMERATION_IN_PROGRESS_TX_WAITING:
             arraySetBit(enumerationResults, receivedCanId);
             break;
         case NO_ENUMERATION:
@@ -723,18 +741,11 @@ static void processEnumeration(void) {
                 /*
                  * Start a Self Enumeration
                  */
-                for (i=1; i< ENUM_ARRAY_SIZE; i++) {
-                    enumerationResults[i] = 0;
-                }
-                enumerationResults[0] = 1;  // Don't allocate canid 0
-
-                enumerationState = ENUMERATION_IN_PROGRESS;
-                enumerationStartTime.val = tickGet();
-                canDiagnostics[CAN_DIAG_CANID_ENUMS].asUint++;
-                sendRTR();              // Send RTR frame to initiate self enumeration
+                startEnumeration(0);
             }
             break;
         case ENUMERATION_IN_PROGRESS:
+        case ENUMERATION_IN_PROGRESS_TX_WAITING:
             /*
              * Continue Self Enumeration
              */
@@ -761,6 +772,15 @@ static void processEnumeration(void) {
                 } else {
                     canDiagnostics[CAN_DIAG_CANID_ENUMS_FAIL].asUint++;
                     updateModuleErrorStatus();
+                }
+                // If there are TX messages waiting then enable them now
+                if (enumerationState == ENUMERATION_IN_PROGRESS_TX_WAITING) {
+                    // put our new CANID into all the transmit buffers
+                    for (i=0; i< CAN1_FIFO2_SIZE; i++) {
+                        *((uint8_t*)(CAN1_FIFO2_BUFFERS_BASE_ADDRESS + (i* (8 + CAN1_FIFO2_PAYLOAD_SIZE)))) = canId & 0x7f;
+                    }
+                    // now send them all
+                    C1FIFOCON2H |= _C1FIFOCON2H_TXREQ_MASK; // transmit
                 }
                 enumerationState = NO_ENUMERATION;
             }
@@ -791,6 +811,11 @@ static CanidResult setNewCanId(uint8_t newCanId) {
 /************************************
  * Section copied from MCC generated code
  *************************************/
+/**
+ * Set the mode of the CAN peripheral.
+ * @param requestMode
+ * @return status result of the request
+ */
 enum CAN_OP_MODE_STATUS CAN1_OperationModeSet(const enum CAN_OP_MODES requestMode)
 {
     enum CAN_OP_MODE_STATUS status = CAN_OP_MODE_REQUEST_SUCCESS;
@@ -819,6 +844,11 @@ enum CAN_OP_MODE_STATUS CAN1_OperationModeSet(const enum CAN_OP_MODES requestMod
     return status;
 }
 
+/**
+ * Get the current operating mode of the CAN peripheral.
+ * 
+ * @return the current operating mode 
+ */
 enum CAN_OP_MODES CAN1_OperationModeGet(void)
 {
     return C1CONUbits.OPMOD;

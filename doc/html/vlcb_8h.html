@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCBlib_PIC: C:/Users/ianwh/github/VLCBlib_PIC/vlcb.h File Reference</title>
+<title>VLCB library: vlcb.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,11 +26,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="VLCB.png"/></td>
   <td id="projectalign">
-   <div id="projectname">VLCBlib_PIC
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for module developemnt using PIC processors</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -94,7 +93,7 @@ $(function(){initNavTree('vlcb_8h.html',''); initResizable(); });
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
+<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
@@ -103,13 +102,16 @@ $(function(){initNavTree('vlcb_8h.html',''); initResizable(); });
   <div class="headertitle"><div class="title">vlcb.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Baseline functionality required by VLCB and entry points into the application.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;vlcbdefs_enums.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="romops_8h_source.html">romops.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="nvm_8h_source.html">nvm.h</a>&quot;</code><br />
 </div>
 <p><a href="vlcb_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
+Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_message.html">Message</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="union_word.html">Word</a></td></tr>
@@ -125,72 +127,82 @@ Classes</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:a9a82ed58543deac142c125962348c5e7" id="r_a9a82ed58543deac142c125962348c5e7"><td class="memItemLeft" align="right" valign="top"><a id="a9a82ed58543deac142c125962348c5e7" name="a9a82ed58543deac142c125962348c5e7"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SERVICE_ID_NOT_FOUND</b>&#160;&#160;&#160;0xFF</td></tr>
+<tr class="memdesc:a9a82ed58543deac142c125962348c5e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates that a service of the requested type was not found. <br /></td></tr>
 <tr class="separator:a9a82ed58543deac142c125962348c5e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8628c68948100f63909f5e070a052f05" id="r_a8628c68948100f63909f5e070a052f05"><td class="memItemLeft" align="right" valign="top"><a id="a8628c68948100f63909f5e070a052f05" name="a8628c68948100f63909f5e070a052f05"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SERVICE_ID_ALL</b>&#160;&#160;&#160;0</td></tr>
+<tr class="memdesc:a8628c68948100f63909f5e070a052f05"><td class="mdescLeft">&#160;</td><td class="mdescRight">References all services. <br /></td></tr>
 <tr class="separator:a8628c68948100f63909f5e070a052f05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68ccbed9e2d14d1ca8788ffa73bf3731" id="r_a68ccbed9e2d14d1ca8788ffa73bf3731"><td class="memItemLeft" align="right" valign="top"><a id="a68ccbed9e2d14d1ca8788ffa73bf3731" name="a68ccbed9e2d14d1ca8788ffa73bf3731"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>PAR_LOAD1</b>&#160;&#160;&#160;PAR_LOAD</td></tr>
+<tr class="memdesc:a68ccbed9e2d14d1ca8788ffa73bf3731"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address for the first byte of the load address paramter. <br /></td></tr>
 <tr class="separator:a68ccbed9e2d14d1ca8788ffa73bf3731"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4312b935149206355000cacba615d595" id="r_a4312b935149206355000cacba615d595"><td class="memItemLeft" align="right" valign="top"><a id="a4312b935149206355000cacba615d595" name="a4312b935149206355000cacba615d595"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>PAR_LOAD2</b>&#160;&#160;&#160;(PAR_LOAD+1)</td></tr>
+<tr class="memdesc:a4312b935149206355000cacba615d595"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address for the second byte of the load address paramter. <br /></td></tr>
 <tr class="separator:a4312b935149206355000cacba615d595"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1847f1523370bde4536946669908838a" id="r_a1847f1523370bde4536946669908838a"><td class="memItemLeft" align="right" valign="top"><a id="a1847f1523370bde4536946669908838a" name="a1847f1523370bde4536946669908838a"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>PAR_LOAD3</b>&#160;&#160;&#160;(PAR_LOAD+2)</td></tr>
+<tr class="memdesc:a1847f1523370bde4536946669908838a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address for the third byte of the load address paramter. <br /></td></tr>
 <tr class="separator:a1847f1523370bde4536946669908838a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4741010037ed25bea06561ca1442852" id="r_ac4741010037ed25bea06561ca1442852"><td class="memItemLeft" align="right" valign="top"><a id="ac4741010037ed25bea06561ca1442852" name="ac4741010037ed25bea06561ca1442852"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>PAR_LOAD4</b>&#160;&#160;&#160;(PAR_LOAD+3)</td></tr>
+<tr class="memdesc:ac4741010037ed25bea06561ca1442852"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address for the forth byte of the load address paramter. <br /></td></tr>
 <tr class="separator:ac4741010037ed25bea06561ca1442852"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80cb0124451e7f73bf7a95694045ea27" id="r_a80cb0124451e7f73bf7a95694045ea27"><td class="memItemLeft" align="right" valign="top"><a id="a80cb0124451e7f73bf7a95694045ea27" name="a80cb0124451e7f73bf7a95694045ea27"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>MANU_VLCB</b>&#160;&#160;&#160;250</td></tr>
 <tr class="memdesc:a80cb0124451e7f73bf7a95694045ea27"><td class="mdescLeft">&#160;</td><td class="mdescRight">MANUFACTURER - Used in the parameter block. <br /></td></tr>
 <tr class="separator:a80cb0124451e7f73bf7a95694045ea27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae87acb3854722fc2ec59aa21fb47bf4b" id="r_ae87acb3854722fc2ec59aa21fb47bf4b"><td class="memItemLeft" align="right" valign="top"><a id="ae87acb3854722fc2ec59aa21fb47bf4b" name="ae87acb3854722fc2ec59aa21fb47bf4b"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MTYP_VLCB_16INP</b>&#160;&#160;&#160;0x01</td></tr>
-<tr class="memdesc:ae87acb3854722fc2ec59aa21fb47bf4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">MODULE ID - Used in the parameter block. All VLCB modules have the same ID. <br /></td></tr>
+<tr class="memitem:ae87acb3854722fc2ec59aa21fb47bf4b" id="r_ae87acb3854722fc2ec59aa21fb47bf4b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae87acb3854722fc2ec59aa21fb47bf4b">MTYP_VLCB_16INP</a>&#160;&#160;&#160;0x01</td></tr>
 <tr class="separator:ae87acb3854722fc2ec59aa21fb47bf4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:accba88edc3be81b6ebda0f9ce1a3da0d" id="r_accba88edc3be81b6ebda0f9ce1a3da0d"><td class="memItemLeft" align="right" valign="top"><a id="accba88edc3be81b6ebda0f9ce1a3da0d" name="accba88edc3be81b6ebda0f9ce1a3da0d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MTYP_VLCB_16OUT</b>&#160;&#160;&#160;0x02</td></tr>
+<tr class="memitem:accba88edc3be81b6ebda0f9ce1a3da0d" id="r_accba88edc3be81b6ebda0f9ce1a3da0d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#accba88edc3be81b6ebda0f9ce1a3da0d">MTYP_VLCB_16OUT</a>&#160;&#160;&#160;0x02</td></tr>
 <tr class="separator:accba88edc3be81b6ebda0f9ce1a3da0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a200fefa4b58ef24b6ef79283f1dc3d54" id="r_a200fefa4b58ef24b6ef79283f1dc3d54"><td class="memItemLeft" align="right" valign="top"><a id="a200fefa4b58ef24b6ef79283f1dc3d54" name="a200fefa4b58ef24b6ef79283f1dc3d54"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FLAG_MODE_LEARN</b>&#160;&#160;&#160;1</td></tr>
+<tr class="memdesc:a200fefa4b58ef24b6ef79283f1dc3d54"><td class="mdescLeft">&#160;</td><td class="mdescRight">flag representing Learn mode. <br /></td></tr>
 <tr class="separator:a200fefa4b58ef24b6ef79283f1dc3d54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6e7393de68571c21c3f75400cef993f" id="r_ad6e7393de68571c21c3f75400cef993f"><td class="memItemLeft" align="right" valign="top"><a id="ad6e7393de68571c21c3f75400cef993f" name="ad6e7393de68571c21c3f75400cef993f"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FLAG_MODE_EVENTACK</b>&#160;&#160;&#160;2</td></tr>
+<tr class="memdesc:ad6e7393de68571c21c3f75400cef993f"><td class="mdescLeft">&#160;</td><td class="mdescRight">flag representing <a class="el" href="struct_event.html">Event</a> Acknowledge mode. <br /></td></tr>
 <tr class="separator:ad6e7393de68571c21c3f75400cef993f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25c7c3b061c39ecfddd3e724dedffdbc" id="r_a25c7c3b061c39ecfddd3e724dedffdbc"><td class="memItemLeft" align="right" valign="top"><a id="a25c7c3b061c39ecfddd3e724dedffdbc" name="a25c7c3b061c39ecfddd3e724dedffdbc"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>FLAG_MODE_HEARTBEAT</b>&#160;&#160;&#160;4</td></tr>
+<tr class="memdesc:a25c7c3b061c39ecfddd3e724dedffdbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">flag representing Heartbeat mode. <br /></td></tr>
 <tr class="separator:a25c7c3b061c39ecfddd3e724dedffdbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4c0e050545da1fdb2b5ef23167c461d" id="r_ad4c0e050545da1fdb2b5ef23167c461d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4c0e050545da1fdb2b5ef23167c461d">NN_HI_DEFAULT</a>&#160;&#160;&#160;0</td></tr>
+<tr class="memitem:ad4c0e050545da1fdb2b5ef23167c461d" id="r_ad4c0e050545da1fdb2b5ef23167c461d"><td class="memItemLeft" align="right" valign="top"><a id="ad4c0e050545da1fdb2b5ef23167c461d" name="ad4c0e050545da1fdb2b5ef23167c461d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NN_HI_DEFAULT</b>&#160;&#160;&#160;0</td></tr>
+<tr class="memdesc:ad4c0e050545da1fdb2b5ef23167c461d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default node number high byte. <br /></td></tr>
 <tr class="separator:ad4c0e050545da1fdb2b5ef23167c461d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85628095cdb1b03744499866a5bf84f8" id="r_a85628095cdb1b03744499866a5bf84f8"><td class="memItemLeft" align="right" valign="top"><a id="a85628095cdb1b03744499866a5bf84f8" name="a85628095cdb1b03744499866a5bf84f8"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>NN_LO_DEFAULT</b>&#160;&#160;&#160;0</td></tr>
+<tr class="memdesc:a85628095cdb1b03744499866a5bf84f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default node number low byte. <br /></td></tr>
 <tr class="separator:a85628095cdb1b03744499866a5bf84f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2ac0f45d353352c766262721c40e3b8" id="r_aa2ac0f45d353352c766262721c40e3b8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2ac0f45d353352c766262721c40e3b8">MODE_DEFAULT</a>&#160;&#160;&#160;MODE_UNINITIALISED</td></tr>
 <tr class="separator:aa2ac0f45d353352c766262721c40e3b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5599ca1c7dbab5832ab986e73eddc913" id="r_a5599ca1c7dbab5832ab986e73eddc913"><td class="memItemLeft" align="right" valign="top"><a id="a5599ca1c7dbab5832ab986e73eddc913" name="a5599ca1c7dbab5832ab986e73eddc913"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>EVENT_SET_MASK</b>&#160;&#160;&#160;0b10010000</td></tr>
+<tr class="memdesc:a5599ca1c7dbab5832ab986e73eddc913"><td class="mdescLeft">&#160;</td><td class="mdescRight">OPC bit mask to test for event. <br /></td></tr>
 <tr class="separator:a5599ca1c7dbab5832ab986e73eddc913"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23612a14a15126da904d4b84fa851e82" id="r_a23612a14a15126da904d4b84fa851e82"><td class="memItemLeft" align="right" valign="top"><a id="a23612a14a15126da904d4b84fa851e82" name="a23612a14a15126da904d4b84fa851e82"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>EVENT_CLR_MASK</b>&#160;&#160;&#160;0b00000110</td></tr>
+<tr class="memdesc:a23612a14a15126da904d4b84fa851e82"><td class="mdescLeft">&#160;</td><td class="mdescRight">OPC bit mask to test for event. <br /></td></tr>
 <tr class="separator:a23612a14a15126da904d4b84fa851e82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae21a70035c121d75ba6e48ad6dd2e0e" id="r_aae21a70035c121d75ba6e48ad6dd2e0e"><td class="memItemLeft" align="right" valign="top"><a id="aae21a70035c121d75ba6e48ad6dd2e0e" name="aae21a70035c121d75ba6e48ad6dd2e0e"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>EVENT_ON_MASK</b>&#160;&#160;&#160;0b00000001</td></tr>
+<tr class="memdesc:aae21a70035c121d75ba6e48ad6dd2e0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">OPC bit mask to test for ON events. <br /></td></tr>
 <tr class="separator:aae21a70035c121d75ba6e48ad6dd2e0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fc4b29ff184ee7bc9bd9e81fb16e68a" id="r_a1fc4b29ff184ee7bc9bd9e81fb16e68a"><td class="memItemLeft" align="right" valign="top"><a id="a1fc4b29ff184ee7bc9bd9e81fb16e68a" name="a1fc4b29ff184ee7bc9bd9e81fb16e68a"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>EVENT_SHORT_MASK</b>&#160;&#160;&#160;0b00001000</td></tr>
+<tr class="memdesc:a1fc4b29ff184ee7bc9bd9e81fb16e68a"><td class="mdescLeft">&#160;</td><td class="mdescRight">OPC bit mask to test for short events. <br /></td></tr>
 <tr class="separator:a1fc4b29ff184ee7bc9bd9e81fb16e68a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:af6030e60c7d8f9f8920ecaeb41ae4c31" id="r_af6030e60c7d8f9f8920ecaeb41ae4c31"><td class="memItemLeft" align="right" valign="top"><a id="af6030e60c7d8f9f8920ecaeb41ae4c31" name="af6030e60c7d8f9f8920ecaeb41ae4c31"></a>
-typedef enum Priority&#160;</td><td class="memItemRight" valign="bottom"><b>Priority</b></td></tr>
+<tr class="memitem:af6030e60c7d8f9f8920ecaeb41ae4c31" id="r_af6030e60c7d8f9f8920ecaeb41ae4c31"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="#a315655b1bb5848c063491adffde62b15">Priority</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af6030e60c7d8f9f8920ecaeb41ae4c31">Priority</a></td></tr>
 <tr class="separator:af6030e60c7d8f9f8920ecaeb41ae4c31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad665bd4a0bff725979ec9dfbda92f5f5" id="r_ad665bd4a0bff725979ec9dfbda92f5f5"><td class="memItemLeft" align="right" valign="top"><a id="ad665bd4a0bff725979ec9dfbda92f5f5" name="ad665bd4a0bff725979ec9dfbda92f5f5"></a>
-typedef enum Boolean&#160;</td><td class="memItemRight" valign="bottom"><b>Boolean</b></td></tr>
+<tr class="memitem:ad665bd4a0bff725979ec9dfbda92f5f5" id="r_ad665bd4a0bff725979ec9dfbda92f5f5"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad665bd4a0bff725979ec9dfbda92f5f5">Boolean</a></td></tr>
 <tr class="separator:ad665bd4a0bff725979ec9dfbda92f5f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a390119df9e05caa22ea298f619044749" id="r_a390119df9e05caa22ea298f619044749"><td class="memItemLeft" align="right" valign="top"><a id="a390119df9e05caa22ea298f619044749" name="a390119df9e05caa22ea298f619044749"></a>
-typedef enum Result&#160;</td><td class="memItemRight" valign="bottom"><b>Result</b></td></tr>
+<tr class="memitem:a390119df9e05caa22ea298f619044749" id="r_a390119df9e05caa22ea298f619044749"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="#a28287671eaf7406afd604bd055ba4066">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a390119df9e05caa22ea298f619044749">Result</a></td></tr>
 <tr class="separator:a390119df9e05caa22ea298f619044749"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82fffef6ac8d8a796ab35b7d6a7a0dcb" id="r_a82fffef6ac8d8a796ab35b7d6a7a0dcb"><td class="memItemLeft" align="right" valign="top">typedef struct Message&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a82fffef6ac8d8a796ab35b7d6a7a0dcb">Message</a></td></tr>
 <tr class="separator:a82fffef6ac8d8a796ab35b7d6a7a0dcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -198,42 +210,42 @@ typedef enum Result&#160;</td><td class="memItemRight" valign="bottom"><b>Result
 <tr class="separator:a4bbd0c6dc7d668b55f6a3eb986929862"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab90c1a42242042feb599bbd102d1f596" id="r_ab90c1a42242042feb599bbd102d1f596"><td class="memItemLeft" align="right" valign="top">typedef union DiagnosticVal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab90c1a42242042feb599bbd102d1f596">DiagnosticVal</a></td></tr>
 <tr class="separator:ab90c1a42242042feb599bbd102d1f596"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9aa490af7b5c08b0b76e2cd558c7d587" id="r_a9aa490af7b5c08b0b76e2cd558c7d587"><td class="memItemLeft" align="right" valign="top"><a id="a9aa490af7b5c08b0b76e2cd558c7d587" name="a9aa490af7b5c08b0b76e2cd558c7d587"></a>
-typedef enum Processed&#160;</td><td class="memItemRight" valign="bottom"><b>Processed</b></td></tr>
+<tr class="memitem:a9aa490af7b5c08b0b76e2cd558c7d587" id="r_a9aa490af7b5c08b0b76e2cd558c7d587"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="#a60587b24892ebc76ee16bbfdb4d52544">Processed</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9aa490af7b5c08b0b76e2cd558c7d587">Processed</a></td></tr>
 <tr class="separator:a9aa490af7b5c08b0b76e2cd558c7d587"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66aa255b79f3ce6375c015e8db0f04b6" id="r_a66aa255b79f3ce6375c015e8db0f04b6"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="#a11444bb1686f1beb6cdf0482278a7c7f">Mode_state</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a66aa255b79f3ce6375c015e8db0f04b6">Mode_state</a></td></tr>
 <tr class="separator:a66aa255b79f3ce6375c015e8db0f04b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24ee4146cd03b57b0a4c23a33e476da9" id="r_a24ee4146cd03b57b0a4c23a33e476da9"><td class="memItemLeft" align="right" valign="top"><a id="a24ee4146cd03b57b0a4c23a33e476da9" name="a24ee4146cd03b57b0a4c23a33e476da9"></a>
-typedef struct Service&#160;</td><td class="memItemRight" valign="bottom"><b>Service</b></td></tr>
+<tr class="memitem:a24ee4146cd03b57b0a4c23a33e476da9" id="r_a24ee4146cd03b57b0a4c23a33e476da9"><td class="memItemLeft" align="right" valign="top">typedef struct Service&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a24ee4146cd03b57b0a4c23a33e476da9">Service</a></td></tr>
 <tr class="separator:a24ee4146cd03b57b0a4c23a33e476da9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac61d37a9f9fe57e353805a08abe13134" id="r_ac61d37a9f9fe57e353805a08abe13134"><td class="memItemLeft" align="right" valign="top"><a id="ac61d37a9f9fe57e353805a08abe13134" name="ac61d37a9f9fe57e353805a08abe13134"></a>
-typedef enum ServicePresent&#160;</td><td class="memItemRight" valign="bottom"><b>ServicePresent</b></td></tr>
+<tr class="memitem:ac61d37a9f9fe57e353805a08abe13134" id="r_ac61d37a9f9fe57e353805a08abe13134"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="#a854c33a3bc2b495fc2e3c229b661becf">ServicePresent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac61d37a9f9fe57e353805a08abe13134">ServicePresent</a></td></tr>
 <tr class="separator:ac61d37a9f9fe57e353805a08abe13134"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac86cce95c833e0b474dfd99d0afa0399" id="r_ac86cce95c833e0b474dfd99d0afa0399"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="#abdc1a2463d076f24a8b77a7223a22fe0">MessageReceived</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac86cce95c833e0b474dfd99d0afa0399">MessageReceived</a></td></tr>
 <tr class="separator:ac86cce95c833e0b474dfd99d0afa0399"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89171d4a07dcd92005a1e416c34e709d" id="r_a89171d4a07dcd92005a1e416c34e709d"><td class="memItemLeft" align="right" valign="top"><a id="a89171d4a07dcd92005a1e416c34e709d" name="a89171d4a07dcd92005a1e416c34e709d"></a>
-typedef enum SendResult&#160;</td><td class="memItemRight" valign="bottom"><b>SendResult</b></td></tr>
+<tr class="memitem:a89171d4a07dcd92005a1e416c34e709d" id="r_a89171d4a07dcd92005a1e416c34e709d"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="#a7b0624c89056fe132221a16028024f5e">SendResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a89171d4a07dcd92005a1e416c34e709d">SendResult</a></td></tr>
 <tr class="separator:a89171d4a07dcd92005a1e416c34e709d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a783c8ee2ab0be96ceb090ded8ba8d8bc" id="r_a783c8ee2ab0be96ceb090ded8ba8d8bc"><td class="memItemLeft" align="right" valign="top">typedef struct Transport&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a783c8ee2ab0be96ceb090ded8ba8d8bc">Transport</a></td></tr>
 <tr class="separator:a783c8ee2ab0be96ceb090ded8ba8d8bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a315655b1bb5848c063491adffde62b15" id="r_a315655b1bb5848c063491adffde62b15"><td class="memItemLeft" align="right" valign="top"><a id="a315655b1bb5848c063491adffde62b15" name="a315655b1bb5848c063491adffde62b15"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Priority</b> { <b>pLOW</b> =0
+<tr class="memitem:a315655b1bb5848c063491adffde62b15" id="r_a315655b1bb5848c063491adffde62b15"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a315655b1bb5848c063491adffde62b15">Priority</a> { <b>pLOW</b> =0
 , <b>pNORMAL</b> =1
 , <b>pABOVE</b> =2
 , <b>pHIGH</b> =3
  }</td></tr>
 <tr class="separator:a315655b1bb5848c063491adffde62b15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7d38601dfbd73adbe5c1b3ec34e0e13" id="r_ae7d38601dfbd73adbe5c1b3ec34e0e13"><td class="memItemLeft" align="right" valign="top"><a id="ae7d38601dfbd73adbe5c1b3ec34e0e13" name="ae7d38601dfbd73adbe5c1b3ec34e0e13"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Boolean</b> { <b>FALSE</b>
+<tr class="memitem:ae7d38601dfbd73adbe5c1b3ec34e0e13" id="r_ae7d38601dfbd73adbe5c1b3ec34e0e13"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a> { <b>FALSE</b>
 , <b>TRUE</b>
  }</td></tr>
 <tr class="separator:ae7d38601dfbd73adbe5c1b3ec34e0e13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28287671eaf7406afd604bd055ba4066" id="r_a28287671eaf7406afd604bd055ba4066"><td class="memItemLeft" align="right" valign="top"><a id="a28287671eaf7406afd604bd055ba4066" name="a28287671eaf7406afd604bd055ba4066"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Result</b> { <b>RESULT_FAIL</b>
+<tr class="memitem:a28287671eaf7406afd604bd055ba4066" id="r_a28287671eaf7406afd604bd055ba4066"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a28287671eaf7406afd604bd055ba4066">Result</a> { <b>RESULT_FAIL</b>
 , <b>RESULT_SUCCESS</b>
  }</td></tr>
 <tr class="separator:a28287671eaf7406afd604bd055ba4066"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60587b24892ebc76ee16bbfdb4d52544" id="r_a60587b24892ebc76ee16bbfdb4d52544"><td class="memItemLeft" align="right" valign="top"><a id="a60587b24892ebc76ee16bbfdb4d52544" name="a60587b24892ebc76ee16bbfdb4d52544"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Processed</b> { <b>NOT_PROCESSED</b> =0
+<tr class="memitem:ab951f47efbc96e7b5586e5a45b4aaa93" id="r_ab951f47efbc96e7b5586e5a45b4aaa93"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab951f47efbc96e7b5586e5a45b4aaa93">EventState</a> { <b>EVENT_OFF</b> =0
+, <b>EVENT_ON</b> =1
+ }</td></tr>
+<tr class="separator:ab951f47efbc96e7b5586e5a45b4aaa93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60587b24892ebc76ee16bbfdb4d52544" id="r_a60587b24892ebc76ee16bbfdb4d52544"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60587b24892ebc76ee16bbfdb4d52544">Processed</a> { <b>NOT_PROCESSED</b> =0
 , <b>PROCESSED</b> =1
  }</td></tr>
 <tr class="separator:a60587b24892ebc76ee16bbfdb4d52544"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -242,7 +254,7 @@ Enumerations</h2></td></tr>
 , <b>EMODE_NORMAL</b>
  }</td></tr>
 <tr class="separator:a11444bb1686f1beb6cdf0482278a7c7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a854c33a3bc2b495fc2e3c229b661becf" id="r_a854c33a3bc2b495fc2e3c229b661becf"><td class="memItemLeft" align="right" valign="top"><a id="a854c33a3bc2b495fc2e3c229b661becf" name="a854c33a3bc2b495fc2e3c229b661becf"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>ServicePresent</b> { <b>NOT_PRESENT</b> =0
+<tr class="memitem:a854c33a3bc2b495fc2e3c229b661becf" id="r_a854c33a3bc2b495fc2e3c229b661becf"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a854c33a3bc2b495fc2e3c229b661becf">ServicePresent</a> { <b>NOT_PRESENT</b> =0
 , <b>PRESENT</b> =1
  }</td></tr>
 <tr class="separator:a854c33a3bc2b495fc2e3c229b661becf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -250,15 +262,19 @@ Enumerations</h2></td></tr>
 , <b>RECEIVED</b> =1
  }</td></tr>
 <tr class="separator:abdc1a2463d076f24a8b77a7223a22fe0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b0624c89056fe132221a16028024f5e" id="r_a7b0624c89056fe132221a16028024f5e"><td class="memItemLeft" align="right" valign="top"><a id="a7b0624c89056fe132221a16028024f5e" name="a7b0624c89056fe132221a16028024f5e"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>SendResult</b> { <b>SEND_FAILED</b> =0
+<tr class="memitem:a7b0624c89056fe132221a16028024f5e" id="r_a7b0624c89056fe132221a16028024f5e"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b0624c89056fe132221a16028024f5e">SendResult</a> { <b>SEND_FAILED</b> =0
 , <b>SEND_OK</b>
  }</td></tr>
 <tr class="separator:a7b0624c89056fe132221a16028024f5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a9bf07c27105f7c54f030818acb9ad9d1" id="r_a9bf07c27105f7c54f030818acb9ad9d1"><td class="memItemLeft" align="right" valign="top">Processed&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9bf07c27105f7c54f030818acb9ad9d1">checkLen</a> (<a class="el" href="struct_message.html">Message</a> *m, uint8_t needed, uint8_t service)</td></tr>
+<tr class="memitem:a9bf07c27105f7c54f030818acb9ad9d1" id="r_a9bf07c27105f7c54f030818acb9ad9d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a60587b24892ebc76ee16bbfdb4d52544">Processed</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9bf07c27105f7c54f030818acb9ad9d1">checkLen</a> (<a class="el" href="struct_message.html">Message</a> *m, uint8_t needed, uint8_t service)</td></tr>
 <tr class="separator:a9bf07c27105f7c54f030818acb9ad9d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38cce02004be097334eb440d61ba88a4" id="r_a38cce02004be097334eb440d61ba88a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a38cce02004be097334eb440d61ba88a4">isEvent</a> (uint8_t opc)</td></tr>
+<tr class="separator:a38cce02004be097334eb440d61ba88a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3955f63350a3bbb9d97fb88653182497" id="r_a3955f63350a3bbb9d97fb88653182497"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3955f63350a3bbb9d97fb88653182497">setTimedResponseDelay</a> (uint8_t delay)</td></tr>
+<tr class="separator:a3955f63350a3bbb9d97fb88653182497"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29dc097f840bdf4656a07cd47db11418" id="r_a29dc097f840bdf4656a07cd47db11418"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29dc097f840bdf4656a07cd47db11418">sendMessage0</a> (VlcbOpCodes opc)</td></tr>
 <tr class="separator:a29dc097f840bdf4656a07cd47db11418"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76660800f92d4cb8908f57f3079aa4ab" id="r_a76660800f92d4cb8908f57f3079aa4ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a76660800f92d4cb8908f57f3079aa4ab">sendMessage1</a> (VlcbOpCodes opc, uint8_t data1)</td></tr>
@@ -279,18 +295,22 @@ Functions</h2></td></tr>
 <tr class="separator:a53a16cd2ff2166ac7a6990bb10fb53a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af44fc8f3b49febc2bdc5e3ea969b7267" id="r_af44fc8f3b49febc2bdc5e3ea969b7267"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_service.html">Service</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af44fc8f3b49febc2bdc5e3ea969b7267">findService</a> (uint8_t id)</td></tr>
 <tr class="separator:af44fc8f3b49febc2bdc5e3ea969b7267"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51f53c29510e479d44d84336fbfa67a4" id="r_a51f53c29510e479d44d84336fbfa67a4"><td class="memItemLeft" align="right" valign="top">ServicePresent&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a51f53c29510e479d44d84336fbfa67a4">have</a> (uint8_t id)</td></tr>
+<tr class="memitem:a51f53c29510e479d44d84336fbfa67a4" id="r_a51f53c29510e479d44d84336fbfa67a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a854c33a3bc2b495fc2e3c229b661becf">ServicePresent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a51f53c29510e479d44d84336fbfa67a4">have</a> (uint8_t id)</td></tr>
 <tr class="separator:a51f53c29510e479d44d84336fbfa67a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6083db54e880361e151944b0352a1a28" id="r_a6083db54e880361e151944b0352a1a28"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6083db54e880361e151944b0352a1a28">findServiceIndex</a> (uint8_t id)</td></tr>
 <tr class="separator:a6083db54e880361e151944b0352a1a28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d811d6a4354a941b197ed88623d0b7f" id="r_a5d811d6a4354a941b197ed88623d0b7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d811d6a4354a941b197ed88623d0b7f">factoryReset</a> (void)</td></tr>
 <tr class="separator:a5d811d6a4354a941b197ed88623d0b7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae34d4d879380e8085b5e975b6186f58e" id="r_ae34d4d879380e8085b5e975b6186f58e"><td class="memItemLeft" align="right" valign="top">ValidTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae34d4d879380e8085b5e975b6186f58e">APP_isSuitableTimeToWriteFlash</a> (void)</td></tr>
+<tr class="memitem:a98e396438d2f7a1c8c1ef1b537b71878" id="r_a98e396438d2f7a1c8c1ef1b537b71878"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98e396438d2f7a1c8c1ef1b537b71878">APP_highIsr</a> (void)</td></tr>
+<tr class="separator:a98e396438d2f7a1c8c1ef1b537b71878"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7ea9ef134a9df19b9ef7541a3bbf5eb" id="r_ae7ea9ef134a9df19b9ef7541a3bbf5eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae7ea9ef134a9df19b9ef7541a3bbf5eb">APP_lowIsr</a> (void)</td></tr>
+<tr class="separator:ae7ea9ef134a9df19b9ef7541a3bbf5eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae34d4d879380e8085b5e975b6186f58e" id="r_ae34d4d879380e8085b5e975b6186f58e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nvm_8h.html#a0f9845fc137a58b7863796abd20e7b05">ValidTime</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae34d4d879380e8085b5e975b6186f58e">APP_isSuitableTimeToWriteFlash</a> (void)</td></tr>
 <tr class="separator:ae34d4d879380e8085b5e975b6186f58e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ad9c0663c54097bc7c55d5dcbbc556424" id="r_ad9c0663c54097bc7c55d5dcbbc556424"><td class="memItemLeft" align="right" valign="top">const Priority&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9c0663c54097bc7c55d5dcbbc556424">priorities</a> [256]</td></tr>
+<tr class="memitem:ad9c0663c54097bc7c55d5dcbbc556424" id="r_ad9c0663c54097bc7c55d5dcbbc556424"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="#a315655b1bb5848c063491adffde62b15">Priority</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9c0663c54097bc7c55d5dcbbc556424">priorities</a> [256]</td></tr>
 <tr class="separator:ad9c0663c54097bc7c55d5dcbbc556424"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d4c9b659f98c72e727bca232c257bfe" id="r_a8d4c9b659f98c72e727bca232c257bfe"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_service.html">Service</a> *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d4c9b659f98c72e727bca232c257bfe">services</a> []</td></tr>
 <tr class="separator:a8d4c9b659f98c72e727bca232c257bfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -298,7 +318,7 @@ Variables</h2></td></tr>
 <tr class="separator:a3b936eacf5488a640c02f68564f54372"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Baseline functionality required by VLCB and entry points into the application.</p>
+<div class="textblock"><p>Baseline functionality required by VLCB and entry points into the application. </p>
 <p>The application must provide a void <a class="el" href="vlcb_8c.html#a7dfd9b79bc5a37d7df40207afbc5431f">setup(void)</a> function which is called during module initialisation. The application should perform ant initialisation it requires within this function.</p>
 <p>The application must provide a void <a class="el" href="vlcb_8c.html#a0b33edabd7f1c4e4a0bf32c67269be2f">loop(void)</a> function which is called repeatedly as quickly as possible. The module should perform a check of any processing needed by the application and perform that processing before returning to pass control back to VLCB. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
@@ -317,22 +337,52 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ad4c0e050545da1fdb2b5ef23167c461d" name="ad4c0e050545da1fdb2b5ef23167c461d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4c0e050545da1fdb2b5ef23167c461d">&#9670;&#160;</a></span>NN_HI_DEFAULT</h2>
+<a id="ae87acb3854722fc2ec59aa21fb47bf4b" name="ae87acb3854722fc2ec59aa21fb47bf4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae87acb3854722fc2ec59aa21fb47bf4b">&#9670;&#160;</a></span>MTYP_VLCB_16INP</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define NN_HI_DEFAULT&#160;&#160;&#160;0</td>
+          <td class="memname">#define MTYP_VLCB_16INP&#160;&#160;&#160;0x01</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The default value for the node number. </p>
+<p>MODULE ID for the 16 Input module - Used in the parameter block. All VLCB modules have the same ID. </p>
+
+</div>
+</div>
+<a id="accba88edc3be81b6ebda0f9ce1a3da0d" name="accba88edc3be81b6ebda0f9ce1a3da0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accba88edc3be81b6ebda0f9ce1a3da0d">&#9670;&#160;</a></span>MTYP_VLCB_16OUT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MTYP_VLCB_16OUT&#160;&#160;&#160;0x02</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>MODULE ID for the 16 Output module - Used in the parameter block. All VLCB modules have the same ID. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Typedef Documentation</h2>
+<a id="ad665bd4a0bff725979ec9dfbda92f5f5" name="ad665bd4a0bff725979ec9dfbda92f5f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad665bd4a0bff725979ec9dfbda92f5f5">&#9670;&#160;</a></span>Boolean</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef enum <a class="el" href="#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a> <a class="el" href="#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Logical boolean type. </p>
+
+</div>
+</div>
 <a id="ab90c1a42242042feb599bbd102d1f596" name="ab90c1a42242042feb599bbd102d1f596"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab90c1a42242042feb599bbd102d1f596">&#9670;&#160;</a></span>DiagnosticVal</h2>
 
@@ -374,7 +424,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>VLCB function to perform necessary power up functionality and also call the powerUp function for each service. </p>
+<p>Indicates whether a message has been received and is ready to be processed. </p>
 
 </div>
 </div>
@@ -390,6 +440,96 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Base mode states. </p>
+
+</div>
+</div>
+<a id="af6030e60c7d8f9f8920ecaeb41ae4c31" name="af6030e60c7d8f9f8920ecaeb41ae4c31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6030e60c7d8f9f8920ecaeb41ae4c31">&#9670;&#160;</a></span>Priority</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef enum <a class="el" href="#a315655b1bb5848c063491adffde62b15">Priority</a> <a class="el" href="#a315655b1bb5848c063491adffde62b15">Priority</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><a class="el" href="struct_message.html">Message</a> priorities </p>
+
+</div>
+</div>
+<a id="a9aa490af7b5c08b0b76e2cd558c7d587" name="a9aa490af7b5c08b0b76e2cd558c7d587"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9aa490af7b5c08b0b76e2cd558c7d587">&#9670;&#160;</a></span>Processed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef enum <a class="el" href="#a60587b24892ebc76ee16bbfdb4d52544">Processed</a> <a class="el" href="#a60587b24892ebc76ee16bbfdb4d52544">Processed</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Type used to indicate whether a message has been processed or not. </p>
+
+</div>
+</div>
+<a id="a390119df9e05caa22ea298f619044749" name="a390119df9e05caa22ea298f619044749"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a390119df9e05caa22ea298f619044749">&#9670;&#160;</a></span>Result</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef enum <a class="el" href="#a28287671eaf7406afd604bd055ba4066">Result</a> <a class="el" href="#a28287671eaf7406afd604bd055ba4066">Result</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Success or failure result. </p>
+
+</div>
+</div>
+<a id="a89171d4a07dcd92005a1e416c34e709d" name="a89171d4a07dcd92005a1e416c34e709d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89171d4a07dcd92005a1e416c34e709d">&#9670;&#160;</a></span>SendResult</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef enum <a class="el" href="#a7b0624c89056fe132221a16028024f5e">SendResult</a> <a class="el" href="#a7b0624c89056fe132221a16028024f5e">SendResult</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Indicates the result of attempting to send a message. </p>
+
+</div>
+</div>
+<a id="a24ee4146cd03b57b0a4c23a33e476da9" name="a24ee4146cd03b57b0a4c23a33e476da9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24ee4146cd03b57b0a4c23a33e476da9">&#9670;&#160;</a></span>Service</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct Service Service</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is the service descriptor and the main entry point to a service. The module's application code should add the service descriptors to the services array for any of the services which it requires to be implemented. The VLCB library code then uses the pointers in the service descriptor to access the service's functionality. It is the responsibility of the writer of the service to provide a populated singleton for the service that can be used by the module's application code. </p>
+
+</div>
+</div>
+<a id="ac61d37a9f9fe57e353805a08abe13134" name="ac61d37a9f9fe57e353805a08abe13134"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac61d37a9f9fe57e353805a08abe13134">&#9670;&#160;</a></span>ServicePresent</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef enum <a class="el" href="#a854c33a3bc2b495fc2e3c229b661becf">ServicePresent</a> <a class="el" href="#a854c33a3bc2b495fc2e3c229b661becf">ServicePresent</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Indicates whether a service is present. </p>
 
 </div>
 </div>
@@ -424,6 +564,36 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="ae7d38601dfbd73adbe5c1b3ec34e0e13" name="ae7d38601dfbd73adbe5c1b3ec34e0e13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7d38601dfbd73adbe5c1b3ec34e0e13">&#9670;&#160;</a></span>Boolean</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Logical boolean type. </p>
+
+</div>
+</div>
+<a id="ab951f47efbc96e7b5586e5a45b4aaa93" name="ab951f47efbc96e7b5586e5a45b4aaa93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab951f47efbc96e7b5586e5a45b4aaa93">&#9670;&#160;</a></span>EventState</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#ab951f47efbc96e7b5586e5a45b4aaa93">EventState</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Indicates whether on ON event or OFF event </p>
+
+</div>
+</div>
 <a id="abdc1a2463d076f24a8b77a7223a22fe0" name="abdc1a2463d076f24a8b77a7223a22fe0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abdc1a2463d076f24a8b77a7223a22fe0">&#9670;&#160;</a></span>MessageReceived</h2>
 
@@ -435,7 +605,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>VLCB function to perform necessary power up functionality and also call the powerUp function for each service. </p>
+<p>Indicates whether a message has been received and is ready to be processed. </p>
 
 </div>
 </div>
@@ -454,7 +624,108 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a315655b1bb5848c063491adffde62b15" name="a315655b1bb5848c063491adffde62b15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a315655b1bb5848c063491adffde62b15">&#9670;&#160;</a></span>Priority</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#a315655b1bb5848c063491adffde62b15">Priority</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><a class="el" href="struct_message.html">Message</a> priorities </p>
+
+</div>
+</div>
+<a id="a60587b24892ebc76ee16bbfdb4d52544" name="a60587b24892ebc76ee16bbfdb4d52544"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60587b24892ebc76ee16bbfdb4d52544">&#9670;&#160;</a></span>Processed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#a60587b24892ebc76ee16bbfdb4d52544">Processed</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Type used to indicate whether a message has been processed or not. </p>
+
+</div>
+</div>
+<a id="a28287671eaf7406afd604bd055ba4066" name="a28287671eaf7406afd604bd055ba4066"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28287671eaf7406afd604bd055ba4066">&#9670;&#160;</a></span>Result</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#a28287671eaf7406afd604bd055ba4066">Result</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Success or failure result. </p>
+
+</div>
+</div>
+<a id="a7b0624c89056fe132221a16028024f5e" name="a7b0624c89056fe132221a16028024f5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b0624c89056fe132221a16028024f5e">&#9670;&#160;</a></span>SendResult</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#a7b0624c89056fe132221a16028024f5e">SendResult</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Indicates the result of attempting to send a message. </p>
+
+</div>
+</div>
+<a id="a854c33a3bc2b495fc2e3c229b661becf" name="a854c33a3bc2b495fc2e3c229b661becf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a854c33a3bc2b495fc2e3c229b661becf">&#9670;&#160;</a></span>ServicePresent</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#a854c33a3bc2b495fc2e3c229b661becf">ServicePresent</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Indicates whether a service is present. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a98e396438d2f7a1c8c1ef1b537b71878" name="a98e396438d2f7a1c8c1ef1b537b71878"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98e396438d2f7a1c8c1ef1b537b71878">&#9670;&#160;</a></span>APP_highIsr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void APP_highIsr </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>VLCB function to perform necessary power up functionality and also call the powerUp function for each service. </p>
+
+</div>
+</div>
 <a id="ae34d4d879380e8085b5e975b6186f58e" name="ae34d4d879380e8085b5e975b6186f58e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae34d4d879380e8085b5e975b6186f58e">&#9670;&#160;</a></span>APP_isSuitableTimeToWriteFlash()</h2>
 
@@ -465,7 +736,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">ValidTime APP_isSuitableTimeToWriteFlash </td>
+          <td class="memname"><a class="el" href="nvm_8h.html#a0f9845fc137a58b7863796abd20e7b05">ValidTime</a> APP_isSuitableTimeToWriteFlash </td>
           <td>(</td>
           <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td></td>
@@ -481,6 +752,32 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="ae7ea9ef134a9df19b9ef7541a3bbf5eb" name="ae7ea9ef134a9df19b9ef7541a3bbf5eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7ea9ef134a9df19b9ef7541a3bbf5eb">&#9670;&#160;</a></span>APP_lowIsr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void APP_lowIsr </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>VLCB function to handle low priority interrupts. An App wanting to use interrupts should enable the interrupts in hardware and then provide a lowIsr function. Care must to taken to ensure that the cause of the interrupt is cleared within the Isr and that minimum time is spent in the Isr. It is preferable to set a flag within the Isr and then perform longer processing within poll(). </p>
+
+</div>
+</div>
 <a id="a9bf07c27105f7c54f030818acb9ad9d1" name="a9bf07c27105f7c54f030818acb9ad9d1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9bf07c27105f7c54f030818acb9ad9d1">&#9670;&#160;</a></span>checkLen()</h2>
 
@@ -491,7 +788,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Processed checkLen </td>
+          <td class="memname"><a class="el" href="#a60587b24892ebc76ee16bbfdb4d52544">Processed</a> checkLen </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_message.html">Message</a> *</td>          <td class="paramname"><span class="paramname"><em>m</em>, </span></td>
         </tr>
@@ -512,15 +809,16 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Checks that the required number of message bytes are present. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Helper function to check a received message.</p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">m</td><td>the message to be checked </td></tr>
-    <tr><td class="paramname">needed</td><td>the number of bytes within the message needed including the opc </td></tr>
-    <tr><td class="paramname">service</td><td>he service making the test </td></tr>
+    <tr><td class="paramname">m</td><td>received message </td></tr>
+    <tr><td class="paramname">needed</td><td>number of bytes in message </td></tr>
+    <tr><td class="paramname">service</td><td>he service making the request </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>PROCESSED if it is an invalid message and should not be processed further </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Process if message isn't valid, NOT_PROCESSED if ok </dd></dl>
 
 </div>
 </div>
@@ -546,7 +844,7 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Perform the factory reset for all services and VLCB base. VLCB function to perform necessary factory reset functionality and also call the factoryReset function for each service. </p>
+<p>Perform the factory reset for all services and VLCB base. VLCB function to perform necessary factory reset functionality and also call the factoryReset function for each service followed by the Application factory reset <a class="el" href="vlcb_8c.html#aaefa2e9d7f924327aa066ed75aca0319">APP_factoryReset()</a>. </p>
 
 </div>
 </div>
@@ -624,7 +922,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">ServicePresent have </td>
+          <td class="memname"><a class="el" href="#a854c33a3bc2b495fc2e3c229b661becf">ServicePresent</a> have </td>
           <td>(</td>
           <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
@@ -642,7 +940,39 @@ Variables</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>1 if the service is present 0 otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>PRESENT if the service is present NOT_PRESENT otherwise </dd></dl>
+
+</div>
+</div>
+<a id="a38cce02004be097334eb440d61ba88a4" name="a38cce02004be097334eb440d61ba88a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38cce02004be097334eb440d61ba88a4">&#9670;&#160;</a></span>isEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a> isEvent </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>opc</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Helper function to check for an event. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">opc</td><td>the opcode </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>TRUE for an event FALSE otherwise </dd></dl>
 
 </div>
 </div>
@@ -1061,6 +1391,37 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a3955f63350a3bbb9d97fb88653182497" name="a3955f63350a3bbb9d97fb88653182497"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3955f63350a3bbb9d97fb88653182497">&#9670;&#160;</a></span>setTimedResponseDelay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setTimedResponseDelay </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>delay</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Allows the application to control how quickly timed responses are sent. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">delay</td><td>time between timed responses </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Variable Documentation</h2>
 <a id="ad9c0663c54097bc7c55d5dcbbc556424" name="ad9c0663c54097bc7c55d5dcbbc556424"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad9c0663c54097bc7c55d5dcbbc556424">&#9670;&#160;</a></span>priorities</h2>
@@ -1072,7 +1433,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const Priority priorities[256]</td>
+          <td class="memname">const <a class="el" href="#a315655b1bb5848c063491adffde62b15">Priority</a> priorities[256]</td>
         </tr>
       </table>
   </td>
@@ -1138,7 +1499,7 @@ Variables</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d522931ffa1371640980b621734a4381.html">Users</a></li><li class="navelem"><a class="el" href="dir_10e25e262c850a79f6760812285f1413.html">ianwh</a></li><li class="navelem"><a class="el" href="dir_b0b4633879bd5c761e47fc280b556d88.html">github</a></li><li class="navelem"><a class="el" href="dir_a1617414bc24890c12be9c4da14587d4.html">VLCBlib_PIC</a></li><li class="navelem"><a class="el" href="vlcb_8h.html">vlcb.h</a></li>
+    <li class="navelem"><a class="el" href="vlcb_8h.html">vlcb.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

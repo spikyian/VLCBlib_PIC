@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCBlib_PIC: Service Struct Reference</title>
+<title>VLCB library: Service Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,11 +26,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="VLCB.png"/></td>
   <td id="projectalign">
-   <div id="projectname">VLCBlib_PIC
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for module developemnt using PIC processors</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -94,47 +93,60 @@ $(function(){initNavTree('struct_service.html',''); initResizable(); });
 
 <div class="header">
   <div class="summary">
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="struct_service-members.html">List of all members</a>  </div>
+<a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle"><div class="title">Service Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="vlcb_8h_source.html">vlcb.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:ad41e0c0d8c089228ddc67c98682a6d67" id="r_ad41e0c0d8c089228ddc67c98682a6d67"><td class="memItemLeft" align="right" valign="top"><a id="ad41e0c0d8c089228ddc67c98682a6d67" name="ad41e0c0d8c089228ddc67c98682a6d67"></a>
+Data Fields</h2></td></tr>
+<tr class="memitem:ad84a6446609bbb0d7bcd196f61d5972b" id="r_ad84a6446609bbb0d7bcd196f61d5972b"><td class="memItemLeft" align="right" valign="top"><a id="ad84a6446609bbb0d7bcd196f61d5972b" name="ad84a6446609bbb0d7bcd196f61d5972b"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>serviceNo</b></td></tr>
-<tr class="separator:ad41e0c0d8c089228ddc67c98682a6d67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cfdabf8ad00541ac65e4715c57468eb" id="r_a2cfdabf8ad00541ac65e4715c57468eb"><td class="memItemLeft" align="right" valign="top"><a id="a2cfdabf8ad00541ac65e4715c57468eb" name="a2cfdabf8ad00541ac65e4715c57468eb"></a>
+<tr class="memdesc:ad84a6446609bbb0d7bcd196f61d5972b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identifies the type of service. <br /></td></tr>
+<tr class="separator:ad84a6446609bbb0d7bcd196f61d5972b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab22abc2906422da61885ac6c8e6a1a59" id="r_ab22abc2906422da61885ac6c8e6a1a59"><td class="memItemLeft" align="right" valign="top"><a id="ab22abc2906422da61885ac6c8e6a1a59" name="ab22abc2906422da61885ac6c8e6a1a59"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>version</b></td></tr>
-<tr class="separator:a2cfdabf8ad00541ac65e4715c57468eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3efb812de151f7d8a0a5317cc1bc5bcf" id="r_a3efb812de151f7d8a0a5317cc1bc5bcf"><td class="memItemLeft" align="right" valign="top"><a id="a3efb812de151f7d8a0a5317cc1bc5bcf" name="a3efb812de151f7d8a0a5317cc1bc5bcf"></a>
+<tr class="memdesc:ab22abc2906422da61885ac6c8e6a1a59"><td class="mdescLeft">&#160;</td><td class="mdescRight">version of the service definition (not the version of code). <br /></td></tr>
+<tr class="separator:ab22abc2906422da61885ac6c8e6a1a59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a73d072c49644eb3551211297ed112a" id="r_a2a73d072c49644eb3551211297ed112a"><td class="memItemLeft" align="right" valign="top"><a id="a2a73d072c49644eb3551211297ed112a" name="a2a73d072c49644eb3551211297ed112a"></a>
 void(*&#160;</td><td class="memItemRight" valign="bottom"><b>factoryReset</b> )(void)</td></tr>
-<tr class="separator:a3efb812de151f7d8a0a5317cc1bc5bcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a411d93424d544dbe9219f12e94017d7e" id="r_a411d93424d544dbe9219f12e94017d7e"><td class="memItemLeft" align="right" valign="top"><a id="a411d93424d544dbe9219f12e94017d7e" name="a411d93424d544dbe9219f12e94017d7e"></a>
+<tr class="memdesc:a2a73d072c49644eb3551211297ed112a"><td class="mdescLeft">&#160;</td><td class="mdescRight">function call for a new module. <br /></td></tr>
+<tr class="separator:a2a73d072c49644eb3551211297ed112a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5bdbd09900220e0331b366801327e63" id="r_ab5bdbd09900220e0331b366801327e63"><td class="memItemLeft" align="right" valign="top"><a id="ab5bdbd09900220e0331b366801327e63" name="ab5bdbd09900220e0331b366801327e63"></a>
 void(*&#160;</td><td class="memItemRight" valign="bottom"><b>powerUp</b> )(void)</td></tr>
-<tr class="separator:a411d93424d544dbe9219f12e94017d7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbb46b0db991b5fbd7d207e87b9101e7" id="r_adbb46b0db991b5fbd7d207e87b9101e7"><td class="memItemLeft" align="right" valign="top"><a id="adbb46b0db991b5fbd7d207e87b9101e7" name="adbb46b0db991b5fbd7d207e87b9101e7"></a>
-Processed(*&#160;</td><td class="memItemRight" valign="bottom"><b>processMessage</b> )(<a class="el" href="struct_message.html">Message</a> *m)</td></tr>
-<tr class="separator:adbb46b0db991b5fbd7d207e87b9101e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65b8b4f88800e72bd2ad3dd8cdddc251" id="r_a65b8b4f88800e72bd2ad3dd8cdddc251"><td class="memItemLeft" align="right" valign="top"><a id="a65b8b4f88800e72bd2ad3dd8cdddc251" name="a65b8b4f88800e72bd2ad3dd8cdddc251"></a>
+<tr class="memdesc:ab5bdbd09900220e0331b366801327e63"><td class="mdescLeft">&#160;</td><td class="mdescRight">function called upon module power up. <br /></td></tr>
+<tr class="separator:ab5bdbd09900220e0331b366801327e63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a13dd2e7b5f65c1781f1441ad2a3765" id="r_a0a13dd2e7b5f65c1781f1441ad2a3765"><td class="memItemLeft" align="right" valign="top"><a id="a0a13dd2e7b5f65c1781f1441ad2a3765" name="a0a13dd2e7b5f65c1781f1441ad2a3765"></a>
+<a class="el" href="vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544">Processed</a>(*&#160;</td><td class="memItemRight" valign="bottom"><b>processMessage</b> )(<a class="el" href="struct_message.html">Message</a> *m)</td></tr>
+<tr class="memdesc:a0a13dd2e7b5f65c1781f1441ad2a3765"><td class="mdescLeft">&#160;</td><td class="mdescRight">process and handle any VLCB messages. <br /></td></tr>
+<tr class="separator:a0a13dd2e7b5f65c1781f1441ad2a3765"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d5017fbe19bbcb67455b16ed63308a1" id="r_a9d5017fbe19bbcb67455b16ed63308a1"><td class="memItemLeft" align="right" valign="top"><a id="a9d5017fbe19bbcb67455b16ed63308a1" name="a9d5017fbe19bbcb67455b16ed63308a1"></a>
 void(*&#160;</td><td class="memItemRight" valign="bottom"><b>poll</b> )(void)</td></tr>
-<tr class="separator:a65b8b4f88800e72bd2ad3dd8cdddc251"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a736025c6cb814095de8ba0deab3f0316" id="r_a736025c6cb814095de8ba0deab3f0316"><td class="memItemLeft" align="right" valign="top"><a id="a736025c6cb814095de8ba0deab3f0316" name="a736025c6cb814095de8ba0deab3f0316"></a>
+<tr class="memdesc:a9d5017fbe19bbcb67455b16ed63308a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">called regularly . <br /></td></tr>
+<tr class="separator:a9d5017fbe19bbcb67455b16ed63308a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5faca701d3b14fb32cfebd3d12d3e1b2" id="r_a5faca701d3b14fb32cfebd3d12d3e1b2"><td class="memItemLeft" align="right" valign="top"><a id="a5faca701d3b14fb32cfebd3d12d3e1b2" name="a5faca701d3b14fb32cfebd3d12d3e1b2"></a>
 void(*&#160;</td><td class="memItemRight" valign="bottom"><b>highIsr</b> )(void)</td></tr>
-<tr class="separator:a736025c6cb814095de8ba0deab3f0316"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76e98ba0bb93539f4afb9dd9dc025e02" id="r_a76e98ba0bb93539f4afb9dd9dc025e02"><td class="memItemLeft" align="right" valign="top"><a id="a76e98ba0bb93539f4afb9dd9dc025e02" name="a76e98ba0bb93539f4afb9dd9dc025e02"></a>
+<tr class="memdesc:a5faca701d3b14fb32cfebd3d12d3e1b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">handle any service specific high priority interrupt service routine. <br /></td></tr>
+<tr class="separator:a5faca701d3b14fb32cfebd3d12d3e1b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26e02f43ae5891ef33d126221e63d1c8" id="r_a26e02f43ae5891ef33d126221e63d1c8"><td class="memItemLeft" align="right" valign="top"><a id="a26e02f43ae5891ef33d126221e63d1c8" name="a26e02f43ae5891ef33d126221e63d1c8"></a>
 void(*&#160;</td><td class="memItemRight" valign="bottom"><b>lowIsr</b> )(void)</td></tr>
-<tr class="separator:a76e98ba0bb93539f4afb9dd9dc025e02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90169474b72dcd985cf4e5f652af91d7" id="r_a90169474b72dcd985cf4e5f652af91d7"><td class="memItemLeft" align="right" valign="top"><a id="a90169474b72dcd985cf4e5f652af91d7" name="a90169474b72dcd985cf4e5f652af91d7"></a>
+<tr class="memdesc:a26e02f43ae5891ef33d126221e63d1c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">handle any service specific high priority interrupt service routine. <br /></td></tr>
+<tr class="separator:a26e02f43ae5891ef33d126221e63d1c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1af4dbef3cebf8d4a896f3da2341944" id="r_ac1af4dbef3cebf8d4a896f3da2341944"><td class="memItemLeft" align="right" valign="top"><a id="ac1af4dbef3cebf8d4a896f3da2341944" name="ac1af4dbef3cebf8d4a896f3da2341944"></a>
 uint8_t(*&#160;</td><td class="memItemRight" valign="bottom"><b>getESDdata</b> )(uint8_t id)</td></tr>
-<tr class="separator:a90169474b72dcd985cf4e5f652af91d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94a341fd51fa3cc3a14fa4988f2333ed" id="r_a94a341fd51fa3cc3a14fa4988f2333ed"><td class="memItemLeft" align="right" valign="top"><a id="a94a341fd51fa3cc3a14fa4988f2333ed" name="a94a341fd51fa3cc3a14fa4988f2333ed"></a>
+<tr class="memdesc:ac1af4dbef3cebf8d4a896f3da2341944"><td class="mdescLeft">&#160;</td><td class="mdescRight">To obtain any ESD bytes for the service. <br /></td></tr>
+<tr class="separator:ac1af4dbef3cebf8d4a896f3da2341944"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad806094933376394fc241ebcc31899b" id="r_aad806094933376394fc241ebcc31899b"><td class="memItemLeft" align="right" valign="top"><a id="aad806094933376394fc241ebcc31899b" name="aad806094933376394fc241ebcc31899b"></a>
 <a class="el" href="union_diagnostic_val.html">DiagnosticVal</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><b>getDiagnostic</b> )(uint8_t index)</td></tr>
-<tr class="separator:a94a341fd51fa3cc3a14fa4988f2333ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:aad806094933376394fc241ebcc31899b"><td class="mdescLeft">&#160;</td><td class="mdescRight">pointer to function returning DiagnosticVal*. <br /></td></tr>
+<tr class="separator:aad806094933376394fc241ebcc31899b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this struct was generated from the following file:<ul>
-<li>C:/Users/ianwh/github/VLCBlib_PIC/<a class="el" href="vlcb_8h_source.html">vlcb.h</a></li>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>This is the service descriptor and the main entry point to a service. The module's application code should add the service descriptors to the services array for any of the services which it requires to be implemented. The VLCB library code then uses the pointers in the service descriptor to access the service's functionality. It is the responsibility of the writer of the service to provide a populated singleton for the service that can be used by the module's application code. </p>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<li><a class="el" href="vlcb_8h_source.html">vlcb.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

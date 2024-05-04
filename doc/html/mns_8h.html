@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCBlib_PIC: C:/Users/ianwh/github/VLCBlib_PIC/mns.h File Reference</title>
+<title>VLCB library: mns.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,11 +26,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="VLCB.png"/></td>
   <td id="projectalign">
-   <div id="projectname">VLCBlib_PIC
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for module developemnt using PIC processors</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -100,6 +99,9 @@ $(function(){initNavTree('mns_8h.html',''); initResizable(); });
   <div class="headertitle"><div class="title">mns.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Implementation of the VLCB Minimum Module <a class="el" href="struct_service.html">Service</a>.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="vlcb_8h_source.html">vlcb.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ticktime_8h_source.html">ticktime.h</a>&quot;</code><br />
 <code>#include &quot;module.h&quot;</code><br />
@@ -160,11 +162,11 @@ Variables</h2></td></tr>
 <tr class="separator:ae11d61a51505b9b853796f1ea7a7a905"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad17d3f6b2c418e3d30a2797dcf6fda1d" id="r_ad17d3f6b2c418e3d30a2797dcf6fda1d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="union_diagnostic_val.html">DiagnosticVal</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad17d3f6b2c418e3d30a2797dcf6fda1d">mnsDiagnostics</a> [<a class="el" href="#acf5ee9e09a5a5dd62715e8e01c3c941e">NUM_MNS_DIAGNOSTICS</a>]</td></tr>
 <tr class="separator:ad17d3f6b2c418e3d30a2797dcf6fda1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a025b9760b10bb4bcb169fb87678451d5" id="r_a025b9760b10bb4bcb169fb87678451d5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="union___tick_value.html">TickValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a025b9760b10bb4bcb169fb87678451d5">pbTimer</a></td></tr>
+<tr class="memitem:a025b9760b10bb4bcb169fb87678451d5" id="r_a025b9760b10bb4bcb169fb87678451d5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="ticktime_8h.html#ab0669b003836b10a86aed5b3b829bae3">TickValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a025b9760b10bb4bcb169fb87678451d5">pbTimer</a></td></tr>
 <tr class="separator:a025b9760b10bb4bcb169fb87678451d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Implementation of the VLCB Minimum Module <a class="el" href="struct_service.html">Service</a>.</p>
+<div class="textblock"><p>Implementation of the VLCB Minimum Module <a class="el" href="struct_service.html">Service</a>. </p>
 <p>MNS provides functionality required by all VLCB modules.</p>
 <p>The service definition object is called mnsService. This is a large service as it handles mode transitions, including setting of node number. The module's LEDs and push button are also supported. <a class="el" href="struct_service.html">Service</a> discovery and Diagnostics are also processed from this service.</p>
 <h1><a class="anchor" id="autotoc_md16"></a>
@@ -188,7 +190,7 @@ Module.h definitions required for the MNS service</h1>
 <li>#define NAME The name of the module must be defined. Must be exactly 7 characters. Shorter names should be padded on the right with spaces. The name must leave off the communications protocol e.g. the CANMIO module would be set to "MIO    ".</li>
 </ul>
 <p>The following parameter values are required to be defined for use by MNS:</p><ul>
-<li>#define PARAM_MANU See the manufacturer settings in <a class="el" href="vlcb_8h.html">vlcb.h</a></li>
+<li>#define PARAM_MANU See the manufacturer settings in <a class="el" href="vlcb_8h.html" title="Baseline functionality required by VLCB and entry points into the application.">vlcb.h</a></li>
 <li>#define PARAM_MAJOR_VERSION The major version number</li>
 <li>#define PARAM_MINOR_VERSION The minor version character. E.g. 'a'</li>
 <li>#define PARAM_BUILD_VERSION The build version number</li>
@@ -285,6 +287,7 @@ Module.h definitions required for the MNS service</h1>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Expose the service descriptor for MNS.</p>
 <p>The descriptor for the MNS service. </p>
 
 </div>
@@ -368,7 +371,7 @@ Module.h definitions required for the MNS service</h1>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="union___tick_value.html">TickValue</a> pbTimer</td>
+          <td class="memname"><a class="el" href="ticktime_8h.html#ab0669b003836b10a86aed5b3b829bae3">TickValue</a> pbTimer</td>
         </tr>
       </table>
   </td>
@@ -386,7 +389,7 @@ Module.h definitions required for the MNS service</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d522931ffa1371640980b621734a4381.html">Users</a></li><li class="navelem"><a class="el" href="dir_10e25e262c850a79f6760812285f1413.html">ianwh</a></li><li class="navelem"><a class="el" href="dir_b0b4633879bd5c761e47fc280b556d88.html">github</a></li><li class="navelem"><a class="el" href="dir_a1617414bc24890c12be9c4da14587d4.html">VLCBlib_PIC</a></li><li class="navelem"><a class="el" href="mns_8h.html">mns.h</a></li>
+    <li class="navelem"><a class="el" href="mns_8h.html">mns.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

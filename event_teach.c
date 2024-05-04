@@ -57,14 +57,15 @@
  */
 #include <xc.h>
 #include "vlcb.h"
-#include "romops.h"
+#include "nvm.h"
 #include "mns.h"
 #include "timedResponse.h"
 #include "event_teach.h"
 
 /**
  * @file
- * Implementation of the VLCB Event Teach service.
+ * @brief
+ * Implementation of the VLCB Event Teach Service.
  * @details
  * Event teaching service
  * The service definition object is called eventTeachService.
@@ -223,9 +224,8 @@ int16_t getEv(uint8_t tableIndex, uint8_t evNum);
 static uint8_t tableIndexToEvtIdx(uint8_t tableIndex);
 uint8_t findEvent(uint16_t nodeNumber, uint16_t eventNumber);
 static uint8_t removeTableEntry(uint8_t tableIndex);
-uint8_t writeEv(uint8_t tableIndex, uint8_t evNum, uint8_t evVal);
 uint8_t removeEvent(uint16_t nodeNumber, uint16_t eventNumber);
-static void checkRemoveTableEntry(uint8_t tableIndex);
+void checkRemoveTableEntry(uint8_t tableIndex);
 static void doNnclr(void);
 static void doNerd(void);
 static void doNnevn(void);
@@ -337,7 +337,7 @@ static Processed teachProcessMessage(Message* m) {
         case OPC_EVLRN:     // D2 EVLRN - NN, EN, EV#, EVval
             if (teachCheckLen(m, 7, 1) == PROCESSED) {
                 sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_CMD);
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVLRN, SERVICE_ID_OLD_TEACH, CMDERR_INV_CMD);
+//                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVLRN, SERVICE_ID_OLD_TEACH, CMDERR_INV_CMD);
                 return PROCESSED;
             }
             if (! (mode_flags & FLAG_MODE_LEARN)) return PROCESSED;
@@ -418,7 +418,7 @@ static Processed teachProcessMessage(Message* m) {
 }
 
 /**
- * Check the message length
+ * Check the message length to ensure it is valid.
  * @param m the message
  * @param needed the number of bytes needed
  * @param learn indicator whether to use Learn mode or NN
@@ -536,7 +536,6 @@ TimedResponseResult nerdCallback(uint8_t type, uint8_t serviceIndex, uint8_t ste
 
 /**
  * Read a single stored event by index and return a ENRSP response.
- * DEPRECATED
  * 
  * @param index index into event table
  */
@@ -602,7 +601,7 @@ static void doEvlrn(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, ui
         sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVLRN, SERVICE_ID_OLD_TEACH, CMDERR_INV_EV_IDX);
         return;
     }
-    error = APP_addEvent(nodeNumber, eventNumber, evNum, evVal);
+    error = APP_addEvent(nodeNumber, eventNumber, evNum, evVal, FALSE);
     if (error) {
         // validation error
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, error);
@@ -617,7 +616,7 @@ static void doEvlrn(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, ui
 
 /**
  * Read an event variable by index.
- * DEPRECATED
+ * 
  * @param enNum index into event table
  * @param evNum EV number index
  */
@@ -793,6 +792,28 @@ static uint8_t removeTableEntry(uint8_t tableIndex) {
 }
 
 /**
+ * Check to see if any event entries can be removed. Entries can be removed if 
+ * their EVs are all set to EV_FILL.
+ * 
+ * @param tableIndex
+ */
+void checkRemoveTableEntry(uint8_t tableIndex) {
+    uint8_t e;
+    
+    if ( validStart(tableIndex)) {
+        if (getEVs(tableIndex)) {
+            return;
+        }
+        for (e=0; e<EVperEVT; e++) {
+            if (evs[e] != EV_FILL) {
+                return;
+            }
+        }
+        removeTableEntry(tableIndex);
+    }
+}
+
+/**
  * Add an event/EV.
  * Teach or re-teach an EV for an event. 
  * This may (optionally) need to create a new event and then optionally
@@ -812,7 +833,7 @@ uint8_t addEvent(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8
     // do we currently have an event
     tableIndex = findEvent(nodeNumber, eventNumber);
     if (tableIndex == NO_INDEX) {
-        // Ian - 2k check for special case. Don't create an entry for a NO_ACTION
+        // Ian - 2k check for special case. Don't create an entry for a EV_FILL
         // This is a solution to the problem of FCU filling the event table with unused
         // 00 Actions. 
         // It does not fix a much less frequent problem of releasing some of the 
@@ -839,10 +860,6 @@ uint8_t addEvent(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8
                 for (e = 0; e < EVENT_TABLE_WIDTH; e++) {
                     writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_ROW_WIDTH*tableIndex+EVENTTABLE_OFFSET_EVS+e, EV_FILL);
                 }
-//                flushFlashBlock();
-//#ifdef EVENT_HASH_TABLE
-//                rebuildHashtable();
-//#endif
                 error = 0;
                 break;
             }
@@ -930,12 +947,12 @@ uint8_t writeEv(uint8_t tableIndex, uint8_t evNum, uint8_t evVal) {
                 return CMDERR_INVALID_EVENT;
             }
         } else {
-            // Ian - 2k check for special case. Don't create an entry for a NO_ACTION
+            // Ian - 2k check for special case. Don't create an entry for a EV_FILL
             // This is a solution to the problem of FCU filling the event table with unused
             // 00 Actions. 
             // It does not fix a much less frequent problem of releasing some of the 
             // table entries when they are filled with No Action.
-            // don't add a new table slot just to store a NO_ACTION
+            // don't add a new table slot just to store a EV_FILL
             if (evVal == EV_FILL) {
                 return 0;
             }
@@ -1047,12 +1064,15 @@ uint8_t numEv(uint8_t tableIndex) {
 }
 
 /**
+ * The EVs for an event after calling getEVs()
+ */
+uint8_t evs[PARAM_NUM_EV_EVENT];
+/**
  * Return all the EV values for an event. EVs are put into the global evs array.
  * 
  * @param tableIndex the index of the start of an event
  * @return the error code or 0 for no error
  */
-uint8_t evs[PARAM_NUM_EV_EVENT];
 uint8_t getEVs(uint8_t tableIndex) {
     EventTableFlags f;
     uint8_t evNum;
@@ -1146,28 +1166,6 @@ static uint8_t tableIndexToEvtIdx(uint8_t tableIndex) {
     return tableIndex + 1;
 }
 
-
-/**
- * Check to see if any event entries can be removed.
- * 
- * @param tableIndex
- */
-static void checkRemoveTableEntry(uint8_t tableIndex) {
-    uint8_t e;
-    
-    if ( validStart(tableIndex)) {
-        if (getEVs(tableIndex)) {
-            return;
-        }
-        for (e=0; e<PARAM_NUM_EV_EVENT; e++) {
-            if (evs[e] != EV_FILL) {
-                return;
-            }
-        }
-        removeTableEntry(tableIndex);
-    }
-}
-
 /**
  * Checks if the specified index is the start of a set of linked entries.
  * 
@@ -1221,9 +1219,9 @@ uint8_t getHash(uint16_t nn, uint16_t en) {
  */
 void rebuildHashtable(void) {
     // invalidate the current hash table
-    unsigned char hash;
-    unsigned char chainIdx;
-    unsigned char tableIndex;
+    uint8_t hash;
+    uint8_t chainIdx;
+    uint8_t tableIndex;
     int a;
 #ifdef PRODUCED_EVENTS
     // first initialise to nothing

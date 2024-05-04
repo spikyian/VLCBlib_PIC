@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCBlib_PIC: C:/Users/ianwh/github/VLCBlib_PIC/arduino.c File Reference</title>
+<title>VLCB library: arduino.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,11 +26,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="VLCB.png"/></td>
   <td id="projectalign">
-   <div id="projectname">VLCBlib_PIC
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for module developemnt using PIC processors</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -98,6 +97,9 @@ $(function(){initNavTree('arduino_8c.html',''); initResizable(); });
   <div class="headertitle"><div class="title">arduino.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>The functions here emulate some of the common Arduino functions.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;xc.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="vlcb_8h_source.html">vlcb.h</a>&quot;</code><br />
 <code>#include &quot;module.h&quot;</code><br />
@@ -106,7 +108,7 @@ $(function(){initNavTree('arduino_8c.html',''); initResizable(); });
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a25f16a4ef666b1bd1b632a3ecaeb4c58" id="r_a25f16a4ef666b1bd1b632a3ecaeb4c58"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a25f16a4ef666b1bd1b632a3ecaeb4c58">pinMode</a> (uint8_t channel, PinMode mode)</td></tr>
+<tr class="memitem:a25f16a4ef666b1bd1b632a3ecaeb4c58" id="r_a25f16a4ef666b1bd1b632a3ecaeb4c58"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a25f16a4ef666b1bd1b632a3ecaeb4c58">pinMode</a> (uint8_t channel, <a class="el" href="arduino_8h.html#a15c0c34a3baec6b9d2390a426bd3ba96">PinMode</a> mode)</td></tr>
 <tr class="separator:a25f16a4ef666b1bd1b632a3ecaeb4c58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fb7d5ffc5b52012f0bc4604308e01e4" id="r_a6fb7d5ffc5b52012f0bc4604308e01e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6fb7d5ffc5b52012f0bc4604308e01e4">digitalWrite</a> (uint8_t channel, uint8_t value)</td></tr>
 <tr class="separator:a6fb7d5ffc5b52012f0bc4604308e01e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -114,10 +116,10 @@ Functions</h2></td></tr>
 <tr class="separator:abced5d6e8a99364e785e40f90af06720"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section copyright"><dt>Copyright</dt><dd>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. </dd></dl>
+<div class="textblock"><p>The functions here emulate some of the common Arduino functions. </p>
+<dl class="section copyright"><dt>Copyright</dt><dd>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Ian Hogg </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>Dec 2022</dd></dl>
-<p>The functions here emulate some of the common Arduino functions.</p>
 <p>These may help some developers to feel more comfortable in developing software. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="abced5d6e8a99364e785e40f90af06720" name="abced5d6e8a99364e785e40f90af06720"></a>
@@ -134,13 +136,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Read a pin to obtain the current digital input value. Does not check that the channel pin is operating in INPUT mode. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Read the value of a digital input channel. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">channel</td><td>the channel number </td></tr>
+    <tr><td class="paramname">channel</td><td>channel number </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the digital value </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 for a low voltage non zero for a high voltage </dd></dl>
 
 </div>
 </div>
@@ -162,10 +164,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Write the specified value to the channel pin. Does not check that the channel is configured to be in OUTPUT mode. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Set the output pin to the requested state. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">channel</td><td>the channel number </td></tr>
-    <tr><td class="paramname">value</td><td>the value to be written to the channel </td></tr>
+    <tr><td class="paramname">channel</td><td>channel number </td></tr>
+    <tr><td class="paramname">value</td><td>required channel output state, 0 for a Low output and non zero for a High output </td></tr>
   </table>
   </dd>
 </dl>
@@ -186,14 +188,14 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">PinMode</td>          <td class="paramname"><span class="paramname"><em>mode</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="arduino_8h.html#a15c0c34a3baec6b9d2390a426bd3ba96">PinMode</a></td>          <td class="paramname"><span class="paramname"><em>mode</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set the specified channel to the type as specified by mode. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Function to set a particular channel to the requested mode. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">channel</td><td>the channel number </td></tr>
-    <tr><td class="paramname">mode</td><td>the type of pin </td></tr>
+    <tr><td class="paramname">channel</td><td>channel number </td></tr>
+    <tr><td class="paramname">mode</td><td>the requested mode </td></tr>
   </table>
   </dd>
 </dl>
@@ -205,7 +207,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d522931ffa1371640980b621734a4381.html">Users</a></li><li class="navelem"><a class="el" href="dir_10e25e262c850a79f6760812285f1413.html">ianwh</a></li><li class="navelem"><a class="el" href="dir_b0b4633879bd5c761e47fc280b556d88.html">github</a></li><li class="navelem"><a class="el" href="dir_a1617414bc24890c12be9c4da14587d4.html">VLCBlib_PIC</a></li><li class="navelem"><a class="el" href="arduino_8c.html">arduino.c</a></li>
+    <li class="navelem"><a class="el" href="arduino_8c.html">arduino.c</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

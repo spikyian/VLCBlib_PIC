@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['diagnosticval_0',['DiagnosticVal',['../vlcb_8h.html#ab90c1a42242042feb599bbd102d1f596',1,'vlcb.h']]]
+  ['boolean_0',['Boolean',['../vlcb_8h.html#ad665bd4a0bff725979ec9dfbda92f5f5',1,'vlcb.h']]]
 ];

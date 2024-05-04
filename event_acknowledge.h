@@ -43,6 +43,7 @@
 
 /**
  * @file
+ * @brief
  * Implementation of the VLCB EventAcknowledge service.
  * @details
  * This service will send a ENACK message if the module has been taught to

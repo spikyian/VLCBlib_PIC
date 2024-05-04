@@ -46,7 +46,9 @@
 
 /**
  * @file
- * Implementation of the VLCB EventCoe service.
+ * @brief
+ * Implementation of the VLCB EventCoe Service.
+ *
  * @details
  * This service will allow a module to consume its own produced events.
  * The service definition object is called eventCoeService.

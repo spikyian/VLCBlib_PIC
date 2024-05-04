@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCBlib_PIC: C:/Users/ianwh/github/VLCBlib_PIC/boot.c File Reference</title>
+<title>VLCB library: boot.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,11 +26,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="VLCB.png"/></td>
   <td id="projectalign">
-   <div id="projectname">VLCBlib_PIC
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for module developemnt using PIC processors</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -99,25 +98,24 @@ $(function(){initNavTree('boot_8c.html',''); initResizable(); });
   <div class="headertitle"><div class="title">boot.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Implementation of the VLCB BOOT service, supports the FCU and CBUS (PIC based) bootloading protocol.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;xc.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="vlcb_8h_source.html">vlcb.h</a>&quot;</code><br />
 <code>#include &quot;module.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="boot_8h_source.html">boot.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="mns_8h_source.html">mns.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="romops_8h_source.html">romops.h</a>&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a4bf7215e292095e0ab4521e7314cb7f8" id="r_a4bf7215e292095e0ab4521e7314cb7f8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4bf7215e292095e0ab4521e7314cb7f8">PRM_CKSUM1</a></td></tr>
 <tr class="separator:a4bf7215e292095e0ab4521e7314cb7f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abcde0871dc4a6f660a1be9ec3fbc4924" id="r_abcde0871dc4a6f660a1be9ec3fbc4924"><td class="memItemLeft" align="right" valign="top"><a id="abcde0871dc4a6f660a1be9ec3fbc4924" name="abcde0871dc4a6f660a1be9ec3fbc4924"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>PRM_CKSUM2</b>&#160;&#160;&#160;PRM_CKSUM1</td></tr>
+<tr class="memitem:abcde0871dc4a6f660a1be9ec3fbc4924" id="r_abcde0871dc4a6f660a1be9ec3fbc4924"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abcde0871dc4a6f660a1be9ec3fbc4924">PRM_CKSUM2</a>&#160;&#160;&#160;<a class="el" href="#a4bf7215e292095e0ab4521e7314cb7f8">PRM_CKSUM1</a></td></tr>
 <tr class="separator:abcde0871dc4a6f660a1be9ec3fbc4924"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfbe4243816f079d2f0a97ea29c2db6a" id="r_adfbe4243816f079d2f0a97ea29c2db6a"><td class="memItemLeft" align="right" valign="top"><a id="adfbe4243816f079d2f0a97ea29c2db6a" name="adfbe4243816f079d2f0a97ea29c2db6a"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>PRM_CKSUM3</b>&#160;&#160;&#160;PRM_CKSUM2</td></tr>
+<tr class="memitem:adfbe4243816f079d2f0a97ea29c2db6a" id="r_adfbe4243816f079d2f0a97ea29c2db6a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adfbe4243816f079d2f0a97ea29c2db6a">PRM_CKSUM3</a>&#160;&#160;&#160;<a class="el" href="#abcde0871dc4a6f660a1be9ec3fbc4924">PRM_CKSUM2</a></td></tr>
 <tr class="separator:adfbe4243816f079d2f0a97ea29c2db6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c270237a8aff6430e17f048b26f03f5" id="r_a4c270237a8aff6430e17f048b26f03f5"><td class="memItemLeft" align="right" valign="top"><a id="a4c270237a8aff6430e17f048b26f03f5" name="a4c270237a8aff6430e17f048b26f03f5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>PRM_CKSUM4</b>&#160;&#160;&#160;PRM_CKSUM3</td></tr>
+<tr class="memitem:a4c270237a8aff6430e17f048b26f03f5" id="r_a4c270237a8aff6430e17f048b26f03f5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c270237a8aff6430e17f048b26f03f5">PRM_CKSUM4</a>&#160;&#160;&#160;<a class="el" href="#adfbe4243816f079d2f0a97ea29c2db6a">PRM_CKSUM3</a></td></tr>
 <tr class="separator:a4c270237a8aff6430e17f048b26f03f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
@@ -126,14 +124,14 @@ Variables</h2></td></tr>
 <tr class="separator:a6a89fc238ad82ace7c465216a3e5575d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section copyright"><dt>Copyright</dt><dd>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. </dd></dl>
+<div class="textblock"><p>Implementation of the VLCB BOOT service, supports the FCU and CBUS (PIC based) bootloading protocol. </p>
+<dl class="section copyright"><dt>Copyright</dt><dd>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Ian Hogg </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>Dec 2022</dd></dl>
-<p>Implementation of the VLCB BOOT service, supports the FCU and CBUS (PIC based) bootloading protocol.</p>
 <p>The service definition object is called bootService. In order to be compatible with the FCU bootloader there are additional requirements for the parameter block which are actually supported by the MNS.</p>
 <p>Application code packed with the bootloader must be compiled with options:</p><ul>
 <li>XC8 linker options -&gt; Additional options &ndash;CODEOFFSET=0x800</li>
-<li>This generates an error ::: warning: (2044) unrecognized option "--CODEOFFSET=0x800" but this can be ignored as the option works</li>
+<li>This generates an error ::: warning: (2044) unrecognized option "--CODEOFFSET=0x800" but this can be ignored as the option works.</li>
 </ul>
 <p>Then the Application project must be made dependent on the Bootloader project by adding the Bootloader to project properties-&gt;Conf:-&gt;Loading The project hex fill will have the .unified.hex extension. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
@@ -152,7 +150,57 @@ Variables</h2></td></tr>
 <div class="line">    +PARAM_NUM_EV_EVENT+PARAM_NUM_NV+PARAM_MAJOR_VERSION+(8)\</div>
 <div class="line">    +P18F26K80+(8)+CPUM_MICROCHIP+PARAM_BUILD_VERSION\</div>
 <div class="line">    +(20)+(0x48)+(0x08)</div>
-</div><!-- fragment -->
+</div><!-- fragment --><p>Used internally for calculating checksum. <br  />
+ </p>
+
+</div>
+</div>
+<a id="abcde0871dc4a6f660a1be9ec3fbc4924" name="abcde0871dc4a6f660a1be9ec3fbc4924"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcde0871dc4a6f660a1be9ec3fbc4924">&#9670;&#160;</a></span>PRM_CKSUM2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PRM_CKSUM2&#160;&#160;&#160;<a class="el" href="#a4bf7215e292095e0ab4521e7314cb7f8">PRM_CKSUM1</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Used internally for calculating checksum. <br  />
+ </p>
+
+</div>
+</div>
+<a id="adfbe4243816f079d2f0a97ea29c2db6a" name="adfbe4243816f079d2f0a97ea29c2db6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfbe4243816f079d2f0a97ea29c2db6a">&#9670;&#160;</a></span>PRM_CKSUM3</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PRM_CKSUM3&#160;&#160;&#160;<a class="el" href="#abcde0871dc4a6f660a1be9ec3fbc4924">PRM_CKSUM2</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Used internally for calculating checksum. <br  />
+ </p>
+
+</div>
+</div>
+<a id="a4c270237a8aff6430e17f048b26f03f5" name="a4c270237a8aff6430e17f048b26f03f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c270237a8aff6430e17f048b26f03f5">&#9670;&#160;</a></span>PRM_CKSUM4</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PRM_CKSUM4&#160;&#160;&#160;<a class="el" href="#adfbe4243816f079d2f0a97ea29c2db6a">PRM_CKSUM3</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Used internally for calculating checksum. <br  />
+ </p>
+
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
@@ -174,12 +222,14 @@ Variables</h2></td></tr>
 <div class="line">    NULL,               </div>
 <div class="line">    bootProcessMessage, </div>
 <div class="line">    NULL,               </div>
+<div class="line"> </div>
 <div class="line">    NULL,               </div>
 <div class="line">    NULL,               </div>
+<div class="line"> </div>
 <div class="line">    NULL,               </div>
 <div class="line">    NULL                </div>
 <div class="line">}</div>
-</div><!-- fragment --><p>The service descriptor for the BOOT service. The application must include this descriptor within the const <a class="el" href="struct_service.html">Service</a> * const services[] array and include the necessary settings within module.h in order to make use of the PIC bootloading service. </p>
+</div><!-- fragment --><p>The service descriptor for the BOOT service. The application must include this descriptor within the application's const <a class="el" href="struct_service.html">Service</a> * const services[] array and include the necessary settings within module.h in order to make use of the PIC bootloading service. </p>
 
 </div>
 </div>
@@ -188,7 +238,7 @@ Variables</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d522931ffa1371640980b621734a4381.html">Users</a></li><li class="navelem"><a class="el" href="dir_10e25e262c850a79f6760812285f1413.html">ianwh</a></li><li class="navelem"><a class="el" href="dir_b0b4633879bd5c761e47fc280b556d88.html">github</a></li><li class="navelem"><a class="el" href="dir_a1617414bc24890c12be9c4da14587d4.html">VLCBlib_PIC</a></li><li class="navelem"><a class="el" href="boot_8c.html">boot.c</a></li>
+    <li class="navelem"><a class="el" href="boot_8c.html">boot.c</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

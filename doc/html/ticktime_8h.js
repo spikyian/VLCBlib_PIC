@@ -1,6 +1,29 @@
 var ticktime_8h =
 [
     [ "_TickValue", "union___tick_value.html", "union___tick_value" ],
-    [ "_TickValue::TickBytes", "struct___tick_value_1_1_tick_bytes.html", null ],
-    [ "_TickValue::TickWords", "struct___tick_value_1_1_tick_words.html", null ]
+    [ "TickBytes", "struct___tick_value_1_1_tick_bytes.html", "struct___tick_value_1_1_tick_bytes" ],
+    [ "TickWords", "struct___tick_value_1_1_tick_words.html", "struct___tick_value_1_1_tick_words" ],
+    [ "FIVE_MILI_SECOND", "ticktime_8h.html#a7ab7af56c4be4e53449a3caed24a0adb", null ],
+    [ "FIVE_SECOND", "ticktime_8h.html#a6a4dfcd79dbded78ae326f3470025713", null ],
+    [ "FORTY_MILI_SECOND", "ticktime_8h.html#a5caee098612767a4220cd2f0c5d34283", null ],
+    [ "HALF_MILLI_SECOND", "ticktime_8h.html#af541115425f8354c2041a2303e941b36", null ],
+    [ "HALF_SECOND", "ticktime_8h.html#af95f27544f39827250d6bef6fa5fe18e", null ],
+    [ "HUNDRED_MICRO_SECOND", "ticktime_8h.html#a98bfe6ab02b29ff60a3da6a5e3132c2b", null ],
+    [ "HUNDRED_MILI_SECOND", "ticktime_8h.html#a795d19057b24de06131d25249431afb6", null ],
+    [ "ONE_HOUR", "ticktime_8h.html#ae8dbeb3eda9f88f8f222adea789ec63d", null ],
+    [ "ONE_MILI_SECOND", "ticktime_8h.html#a26efc59f90e13bba774fdeec5321e12c", null ],
+    [ "ONE_MINUTE", "ticktime_8h.html#aa838923f78f23c9c9547de7795e93fa1", null ],
+    [ "ONE_SECOND", "ticktime_8h.html#ac93edbf7e8fdbf7398453d51bbd37a97", null ],
+    [ "TEN_MILI_SECOND", "ticktime_8h.html#a0f81465e923ee193bfcd549a71af0245", null ],
+    [ "TEN_SECOND", "ticktime_8h.html#a3f6fef41ef52e036596790ef501223a9", null ],
+    [ "tickGetDiff", "ticktime_8h.html#a2bca2573b95044ac71ba65dac2d09ae9", null ],
+    [ "tickTimeSince", "ticktime_8h.html#ae08491b4116abab16186791e7299b3d3", null ],
+    [ "TWENTY_MILI_SECOND", "ticktime_8h.html#aa141faea339e835d92b2fac208b49727", null ],
+    [ "TWO_MILI_SECOND", "ticktime_8h.html#af5798a9ce8bc7280031b857a7da8eb73", null ],
+    [ "TWO_SECOND", "ticktime_8h.html#a4c2dc0c899e1571596205f29fcc35cd6", null ],
+    [ "TickValue", "ticktime_8h.html#ab0669b003836b10a86aed5b3b829bae3", null ],
+    [ "initTicker", "ticktime_8h.html#a87ce5e04a5e34bb8e8b876714c84f371", null ],
+    [ "tickGet", "ticktime_8h.html#aeb90f0fa7746a4911053a4351e7846d2", null ],
+    [ "timerExtension1", "ticktime_8h.html#a9defbf70987a03170d67e1549dab3584", null ],
+    [ "timerExtension2", "ticktime_8h.html#a6210ec7cb0201ec7f5e1c05e75a469d2", null ]
 ];

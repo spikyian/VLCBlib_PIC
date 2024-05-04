@@ -37,7 +37,8 @@
 
 /**
  * @file
- * Implementation of the VLCB NV service.
+ * @brief
+ * Implementation of the VLCB NV Service.
  * @details
  * The service definition object is called nvService.
  *
@@ -54,11 +55,14 @@
 #include "module.h"
 #include "nv.h"
 #include "mns.h"
-#include "romops.h"
+#include "nvm.h"
 #include "timedResponse.h"
 
 // forward declarations
-static void loadNVcahe(void);
+/**
+ * Load the NV cache using values stored in non volatile memory.
+ */
+void loadNvCache(void);
 static void nvFactoryReset(void);
 static void nvPowerUp(void);
 static Processed nvProcessMessage(Message *m);
@@ -128,7 +132,7 @@ static void nvPowerUp(void) {
         nvDiagnostics[i].asUint = 0;
     }
 #ifdef NV_CACHE
-    loadNVcahe();
+    loadNvCache();
 #endif
 }
 
@@ -144,7 +148,7 @@ static DiagnosticVal * nvGetDiagnostic(uint8_t index) {
 /**
  * Load the NV cache using values stored in non volatile memory.
  */
-static void loadNVcahe(void) {
+void loadNvCache(void) {
     uint8_t i;
     int16_t temp;
     
@@ -172,6 +176,20 @@ int16_t getNV(uint8_t index) {
 #else
     return readNVM(NV_NVM_TYPE, NV_ADDRESS+index);
 #endif
+}
+
+/**
+ * Save (write) the value of an NV.
+ * Does no validation and does not call back into the application.
+ * 
+ * @param index the NV index
+ * @param value the value of the NV to be written 
+ */
+void saveNV(uint8_t index, uint8_t value) {
+#ifdef NV_CACHE
+    nvCache[index] = value;
+#endif
+    writeNVM(NV_NVM_TYPE, NV_ADDRESS+index, value);
 }
 
 /**

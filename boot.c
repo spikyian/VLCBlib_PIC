@@ -42,10 +42,9 @@
 #include "module.h"
 #include "boot.h"
 #include "mns.h"
-#include "romops.h"
-
 /**
  * @file
+ * @brief
  * Implementation of the VLCB BOOT service, supports the FCU and CBUS (PIC based)
  * bootloading protocol.
  * @details
@@ -56,7 +55,7 @@
  * Application code packed with the bootloader must be compiled with options:
  *  - XC8 linker options -> Additional options --CODEOFFSET=0x800 
  *  - This generates an error ::: warning: (2044) unrecognized option "--CODEOFFSET=0x800"
- * but this can be ignored as the option works
+ * but this can be ignored as the option works.
  * 
  * Then the Application project must be made dependent on the Bootloader 
  * project by adding the Bootloader to project properties->Conf:->Loading
@@ -68,7 +67,7 @@ static Processed bootProcessMessage(Message * m);
 
 /**
  * The service descriptor for the BOOT service. The application must include this
- * descriptor within the const Service * const services[] array and include the
+ * descriptor within the application's const Service * const services[] array and include the
  * necessary settings within module.h in order to make use of the PIC bootloading
  * service.
  */
@@ -96,25 +95,31 @@ asm("PSECT eeprom_data,class=EEDATA");
 asm("ORG " ___mkstr(EE_TOP));
 /** @private */
 asm("db 0");
-
+/** Used internally for calculating checksum.  */
 #define PRM_CKSUM1 PARAM_MANU+PARAM_MINOR_VERSION+PARAM_MODULE_ID+PARAM_NUM_EVENTS\
     +PARAM_NUM_EV_EVENT+PARAM_NUM_NV+PARAM_MAJOR_VERSION+(8)\
     +P18F26K80+(8)+CPUM_MICROCHIP+PARAM_BUILD_VERSION\
     +(20)+(0x48)+(0x08)
 
 #ifdef CONSUMED_EVENTS
+/** Used internally for calculating checksum.  */
 #define PRM_CKSUM2      PRM_CKSUM1+1
 #else
+/** Used internally for calculating checksum.  */
 #define PRM_CKSUM2      PRM_CKSUM1
 #endif
 #ifdef PRODUCED_EVENTS
+/** Used internally for calculating checksum.  */
 #define PRM_CKSUM3      PRM_CKSUM2+2
 #else
+/** Used internally for calculating checksum.  */
 #define PRM_CKSUM3      PRM_CKSUM2
 #endif
 #ifdef CANID_ADDRESS
+/** Used internally for calculating checksum.  */
 #define PRM_CKSUM4      PRM_CKSUM3+PB_CAN
 #else
+/** Used internally for calculating checksum.  */
 #define PRM_CKSUM4      PRM_CKSUM3
 #endif
 
@@ -163,8 +168,8 @@ const uint8_t paramBlock[] __at(0x820) = {
 
 
 /**
- * Process the bootloader specific messages. The only message which needs to be 
- * processed is BOOTM (called BOOT).
+ * Process the bootloader specific messages. The only messages which need to be 
+ * processed is BOOTM (also called BOOT) and MODE.
  * @param m the VLCB message
  * @return PROCESSED to indicate that the message has been processed, NOT_PROCESSED otherwise
  */

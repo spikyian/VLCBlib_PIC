@@ -43,6 +43,7 @@
 
 /**
  * @file
+ * @brief
  * Implementation of the VLCB EventCoe service.
  * @details
  * This service will allow a module to consume its own events.

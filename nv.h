@@ -43,6 +43,7 @@
 
 /**
  * @file
+ * @brief
  * Implementation of the VLCB NV service.
  * @details
  * The service definition object is called nvService.
@@ -59,13 +60,13 @@
  * must include the MNS service.
  * 
  * # Module.h definitions required for the NV service
- * - #define NV_NUM       The number of NVs. Will be returned in the parameter block.
- * - #define NV_CACHE     Defined, as opposed to undefined, to enable a cache of
+ * - \#define NV_NUM       The number of NVs. Will be returned in the parameter block.
+ * - \#define NV_CACHE     Defined, as opposed to undefined, to enable a cache of
  *                      NVs in RAM. Uses more RAM but speeds up access to NVs when
  *                      in normal operation processing events. 
- * - #define NV_ADDRESS   the address in non volatile memory to place the NVM version 
+ * - \#define NV_ADDRESS   the address in non volatile memory to place the NVM version 
  *                      number and NVs if the NV service is included.
- * - #define NV_NVM_TYPE  the type of NVM memory to be used for NVs. Can be either
+ * - \#define NV_NVM_TYPE  the type of NVM memory to be used for NVs. Can be either
  *                      EEPROM_NVM_TYPE or FLASH_NVM_TYPE.
  * - Function uint8_t APP_nvDefault(uint8_t index) The application must implement this 
  *                      function to provide factory default values for NVs.
@@ -79,11 +80,14 @@
  * 
  */
 
-/*
+/**
  * Expose the service descriptor for the NV service.
  */
 extern const Service nvService;
 
+/**
+ * Type definition used to indicate whether an NV accepts the value attempting to be set.
+ */
 typedef enum NvValidation {
     INVALID=0,
     VALID=1
@@ -102,5 +106,13 @@ extern NvValidation APP_nvValidate(uint8_t index, uint8_t value);
 #define NUM_NV_DIAGNOSTICS 2    ///< The number of diagnostics supported by this service
 #define NV_DIAGNOSTICS_NUM_ACCESS  0x00    ///< return Global status Byte.
 #define NV_DIAGNOSTICS_NUM_FAIL    0x01    ///< return uptime upper word.
+
+extern int16_t getNV(uint8_t index);
+extern void saveNV(uint8_t index, uint8_t value);
+extern uint8_t setNV(uint8_t index, uint8_t value);
+/**
+ * Load the NV cache using values stored in non volatile memory.
+ */
+extern void loadNvCache(void);
 
 #endif

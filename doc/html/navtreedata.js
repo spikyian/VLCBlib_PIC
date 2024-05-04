@@ -24,31 +24,25 @@
 */
 var NAVTREE =
 [
-  [ "VLCBlib_PIC", "index.html", [
+  [ "VLCB library", "index.html", [
     [ "VLCB", "index.html", "index" ],
-    [ "VLCBlib_PIC", "md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html", [
-      [ "The module application", "md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html#autotoc_md21", [
-        [ "Inputs", "md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html#autotoc_md22", null ],
-        [ "Outputs", "md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html#autotoc_md23", null ],
-        [ "On power on", "md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html#autotoc_md24", null ],
-        [ "Regular poll", "md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html#autotoc_md25", null ]
-      ] ],
-      [ "A module designer needs to:", "md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html#autotoc_md26", null ],
-      [ "Other information", "md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html#autotoc_md27", null ],
-      [ "Full documentation", "md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html#autotoc_md28", null ]
-    ] ],
-    [ "Classes", "annotated.html", [
-      [ "Class List", "annotated.html", "annotated_dup" ],
-      [ "Class Index", "classes.html", null ]
+    [ "Data Structures", "annotated.html", [
+      [ "Data Structures", "annotated.html", "annotated_dup" ],
+      [ "Data Structure Index", "classes.html", null ],
+      [ "Data Fields", "functions.html", [
+        [ "All", "functions.html", null ],
+        [ "Variables", "functions_vars.html", null ]
+      ] ]
     ] ],
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
-      [ "File Members", "globals.html", [
+      [ "Globals", "globals.html", [
         [ "All", "globals.html", "globals_dup" ],
         [ "Functions", "globals_func.html", null ],
         [ "Variables", "globals_vars.html", null ],
         [ "Typedefs", "globals_type.html", null ],
         [ "Enumerations", "globals_enum.html", null ],
+        [ "Enumerator", "globals_eval.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ]
@@ -58,7 +52,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"struct_event_table.html"
+"mns_8c.html#a57751f3ccc9df6b53064e8a8546fd665",
+"union_event_table_flags.html#ab56447ae5024f133e7a74ede13ee10a7"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,10 +1,11 @@
 var event__teach_8c =
 [
     [ "addEvent", "event__teach_8c.html#a84842311410155eccc83819eaf8ee985", null ],
-    [ "checkLen", "event__teach_8c.html#a9bf07c27105f7c54f030818acb9ad9d1", null ],
+    [ "checkRemoveTableEntry", "event__teach_8c.html#a2ccf826767b71505fb4b5ffb2b4ff5af", null ],
     [ "findEvent", "event__teach_8c.html#aef79de314cb4fdf348009d498ad5cbc6", null ],
     [ "getEN", "event__teach_8c.html#aaa1bcfeab543550146f0b9d15b4a1222", null ],
     [ "getEv", "event__teach_8c.html#a37e3faf0772321f16d80d7b2db753d92", null ],
+    [ "getEVs", "event__teach_8c.html#a275d5d58705f018ba8ea8a05477ba716", null ],
     [ "getNN", "event__teach_8c.html#a0ecc0cd4c43c7100796706b8b415d9fc", null ],
     [ "nerdCallback", "event__teach_8c.html#a7afd0605b0c9b64d0aec16c7e8ac562c", null ],
     [ "numEv", "event__teach_8c.html#aec14aa1580e747e31f46541a2bde4279", null ],

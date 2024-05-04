@@ -44,13 +44,14 @@
 
 /**
  * @file
+ * @brief
  * Implementation of the VLCB Event Consumer service.
  * @details
  * The service definition object is called eventConsumerService.
  * Process consumed events. Processes Long and Short events.
  * Also handles events with data bytes if HANDLE_DATA_EVENTS is defined within 
  * module.h although the data is ignored.
- * If COMSUMER_EVS_AS_ACTIONS is defined then EVs after the Happening are treated
+ * If CONSUMER_EVS_AS_ACTIONS is defined then EVs after the Happening are treated
  * as Actions and are added to an Action queue to be processed by the application.
  * 
  * # Dependencies on other Services
@@ -64,14 +65,14 @@
  * function.
  * 
  * # Module.h definitions required for the Event Consumer service
- * - #define CONSUMED_EVENTS    Always defined whenever the Event Consumer service is included
- * - #define HANDLE_DATA_EVENTS    Define if the ACON1/ACON2/ACON3 style events 
+ * - \#define CONSUMED_EVENTS    Always defined whenever the Event Consumer service is included
+ * - \#define HANDLE_DATA_EVENTS    Define if the ACON1/ACON2/ACON3 style events 
  *                               with data are to used in the same way as ACON 
  *                               style events.
- * - #define COMSUMER_EVS_AS_ACTIONS Define if the EVs are to be treated to be Actions
- * - #define ACTION_SIZE           The number of bytes used to hold an Action. 
+ * - \#define COMSUMER_EVS_AS_ACTIONS Define if the EVs are to be treated to be Actions
+ * - \#define ACTION_SIZE           The number of bytes used to hold an Action. 
  *                               Currently must be 1.
- * - #define ACTION_QUEUE_SIZE     The size of the Action queue.
+ * - \#define ACTION_QUEUE_SIZE     The size of the Action queue.
  * 
  */ 
 
@@ -81,19 +82,38 @@ extern const Service eventConsumerService;
 #define NUM_CONSUMER_DIAGNOSTICS    1   ///< Number of diagnostics
 #define CONSUMER_DIAG_NUMCONSUMED   0   ///< Number of events consumed
 
-typedef struct {
-    uint8_t state;
-    union {
 #if ACTION_SIZE == 1
-        uint8_t value;
+#define Action uint8_t
 #endif
 #if ACTION_SIZE == 2
-        unit16_t value;
+#define Action unit16_t
 #endif
+
+/**
+ * Structure to store a conbination of an Action and an Event state.
+ * Used to form a queue of Actions to be processed later.
+ */
+typedef struct {
+    /** The state (ON/OFF) of the event associated with the Action.*/
+    EventState state;
+    union {
+	/** The Action value. */
+        Action value;
+	/** The Action as an array of bytes.*/
         uint8_t bytes[ACTION_SIZE];
     } a;
-} Action;
+} ActionAndState;
 
-extern Action * popAction(void);
+extern ActionAndState * popAction(void);
+extern Boolean pushAction(ActionAndState a);
+extern void deleteActionRange(Action action, uint8_t number);
+
+#ifndef CONSUMER_EVS_AS_ACTIONS
+/**
+ * Callback into the Application to allow the Application to perform specialised processing of VLCB
+ * events messages. This is only used if CONSUMER_EVS_AS_ACTIONS is not defined.
+ */
+extern void APP_processConsumedEvent(uint8_t tableIndex, Message * m);
+#endif
 
 #endif

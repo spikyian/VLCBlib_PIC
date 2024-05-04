@@ -40,7 +40,7 @@
 #include <xc.h>
 #include "vlcb.h"
 #include "module.h"
-#include "romops.h"
+#include "nvm.h"
 #include "hardware.h"
 #include "ticktime.h"
 #include "timedResponse.h"
@@ -211,7 +211,7 @@
  * };
  * @endcode
  * 2. A void init(void) function which sets the transport status pointer e.g.
- *     transport = &canTransport;
+ *     transport = \&canTransport;
  *    This function must also do any additional, application specific initialisation.
  * 3. A void loop(void) function to perform any regular processing required by
  *    the application.
@@ -254,6 +254,7 @@
 
 /**
  * @file
+ * @brief
  * Baseline functionality required by VLCB and entry points into the application.
  * @details
  * Provides the functionality for main() and interrupt processing. 
@@ -263,65 +264,65 @@
 
 #if defined(_18F66K80_FAMILY_) 
 // CONFIG1L
-#pragma config RETEN = OFF      // VREG Sleep Enable bit (Ultra low-power regulator is Disabled (Controlled by REGSLP bit))
+#pragma config RETEN =     OFF      // VREG Sleep Enable bit (Ultra low-power regulator is Disabled (Controlled by REGSLP bit))
 #pragma config INTOSCSEL = HIGH // LF-INTOSC Low-power Enable bit (LF-INTOSC in High-power mode during Sleep)
-#pragma config SOSCSEL = DIG    // SOSC Power Selection and mode Configuration bits (Digital (SCLKI) mode)
-#pragma config XINST = OFF      // Extended Instruction Set (Disabled)
+#pragma config SOSCSEL =   DIG    // SOSC Power Selection and mode Configuration bits (Digital (SCLKI) mode)
+#pragma config XINST =     OFF      // Extended Instruction Set (Disabled)
 
 // CONFIG1H
-#pragma config FOSC = HS1       // Oscillator (HS oscillator (Medium power, 4 MHz - 16 MHz))
-#pragma config PLLCFG = OFF      // PLL x4 Enable bit (Disabled)
-#pragma config FCMEN = OFF      // Fail-Safe Clock Monitor (Disabled)
-#pragma config IESO = OFF       // Internal External Oscillator Switch Over Mode (Disabled)
+#pragma config FOSC =      HS1       // Oscillator (HS oscillator (Medium power, 4 MHz - 16 MHz))
+#pragma config PLLCFG =    OFF      // PLL x4 Enable bit (Disabled)
+#pragma config FCMEN =     OFF      // Fail-Safe Clock Monitor (Disabled)
+#pragma config IESO =      OFF       // Internal External Oscillator Switch Over Mode (Disabled)
 
 // CONFIG2L
-#pragma config PWRTEN = ON      // Power Up Timer (Enabled)
-#pragma config BOREN = SBORDIS      // Brown Out Detect (Disabled in hardware, SBOREN disabled)
-#pragma config BORV = 0         // Brown-out Reset Voltage bits (3.0V)
-#pragma config BORPWR = ZPBORMV // BORMV Power level (ZPBORMV instead of BORMV is selected)
+#pragma config PWRTEN =    ON      // Power Up Timer (Enabled)
+#pragma config BOREN =     SBORDIS      // Brown Out Detect (Disabled in hardware, SBOREN disabled)
+#pragma config BORV =      0         // Brown-out Reset Voltage bits (3.0V)
+#pragma config BORPWR =    ZPBORMV // BORMV Power level (ZPBORMV instead of BORMV is selected)
 
 // CONFIG2H
-#pragma config WDTEN = OFF      // Watchdog Timer (WDT disabled in hardware; SWDTEN bit disabled)
-#pragma config WDTPS = 1048576      // Watchdog Postscaler (1:1048576)
+#pragma config WDTEN =     OFF      // Watchdog Timer (WDT disabled in hardware; SWDTEN bit disabled)
+#pragma config WDTPS =     1048576      // Watchdog Postscaler (1:1048576)
 
 // CONFIG3H
-#pragma config CANMX = PORTB    // ECAN Mux bit (ECAN TX and RX pins are located on RB2 and RB3, respectively)
-#pragma config MSSPMSK = MSK7   // MSSP address masking (7 Bit address masking mode)
-#pragma config MCLRE = ON       // Master Clear Enable (MCLR Enabled, RE3 Disabled)
+#pragma config CANMX =     PORTB    // ECAN Mux bit (ECAN TX and RX pins are located on RB2 and RB3, respectively)
+#pragma config MSSPMSK =   MSK7   // MSSP address masking (7 Bit address masking mode)
+#pragma config MCLRE =     ON       // Master Clear Enable (MCLR Enabled, RE3 Disabled)
 
 // CONFIG4L
-#pragma config STVREN = ON      // Stack Overflow Reset (Enabled)
-#pragma config BBSIZ = BB1K     // Boot Block Size (1K word Boot Block size)
+#pragma config STVREN =    ON      // Stack Overflow Reset (Enabled)
+#pragma config BBSIZ =     BB1K     // Boot Block Size (1K word Boot Block size)
 
 // CONFIG5L
-#pragma config CP0 = OFF        // Code Protect 00800-01FFF (Disabled)
-#pragma config CP1 = OFF        // Code Protect 02000-03FFF (Disabled)
-#pragma config CP2 = OFF        // Code Protect 04000-05FFF (Disabled)
-#pragma config CP3 = OFF        // Code Protect 06000-07FFF (Disabled)
+#pragma config CP0 =       OFF        // Code Protect 00800-01FFF (Disabled)
+#pragma config CP1 =       OFF        // Code Protect 02000-03FFF (Disabled)
+#pragma config CP2 =       OFF        // Code Protect 04000-05FFF (Disabled)
+#pragma config CP3 =       OFF        // Code Protect 06000-07FFF (Disabled)
 
 // CONFIG5H
-#pragma config CPB = OFF        // Code Protect Boot (Disabled)
-#pragma config CPD = OFF        // Data EE Read Protect (Disabled)
+#pragma config CPB =       OFF        // Code Protect Boot (Disabled)
+#pragma config CPD =       OFF        // Data EE Read Protect (Disabled)
 
 // CONFIG6L
-#pragma config WRT0 = OFF       // Table Write Protect 00800-01FFF (Disabled)
-#pragma config WRT1 = OFF       // Table Write Protect 02000-03FFF (Disabled)
-#pragma config WRT2 = OFF       // Table Write Protect 04000-05FFF (Disabled)
-#pragma config WRT3 = OFF       // Table Write Protect 06000-07FFF (Disabled)
+#pragma config WRT0 =      OFF       // Table Write Protect 00800-01FFF (Disabled)
+#pragma config WRT1 =      OFF       // Table Write Protect 02000-03FFF (Disabled)
+#pragma config WRT2 =      OFF       // Table Write Protect 04000-05FFF (Disabled)
+#pragma config WRT3 =      OFF       // Table Write Protect 06000-07FFF (Disabled)
 
 // CONFIG6H
-#pragma config WRTC = OFF       // Config. Write Protect (Disabled)
-#pragma config WRTB = OFF       // Table Write Protect Boot (Disabled)
-#pragma config WRTD = OFF       // Data EE Write Protect (Disabled)
+#pragma config WRTC =      OFF       // Config. Write Protect (Disabled)
+#pragma config WRTB =      OFF       // Table Write Protect Boot (Disabled)
+#pragma config WRTD =      OFF       // Data EE Write Protect (Disabled)
 
 // CONFIG7L
-#pragma config EBTR0 = OFF      // Table Read Protect 00800-01FFF (Disabled)
-#pragma config EBTR1 = OFF      // Table Read Protect 02000-03FFF (Disabled)
-#pragma config EBTR2 = OFF      // Table Read Protect 04000-05FFF (Disabled)
-#pragma config EBTR3 = OFF      // Table Read Protect 06000-07FFF (Disabled)
+#pragma config EBTR0 =     OFF      // Table Read Protect 00800-01FFF (Disabled)
+#pragma config EBTR1 =     OFF      // Table Read Protect 02000-03FFF (Disabled)
+#pragma config EBTR2 =     OFF      // Table Read Protect 04000-05FFF (Disabled)
+#pragma config EBTR3 =     OFF      // Table Read Protect 06000-07FFF (Disabled)
 
 // CONFIG7H
-#pragma config EBTRB = OFF      // Table Read Protect Boot (Disabled)
+#pragma config EBTRB =     OFF      // Table Read Protect Boot (Disabled)
 
 #endif
 #if defined(_18FXXQ83_FAMILY_)
@@ -333,56 +334,56 @@
 
 //CONFIG2
 #pragma config CLKOUTEN = OFF     // Clock out Enable bit->CLKOUT function is disabled
-#pragma config PR1WAY = ON     // PRLOCKED One-Way Set Enable bit->PRLOCKED bit can be cleared and set only once
-#pragma config CSWEN = ON     // Clock Switch Enable bit->Writing to NOSC and NDIV is allowed
-#pragma config JTAGEN = OFF     // JTAG Enable bit->Disable JTAG Boundary Scan mode, JTAG pins revert to user functions
-#pragma config FCMEN = ON     // Fail-Safe Clock Monitor Enable bit->Fail-Safe Clock Monitor enabled
-#pragma config FCMENP = ON     // Fail-Safe Clock Monitor -Primary XTAL Enable bit->FSCM timer will set FSCMP bit and OSFIF interrupt on Primary XTAL failure
-#pragma config FCMENS = ON     // Fail-Safe Clock Monitor -Secondary XTAL Enable bit->FSCM timer will set FSCMS bit and OSFIF interrupt on Secondary XTAL failure
+#pragma config PR1WAY =  ON     // PRLOCKED One-Way Set Enable bit->PRLOCKED bit can be cleared and set only once
+#pragma config CSWEN =   ON     // Clock Switch Enable bit->Writing to NOSC and NDIV is allowed
+#pragma config JTAGEN =  OFF     // JTAG Enable bit->Disable JTAG Boundary Scan mode, JTAG pins revert to user functions
+#pragma config FCMEN =   ON     // Fail-Safe Clock Monitor Enable bit->Fail-Safe Clock Monitor enabled
+#pragma config FCMENP =  ON     // Fail-Safe Clock Monitor -Primary XTAL Enable bit->FSCM timer will set FSCMP bit and OSFIF interrupt on Primary XTAL failure
+#pragma config FCMENS =  ON     // Fail-Safe Clock Monitor -Secondary XTAL Enable bit->FSCM timer will set FSCMS bit and OSFIF interrupt on Secondary XTAL failure
 
 //CONFIG3
-#pragma config MCLRE = EXTMCLR     // MCLR Enable bit->If LVP = 0, MCLR pin is MCLR; If LVP = 1, RE3 pin function is MCLR 
-#pragma config PWRTS = PWRT_OFF     // Power-up timer selection bits->PWRT is disabled
-#pragma config MVECEN = ON     // Multi-vector enable bit->Interrupt contoller uses vector table to prioritze interrupts
+#pragma config MCLRE =   EXTMCLR     // MCLR Enable bit->If LVP = 0, MCLR pin is MCLR; If LVP = 1, RE3 pin function is MCLR 
+#pragma config PWRTS =   PWRT_OFF     // Power-up timer selection bits->PWRT is disabled
+#pragma config MVECEN =  ON     // Multi-vector enable bit->Interrupt contoller uses vector table to prioritze interrupts
 #pragma config IVT1WAY = ON     // IVTLOCK bit One-way set enable bit->IVTLOCKED bit can be cleared and set only once
 #pragma config LPBOREN = OFF     // Low Power BOR Enable bit->Low-Power BOR disabled
-#pragma config BOREN = SBORDIS     // Brown-out Reset Enable bits->Brown-out Reset enabled , SBOREN bit is ignored
+#pragma config BOREN =   SBORDIS     // Brown-out Reset Enable bits->Brown-out Reset enabled , SBOREN bit is ignored
 
 //CONFIG4
-#pragma config BORV = VBOR_2P7     // Brown-out Reset Voltage Selection bits->Brown-out Reset Voltage (VBOR) set to 2.7V
-#pragma config ZCD = OFF     // ZCD Disable bit->ZCD module is disabled. ZCD can be enabled by setting the ZCDSEN bit of ZCDCON
+#pragma config BORV =    VBOR_2P7     // Brown-out Reset Voltage Selection bits->Brown-out Reset Voltage (VBOR) set to 2.7V
+#pragma config ZCD =     OFF     // ZCD Disable bit->ZCD module is disabled. ZCD can be enabled by setting the ZCDSEN bit of ZCDCON
 #pragma config PPS1WAY = ON     // PPSLOCK bit One-Way Set Enable bit->PPSLOCKED bit can be cleared and set only once; PPS registers remain locked after one clear/set cycle
-#pragma config STVREN = ON     // Stack Full/Underflow Reset Enable bit->Stack full/underflow will cause Reset
-#pragma config LVP = ON     // Low Voltage Programming Enable bit->Low voltage programming enabled. MCLR/VPP pin function is MCLR. MCLRE configuration bit is ignored
-#pragma config XINST = OFF     // Extended Instruction Set Enable bit->Extended Instruction Set and Indexed Addressing Mode disabled
+#pragma config STVREN =  ON     // Stack Full/Underflow Reset Enable bit->Stack full/underflow will cause Reset
+#pragma config LVP =     ON     // Low Voltage Programming Enable bit->Low voltage programming enabled. MCLR/VPP pin function is MCLR. MCLRE configuration bit is ignored
+#pragma config XINST =   OFF     // Extended Instruction Set Enable bit->Extended Instruction Set and Indexed Addressing Mode disabled
 
 //CONFIG5
-#pragma config WDTCPS = WDTCPS_31     // WDT Period selection bits->Divider ratio 1:65536; software control of WDTPS
-#pragma config WDTE = OFF     // WDT operating mode->WDT Disabled; SWDTEN is ignored
+#pragma config WDTCPS =  WDTCPS_31     // WDT Period selection bits->Divider ratio 1:65536; software control of WDTPS
+#pragma config WDTE =    OFF     // WDT operating mode->WDT Disabled; SWDTEN is ignored
 
 //CONFIG6
-#pragma config WDTCWS = WDTCWS_7     // WDT Window Select bits->window always open (100%); software control; keyed access not required
-#pragma config WDTCCS = SC     // WDT input clock selector->Software Control
+#pragma config WDTCWS =  WDTCWS_7     // WDT Window Select bits->window always open (100%); software control; keyed access not required
+#pragma config WDTCCS =  SC     // WDT input clock selector->Software Control
 
 //CONFIG7
-#pragma config BBSIZE = BBSIZE_512     // Boot Block Size selection bits->Boot Block size is 512 words
-#pragma config BBEN = ON     // Boot Block enable bit->Boot block enabled
-#pragma config SAFEN = OFF     // Storage Area Flash enable bit->SAF disabled
+#pragma config BBSIZE =  BBSIZE_512     // Boot Block Size selection bits->Boot Block size is 512 words
+#pragma config BBEN =    ON     // Boot Block enable bit->Boot block enabled
+#pragma config SAFEN =   OFF     // Storage Area Flash enable bit->SAF disabled
 
 //CONFIG8
-#pragma config WRTB = ON     // Boot Block Write Protection bit->Boot Block Write protected
-#pragma config WRTC = ON     // Configuration Register Write Protection bit->Configuration registers Write protected
-#pragma config WRTD = OFF     // Data EEPROM Write Protection bit->Data EEPROM not Write protected
-#pragma config WRTSAF = OFF     // SAF Write protection bit->SAF not Write Protected
-#pragma config WRTAPP = OFF     // Application Block write protection bit->Application Block not write protected
+#pragma config WRTB =    ON     // Boot Block Write Protection bit->Boot Block Write protected
+#pragma config WRTC =    ON     // Configuration Register Write Protection bit->Configuration registers Write protected
+#pragma config WRTD =    OFF     // Data EEPROM Write Protection bit->Data EEPROM not Write protected
+#pragma config WRTSAF =  OFF     // SAF Write protection bit->SAF not Write Protected
+#pragma config WRTAPP =  OFF     // Application Block write protection bit->Application Block not write protected
 
 //CONFIG9
 #pragma config BOOTPINSEL = RC5     // CRC on boot output pin selection->CRC on boot output pin is RC5
-#pragma config BPEN = OFF     // CRC on boot output pin enable bit->CRC on boot output pin disabled
-#pragma config ODCON = OFF     // CRC on boot output pin open drain bit->Pin drives both high-going and low-going signals
+#pragma config BPEN =    OFF     // CRC on boot output pin enable bit->CRC on boot output pin disabled
+#pragma config ODCON =   OFF     // CRC on boot output pin open drain bit->Pin drives both high-going and low-going signals
 
 //CONFIG10
-#pragma config CP = OFF     // PFM and Data EEPROM Code Protection bit->PFM and Data EEPROM code protection disabled
+#pragma config CP =      OFF     // PFM and Data EEPROM Code Protection bit->PFM and Data EEPROM code protection disabled
 
 //CONFIG11
 #pragma config BOOTSCEN = OFF     // CRC on boot scan enable for boot area->CRC on boot will not include the boot area of program memory in its calculation
@@ -725,62 +726,6 @@ const Priority priorities[256] = {
            pNORMAL,    // 0xFF
 };
 
-/*
- * These are some hacks to ensure that the ISRs are located at addresses to
- * give space for the parameter block.
- */
-#ifdef __18CXX
-void ISRLow(void);
-void ISRHigh(void);
-
-void high_irq_errata_fix(void);
-
-/*
- * Interrupt vectors (moved higher when bootloader present)
- */
-
-// High priority interrupt vector
-
-#ifdef BOOTLOADER_PRESENT
-    #pragma code high_vector=0x808
-#else
-    #pragma code high_vector=0x08
-#endif
-
-
-//void interrupt_at_high_vector(void)
-
-void HIGH_INT_VECT(void)
-{
-    _asm
-        CALL high_irq_errata_fix, 1
-    _endasm
-}
-
-/*
- * See 18F2480 errata
- */
-void high_irq_errata_fix(void) {
-    _asm
-        POP
-        GOTO ISRHigh
-    _endasm
-}
-
-// low priority interrupt vector
-
-#ifdef BOOTLOADER_PRESENT
-    #pragma code low_vector=0x818
-#else
-    #pragma code low_vector=0x18
-#endif
-
-void LOW_INT_VECT(void)
-{
-    _asm GOTO ISRLow _endasm
-}
-#endif
-
 #ifdef BOOTLOADER_PRESENT
 // ensure that the bootflag is zeroed
 #pragma romdata BOOTFLAG
@@ -798,6 +743,14 @@ static Message tmpMessage;
  * Used to control the rate at which timedResponse messages are sent.
  */
 static TickValue timedResponseTime;
+static uint8_t timedResponseDelay;
+
+
+/**
+ * Used to control how often it is checked whether any of the flash buffer
+ * needs to be flushed out to permanent storage.
+ */
+static TickValue flashFlushTime;
 
 /** 
  * Function that must be provided by the application. 
@@ -879,7 +832,7 @@ uint8_t findServiceIndex(uint8_t serviceType) {
 /**
  * Tests whether the module used the specified service.
  * @param id the service type id
- * @return 1 if the service is present 0 otherwise
+ * @return PRESENT if the service is present NOT_PRESENT otherwise
  */
 ServicePresent have(uint8_t id) {
     uint8_t i;
@@ -897,7 +850,8 @@ ServicePresent have(uint8_t id) {
 /**
  * Perform the factory reset for all services and VLCB base.
  * VLCB function to perform necessary factory reset functionality and also
- * call the factoryReset function for each service.
+ * call the factoryReset function for each service followed by the Application
+ * factory reset APP_factoryReset().
  */
 void factoryReset(void) {
     uint8_t i;
@@ -926,12 +880,25 @@ static void powerUp(void) {
     initTicker(0);
     initTimedResponse();
     leds_powerUp();
+    timedResponseDelay = 5;
     
     for (i=0; i<NUM_SERVICES; i++) {
         if ((services[i] != NULL) && (services[i]->powerUp != NULL)) {
             services[i]->powerUp();
         }
     }
+}
+
+/*
+ * Update the delay between each timedResponse transmission. By default a value 
+ * of 5 is used for a delay of 5ms.
+ * Typically the application would allocate an NV to hold the delay value. The 
+ * Application can use its callback when the NV value is changed to call this 
+ * function.
+ * @param delay the delay in millisec
+ */
+void setTimedResponseDelay(uint8_t delay) {
+    timedResponseDelay = delay;
 }
 
 
@@ -1015,21 +982,26 @@ static void checkPowerOnPb(void) {
  * Poll each service.
  * VLCB function to perform necessary poll functionality and regularly 
  * poll each service.
+ * 
  * Polling occurs as frequently as possible. It is the responsibility of the
  * service's poll function to ensure that any actions are performed at the 
  * correct rate, for example by using tickTimeSince(lastTime).
- * This also attempts to obtain a message from transport and use the services
+ * This also attempts to obtain a message from transport and call the services
  * to process the message. Will also call back into APP to process message.
  */
 static void poll(void) {
     uint8_t i;
     Message m;
-    uint8_t handled;
+    Processed handled;
     
     /* handle any timed responses */
-    if (tickTimeSince(timedResponseTime) > 5*FIVE_MILI_SECOND) {
+    if (tickTimeSince(timedResponseTime) > (long)timedResponseDelay*ONE_MILI_SECOND) {
         pollTimedResponse();
         timedResponseTime.val = tickGet();
+    }
+    if (tickTimeSince(flashFlushTime) > ONE_SECOND) {
+        flushFlashBlock();
+        flashFlushTime.val = tickGet();
     }
     /* call any service polls */
     for (i=0; i<NUM_SERVICES; i++) {
@@ -1041,23 +1013,23 @@ static void poll(void) {
     leds_poll();
     
     // Handle any incoming messages from the transport
-    handled = 0;
+    handled = NOT_PROCESSED;
     if (transport != NULL) {
         if (transport->receiveMessage != NULL) {
             if (transport->receiveMessage(&m)) {
                 if (m.len > 0) {
                     showStatus(STATUS_MESSAGE_RECEIVED);
                     handled = APP_preProcessMessage(&m); // Call App to check for any opcodes to be handled. 
-                    if (handled == 0) {
+                    if (handled == NOT_PROCESSED) {
                         for (i=0; i<NUM_SERVICES; i++) {
                             if ((services[i] != NULL) && (services[i]->processMessage != NULL)) {
-                                if (services[i]->processMessage(&m)) {
-                                    handled = 1;
+                                if (services[i]->processMessage(&m) == PROCESSED) {
+                                    handled = PROCESSED;
                                     break;
                                 }
                             }
                         }
-                        if (handled == 0) {     // Call App to check for any opcodes to be handled. 
+                        if (handled == NOT_PROCESSED) {     // Call App to check for any opcodes to be handled. 
                             handled = APP_postProcessMessage(&m);
                         }
                     }
@@ -1088,6 +1060,7 @@ static void highIsr(void) {
             services[i]->highIsr();
         }
     }
+    APP_highIsr();
 }
 
 /**
@@ -1107,10 +1080,11 @@ static void lowIsr(void) {
             services[i]->lowIsr();
         }
     }
+    APP_lowIsr();
 }
 #endif
 
-/**
+/*
  * Checks that the required number of message bytes are present.
  * @param m the message to be checked
  * @param needed the number of bytes within the message needed including the opc
@@ -1132,6 +1106,14 @@ Processed checkLen(Message * m, uint8_t needed, uint8_t service) {
 /////////////////////////////////////////////
 // Message handling functions
 /////////////////////////////////////////////
+
+/*
+ * Test whether the given opc relates to an event.
+ * @param opc the opcode
+ */
+Boolean isEvent(uint8_t opc) {
+    return (((opc & EVENT_SET_MASK) == EVENT_SET_MASK) && ((~opc & EVENT_CLR_MASK)== EVENT_CLR_MASK)) ? TRUE : FALSE;
+}
 
 /*
  * Send a message with just OPC.
@@ -1257,8 +1239,8 @@ void sendMessage(VlcbOpCodes opc, uint8_t len, uint8_t data1, uint8_t data2, uin
 /**
  * This is the VLCB application start.
  * Do some initialisation, call the factoryReset() if necessary, call the powerUp()
- * service routines. Then call the user's setup() before entering the main loop
- * which calls the user's loop() and service poll().
+ * service routines. Then call the Application's setup() before entering the main loop
+ * which calls the Application's loop() and each service poll().
  */
 void main(void) {
     uint8_t i;

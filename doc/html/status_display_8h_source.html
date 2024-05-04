@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCBlib_PIC: C:/Users/ianwh/github/VLCBlib_PIC/statusDisplay.h Source File</title>
+<title>VLCB library: statusDisplay.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,11 +26,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="VLCB.png"/></td>
   <td id="projectalign">
-   <div id="projectname">VLCBlib_PIC
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for module developemnt using PIC processors</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -101,7 +100,7 @@ $(function(){initNavTree('status_display_8h_source.html',''); initResizable(); }
   <div class="headertitle"><div class="title">statusDisplay.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef _STATUS_DISPLAY_H_</span></div>
+<a href="status_display_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef _STATUS_DISPLAY_H_</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">/*</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">  This work is licensed under the:</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">      Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</span></div>
@@ -133,31 +132,34 @@ $(function(){initNavTree('status_display_8h_source.html',''); initResizable(); }
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">    This software is distributed in the hope that it will be useful, but WITHOUT ANY</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#define _STATUS_DISPLAY_H_</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">typedef</span> <span class="keyword">enum</span> StatusDisplay {</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    STATUS_OFF,</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    STATUS_UNINITIALISED,</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    STATUS_SETUP,</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    STATUS_NORMAL,</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    STATUS_RESET_WARNING,</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    STATUS_LEARN,</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    STATUS_BOOT,</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    STATUS_MESSAGE_RECEIVED,</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    STATUS_MESSAGE_ACTED,</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    STATUS_TRANSMIT_ERROR,</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    STATUS_RECEIVE_ERROR,</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    STATUS_MEMORY_FAULT,</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    STATUS_FATAL_ERROR    </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>} StatusDisplay;</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#define _STATUS_DISPLAY_H_</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="foldopen" id="foldopen00055" data-start="{" data-end="};">
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902e">   55</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code hl_enumeration" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902e">StatusDisplay</a> {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    STATUS_OFF,</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    STATUS_UNINITIALISED,</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    STATUS_SETUP,</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    STATUS_NORMAL,</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    STATUS_RESET_WARNING,</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    STATUS_LEARN,</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    STATUS_BOOT,</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    STATUS_MESSAGE_RECEIVED,</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    STATUS_MESSAGE_ACTED,</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    STATUS_TRANSMIT_ERROR,</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    STATUS_RECEIVE_ERROR,</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    STATUS_MEMORY_FAULT,</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    STATUS_FATAL_ERROR    </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="status_display_8h.html#ab833f11af6571fc9ddecd04d37460d4c">   69</a></span>} <a class="code hl_enumeration" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902e">StatusDisplay</a>;</div>
+</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="astatus_display_8h_html_a02c5b571a84044d3d1e6ab3dd848902e"><div class="ttname"><a href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902e">StatusDisplay</a></div><div class="ttdeci">StatusDisplay</div><div class="ttdef"><b>Definition</b> statusDisplay.h:55</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d522931ffa1371640980b621734a4381.html">Users</a></li><li class="navelem"><a class="el" href="dir_10e25e262c850a79f6760812285f1413.html">ianwh</a></li><li class="navelem"><a class="el" href="dir_b0b4633879bd5c761e47fc280b556d88.html">github</a></li><li class="navelem"><a class="el" href="dir_a1617414bc24890c12be9c4da14587d4.html">VLCBlib_PIC</a></li><li class="navelem"><b>statusDisplay.h</b></li>
+    <li class="navelem"><a class="el" href="status_display_8h.html">statusDisplay.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
