@@ -149,11 +149,11 @@ typedef union
 {
     struct
     {
-        uint8_t    eVsUsed:4;  ///< How many of the EVs in this row are used. Only valid if continued is clear
-        uint8_t    continued:1;    ///< there is another entry 
-        uint8_t    continuation:1; ///< Continuation of previous event entry
-        uint8_t    forceOwnNN:1;   ///< Ignore the specified NN and use module's own NN
-        uint8_t    freeEntry:1;    ///< this row in the table is not used - takes priority over other flags
+        uint8_t    eVsUsed:4;  ///< How many of the EVs in this row are used. Only valid if continued is clear.
+        uint8_t    continued:1;    ///< there is another entry.
+        uint8_t    continuation:1; ///< Continuation of previous event entry.
+        uint8_t    forceOwnNN:1;   ///< Ignore the specified NN and use module's own NN.
+        uint8_t    freeEntry:1;    ///< this row in the table is not used - takes priority over other flags.
     };
     uint8_t    asByte;       ///< Set to 0xFF for free entry, initially set to zero for entry in use, then producer flag set if required.
 } EventTableFlags;
@@ -165,9 +165,9 @@ typedef union
  */
 typedef struct {
     EventTableFlags flags;          ///< put first so could potentially use the Event bytes for EVs in subsequent rows.
-    uint8_t next;                   ///< index to continuation also indicates if entry is free
-    Event event;                    ///< the NN and EN
-    uint8_t evs[EVENT_TABLE_WIDTH]; ///< EVENT_TABLE_WIDTH is maximum of 15 as we have 4 bits of maxEvUsed
+    uint8_t next;                   ///< index to continuation also indicates if entry is free.
+    Event event;                    ///< the NN and EN.
+    uint8_t evs[EVENT_TABLE_WIDTH]; ///< EVENT_TABLE_WIDTH is maximum of 15 as we have 4 bits of maxEvUsed.
 } EventTable;
 
 /** Byte index into an EventTable row to access the flags element.*/
