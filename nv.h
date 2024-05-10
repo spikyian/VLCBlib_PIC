@@ -107,8 +107,26 @@ extern NvValidation APP_nvValidate(uint8_t index, uint8_t value);
 #define NV_DIAGNOSTICS_NUM_ACCESS  0x00    ///< return Global status Byte.
 #define NV_DIAGNOSTICS_NUM_FAIL    0x01    ///< return uptime upper word.
 
+/**
+ * Obtain the current value of a NV.
+ * @param index offset into the NV list
+ * @return the value of the requested NV or error
+ */
 extern int16_t getNV(uint8_t index);
+/**
+ * Write the value of an NV to non volatile storage. Does no validation nor 
+ * call back into the application.
+ * @param index offset into the NV list
+ * @param value the value to be saved.
+ */
 extern void saveNV(uint8_t index, uint8_t value);
+/**
+ * Write the value of an NV to non volatile storage. Allows the application to
+ * validate and for application's callback to be triggered. 
+ * 
+ * @param index offset into the NV list
+ * @param value the value to be saved.
+ */
 extern uint8_t setNV(uint8_t index, uint8_t value);
 /**
  * Load the NV cache using values stored in non volatile memory.

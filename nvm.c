@@ -314,7 +314,8 @@ void eraseFlashBlock(void) {
     uint8_t interruptEnabled;
     // Call back into the application to check if now is a good time to write the flash
     // as the processor will be suspended for up to 2ms.
-    while (! APP_isSuitableTimeToWriteFlash());
+    while (! APP_isSuitableTimeToWriteFlash())
+        ;
     
     interruptEnabled = geti(); // store current global interrupt state
 #if defined (_18F66K80_FAMILY_)
@@ -370,6 +371,11 @@ void flushFlashBlock(void) {
     
 #endif
     if (! flashFlags.writeNeeded) return;
+    
+    // Wait until App tells us it is a good time
+    while (APP_isSuitableTimeToWriteFlash() == BAD_TIME)  // block awaiting a good time
+        ;
+        
     if (flashFlags.eraseNeeded) {
         eraseFlashBlock();
     }
@@ -468,8 +474,6 @@ void loadFlashBlock(void) {
 uint8_t FLASH_Write(flash_address_t index, flash_data_t value) {
     uint8_t oldValue;
     
-    while (APP_isSuitableTimeToWriteFlash() == BAD_TIME)  // block awaiting a good time
-        ;
     /*
      * Writing flash is a bit of a pain as you must write in blocks. If you want to
      * write just 1 byte then you need ensure you don't change any other byte in the
