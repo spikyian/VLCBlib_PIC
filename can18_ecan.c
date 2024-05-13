@@ -152,9 +152,13 @@ static MessageQueue txQueue;
 /**
  * Variables for self enumeration of CANID 
  */
+enum EnumerationState {
+    NO_ENUMERATION,
+    ENUMERATION_REQUIRED,
+    ENUMERATION_IN_PROGRESS
+} EnumerationState;
 static TickValue  enumerationStartTime;
-static uint8_t    enumerationRequired;     // whether to send enumeration result message
-static uint8_t    enumerationInProgress;
+static enum EnumerationState enumerationState; 
 static uint8_t    enumerationResults[ENUM_ARRAY_SIZE];
 #define arraySetBit( array, index ) ( array[index>>3] |= ( 1<<(index & 0x07) ) )
 
@@ -345,7 +349,7 @@ static void canPowerUp(void) {
 
     // Initialise enumeration control variables
 
-    enumerationRequired = enumerationInProgress = 0;
+    enumerationState = NO_ENUMERATION;
     enumerationStartTime.val = tickGet();
 
     // Initialisation complete, enable CAN interrupts
@@ -448,6 +452,10 @@ static SendResult canSendMessage(Message * mp) {
         // next check that the transmitter isn't busy
         if (TXB0CONbits.TXREQ == 0) {
             // ECAN transmit buffer is free so nothing waiting and can send immediately
+            if ((canId == 0) && (enumerationState == NO_ENUMERATION)) {
+                enumerationState = ENUMERATION_REQUIRED;
+                canId = 1;
+            }
             TXBnIE = 1;      // re-enable TX buffer interrupt
             // write to ECAN
             if (mp->len >8) mp->len = 8;
@@ -540,6 +548,7 @@ static MessageReceived canReceiveMessage(Message * m){
             RXBnIF = 0;
             if (handleSelfEnumeration(p) == RECEIVED) {
                 // It is a message that will need to be processed so return it
+                canDiagnostics[CAN_DIAG_RX_MESSAGES].asUint++;
                 //mp = getNextWriteMessage(&rxQueue);
                 //if (mp != NULL) {
                     // copy the ECAN buffer to the Message
@@ -720,20 +729,6 @@ static void canTxError(void) {
 static MessageReceived handleSelfEnumeration(uint8_t * p) {
     uint8_t incomingCanId;
 
-    canDiagnostics[CAN_DIAG_RX_MESSAGES].asUint++;
-    // Check incoming Canid and initiate self enumeration if it is the same as our own
-    if (enumerationInProgress) {
-        arraySetBit( enumerationResults, incomingCanId);
-    } else {
-        incomingCanId = (p[SIDH] << 3) + (p[SIDL] >> 5) & 0x7f;
-        if (!enumerationRequired && (incomingCanId == canId)) {
-            // If we receive a packet with our own canid, initiate enumeration as automatic conflict resolution (Thanks to Bob V for this idea)
-            // we know enumerationInProgress = FALSE here
-            enumerationRequired = 1;
-            canDiagnostics[CAN_DIAG_CANID_CONFLICTS].asUint++;
-            enumerationStartTime.val = tickGet();  // Start hold off time for self enumeration - start after 200ms delay
-        }
-    }
 
     // Check for RTR - self enumeration request from another module
     if (p[DLC] & 0x40 ) {
@@ -742,6 +737,20 @@ static MessageReceived handleSelfEnumeration(uint8_t * p) {
         enumerationStartTime.val = tickGet();   // re-Start hold off time for self enumeration
         return NOT_RECEIVED;                               // wasn't a proper message
     }
+    incomingCanId = (p[SIDH] << 3) + (p[SIDL] >> 5) & 0x7f;
+    // Check incoming Canid and initiate self enumeration if it is the same as our own
+    if ((enumerationState == ENUMERATION_IN_PROGRESS) || ((p[DLC]&0x0F) == 0)) {
+        arraySetBit( enumerationResults, incomingCanId);
+    } else {
+        if ((enumerationState == NO_ENUMERATION) && (incomingCanId == canId)) {
+            // If we receive a packet with our own canid, initiate enumeration as automatic conflict resolution (Thanks to Bob V for this idea)
+            // we know enumeration is not in progress here
+            enumerationState = ENUMERATION_REQUIRED;
+            canDiagnostics[CAN_DIAG_CANID_CONFLICTS].asUint++;
+            enumerationStartTime.val = tickGet();  // Start hold off time for self enumeration - start after 200ms delay
+        }
+    }
+
     return (p[DLC] & 0x0F) ? RECEIVED:NOT_RECEIVED;       // Check not zero payload
 }
 
@@ -761,29 +770,27 @@ static void canFillRxFifo(void) {
             RXBnOVFL = 0;
         }
 
-        if (handleSelfEnumeration(ptr) == RECEIVED) {
-            // copy message into the rx Queue
-            m = getNextWriteMessage(&rxQueue);
-            if (m == NULL) {
-                canDiagnostics[CAN_DIAG_RX_BUFFER_OVERRUN].asUint++;
-                updateModuleErrorStatus();
-                // Record and Clear any previous invalid message bit flag.
-                if (IRXIF) {
-                    IRXIF = 0;
-                }
-                return;
-            } else {
-                // copy ECAN buffer to message
-                m->opc = ptr[D0];
-                m->bytes[0] = ptr[D1];
-                m->bytes[1] = ptr[D2];
-                m->bytes[2] = ptr[D3];
-                m->bytes[3] = ptr[D4];
-                m->bytes[4] = ptr[D5];
-                m->bytes[5] = ptr[D6];
-                m->bytes[6] = ptr[D7];
-                m->len = ptr[DLC]&0xF;
+        // copy message into the rx Queue
+        m = getNextWriteMessage(&rxQueue);
+        if (m == NULL) {
+            canDiagnostics[CAN_DIAG_RX_BUFFER_OVERRUN].asUint++;
+            updateModuleErrorStatus();
+            // Record and Clear any previous invalid message bit flag.
+            if (IRXIF) {
+                IRXIF = 0;
             }
+            return;
+        } else {
+            // copy ECAN buffer to message
+            m->opc = ptr[D0];
+            m->bytes[0] = ptr[D1];
+            m->bytes[1] = ptr[D2];
+            m->bytes[2] = ptr[D3];
+            m->bytes[3] = ptr[D4];
+            m->bytes[4] = ptr[D5];
+            m->bytes[5] = ptr[D6];
+            m->bytes[6] = ptr[D7];
+            m->len = ptr[DLC]&0xF;
         }
         // Record and Clear any previous invalid message bit flag.
         if (IRXIF) {
@@ -802,45 +809,52 @@ static void canFillRxFifo(void) {
 static void processEnumeration(void) {
     uint8_t i, newCanId, enumResult;
 
-    if (enumerationRequired && (tickTimeSince(enumerationStartTime) > ENUMERATION_HOLDOFF )) {
-        for (i=1; i< ENUM_ARRAY_SIZE; i++) {
-            enumerationResults[i] = 0;
-        }
-        enumerationResults[0] = 1;  // Don't allocate canid 0
-
-        enumerationInProgress = 1;
-        enumerationRequired = 0;
-        enumerationStartTime.val = tickGet();
-        canDiagnostics[CAN_DIAG_CANID_ENUMS].asUint++;
-        TXB1CONbits.TXREQ = 1;              // Send RTR frame to initiate self enumeration
-    } else {
-        if (enumerationInProgress && (tickTimeSince(enumerationStartTime) > ENUMERATION_TIMEOUT )) {
-            // Enumeration complete, find first free canid
-        
-            // Find byte in array with first free flag. Skip over 0xFF bytes
-            for (i=0; (enumerationResults[i] == 0xFF) && (i < ENUM_ARRAY_SIZE); i++) {
-                ;
-            } 
-            if ((enumResult = enumerationResults[i]) != 0xFF) {
-                for (newCanId = i*8; (enumResult & 0x01); newCanId++) {
-                    enumResult >>= 1;
+    switch (enumerationState) {
+        case ENUMERATION_REQUIRED:
+            if ((tickTimeSince(enumerationStartTime) > ENUMERATION_HOLDOFF )) {
+                // Start the enumeration request
+                for (i=1; i< ENUM_ARRAY_SIZE; i++) {
+                    enumerationResults[i] = 0;
                 }
-                if ((newCanId >= 1) && (newCanId <= 99)) {
-                    canId = newCanId;
-                    setNewCanId(canId);
+                enumerationResults[0] = 1;  // Don't allocate canid 0
+
+                enumerationState = ENUMERATION_IN_PROGRESS;
+                enumerationStartTime.val = tickGet();
+                canDiagnostics[CAN_DIAG_CANID_ENUMS].asUint++;
+                TXB1CONbits.TXREQ = 1;              // Send RTR frame to initiate self enumeration
+            }
+            break;
+        case ENUMERATION_IN_PROGRESS:
+            if (tickTimeSince(enumerationStartTime) > ENUMERATION_TIMEOUT ) {
+                // Enumeration complete, find first free canid
+
+                // Find byte in array with first free flag. Skip over 0xFF bytes
+                for (i=0; (enumerationResults[i] == 0xFF) && (i < ENUM_ARRAY_SIZE); i++) {
+                    ;
+                } 
+                if ((enumResult = enumerationResults[i]) != 0xFF) {
+                    for (newCanId = i*8; (enumResult & 0x01); newCanId++) {
+                        enumResult >>= 1;
+                    }
+                    if ((newCanId >= 1) && (newCanId <= 99)) {
+                        canId = newCanId;
+                        setNewCanId(canId);
+                    } else {
+                        canDiagnostics[CAN_DIAG_CANID_ENUMS_FAIL].asUint++;
+                        updateModuleErrorStatus();
+                    }
                 } else {
                     canDiagnostics[CAN_DIAG_CANID_ENUMS_FAIL].asUint++;
                     updateModuleErrorStatus();
+                    /* if (resultRequired) {
+                        doError(CMDERR_INVALID_EVENT);  // seems a strange error code but that's what the spec says...
+                    } */
                 }
-            } else {
-                canDiagnostics[CAN_DIAG_CANID_ENUMS_FAIL].asUint++;
-                updateModuleErrorStatus();
-                /* if (resultRequired) {
-                    doError(CMDERR_INVALID_EVENT);  // seems a strange error code but that's what the spec says...
-                } */
+                enumerationState = NO_ENUMERATION;
             }
-        }
-        enumerationRequired = enumerationInProgress = 0;
+            break;
+        default:
+            break;
     }
 }  // Process enumeration
     

@@ -568,6 +568,12 @@ static SendResult canSendMessage(Message * mp) {
         canDiagnostics[CAN_DIAG_LOST_ARBITRATION].asUint++;
     }
     
+    // start an enumeration on first transmit if we are still using canId=0
+    if ((canId == 0) && (enumerationState == NO_ENUMERATION)) {
+        enumerationState = ENUMERATION_REQUIRED;
+        canId = 1;
+    }
+    
     // Pointer to FIFO entry
     txFifoObj = (uint8_t*) C1FIFOUA2;
     txFifoObj[0] = (canId & 0x7F);      // Put ID

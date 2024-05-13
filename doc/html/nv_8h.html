@@ -284,6 +284,13 @@ Module.h definitions required for the NV service</h1>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Obtain the current value of a NV. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>offset into the NV list </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the value of the requested NV or error</dd></dl>
 <p>Get the value of an NV. Either obtained from the cache or from NVM. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">index</td><td>the NV index </td></tr>
@@ -346,6 +353,13 @@ Module.h definitions required for the NV service</h1>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Write the value of an NV to non volatile storage. Does no validation nor call back into the application. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>offset into the NV list </td></tr>
+    <tr><td class="paramname">value</td><td>the value to be saved.</td></tr>
+  </table>
+  </dd>
+</dl>
 <p>Save (write) the value of an NV. Does no validation and does not call back into the application.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -383,6 +397,14 @@ Module.h definitions required for the NV service</h1>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Write the value of an NV to non volatile storage. Allows the application to validate and for application's callback to be triggered.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>offset into the NV list </td></tr>
+    <tr><td class="paramname">value</td><td>the value to be saved.</td></tr>
+  </table>
+  </dd>
+</dl>
 <p>Set (write) the value of an NV. The module's application is called (APP_nvValidate) to check that the value being written is valid. After updating the NV the application's function APP_nvValueChanged is called so that the application can perform any related checks, changes or functionality.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">

@@ -1,5 +1,9 @@
 var NAVTREEINDEX2 =
 {
+"union_event_table_flags.html#a19195b581ad3b4f299017993060a81d5":[1,0,6,2],
+"union_event_table_flags.html#a5c1a9eba4efccc3436740c04ec450842":[1,0,6,5],
+"union_event_table_flags.html#a99aaa4e95dda96e61e97e1499c3e4464":[1,0,6,3],
+"union_event_table_flags.html#aada9536de6acc6e1c85bf6c0e1fdf423":[1,0,6,0],
 "union_event_table_flags.html#ab56447ae5024f133e7a74ede13ee10a7":[1,0,6,4],
 "union_event_table_flags.html#ac822e6d5f7ae5e33ce0ee0deb060e040":[1,0,6,1],
 "union_word.html":[1,0,11],

@@ -862,7 +862,7 @@ void factoryReset(void) {
         }
     }
     // now write the version number
-    writeNVM(MODE_NVM_TYPE, NV_ADDRESS, APP_NVM_VERSION);
+    writeNVM(NV_NVM_TYPE, NV_ADDRESS, APP_NVM_VERSION);
     
     APP_factoryReset();
 }

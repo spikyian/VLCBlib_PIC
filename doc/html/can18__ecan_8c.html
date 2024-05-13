@@ -94,6 +94,7 @@ $(function(){initNavTree('can18__ecan_8c.html',''); initResizable(); });
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">can18_ecan.c File Reference</div></div>
 </div><!--header-->
@@ -162,12 +163,23 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>pSUPER</b>&#160;&#160;&#160;4</td></tr>
 <tr class="separator:aee274f3f16cbab65ebe0f352bbcf7f40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:af4ae2bd78e1c6abc1a4481d369b5b55d" id="r_af4ae2bd78e1c6abc1a4481d369b5b55d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4ae2bd78e1c6abc1a4481d369b5b55d">EnumerationState</a> { <b>NO_ENUMERATION</b>
+, <b>ENUMERATION_REQUIRED</b>
+, <b>ENUMERATION_IN_PROGRESS</b>
+ }</td></tr>
+<tr class="separator:af4ae2bd78e1c6abc1a4481d369b5b55d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a2710ddf8079472011d4b89bcdacd52a4" id="r_a2710ddf8079472011d4b89bcdacd52a4"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_service.html">Service</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2710ddf8079472011d4b89bcdacd52a4">canService</a></td></tr>
 <tr class="separator:a2710ddf8079472011d4b89bcdacd52a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8961a8474768833462296349aeccb769" id="r_a8961a8474768833462296349aeccb769"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_transport.html">Transport</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8961a8474768833462296349aeccb769">canTransport</a></td></tr>
 <tr class="separator:a8961a8474768833462296349aeccb769"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55a7b917ef93736d85864eba7ff8a62f" id="r_a55a7b917ef93736d85864eba7ff8a62f"><td class="memItemLeft" align="right" valign="top"><a id="a55a7b917ef93736d85864eba7ff8a62f" name="a55a7b917ef93736d85864eba7ff8a62f"></a>
+enum <a class="el" href="can18__can__2_8c.html#af4ae2bd78e1c6abc1a4481d369b5b55d">EnumerationState</a>&#160;</td><td class="memItemRight" valign="bottom"><b>EnumerationState</b></td></tr>
+<tr class="separator:a55a7b917ef93736d85864eba7ff8a62f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of the VLCB CAN <a class="el" href="struct_service.html">Service</a> for the PIC ECAN peripheral. </p>
@@ -175,7 +187,23 @@ Variables</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Ian Hogg </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>Dec 2022</dd></dl>
 <p>Uses Controller Area Network to carry VLCB messages. This implementation works with the PIC18 ECAN. The service definition object is called canService. The transport interface is called canTransport. Performs self enumeration and CANID collision detection and re-enumeration. Performs loopback of events for Consumes Own <a class="el" href="struct_event.html">Event</a> behaviour. Collects diagnostic data to aid communications fault finding. </p>
-</div><h2 class="groupheader">Variable Documentation</h2>
+</div><h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="af4ae2bd78e1c6abc1a4481d369b5b55d" name="af4ae2bd78e1c6abc1a4481d369b5b55d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4ae2bd78e1c6abc1a4481d369b5b55d">&#9670;&#160;</a></span>EnumerationState</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="can18__can__2_8c.html#af4ae2bd78e1c6abc1a4481d369b5b55d">EnumerationState</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Variables for self enumeration of CANID </p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
 <a id="a2710ddf8079472011d4b89bcdacd52a4" name="a2710ddf8079472011d4b89bcdacd52a4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2710ddf8079472011d4b89bcdacd52a4">&#9670;&#160;</a></span>canService</h2>
 
