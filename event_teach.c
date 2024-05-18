@@ -313,7 +313,7 @@ static Processed teachProcessMessage(Message* m) {
             if ((m->bytes[0] == nn.bytes.hi) && (m->bytes[1] == nn.bytes.lo)) {
                 mode_flags |= FLAG_MODE_LEARN;
             } else {
-                mode_state &= ~FLAG_MODE_LEARN;
+                mode_flags &= ~FLAG_MODE_LEARN;
             }
             return PROCESSED;
         case OPC_MODE:      // 76 MODE - NN, mode

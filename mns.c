@@ -759,59 +759,52 @@ void setLEDsByMode(void) {
 static uint8_t getParameter(uint8_t idx) {
     uint8_t i;
     switch(idx) {
-    case PAR_NUM:       // Number of parameters
+    case PAR_NUM:       // 0 Number of parameters
         return 20;
-    case PAR_MANU:      // Manufacturer id
+    case PAR_MANU:      // 1 Manufacturer id
         return PARAM_MANU;
-    case PAR_MINVER:	// Minor version letter
+    case PAR_MINVER:	// 2 Minor version letter
         return PARAM_MINOR_VERSION;
-    case PAR_MTYP:	 	// Module type code
+    case PAR_MTYP:	 	// 3 Module type code
         return PARAM_MODULE_ID;
-    case PAR_EVTNUM:	// Number of events supported
+    case PAR_EVTNUM:	// 4 Number of events supported
         return PARAM_NUM_EVENTS;
-    case PAR_EVNUM:		// Event variables per event
+    case PAR_EVNUM:		// 5 Event variables per event
         return PARAM_NUM_EV_EVENT;
-    case PAR_NVNUM:		// Number of Node variables
+    case PAR_NVNUM:		// 6 Number of Node variables
         return PARAM_NUM_NV;
-        break;
-    case PAR_MAJVER:	// Major version number
-        i=PARAM_MAJOR_VERSION;
-    case PAR_FLAGS:		// Node flags
+    case PAR_MAJVER:	// 7 Major version number
+        return PARAM_MAJOR_VERSION;
+    case PAR_FLAGS:		// 8 Node flags
         return getParameterFlags();
-    case PAR_CPUID:		// Processor type
+    case PAR_CPUID:		// 9 Processor type
         return CPU;
-    case PAR_BUSTYPE:	// Bus type
+    case PAR_BUSTYPE:	// 10 Bus type
         if (have(SERVICE_ID_CAN)) {
             return PB_CAN;
         }
         return 0;
-    case PAR_LOAD1:		// load address, 4 bytes
+    case PAR_LOAD1:		// 11 load address, 4 bytes
         return 0x00;
-    case PAR_LOAD2:		// load address, 4 bytes
+    case PAR_LOAD2:		// 12 load address, 4 bytes
         return 0x08;
-    case PAR_LOAD3:		// load address, 4 bytes
+    case PAR_LOAD3:		// 13 load address, 4 bytes
         return 0x00;
-    case PAR_LOAD4:		// load address, 4 bytes
+    case PAR_LOAD4:		// 14 load address, 4 bytes
         return 0x00;
-    case PAR_CPUMID:	// CPU manufacturer's id as read from the chip config space, 4 bytes (note - read from cpu at runtime, so not included in checksum)
-#ifdef _PIC18
-        return 0;
-#else
-        return (*(const uint8_t*)0x3FFFFC; // Device revision byte 0
+#if defined(_18FXXQ83_FAMILY_)
+    case PAR_CPUMID:	// 15 CPU manufacturer's id as read from the chip config space, 4 bytes (note - read from cpu at runtime, so not included in checksum)
+        return *(const uint8_t*)0x3FFFFC; // Device revision byte 0
+    case PAR_CPUMID+1:  // 16
+        return *(const uint8_t*)0x3FFFFD; // Device recision byte 1
 #endif
-    case PAR_CPUMID+1:
-#ifdef _PIC18
-        return 0;
-#else
-        return (*(const uint8_t*)0x3FFFFD; // Device recision byte 1
-#endif
-    case PAR_CPUMID+2:
+    case PAR_CPUMID+2:  // 17
         return *(const uint8_t*)0x3FFFFE;  // Device ID byte 0
-    case PAR_CPUMID+3:
+    case PAR_CPUMID+3:  // 18
         return *(const uint8_t*)0x3FFFFF;  // Device ID byte 1
-    case PAR_CPUMAN:	// CPU manufacturer code
+    case PAR_CPUMAN:	// 19 CPU manufacturer code
         return CPUM_MICROCHIP;
-    case PAR_BETA:		// Beta revision (numeric), or 0 if release
+    case PAR_BETA:		// 20 Beta revision (numeric), or 0 if release
         return PARAM_BUILD_VERSION;
     default:
         return 0;
