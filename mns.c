@@ -120,8 +120,14 @@ static void mnsPowerUp(void);
 static void mnsPoll(void);
 static Processed mnsProcessMessage(Message * m);
 static void mnsLowIsr(void);
-static DiagnosticVal * mnsGetDiagnostic(uint8_t index);
 static uint8_t getParameter(uint8_t);
+#ifdef VLCB_DIAG
+static DiagnosticVal * mnsGetDiagnostic(uint8_t index);
+/**
+ * The diagnostic values supported by the MNS service.
+ */
+DiagnosticVal mnsDiagnostics[NUM_MNS_DIAGNOSTICS];
+#endif
 
 #ifdef PRODUCED_EVENTS
 #include "event_teach.h"
@@ -145,8 +151,12 @@ const Service mnsService = {
     NULL,                   // highIsr
     mnsLowIsr,              // lowIsr
 #endif
+#ifdef VLCB_SERVICE
     NULL,                   // get ESD data
+#endif
+#ifdef VLCB_DIAG
     mnsGetDiagnostic        // getDiagnostic
+#endif
 };
 
 // General MNS variables
@@ -186,10 +196,7 @@ static Word previousNN;
  * Other UI options are not currently supported.
  */
 TickValue pbTimer;
-/**
- * The diagnostic values supported by the MNS service.
- */
-DiagnosticVal mnsDiagnostics[NUM_MNS_DIAGNOSTICS];
+
 
 /* Heartbeat controls */
 static uint8_t heartbeatSequence;
@@ -309,10 +316,12 @@ static void mnsPowerUp(void) {
     
     pbTimer.val = tickGet();
     
+#ifdef VLCB_DIAG
     // Clear the diagnostics
     for (i=0; i< NUM_MNS_DIAGNOSTICS; i++) {
         mnsDiagnostics[i].asInt = 0;
     }
+#endif
     heartbeatSequence = 0;
     heartbeatTimer.val = 0;
     uptimeTimer.val = 0;
@@ -339,7 +348,9 @@ static Processed mnsProcessMessage(Message * m) {
         switch (m->opc) {
             case OPC_SNN:   // Set node number
                 if (m->len < 3) {
+#ifdef VLCB_GRSP
                     sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVRD, SERVICE_ID_MNS, CMDERR_INV_CMD);
+#endif
                 } else {    
                     nn.bytes.hi = m->bytes[0];
                     nn.bytes.lo = m->bytes[1];
@@ -350,7 +361,9 @@ static Processed mnsProcessMessage(Message * m) {
 //                    writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode_state);
                     
                     sendMessage2(OPC_NNACK, nn.bytes.hi, nn.bytes.lo);
+#ifdef VLCB_DIAG
                     mnsDiagnostics[MNS_DIAGNOSTICS_NNCHANGE].asUint++;
+#endif
                     // Update the LEDs
                     setLEDsByMode();
                 }
@@ -377,6 +390,7 @@ static Processed mnsProcessMessage(Message * m) {
         case OPC_QNN:   // Query node
             sendMessage5(OPC_PNN, nn.bytes.hi,nn.bytes.lo, PARAM_MANU, PARAM_MODULE_ID, getParameterFlags());
             return PROCESSED;
+#ifdef VLCB_MODE
         case OPC_MODE:  // MODE
             if (m->len < 4) {
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, CMDERR_INV_CMD);
@@ -396,6 +410,7 @@ static Processed mnsProcessMessage(Message * m) {
                 }
             }
             break;
+#endif
         default:
             break;
     }
@@ -409,19 +424,25 @@ static Processed mnsProcessMessage(Message * m) {
     switch (m->opc) {
         case OPC_RQNPN: // request node parameter
             if (m->len < 4) {
+#ifdef VLCB_GRSP
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_RQNPN, SERVICE_ID_MNS, CMDERR_INV_CMD);
+#endif
                 return PROCESSED;
             }
             if (m->bytes[2] > 20) {
                 sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_PARAM_IDX);
+#ifdef VLCB_GRSP
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_RQNPN, SERVICE_ID_MNS, CMDERR_INV_PARAM_IDX);
+#endif
                 return PROCESSED;
             }
             i = getParameter(m->bytes[2]);
             sendMessage4(OPC_PARAN, nn.bytes.hi, nn.bytes.lo, m->bytes[2], i);
+#ifdef VLCB_ZERO_RESPONSES
             if (m->bytes[2] == 0) {
                 startTimedResponse(TIMED_RESPONSE_RQNPN, findServiceIndex(SERVICE_ID_MNS), mnsTRrqnpnCallback);
             }
+#endif
             return PROCESSED;
         case OPC_NNRSM: // reset to manufacturer defaults
             previousNN.word = nn.word;  // save the old NN
@@ -430,6 +451,7 @@ static Processed mnsProcessMessage(Message * m) {
                 sendMessage2(OPC_NNREL, previousNN.bytes.hi, previousNN.bytes.lo);
             }
             return PROCESSED;
+#ifdef VLCB_DIAG
         case OPC_RDGN:  // diagnostics
             if (m->len < 5) {
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_RDGN, SERVICE_ID_MNS, CMDERR_INV_CMD);
@@ -464,6 +486,8 @@ static Processed mnsProcessMessage(Message * m) {
                 }
             }
             return PROCESSED;
+#endif
+#ifdef VLCB_SERVICE
         case OPC_RQSD:  // service discovery
             if (m->len < 4) {
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_RQSD, SERVICE_ID_MNS, CMDERR_INV_CMD);
@@ -489,6 +513,8 @@ static Processed mnsProcessMessage(Message * m) {
                 }
             }
             return PROCESSED;
+#endif
+#ifdef VLCB_MODE
         case OPC_MODE:  // set operating mode
             if (m->len < 4) {
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, CMDERR_INV_CMD);
@@ -543,6 +569,7 @@ static Processed mnsProcessMessage(Message * m) {
                 return PROCESSED;
             }
             return NOT_PROCESSED;
+#endif
         case OPC_NNRST: // reset CPU
             RESET();
             return PROCESSED;   // should never get here
@@ -572,10 +599,13 @@ static uint8_t getParameterFlags() {
     if (mode_flags & FLAG_MODE_LEARN) {
         flags |= PNN_FLAGS_LEARN;
     }
+#ifdef VLCB
     flags |= PNN_FLAGS_VLCB; // always add VLCB compatability
+#endif
     return flags;
 }
 
+#ifdef VLCB_DIAG
 /**
  * Update the module status with an error.
  * This is safe to be called from the CAN send function.
@@ -585,12 +615,14 @@ void updateModuleErrorStatus(void) {
         mnsDiagnostics[MNS_DIAGNOSTICS_STATUS].asBytes.lo++;
     }
 }
+#endif
 
 /**
  * Called regularly, processing for LED flashing and mode state transition 
  * timeouts.
  */
 static void mnsPoll(void) {
+#ifdef VLCB_DIAG
     // Heartbeat message
     if (mode_state == MODE_NORMAL) {
         if (tickTimeSince(heartbeatTimer) > 5*ONE_SECOND) {
@@ -603,6 +635,7 @@ static void mnsPoll(void) {
             }
         }
     }
+#endif
     
     // Update mode if app or any service has changed them
     if (mode_flags != last_mode_flags) {
@@ -613,7 +646,7 @@ static void mnsPoll(void) {
         writeNVM(MODE_FLAGS_NVM_TYPE, MODE_ADDRESS, mode_state);
         last_mode_state = mode_state;
     }
-    
+#ifdef VLCB_DIAG
     // Module uptime
     if (tickTimeSince(uptimeTimer) > ONE_SECOND) {
         uptimeTimer.val = tickGet();
@@ -622,6 +655,7 @@ static void mnsPoll(void) {
             mnsDiagnostics[MNS_DIAGNOSTICS_UPTIMEH].asUint++;
         }
     }
+#endif
     
     // Do the mode changes by push button
     switch(mode_state) {
@@ -667,7 +701,9 @@ static void mnsPoll(void) {
                     if (mode_state == MODE_NORMAL) {
                         nn.word = previousNN.word;
                         sendMessage2(OPC_NNACK, nn.bytes.hi, nn.bytes.lo);
+#ifdef VLCB_DIAG
                         mnsDiagnostics[MNS_DIAGNOSTICS_NNCHANGE].asUint++;
+#endif
                     }
                     setLEDsByMode();
                 } else if (tickTimeSince(pbTimer) > ONE_SECOND) {
@@ -724,6 +760,7 @@ static void mnsLowIsr(void) {
 }
 #endif
 
+#ifdef VLCB_DIAG
 /**
  * Get the MNS diagnostic values.
  * @param index the index indicating which diagnostic is required. 1..NUM_MNS_DIAGNOSTICS
@@ -735,6 +772,7 @@ static DiagnosticVal * mnsGetDiagnostic(uint8_t index) {
     }
     return &(mnsDiagnostics[index-1]);
 }
+#endif
 
 /**
  * Set the LEDs according to the current mode.
@@ -813,6 +851,7 @@ static uint8_t getParameter(uint8_t idx) {
     }
 }
 
+#ifdef VLCB_SERVICE
 /**
  * This is the callback used by the service discovery responses.
  * @param type always set to TIMED_RESPONSE_RQSD
@@ -829,7 +868,9 @@ TimedResponseResult mnsTRserviceDiscoveryCallback(uint8_t type, uint8_t serviceI
 //    }
     return TIMED_RESPONSE_RESULT_NEXT;
 }
+#endif
 
+#ifdef VLCB_DIAG
 /**
  * This is the callback used by the diagnostic responses. 
  * @param type always set to TIMED_RESPONSE_RDNG
@@ -850,7 +891,9 @@ TimedResponseResult mnsTRallDiagnosticsCallback(uint8_t type, uint8_t serviceInd
     sendMessage6(OPC_DGN, nn.bytes.hi, nn.bytes.lo, serviceIndex+1, step+1, d->asBytes.hi, d->asBytes.lo);
     return TIMED_RESPONSE_RESULT_NEXT;
 }
+#endif
 
+#ifdef VLCB_ZERO_RESPONSES
 /**
  * This is the callback used by the RQNPN Parameter responses. 
  * @param type always set to TIMED_RESPONSE_RQNPN
@@ -865,3 +908,4 @@ TimedResponseResult  mnsTRrqnpnCallback(uint8_t type, uint8_t serviceIndex, uint
     sendMessage4(OPC_PARAN, nn.bytes.hi, nn.bytes.lo, step+1, getParameter(step+1));
     return TIMED_RESPONSE_RESULT_NEXT;
 }
+#endif

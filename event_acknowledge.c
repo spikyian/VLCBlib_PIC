@@ -57,7 +57,10 @@
 static void ackPowerUp(void);
 static Processed ackEventProcessMessage(Message * m);
 static Processed ackEventCheckLen(Message * m, uint8_t needed);
+#ifdef VLCB_DIAG
 static DiagnosticVal * ackGetDiagnostic(uint8_t code);
+static DiagnosticVal ackDiagnostics[NUM_ACK_DIAGNOSTICS];
+#endif
 
 /**
  * The service descriptor for the Event Acknowledge service. The application must include this
@@ -69,19 +72,26 @@ const Service eventAckService = {
     SERVICE_ID_EVENTACK,// id
     1,                  // version
     NULL,               // factoryReset
+#ifdef VLCB_DIAG
     ackPowerUp,         // powerUp
+#else
+    NULL,
+#endif
     ackEventProcessMessage,                // processMessage
     NULL,               // poll
 #if defined(_18F66K80_FAMILY_)
     NULL,               // highIsr
     NULL,               // lowIsr
 #endif
+#ifdef VLCB_SERVICE
     NULL,               // Get ESD data
+#endif
+#ifdef VLCB_DIAG
     ackGetDiagnostic    // getDiagnostic
+#endif
 };
 
-static DiagnosticVal ackDiagnostics[NUM_ACK_DIAGNOSTICS];
-
+#ifdef VLCB_DIAG
 static void ackPowerUp(void) {
     uint8_t i;
     
@@ -90,6 +100,7 @@ static void ackPowerUp(void) {
         ackDiagnostics[i].asInt = 0;
     }
 }
+#endif
 
 /**
  * This only provides the functionality for event acknowledge.
@@ -99,6 +110,7 @@ static Processed ackEventProcessMessage(Message * m) {
     uint8_t eventIndex;
     int16_t ev;
     
+#ifdef VLCB_MODE
     if (m->opc == OPC_MODE) {      // 76 MODE - NN, mode
         if (ackEventCheckLen(m, 4) == PROCESSED) return PROCESSED;
         if ((m->bytes[0] == nn.bytes.hi) && (m->bytes[1] == nn.bytes.lo)) {
@@ -113,7 +125,8 @@ static Processed ackEventProcessMessage(Message * m) {
             }
         } 
         return NOT_PROCESSED;   // mode probably processed by other services
-    }       
+    }
+#endif
             
     // Check that the Event Ack mode is set
     if (! (mode_flags & FLAG_MODE_EVENTACK)) {
@@ -152,7 +165,9 @@ static Processed ackEventProcessMessage(Message * m) {
         if (ev >= 0) {
             // sent the ack
             sendMessage7(OPC_ENACK, nn.bytes.hi, nn.bytes.lo, m->opc, m->bytes[0], m->bytes[1], m->bytes[2], m->bytes[3]);
+#ifdef VLCB_DIAG
             ackDiagnostics[ACK_DIAG_NUM_ACKED].asInt++;
+#endif
         }
     }
     return NOT_PROCESSED;
@@ -168,6 +183,7 @@ static Processed ackEventCheckLen(Message * m, uint8_t needed) {
     return checkLen(m, needed, SERVICE_ID_EVENTACK);
 }
 
+#ifdef VLCB_DIAG
 /**
  * Provide the means to return the diagnostic data.
  * @param index the diagnostic index 1..NUM_CAN_DIAGNOSTSICS
@@ -179,3 +195,4 @@ static DiagnosticVal * ackGetDiagnostic(uint8_t index) {
     }
     return &(ackDiagnostics[index-1]);
 }
+#endif

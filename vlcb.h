@@ -34,6 +34,8 @@
  */
 #define _VLCB_H_
 
+#include <xc.h>
+#include "module.h"
 #include "vlcbdefs_enums.h"
 #include "nvm.h"
 
@@ -51,6 +53,18 @@
  * processing needed by the application and perform that processing before returning
  * to pass control back to VLCB.
  */
+
+// Normally all of VLCB extensions would be disabled/enabled at once but you can 
+// fine tune which bits are enabled here
+//
+#ifdef VLCB
+#define VLCB_DIAG
+#define VLCB_SERVICE
+#define VLCB_MODE
+#define VLCB_ZERO_RESPONSES
+#define VLCB_GRSP
+#define VLCB_NVSETRD
+#endif
 
 // Additional Service definitions
 #define SERVICE_ID_NOT_FOUND      0xFF      ///< Indicates that a service of the requested type was not found
@@ -128,6 +142,7 @@ typedef enum {
     EVENT_ON=1
 } EventState;
 
+#ifdef VLCB_DIAG
 /**
  * Diagnostic value which may be accessed either as a uint16, int16 or a pair of
  * uint8s.
@@ -145,6 +160,8 @@ typedef union DiagnosticVal {
         uint8_t hi;     ///< The high byte of the 16bit diagnostic value.
     } asBytes;
 } DiagnosticVal;
+
+#endif
 
 /**
  * Type used to indicate whether a message has been processed or not.
@@ -297,8 +314,12 @@ typedef struct Service {
     void (* highIsr)(void);     ///< handle any service specific high priority  interrupt service routine.
     void (* lowIsr)(void);      ///< handle any service specific high priority  interrupt service routine.
 #endif
+#ifdef VLCB_SERVICE
     uint8_t (* getESDdata)(uint8_t id); ///< To obtain any ESD bytes for the service.
+#endif
+#ifdef VLCB_DIAG
     DiagnosticVal * (* getDiagnostic)(uint8_t index);   ///< pointer to function returning DiagnosticVal*.
+#endif
 } Service;
 
 /**

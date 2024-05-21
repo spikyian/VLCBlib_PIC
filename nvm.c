@@ -268,8 +268,10 @@ uint8_t EEPROM_Write(eeprom_address_t index, eeprom_data_t value) {
         if (EEPROM_Read(index) == value) {
             break;
         }
+#ifdef VLCB_DIAG
         mnsDiagnostics[MNS_DIAGNOSTICS_MEMERRS].asUint++;
         updateModuleErrorStatus();
+#endif
     } while (1);
     return GRSP_OK;
 }

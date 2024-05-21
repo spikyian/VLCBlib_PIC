@@ -1093,11 +1093,13 @@ static void lowIsr(void) {
  */
 Processed checkLen(Message * m, uint8_t needed, uint8_t service) {
     if (m->len < needed) {
+#ifdef VLCB_GRSP
         if (m->len > 2) {
             if ((m->bytes[0] == nn.bytes.hi) && (m->bytes[1] == nn.bytes.lo)) {
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, m->opc, service, CMDERR_INV_CMD);
             }
         }
+#endif
         return PROCESSED;
     }
     return NOT_PROCESSED;

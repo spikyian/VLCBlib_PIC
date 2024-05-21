@@ -68,7 +68,10 @@ static void nvPowerUp(void);
 static Processed nvProcessMessage(Message *m);
 static uint8_t nvGetESDdata(uint8_t id);
 TimedResponseResult nvTRnvrdCallback(uint8_t type, uint8_t serviceIndex, uint8_t step);
+#ifdef VLCB_DIAG
 static DiagnosticVal * nvGetDiagnostic(uint8_t index);
+static DiagnosticVal nvDiagnostics[NUM_NV_DIAGNOSTICS];
+#endif
 
 /**
  * The service descriptor for the NV service. The application must include this
@@ -87,11 +90,15 @@ const Service nvService = {
     NULL,               // highIsr
     NULL,               // lowIsr
 #endif
+#ifdef VLCB_SERVICE
     nvGetESDdata,       // get ESD data
+#endif
+#ifdef VLCB_DIAG
     nvGetDiagnostic     // getDiagnostic
+#endif
 };
 
-static DiagnosticVal nvDiagnostics[NUM_NV_DIAGNOSTICS];
+
 
 /**
  *  nv cache
@@ -127,22 +134,25 @@ static void nvFactoryReset(void) {
  * Upon power up read the NV values from NVM and fill the NV cache.
  */
 static void nvPowerUp(void) {
+#ifdef VLCB_DIAG
     uint8_t i;
     for (i=0; i<NUM_NV_DIAGNOSTICS; i++) {
         nvDiagnostics[i].asUint = 0;
     }
+#endif
 #ifdef NV_CACHE
     loadNvCache();
 #endif
 }
 
+#ifdef VLCB_DIAG
 static DiagnosticVal * nvGetDiagnostic(uint8_t index) {
     if ((index<1) || (index>NUM_NV_DIAGNOSTICS)) {
         return NULL;
     }
     return &(nvDiagnostics[index-1]);
 }
-
+#endif
 
 #ifdef NV_CACHE
 /**
@@ -240,70 +250,101 @@ static Processed nvProcessMessage(Message * m) {
         case OPC_NVRD:
             if (m->len < 4) {
                 sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_CMD);
+#ifdef VLCB_GRSP
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVRD, SERVICE_ID_MNS, CMDERR_INV_CMD);
+#endif
+#ifdef VLCB_DIAG
                 nvDiagnostics[NV_DIAGNOSTICS_NUM_FAIL].asUint++;
+#endif
                 return PROCESSED;
             }
             valueOrError = getNV(m->bytes[2]);
             if (valueOrError < 0) {
                 sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(-valueOrError));
+#ifdef VLCB_GRSP
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVRD, SERVICE_ID_MNS, (uint8_t)(-valueOrError));
+#endif
+#ifdef VLCB_DIAG
                 nvDiagnostics[NV_DIAGNOSTICS_NUM_FAIL].asUint++;
+#endif
                 return PROCESSED;
             }
+#ifdef VLCB_DIAG
             nvDiagnostics[NV_DIAGNOSTICS_NUM_ACCESS].asUint++;
+#endif
             sendMessage4(OPC_NVANS, nn.bytes.hi, nn.bytes.lo, m->bytes[2], (uint8_t)(valueOrError));
+#ifdef VLCB_ZERO_RESPONSES
             if (m->bytes[2] == 0) {
                 // a NVANS response for all of the NVs
                 startTimedResponse(TIMED_RESPONSE_NVRD, findServiceIndex(SERVICE_ID_NV), nvTRnvrdCallback);
             }
+#endif
             return PROCESSED;
         case OPC_NVSET:
             if (m->len < 5) {
 //                sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_CMD);
+#ifdef VLCB_GRSP
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSET, SERVICE_ID_MNS, CMDERR_INV_CMD);
+#endif
+#ifdef VLCB_DIAG
                 nvDiagnostics[NV_DIAGNOSTICS_NUM_FAIL].asUint++;
+#endif
                 return PROCESSED;
             }
             valueOrError = setNV(m->bytes[2], m->bytes[3]);
             if (valueOrError >0) {
                 sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(valueOrError));
 //                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSET, SERVICE_ID_MNS, (uint8_t)(valueOrError));
+#ifdef VLCB_DIAG
                 nvDiagnostics[NV_DIAGNOSTICS_NUM_FAIL].asUint++;
+#endif
                 return PROCESSED;
             }
             sendMessage2(OPC_WRACK, nn.bytes.hi, nn.bytes.lo);
+#ifdef VLCB_GRSP
             sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSET, SERVICE_ID_MNS, GRSP_OK);
+#endif
             return PROCESSED;
+#ifdef VLCB_NVSETRD
         case OPC_NVSETRD:
             if (m->len < 5) {
 //                sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_CMD);
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSETRD, SERVICE_ID_MNS, CMDERR_INV_CMD);
+#ifdef VLCB_DIAG
                 nvDiagnostics[NV_DIAGNOSTICS_NUM_FAIL].asUint++;
+#endif
                 return PROCESSED;
             }
             valueOrError = setNV(m->bytes[2], m->bytes[3]);
             if (valueOrError >0) {
                 sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(valueOrError));
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSETRD, SERVICE_ID_MNS, (uint8_t)(valueOrError));
+#ifdef VLCB_DIAG
                 nvDiagnostics[NV_DIAGNOSTICS_NUM_FAIL].asUint++;
+#endif
                 return PROCESSED;
             }
             valueOrError = getNV(m->bytes[2]);
             if (valueOrError < 0) {
                 sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(-valueOrError));
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSETRD, SERVICE_ID_MNS, (uint8_t)(-valueOrError));
+#ifdef VLCB_DIAG
                 nvDiagnostics[NV_DIAGNOSTICS_NUM_FAIL].asUint++;
+#endif
                 return PROCESSED;
             }
             sendMessage4(OPC_NVANS, nn.bytes.hi, nn.bytes.lo, m->bytes[2], (uint8_t)(valueOrError));
+#ifdef VLCB_DIAG
             nvDiagnostics[NV_DIAGNOSTICS_NUM_ACCESS].asUint++;
+#endif
             return PROCESSED;
+#endif
         default:
             return NOT_PROCESSED;   // message not processed
     }
 }
 
+#ifdef VLCB_SERVICE
 /**
  * Obtain the ESD data response bytes. Only Data1 containing the number of NVs
  * is used.
@@ -316,7 +357,9 @@ static uint8_t nvGetESDdata(uint8_t id) {
         default: return 0;
     }
 }
+#endif
 
+#ifdef VLCB_ZERO_RESPONSES
 /**
  * This is the callback used by the service discovery responses.
  * @param type always set to TIMED_RESPONSE_NVRD
@@ -334,6 +377,9 @@ TimedResponseResult nvTRnvrdCallback(uint8_t type, uint8_t serviceIndex, uint8_t
         return TIMED_RESPONSE_RESULT_FINISHED;
     }
     sendMessage4(OPC_NVANS, nn.bytes.hi, nn.bytes.lo, step+1, (uint8_t)(valueOrError));
+#ifdef VLCB_DIAG
     nvDiagnostics[NV_DIAGNOSTICS_NUM_ACCESS].asUint++;
+#endif
     return TIMED_RESPONSE_RESULT_NEXT;
 }
+#endif

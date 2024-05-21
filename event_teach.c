@@ -209,7 +209,6 @@ static void teachFactoryReset(void);
 static void teachPowerUp(void);
 static Processed teachProcessMessage(Message * m);
 static uint8_t teachGetESDdata(uint8_t id);
-static DiagnosticVal * teachGetDiagnostic(uint8_t code);
 static void clearAllEvents(void);
 Processed checkLen(Message * m, uint8_t needed, uint8_t service);
 static Processed teachCheckLen(Message * m, uint8_t needed, uint8_t learn);
@@ -236,6 +235,14 @@ static void doEvuln(uint16_t nodeNumber, uint16_t eventNumber);
 static void doReqev(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum);
 static void doEvlrn(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8_t evVal);
 
+#ifdef VLCB_DIAG
+static DiagnosticVal * teachGetDiagnostic(uint8_t code);
+/**
+ * The diagnostic values supported by the MNS service.
+ */
+static DiagnosticVal teachDiagnostics[NUM_TEACH_DIAGNOSTICS];
+#endif
+
 /**
  * The service descriptor for the event teach service. The application must include this
  * descriptor within the const Service * const services[] array and include the
@@ -253,8 +260,12 @@ const Service eventTeachService = {
     NULL,               // highIsr
     NULL,               // lowIsr
 #endif
+#ifdef VCB_SERVICE
     teachGetESDdata,    // get ESD data
+#endif
+#ifdef VLCB_DIAG
     teachGetDiagnostic, // getDiagnostic
+#endif
 };
 
 // Space for the event table and initialise to 0xFF
@@ -267,10 +278,6 @@ uint8_t happening2Event[MAX_HAPPENING+1];
 #endif
 #endif
 
-/**
- * The diagnostic values supported by the MNS service.
- */
-static DiagnosticVal teachDiagnostics[NUM_TEACH_DIAGNOSTICS];
 
 //
 // SERVICE FUNCTIONS
@@ -291,10 +298,12 @@ static void teachPowerUp(void) {
 #ifdef EVENT_HASH_TABLE
     rebuildHashtable();
 #endif
+#ifdef VLCB_DIAG
     // Clear the diagnostics
     for (i=0; i< NUM_TEACH_DIAGNOSTICS; i++) {
         teachDiagnostics[i].asInt = 0;
     }
+#endif
     mode_flags &= ~FLAG_MODE_LEARN; // revert to learn OFF on power up
 }
 
@@ -316,6 +325,7 @@ static Processed teachProcessMessage(Message* m) {
                 mode_flags &= ~FLAG_MODE_LEARN;
             }
             return PROCESSED;
+#ifdef VLCB_MODE
         case OPC_MODE:      // 76 MODE - NN, mode
             if (teachCheckLen(m, 4, 0) == PROCESSED) return PROCESSED;
             if ((m->bytes[0] == nn.bytes.hi) && (m->bytes[1] == nn.bytes.lo)) {
@@ -333,6 +343,7 @@ static Processed teachProcessMessage(Message* m) {
                 mode_flags &= ~FLAG_MODE_LEARN;
             }
             return NOT_PROCESSED;   // mode probably processed by other services
+#endif
         /* This block must be in Learn mode and NN doesn't need to match ours */
         case OPC_EVLRN:     // D2 EVLRN - NN, EN, EV#, EVval
             if (teachCheckLen(m, 7, 1) == PROCESSED) {
@@ -369,7 +380,9 @@ static Processed teachProcessMessage(Message* m) {
             /* Must be in Learn mode for this one */
             if (! (mode_flags & FLAG_MODE_LEARN)) {
                 sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_NOT_LRN);
+#ifdef VLCB_GRSP
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NNCLR, SERVICE_ID_OLD_TEACH, CMDERR_NOT_LRN);
+#endif
                 return PROCESSED;
             }
             // do NNCLR
@@ -431,7 +444,9 @@ static Processed teachCheckLen(Message * m, uint8_t needed, uint8_t learn) {
             // message is short
             if (mode_flags & FLAG_MODE_LEARN) {
                 // This module is in Learn mode so we should indicate an error
+#ifdef VLCB_GRSP
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, m->opc, SERVICE_ID_OLD_TEACH, CMDERR_INV_CMD);
+#endif
             }
             return PROCESSED;
         }
@@ -440,6 +455,7 @@ static Processed teachCheckLen(Message * m, uint8_t needed, uint8_t learn) {
     return checkLen(m, needed, SERVICE_ID_OLD_TEACH);
 }
 
+#ifdef VLCB_SERVICEE
 /**
  * The Teach service supports data in the ESD message.
  * @param id which of the ESD data bytes
@@ -452,7 +468,9 @@ static uint8_t teachGetESDdata(uint8_t id) {
         default: return 0;
     }
 }
+#endif
 
+#ifdef VLCB_DIAG
 /**
  * Provide the means to return the diagnostic data.
  * @param index the diagnostic index 1..NUM_CAN_DIAGNOSTSICS
@@ -464,6 +482,7 @@ static DiagnosticVal * teachGetDiagnostic(uint8_t index) {
     }
     return &(teachDiagnostics[index-1]);
 }
+#endif
 
 //
 // FUNCTIONS TO DO THE ACTUAL WORK
@@ -581,7 +600,9 @@ static void doRqevn(void) {
 static void doNnclr(void) {
     clearAllEvents();
     sendMessage2(OPC_WRACK, nn.bytes.hi, nn.bytes.lo);
+#ifdef VLCB_GRSP
     sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_OLD_TEACH, GRSP_OK);
+#endif
 } //doNnclr
 
 /**
@@ -598,19 +619,27 @@ static void doEvlrn(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, ui
     evNum--;    // convert VLCB message numbering (starts at 1) to internal numbering)
     if (evNum >= PARAM_NUM_EV_EVENT) {
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_EV_IDX);
+#ifdef VLCB_GRSP
         sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVLRN, SERVICE_ID_OLD_TEACH, CMDERR_INV_EV_IDX);
+#endif
         return;
     }
     error = APP_addEvent(nodeNumber, eventNumber, evNum, evVal, FALSE);
     if (error) {
         // validation error
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, error);
+#ifdef VLCB_GRSP
         sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVLRN, SERVICE_ID_OLD_TEACH, error);
+#endif
         return;
     }
+#ifdef VLCB_DIAG
     teachDiagnostics[TEACH_DIAG_NUM_TEACH].asUint++;
+#endif
     sendMessage2(OPC_WRACK, nn.bytes.hi, nn.bytes.lo);
+#ifdef VLCB_GRSP
     sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_OLD_TEACH, GRSP_OK);
+#endif
     return;
 }
 
@@ -664,12 +693,16 @@ static void doEvuln(uint16_t nodeNumber, uint16_t eventNumber) {
     result = removeEvent(nodeNumber, eventNumber);
     if (result) {
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, result);
+#ifdef VLCB_GRSP
         sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVULN, SERVICE_ID_OLD_TEACH, result);
+#endif
         return;
     }
     // Send a WRACK - difference from CBUS
     sendMessage2(OPC_WRACK, nn.bytes.hi, nn.bytes.lo);
+#ifdef VLCB_GRSP
     sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_OLD_TEACH, GRSP_OK);
+#endif
 }
 
 /**
@@ -684,27 +717,38 @@ static void doReqev(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum) {
     uint8_t tableIndex = findEvent(nodeNumber, eventNumber);
     if (tableIndex == NO_INDEX) {
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INVALID_EVENT);
+#ifdef VLCB_GRSP
         sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_OLD_TEACH, CMDERR_INVALID_EVENT);
+#endif
         return;
     }
     if (evNum > PARAM_NUM_EV_EVENT) {
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_EV_IDX);
+#ifdef VLCB_GRSP
         sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_OLD_TEACH, CMDERR_INV_EV_IDX);
+#endif
         return;
     }
     if (evNum == 0) {
+#ifdef VLCB_ZERO_RESPONSES
         sendMessage6(OPC_EVANS, nodeNumber>>8, nodeNumber&0xFF, eventNumber>>8, eventNumber&0xFF, 0, numEv(tableIndex));
         // send all of the EVs
         // Note this somewhat abuses the type parameter
         startTimedResponse(tableIndex, findServiceIndex(SERVICE_ID_OLD_TEACH), reqevCallback);
         return;
+#else
+        sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_EV_IDX);
+        return;
+#endif
     } else {
         evVal = getEv(tableIndex, evNum-1);
     }
     if (evVal < 0) {
         // a negative value is the error code
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(-evVal));
+#ifdef VLCB_GRSP
         sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_OLD_TEACH, (uint8_t)(-evVal));
+#endif
         return;
     }
 

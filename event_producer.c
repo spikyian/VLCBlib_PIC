@@ -65,7 +65,11 @@
 
 // Forward function declarations
 static Processed producerProcessMessage(Message *m);
+#ifdef VLCB_DIAG
+static void producerPowerUp(void);
 static DiagnosticVal * producerGetDiagnostic(uint8_t index);
+static DiagnosticVal producerDiagnostics[NUM_PRODUCER_DIAGNOSTICS];
+#endif
 
 /**
  * The service descriptor for the event producer service. The application must include this
@@ -77,18 +81,33 @@ const Service eventProducerService = {
     SERVICE_ID_PRODUCER,// id
     1,                  // version
     NULL,               // factoryReset
+#ifdef VLCB_DIAG
+    producerPowerUp,    // powerUp
+#else
     NULL,               // powerUp
+#endif
     producerProcessMessage,  // processMessage
     NULL,               // poll
 #if defined(_18F66K80_FAMILY_)
     NULL,               // highIsr
     NULL,               // lowIsr
 #endif
+#ifdef VLCB_SERVICE
     NULL,               // Get ESD data
+#endif
+#ifdef VLCB_DIAG
     producerGetDiagnostic                // getDiagnostic
+#endif
 };
 
-static DiagnosticVal producerDiagnostics[NUM_PRODUCER_DIAGNOSTICS];
+#ifdef VLCB_DIAG
+static void producerPowerUp(void) {
+    uint8_t i;
+    for (i=0; i<NUM_PRODUCER_DIAGNOSTICS; i++) {
+        producerDiagnostics[i].asInt = 0;
+    }
+}
+#endif
 
 /**
  * Process and events associated with the eventProduction service.
@@ -146,6 +165,8 @@ static Processed producerProcessMessage(Message *m) {
     }
     return NOT_PROCESSED;
 }
+
+#ifdef VLCB_DIAG
 /**
  * Provide the means to return the diagnostic data.
  * @param index the diagnostic index
@@ -157,6 +178,7 @@ static DiagnosticVal * producerGetDiagnostic(uint8_t index) {
     }
     return &(producerDiagnostics[index-1]);
 }
+#endif
 
 /**
  * Get the Produced Event to transmit for the specified action.
@@ -221,7 +243,9 @@ Boolean sendProducedEvent(Happening happening, EventState onOff) {
                     }
                 }
                 sendMessage4(opc, producedEventNN.bytes.hi, producedEventNN.bytes.lo, producedEventEN.bytes.hi, producedEventEN.bytes.lo);
+#ifdef VLCB_DIAG
                 producerDiagnostics[PRODUCER_DIAG_NUMPRODUCED].asUint++;
+#endif
                 return TRUE;
 #ifndef EVENT_HASH_TABLE
             }

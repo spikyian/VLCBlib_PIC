@@ -72,8 +72,12 @@ const Service eventCoeService = {
     NULL,               // highIsr
     NULL,               // lowIsr
 #endif
+#ifdef VLCB_SERVICE
     NULL,               // Get ESD data
+#endif
+#ifdef VLCB_DIAG
     NULL                // getDiagnostic
+#endif
 };
 
 

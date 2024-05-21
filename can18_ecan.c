@@ -88,11 +88,18 @@ static void canPoll(void);
 static Processed canProcessMessage(Message * m);
 static void canIsr(void);
 static uint8_t canEsdData(uint8_t id);
-static DiagnosticVal * canGetDiagnostic(uint8_t index);
 // ISR functions
 static void canTxError(void);
 static void checkTxFifo(void);
 static void checkCANTimeout(void);
+
+#ifdef VLCB_DIAG
+static DiagnosticVal * canGetDiagnostic(uint8_t index);
+/**
+ * The set of diagnostics for the CAN service
+ */
+static DiagnosticVal canDiagnostics[NUM_CAN_DIAGNOSTICS];
+#endif
 
 /**
  * The service descriptor for the CAN service. The application must include this
@@ -109,8 +116,12 @@ const Service canService = {
     NULL,               // poll
     canIsr,             // highIsr
     canIsr,             // lowIsr
+#ifdef VLCB_SERVICE
     canEsdData,         // get ESD data
+#endif
+#ifdef VLCB_DIAG
     canGetDiagnostic    // getDiagnostic
+#endif
 };
 
 // forward declarations
@@ -132,10 +143,6 @@ const Transport canTransport = {
  * The CANID.
  */
 static uint8_t canId;
-/**
- * The set of diagnostics for the CAN service
- */
-static DiagnosticVal canDiagnostics[NUM_CAN_DIAGNOSTICS];
 
 
 static TickValue  canTransmitTimeout;
@@ -226,10 +233,12 @@ static void canPowerUp(void) {
     } else {
         canId = (uint8_t)temp;
     }
+#ifdef VLCB_DIAG
     // clear the diagnostic stats
     for (temp=0; temp<NUM_CAN_DIAGNOSTICS; temp++) {
         canDiagnostics[temp].asInt = 0;
     }
+#endif
     
     canTransmitFailed=0;
     IPR5 = CAN_INTERRUPT_PRIORITY;    // CAN interrupts priority
@@ -380,7 +389,9 @@ static Processed canProcessMessage(Message * m) {
             return PROCESSED;
         case OPC_CANID:
             if (m->len < 4) {
+#ifdef VLCB_GRSP
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVRD, SERVICE_ID_MNS, CMDERR_INV_CMD);
+#endif
                 return PROCESSED;
             }
             // ignore request
@@ -408,6 +419,7 @@ static void canIsr(void) {
     checkCANTimeout();
 }
 
+#ifdef VLCB_SERVICE
 /**
  * Return the service extended definition bytes.
  * @param id
@@ -421,7 +433,9 @@ uint8_t canEsdData(uint8_t id) {
             return 0;
     }
 }
+#endif
 
+#ifdef VLCB_DIAG
 /**
  * Provide the means to return the diagnostic data.
  * @param index the diagnostic index 1..NUM_CAN_DIAGNOSTSICS
@@ -433,7 +447,7 @@ static DiagnosticVal * canGetDiagnostic(uint8_t index) {
     }
     return &(canDiagnostics[index-1]);
 }
-
+#endif
 
 /*            TRANSPORT INTERFACE             */
 /**
@@ -473,7 +487,9 @@ static SendResult canSendMessage(Message * mp) {
             TXB0DLC = mp->len & 0x0F;  // Ensure not RTR
 
             TXB0CONbits.TXREQ = 1;    // Initiate transmission
+#ifdef VLCB_DIAG
             canDiagnostics[CAN_DIAG_TX_MESSAGES].asUint++;
+#endif
 #ifdef CONSUMED_EVENTS
                 // If this is an event we are sending then put it onto the rx queue so
                 // we can consume our own events.
@@ -482,8 +498,10 @@ static SendResult canSendMessage(Message * mp) {
                     // we can consume our own events.
                     m = getNextWriteMessage(&rxQueue);
                     if (m == NULL) {
+#ifdef VLCB_DIAG
                         canDiagnostics[CAN_DIAG_RX_BUFFER_OVERRUN].asUint++;
                         updateModuleErrorStatus();
+#endif
                     } else {
                         // copy ECAN buffer to message
                         m->opc = mp->opc;
@@ -504,8 +522,10 @@ static SendResult canSendMessage(Message * mp) {
     }
     // Add to transmit Queue
     if (push(&txQueue, mp) == QUEUE_FAIL) {
+#ifdef VLCB_DIAG
         canDiagnostics[CAN_DIAG_TX_BUFFER_OVERRUN].asUint++;
         updateModuleErrorStatus();
+#endif
         TXBnIE = 1;      // re-enable interrupt
         return SEND_FAILED;
     }
@@ -548,7 +568,9 @@ static MessageReceived canReceiveMessage(Message * m){
             RXBnIF = 0;
             if (handleSelfEnumeration(p) == RECEIVED) {
                 // It is a message that will need to be processed so return it
+#ifdef VLCB_DIAG
                 canDiagnostics[CAN_DIAG_RX_MESSAGES].asUint++;
+#endif
                 //mp = getNextWriteMessage(&rxQueue);
                 //if (mp != NULL) {
                     // copy the ECAN buffer to the Message
@@ -647,8 +669,10 @@ static void checkTxFifo( void ) {
                 // we can consume our own events.
                 m = getNextWriteMessage(&rxQueue);
                 if (m == NULL) {
+#ifdef VLCB_DIAG
                     canDiagnostics[CAN_DIAG_RX_BUFFER_OVERRUN].asUint++;
                     updateModuleErrorStatus();
+#endif
                 } else {
                     // copy ECAN buffer to message
                     m->opc = mp->opc;
@@ -688,8 +712,10 @@ static void checkCANTimeout(void) {
             canTransmitFailed = 1;
             TXB0CONbits.TXREQ = 0;  // abort timed out packet
             checkTxFifo();          //  See if another packet is waiting to be sent
+#ifdef VLCB_DIAG
             canDiagnostics[CAN_DIAG_TX_ERRORS].asUint++;
             updateModuleErrorStatus();
+#endif
         }
     }
 }
@@ -704,15 +730,19 @@ static void canTxError(void) {
         canTransmitFailed = 1;
         canTransmitTimeout.val = 0;
         TXB0CONbits.TXREQ = 0;
+#ifdef VLCB_DIAG
         canDiagnostics[CAN_DIAG_LOST_ARBITRATION].asUint++;
         updateModuleErrorStatus();
+#endif
     }
     if (TXB0CONbits.TXERR) {	// bus error
         canTransmitFailed = 1;
         canTransmitTimeout.val = 0;
         TXB0CONbits.TXREQ = 0;
+#ifdef VLCB_DIAG
         canDiagnostics[CAN_DIAG_TX_ERRORS].asUint++;
         updateModuleErrorStatus();
+#endif
     }
     if (canTransmitFailed) {
         checkTxFifo();  // Check to see if more to try and send
@@ -773,8 +803,10 @@ static void canFillRxFifo(void) {
         // copy message into the rx Queue
         m = getNextWriteMessage(&rxQueue);
         if (m == NULL) {
+#ifdef VLCB_DIAG
             canDiagnostics[CAN_DIAG_RX_BUFFER_OVERRUN].asUint++;
             updateModuleErrorStatus();
+#endif
             // Record and Clear any previous invalid message bit flag.
             if (IRXIF) {
                 IRXIF = 0;
@@ -820,7 +852,9 @@ static void processEnumeration(void) {
 
                 enumerationState = ENUMERATION_IN_PROGRESS;
                 enumerationStartTime.val = tickGet();
+#ifdef VLCB_DIAG
                 canDiagnostics[CAN_DIAG_CANID_ENUMS].asUint++;
+#endif
                 TXB1CONbits.TXREQ = 1;              // Send RTR frame to initiate self enumeration
             }
             break;
@@ -840,12 +874,16 @@ static void processEnumeration(void) {
                         canId = newCanId;
                         setNewCanId(canId);
                     } else {
+#ifdef VLCB_DIAG
                         canDiagnostics[CAN_DIAG_CANID_ENUMS_FAIL].asUint++;
                         updateModuleErrorStatus();
+#endif
                     }
                 } else {
+#ifdef VLCB_DIAG
                     canDiagnostics[CAN_DIAG_CANID_ENUMS_FAIL].asUint++;
                     updateModuleErrorStatus();
+#endif
                     /* if (resultRequired) {
                         doError(CMDERR_INVALID_EVENT);  // seems a strange error code but that's what the spec says...
                     } */
@@ -877,7 +915,9 @@ static CanidResult setNewCanId(uint8_t newCanId) {
         TXB2SIDL = TXB0SIDL;
 
         writeNVM(CANID_NVM_TYPE, CANID_ADDRESS, newCanId );       // Update saved value
-        canDiagnostics[CAN_DIAG_CANID_CHANGES].asUint++;        
+#ifdef VLCB_DIAG
+        canDiagnostics[CAN_DIAG_CANID_CHANGES].asUint++;
+#endif
         return CANID_OK;
     } else {
         return CANID_FAIL;

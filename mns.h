@@ -137,9 +137,10 @@ extern uint8_t mode_flags;
 /*
  * MNS diagnostics
  */
+#ifdef VLCB_DIAG
 extern DiagnosticVal mnsDiagnostics[NUM_MNS_DIAGNOSTICS];
-
 extern void updateModuleErrorStatus(void);
+#endif
 
 extern TickValue pbTimer;
 
