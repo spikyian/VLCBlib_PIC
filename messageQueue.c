@@ -48,6 +48,7 @@
 #include "vlcb.h"
 #include "messageQueue.h"
 
+#pragma warning disable 1498
 /**
  * Push a message onto the message queue.
  * @param q the queue

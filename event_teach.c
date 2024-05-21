@@ -765,18 +765,15 @@ static uint8_t removeTableEntry(uint8_t tableIndex) {
     if (tableIndex >= NUM_EVENTS) return CMDERR_INV_EV_IDX;
 #endif
     if (validStart(tableIndex)) {
+        f.asByte = (uint8_t)readNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_ROW_WIDTH*tableIndex+EVENTTABLE_OFFSET_FLAGS);
         // set the free flag
         writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_ROW_WIDTH*tableIndex+EVENTTABLE_OFFSET_FLAGS, 0xff);
         // Now follow the next pointer
-        f.asByte = 0xff;
         while (f.continued) {
             tableIndex = (uint8_t)readNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_ROW_WIDTH*tableIndex+EVENTTABLE_OFFSET_NEXT);
             f.asByte = (uint8_t)readNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_ROW_WIDTH*tableIndex+EVENTTABLE_OFFSET_FLAGS);
         
             if (tableIndex >= NUM_EVENTS) return CMDERR_INV_EV_IDX; // shouldn't be necessary
-        
-            // the continuation flag of this entry should be set but I'm 
-            // not going to check as I wouldn't know what to do if it wasn't set
                     
             // set the free flag
             writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_ROW_WIDTH*tableIndex+EVENTTABLE_OFFSET_FLAGS, 0xff);

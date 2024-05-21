@@ -623,8 +623,6 @@ static void mnsPoll(void) {
         }
     }
     
-    setLEDsByMode();
-    
     // Do the mode changes by push button
     switch(mode_state) {
         case MODE_UNINITIALISED:
@@ -641,6 +639,7 @@ static void mnsPoll(void) {
                     pbTimer.val = tickGet();    // reset the timer ready for Setup mode
                     //start the request for NN
                     sendMessage2(OPC_RQNN, nn.bytes.hi, nn.bytes.lo);
+                    setLEDsByMode();
                 }
             }
             break;
@@ -670,6 +669,7 @@ static void mnsPoll(void) {
                         sendMessage2(OPC_NNACK, nn.bytes.hi, nn.bytes.lo);
                         mnsDiagnostics[MNS_DIAGNOSTICS_NNCHANGE].asUint++;
                     }
+                    setLEDsByMode();
                 } else if (tickTimeSince(pbTimer) > ONE_SECOND) {
                     // a short press returns to Uninitalised
                     if (nn.word != 0) {
@@ -677,6 +677,7 @@ static void mnsPoll(void) {
                     }
                     nn.word = 0;
                     mode_state = MODE_UNINITIALISED;
+                    setLEDsByMode();
                 }
                 pbTimer.val = tickGet();
             }
@@ -696,6 +697,7 @@ static void mnsPoll(void) {
                     pbTimer.val = tickGet();
                     //start the request for NN
                     sendMessage2(OPC_RQNN, previousNN.bytes.hi, previousNN.bytes.lo);
+                    setLEDsByMode();
                 }
                 pbTimer.val = tickGet();
             }

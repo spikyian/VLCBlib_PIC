@@ -200,6 +200,7 @@ static void canFactoryReset(void) {
     writeNVM(CANID_NVM_TYPE, CANID_ADDRESS, canId);
 }
 
+#pragma warning disable 759
 /**
  * Do the CAN power up. Get the saved CANID, provision the CAN peripheral.
  * The CAN is configured for 125Kbs clocked from Fosc
