@@ -282,16 +282,16 @@ static void canPowerUp(void) {
 
     // Setup masks so all filter bits are ignored apart from EXIDEN
     RXM0SIDH = 0;
-    RXM0SIDL = 0x08;
+    RXM0SIDL = 0x08;    // include EXIDEN
     RXM0EIDH = 0;
     RXM0EIDL = 0;
     RXM1SIDH = 0;
-    RXM1SIDL = 0x08;
+    RXM1SIDL = 0x08;    // include EXIDEN
     RXM1EIDH = 0;
     RXM1EIDL = 0;
 
     // Set filter 0 for standard ID only to reject bootloader messages
-    RXF0SIDL = 0x80;
+    RXF0SIDL = 0x08;
 
     // Link all filters to RXB0 - maybe only necessary to link 1
     RXFBCON0 = 0;

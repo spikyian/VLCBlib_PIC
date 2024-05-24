@@ -82,8 +82,12 @@ const Service bootService = {
     NULL,               // highIsr
     NULL,               // lowIsr
 #endif
+#ifdef VLCB_SERVICE
     NULL,               // ESD data
+#endif
+#ifdef VLCB_DIAG
     NULL                // getDiagnostic
+#endif
 };
 
 // Set the EEPROM_BOOT_FLAG to 0 to ensure the application is entered
