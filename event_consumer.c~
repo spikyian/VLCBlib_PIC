@@ -51,7 +51,7 @@
  * The service definition object is called eventConsumerService.
  * Process consumed events. Process Long and Short events.
  * Also handles events with data bytes if HANDLE_DATA_EVENTS is defined. The data is ignored.
- * If CONSUMER_EVS_AS_ACTIONS is defined then EVs after the Happening are treated
+ * If COMSUMER_EVS_AS_ACTIONS is defined then EVs after the Happening are treated
  * as Actions and are added to an Action queue to be processed by the application.
  */
 
@@ -77,15 +77,11 @@ const Service eventConsumerService = {
     NULL,               // highIsr
     NULL,               // lowIsr
 #endif
-#ifdef VLCB_SERVICE
-    NULL,               // Get ESD
-#endif
-#ifdef VLCB_DIAG
+    NULL,               // Get ESD data
     consumerGetDiagnostic                // getDiagnostic
-#endif
 };
 
-#ifdef CONSUMER_EVS_AS_ACTIONS
+#ifdef COMSUMER_EVS_AS_ACTIONS
 static ActionAndState actionQueue[ACTION_QUEUE_SIZE];
 static uint8_t areader;
 static uint8_t awriter;
@@ -93,7 +89,7 @@ Boolean pushAction(ActionAndState a);
 #endif
 
 static void consumerPowerUp(void) {
-#ifdef CONSUMER_EVS_AS_ACTIONS
+#ifdef COMSUMER_EVS_AS_ACTIONS
     areader = 0;
     awriter = 0;
 #endif
@@ -102,7 +98,7 @@ static void consumerPowerUp(void) {
 /**
  * Process consumed events. Process Long and Short events.
  * Also handles events with data bytes if HANDLE_DATA_EVENTS is defined. The data is ignored.
- * If CONSUMER_EVS_AS_ACTIONS is defined then EVs after the Happening are treated
+ * If COMSUMER_EVS_AS_ACTIONS is defined then EVs after the Happening are treated
  * as Actions and are added to an Action queue to be processed by the application.
  * 
  * @param m received message
@@ -183,7 +179,7 @@ static Processed consumerProcessMessage(Message *m) {
     return NOT_PROCESSED;
 }
 
-#ifdef VLCB_DIAG
+
 /**
  * Provide the means to return the diagnostic data.
  * @param index the diagnostic index
@@ -195,7 +191,6 @@ static DiagnosticVal * consumerGetDiagnostic(uint8_t index) {
     }
     return &(consumerDiagnostics[index-1]);
 }
-#endif
 
 /**
  * Push a message onto the Action queue.
@@ -212,7 +207,7 @@ Boolean pushAction(ActionAndState a) {
 
 /**
  * Pull the next Action from the queue.
- * If CONSUMER_EVS_AS_ACTIONS is defined in module.h then the event's EVs will be
+ * If COMSUMER_EVS_AS_ACTIONS is defined in module.h then the event's EVs will be
  * treated as Actions and will be pushed onto the Action queue. The application 
  * should use popAction() to obtain the next Action for processing.
  *

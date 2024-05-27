@@ -282,16 +282,17 @@ static void canPowerUp(void) {
 
     // Setup masks so all filter bits are ignored apart from EXIDEN
     RXM0SIDH = 0;
-    RXM0SIDL = 0x08;    // include EXIDEN
+    RXM0SIDL = 0x08;    // include EXIDEN in mask
     RXM0EIDH = 0;
     RXM0EIDL = 0;
     RXM1SIDH = 0;
-    RXM1SIDL = 0x08;    // include EXIDEN
+    RXM1SIDL = 0x08;    // include EXIDEN in mask
     RXM1EIDH = 0;
     RXM1EIDL = 0;
 
     // Set filter 0 for standard ID only to reject bootloader messages
-    RXF0SIDL = 0x08;
+    RXF0SIDL = 0x00;
+    RXF1SIDL = 0x00;
 
     // Link all filters to RXB0 - maybe only necessary to link 1
     RXFBCON0 = 0;
@@ -309,12 +310,12 @@ static void canPowerUp(void) {
     MSEL2 = 0;
     MSEL3 = 0;
 
-    // Configure the buffers to receive all valid std length messages
-    // RXB0CON = RXB1CON = 0x20; B0CON = B1CON = B2CON = B3CON = B4CON = B5CON = 0;
+    // Configure the buffers to receive messages
+    // RXB0CON = RXB1CON = 0x00; B0CON = B1CON = B2CON = B3CON = B4CON = B5CON = 0;
 
     // Clear RXFUL bits
-    RXB0CON = 0x20;     // IH changed from 0 so that RXM = 01. Receive only std messages
-    RXB1CON = 0x20;     // IH changed from 0 so that RXM = 01. Receive only std messages
+    RXB0CON = 0x00;
+    RXB1CON = 0x00;
     B0CON = 0;
     B1CON = 0;
     B2CON = 0;
@@ -326,10 +327,12 @@ static void canPowerUp(void) {
     TXBIEbits.TXB0IE = 1;     // Tx buffer interrupts from buffer 0 only
     TXBIEbits.TXB1IE = 0;
     TXBIEbits.TXB2IE = 0;
+    
     CANCON = 0;               // Set normal operation mode
+    // Wait for normal mode
+    while (CANSTATbits.OPMODE2 != 0);
 
     // Preload TXB0 with parameters ready for sending VLCB data packets
-
     TXB0CON = 0;
     TXB0CONbits.TXPRI0 = 0;                           // Set buffer priority, so will be sent after any self enumeration packets
     TXB0CONbits.TXPRI1 = 0;
@@ -566,6 +569,9 @@ static MessageReceived canReceiveMessage(Message * m){
                 return NOT_RECEIVED;
             }
             RXBnIF = 0;
+            // double check EXIDE to ensure Std length
+            if (p[SIDL] & 0x08) return NOT_RECEIVED;
+            // handle self enumeration
             if (handleSelfEnumeration(p) == RECEIVED) {
                 // It is a message that will need to be processed so return it
 #ifdef VLCB_DIAG
@@ -799,30 +805,32 @@ static void canFillRxFifo(void) {
         if (RXBnOVFL) {
             RXBnOVFL = 0;
         }
+        if ((ptr[SIDL] & 0x08) == 0) {
 
-        // copy message into the rx Queue
-        m = getNextWriteMessage(&rxQueue);
-        if (m == NULL) {
-#ifdef VLCB_DIAG
-            canDiagnostics[CAN_DIAG_RX_BUFFER_OVERRUN].asUint++;
-            updateModuleErrorStatus();
-#endif
-            // Record and Clear any previous invalid message bit flag.
-            if (IRXIF) {
-                IRXIF = 0;
+            // copy message into the rx Queue
+            m = getNextWriteMessage(&rxQueue);
+            if (m == NULL) {
+    #ifdef VLCB_DIAG
+                canDiagnostics[CAN_DIAG_RX_BUFFER_OVERRUN].asUint++;
+                updateModuleErrorStatus();
+    #endif
+                // Record and Clear any previous invalid message bit flag.
+                if (IRXIF) {
+                    IRXIF = 0;
+                }
+                return;
+            } else {
+                // copy ECAN buffer to message
+                m->opc = ptr[D0];
+                m->bytes[0] = ptr[D1];
+                m->bytes[1] = ptr[D2];
+                m->bytes[2] = ptr[D3];
+                m->bytes[3] = ptr[D4];
+                m->bytes[4] = ptr[D5];
+                m->bytes[5] = ptr[D6];
+                m->bytes[6] = ptr[D7];
+                m->len = ptr[DLC]&0xF;
             }
-            return;
-        } else {
-            // copy ECAN buffer to message
-            m->opc = ptr[D0];
-            m->bytes[0] = ptr[D1];
-            m->bytes[1] = ptr[D2];
-            m->bytes[2] = ptr[D3];
-            m->bytes[3] = ptr[D4];
-            m->bytes[4] = ptr[D5];
-            m->bytes[5] = ptr[D6];
-            m->bytes[6] = ptr[D7];
-            m->len = ptr[DLC]&0xF;
         }
         // Record and Clear any previous invalid message bit flag.
         if (IRXIF) {
