@@ -53,6 +53,7 @@
  * This looks a bit like a service but not exposed externally.
  * 
  */
+extern uint8_t mode_state;
 /**
  * The state of the two LEDs.
  */
@@ -260,12 +261,18 @@ void showStatus(StatusDisplay s) {
             ledState[YELLOW_LED] = LED_FLASH_50_2HZ;
             break;
         case STATUS_MESSAGE_RECEIVED:
-            ledState[GREEN_LED] = LED_SINGLE_FLICKER_ON;
-            ledState[YELLOW_LED] = LED_ON;
+            if (mode_state == MODE_UNINITIALISED) {
+                ledState[YELLOW_LED] = LED_SINGLE_FLICKER_ON;
+            } else if (mode_state == MODE_NORMAL) {
+                ledState[GREEN_LED] = LED_SINGLE_FLICKER_ON;
+            }
             break;
         case STATUS_MESSAGE_ACTED:
-            ledState[GREEN_LED] = LED_LONG_FLICKER_ON;
-            ledState[YELLOW_LED] = LED_ON;
+            if (mode_state == MODE_UNINITIALISED) {
+                ledState[YELLOW_LED] = LED_LONG_FLICKER_ON;
+            } else if (mode_state == MODE_NORMAL) {
+                ledState[GREEN_LED] = LED_LONG_FLICKER_ON;
+            }
             break;
         case STATUS_MEMORY_FAULT:
         case STATUS_FATAL_ERROR:

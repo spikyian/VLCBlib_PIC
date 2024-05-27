@@ -260,7 +260,7 @@ const Service eventTeachService = {
     NULL,               // highIsr
     NULL,               // lowIsr
 #endif
-#ifdef VCB_SERVICE
+#ifdef VLCB_SERVICE
     teachGetESDdata,    // get ESD data
 #endif
 #ifdef VLCB_DIAG
@@ -455,7 +455,7 @@ static Processed teachCheckLen(Message * m, uint8_t needed, uint8_t learn) {
     return checkLen(m, needed, SERVICE_ID_OLD_TEACH);
 }
 
-#ifdef VLCB_SERVICEE
+#ifdef VLCB_SERVICE
 /**
  * The Teach service supports data in the ESD message.
  * @param id which of the ESD data bytes

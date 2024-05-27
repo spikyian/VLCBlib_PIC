@@ -245,7 +245,7 @@ static void canPowerUp(void) {
     // Put module into Configuration mode.
 
     CANCON = 0b10000000;
-    // Wait for config mode
+    // ************************ Wait for config mode ***************************
     while (CANSTATbits.OPMODE2 == 0);
     
     ECANCON   = 0b10110000;   // ECAN mode 2 with FIFO, FIFOWM = 1 (init when four spaces left), init to first RX buffer
@@ -280,35 +280,21 @@ static void canPowerUp(void) {
     BRGCON3 = 0b00000011; // Wake-up enabled, wake-up filter not used, phase 2 = 4xTq
     CIOCON    = 0b00100000;    // TX drives Vdd when recessive, CAN capture to CCP1 disabled
 
-    // Setup masks so all filter bits are ignored apart from EXIDEN
+    /* Set the Filter and mask */
+    // Setup mask 0 so all filter bits are ignored apart from EXIDEN
     RXM0SIDH = 0;
     RXM0SIDL = 0x08;    // include EXIDEN in mask
     RXM0EIDH = 0;
     RXM0EIDL = 0;
-    RXM1SIDH = 0;
-    RXM1SIDL = 0x08;    // include EXIDEN in mask
-    RXM1EIDH = 0;
-    RXM1EIDL = 0;
-
     // Set filter 0 for standard ID only to reject bootloader messages
     RXF0SIDL = 0x00;
-    RXF1SIDL = 0x00;
-
-    // Link all filters to RXB0 - maybe only necessary to link 1
+    // Link filter to RXB0 
     RXFBCON0 = 0;
-    RXFBCON1 = 0;
-    RXFBCON2 = 0;
-    RXFBCON3 = 0;
-    RXFBCON4 = 0;
-    RXFBCON5 = 0;
-    RXFBCON6 = 0;
-    RXFBCON7 = 0;
-
-    // Link all filters to mask 0
+    // Link filter to mask 0
     MSEL0 = 0;
-    MSEL1 = 0;
-    MSEL2 = 0;
-    MSEL3 = 0;
+    // Enable filter 0
+    RXFCON0 = 1;
+
 
     // Configure the buffers to receive messages
     // RXB0CON = RXB1CON = 0x00; B0CON = B1CON = B2CON = B3CON = B4CON = B5CON = 0;
@@ -329,7 +315,7 @@ static void canPowerUp(void) {
     TXBIEbits.TXB2IE = 0;
     
     CANCON = 0;               // Set normal operation mode
-    // Wait for normal mode
+    // ************************** Wait for normal mode *************************
     while (CANSTATbits.OPMODE2 != 0);
 
     // Preload TXB0 with parameters ready for sending VLCB data packets
