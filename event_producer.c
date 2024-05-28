@@ -129,14 +129,14 @@ static Processed producerProcessMessage(Message *m) {
                 return PROCESSED;
             }
             if (m->opc == OPC_AREQ) {
-                index = findEvent((m->bytes[0]<<8)&(m->bytes[1]), (m->bytes[2]<<8)&(m->bytes[3]));
+                index = findEvent((uint16_t)((m->bytes[0]<<8)|(m->bytes[1])), (uint16_t)((m->bytes[2]<<8)|(m->bytes[3])));
             } else {
-                index = findEvent(0, (m->bytes[2]<<8)&(m->bytes[3]));
+                index = findEvent(0, (uint16_t)((m->bytes[2]<<8)|(m->bytes[3])));
             }
             if (index == NO_INDEX) return PROCESSED;
             // now get the happening
             ev = getEv(index, 0);
-            if (ev < 0) return PROCESSED;
+            if (ev <= 0) return PROCESSED;
 #if HAPPENING_SIZE == 1
             h = (uint8_t)ev;
 #endif

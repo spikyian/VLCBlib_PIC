@@ -138,6 +138,7 @@ typedef union Word {
  *  Indicates whether on ON event or OFF event
  */
 typedef enum {
+    EVENT_UNKNOWN = 255,
     EVENT_OFF=0,
     EVENT_ON=1
 } EventState;
