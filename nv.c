@@ -224,7 +224,7 @@ uint8_t setNV(uint8_t index, uint8_t value) {
     nvCache[index] = value;
     writeNVM(NV_NVM_TYPE, NV_ADDRESS+index, value);
 #else
-    oldValue = readNVM(NV_NVM_TYPE, NV_ADDRESS+index);
+    oldValue = (uint8_t)readNVM(NV_NVM_TYPE, NV_ADDRESS+index);
     writeNVM(NV_NVM_TYPE, NV_ADDRESS+index, value);
 #endif
     APP_nvValueChanged(index, value, oldValue);

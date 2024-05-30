@@ -862,7 +862,7 @@ void factoryReset(void) {
         }
     }
     // now write the version number
-    writeNVM(NV_NVM_TYPE, NV_ADDRESS, APP_NVM_VERSION);
+    writeNVM(VERSION_NVM_TYPE, VERSION_ADDRESS, APP_NVM_VERSION);
     
     APP_factoryReset();
 }
@@ -1290,7 +1290,7 @@ void main(void) {
     // init the romops ready for flash writes
     initRomOps();
     
-    if (readNVM(NV_NVM_TYPE, NV_ADDRESS) != APP_NVM_VERSION) {
+    if (readNVM(VERSION_NVM_TYPE, VERSION_ADDRESS) != APP_NVM_VERSION) {
         factoryReset();
     }
     
