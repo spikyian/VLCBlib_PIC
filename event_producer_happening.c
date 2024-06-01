@@ -62,6 +62,9 @@
 #include "event_teach.h"
 #include "event_producer.h"
 #include "mns.h"
+#include "event_teach_large.h"
+
+extern Boolean validStart(uint8_t tableIndex);
 
 // Forward function declarations
 static Processed producerProcessMessage(Message *m);

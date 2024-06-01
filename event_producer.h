@@ -72,6 +72,12 @@
  * 
  */
 
+#if HAPPENING_SIZE == 2
+typedef Word Happening;
+#endif
+#if HAPPENING_SIZE == 1
+typedef uint8_t Happening;
+#endif
 
 extern const Service eventProducerService;
 
