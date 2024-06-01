@@ -3,7 +3,6 @@ var annotated_dup =
     [ "_TickValue", "union___tick_value.html", "union___tick_value" ],
     [ "ActionAndState", "struct_action_and_state.html", "struct_action_and_state" ],
     [ "Config", "struct_config.html", "struct_config" ],
-    [ "DiagnosticVal", "union_diagnostic_val.html", "union_diagnostic_val" ],
     [ "Event", "struct_event.html", "struct_event" ],
     [ "EventTable", "struct_event_table.html", "struct_event_table" ],
     [ "EventTableFlags", "union_event_table_flags.html", "union_event_table_flags" ],

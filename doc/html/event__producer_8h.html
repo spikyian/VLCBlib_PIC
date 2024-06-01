@@ -139,11 +139,11 @@ Variables</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Ian Hogg </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>Dec 2022</dd></dl>
 <p>Handle the production of events. If EVENT_HASH_TABLE is defined then an additional lookup table uint8_t action2Event[NUM_HAPPENINGS] is used to obtain an <a class="el" href="struct_event.html">Event</a> using a Happening stored in the first EVs. This table is also populated using rebuildHashTable(). Given a Happening this table can be used to obtain the index into the <a class="el" href="struct_event_table.html">EventTable</a> for the Happening so the <a class="el" href="struct_event.html">Event</a> at that index in the <a class="el" href="struct_event_table.html">EventTable</a> can be transmitted.</p>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 Dependencies on other Services</h1>
 <p>The <a class="el" href="struct_event.html">Event</a> Producer service depends upon the <a class="el" href="struct_event.html">Event</a> Teach service. The <a class="el" href="struct_event.html">Event</a> Teach service MUST be included if the <a class="el" href="struct_event.html">Event</a> Producer <a class="el" href="struct_service.html">Service</a> is included by the module.</p>
 <p>If only fixed events are to be produced so that event teaching is not required then it is recommended to call <a class="el" href="vlcb_8c.html#a53a16cd2ff2166ac7a6990bb10fb53a9">sendMessage()</a> specifying the necessary ACON/ACOF and ASON/ASOF event messages directly from the application.</p>
-<h1><a class="anchor" id="autotoc_md11"></a>
+<h1><a class="anchor" id="autotoc_md12"></a>
 Module.h definitions required for the Event Producer service</h1>
 <ul>
 <li>#define PRODUCED_EVENTS Always defined whenever the <a class="el" href="struct_event.html">Event</a> Producer service is included</li>

@@ -134,14 +134,6 @@ void(*&#160;</td><td class="memItemRight" valign="bottom"><b>highIsr</b> )(void)
 void(*&#160;</td><td class="memItemRight" valign="bottom"><b>lowIsr</b> )(void)</td></tr>
 <tr class="memdesc:a26e02f43ae5891ef33d126221e63d1c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">handle any service specific high priority interrupt service routine. <br /></td></tr>
 <tr class="separator:a26e02f43ae5891ef33d126221e63d1c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1af4dbef3cebf8d4a896f3da2341944" id="r_ac1af4dbef3cebf8d4a896f3da2341944"><td class="memItemLeft" align="right" valign="top"><a id="ac1af4dbef3cebf8d4a896f3da2341944" name="ac1af4dbef3cebf8d4a896f3da2341944"></a>
-uint8_t(*&#160;</td><td class="memItemRight" valign="bottom"><b>getESDdata</b> )(uint8_t id)</td></tr>
-<tr class="memdesc:ac1af4dbef3cebf8d4a896f3da2341944"><td class="mdescLeft">&#160;</td><td class="mdescRight">To obtain any ESD bytes for the service. <br /></td></tr>
-<tr class="separator:ac1af4dbef3cebf8d4a896f3da2341944"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad806094933376394fc241ebcc31899b" id="r_aad806094933376394fc241ebcc31899b"><td class="memItemLeft" align="right" valign="top"><a id="aad806094933376394fc241ebcc31899b" name="aad806094933376394fc241ebcc31899b"></a>
-<a class="el" href="union_diagnostic_val.html">DiagnosticVal</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><b>getDiagnostic</b> )(uint8_t index)</td></tr>
-<tr class="memdesc:aad806094933376394fc241ebcc31899b"><td class="mdescLeft">&#160;</td><td class="mdescRight">pointer to function returning DiagnosticVal*. <br /></td></tr>
-<tr class="separator:aad806094933376394fc241ebcc31899b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This is the service descriptor and the main entry point to a service. The module's application code should add the service descriptors to the services array for any of the services which it requires to be implemented. The VLCB library code then uses the pointers in the service descriptor to access the service's functionality. It is the responsibility of the writer of the service to provide a populated singleton for the service that can be used by the module's application code. </p>

@@ -113,25 +113,9 @@ $(function(){initNavTree('event__teach_8h.html',''); initResizable(); });
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_event.html">Event</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="union_event_table_flags.html">EventTableFlags</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_event_table.html">EventTable</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a1cdd20e3ef223f7ae11e791f60a5a835" id="r_a1cdd20e3ef223f7ae11e791f60a5a835"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1cdd20e3ef223f7ae11e791f60a5a835">EVENTTABLE_OFFSET_FLAGS</a>&#160;&#160;&#160;0</td></tr>
-<tr class="separator:a1cdd20e3ef223f7ae11e791f60a5a835"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4a56380432dd046cc09e41b62b9689c" id="r_ad4a56380432dd046cc09e41b62b9689c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4a56380432dd046cc09e41b62b9689c">EVENTTABLE_OFFSET_NEXT</a>&#160;&#160;&#160;1</td></tr>
-<tr class="separator:ad4a56380432dd046cc09e41b62b9689c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e855a60c5952255d6b2fccdb7b45528" id="r_a3e855a60c5952255d6b2fccdb7b45528"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3e855a60c5952255d6b2fccdb7b45528">EVENTTABLE_OFFSET_NN</a>&#160;&#160;&#160;2</td></tr>
-<tr class="separator:a3e855a60c5952255d6b2fccdb7b45528"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18783131dda4394667f41cb813ad21f7" id="r_a18783131dda4394667f41cb813ad21f7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a18783131dda4394667f41cb813ad21f7">EVENTTABLE_OFFSET_EN</a>&#160;&#160;&#160;4</td></tr>
-<tr class="separator:a18783131dda4394667f41cb813ad21f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7260c350fcb83f00a88e51a4315e27da" id="r_a7260c350fcb83f00a88e51a4315e27da"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7260c350fcb83f00a88e51a4315e27da">EVENTTABLE_OFFSET_EVS</a>&#160;&#160;&#160;6</td></tr>
-<tr class="separator:a7260c350fcb83f00a88e51a4315e27da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06ff2b325b362e13f9e570d530089563" id="r_a06ff2b325b362e13f9e570d530089563"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a06ff2b325b362e13f9e570d530089563">EVENTTABLE_ROW_WIDTH</a>&#160;&#160;&#160;16</td></tr>
-<tr class="separator:a06ff2b325b362e13f9e570d530089563"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6cb9b05ea204a7905d0ae0143950a03" id="r_ab6cb9b05ea204a7905d0ae0143950a03"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab6cb9b05ea204a7905d0ae0143950a03">NO_INDEX</a>&#160;&#160;&#160;0xff</td></tr>
 <tr class="separator:ab6cb9b05ea204a7905d0ae0143950a03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5599ca1c7dbab5832ab986e73eddc913" id="r_a5599ca1c7dbab5832ab986e73eddc913"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5599ca1c7dbab5832ab986e73eddc913">EVENT_SET_MASK</a>&#160;&#160;&#160;0b10010000</td></tr>
@@ -155,8 +139,6 @@ Macros</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:af6d36fa07e038b1c412b456ffd65116a" id="r_af6d36fa07e038b1c412b456ffd65116a"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af6d36fa07e038b1c412b456ffd65116a">APP_addEvent</a> (uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8_t evVal, <a class="el" href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a> forceOwnNN)</td></tr>
 <tr class="separator:af6d36fa07e038b1c412b456ffd65116a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7258999884749a6c568598ee0037c2eb" id="r_a7258999884749a6c568598ee0037c2eb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7258999884749a6c568598ee0037c2eb">validStart</a> (uint8_t index)</td></tr>
-<tr class="separator:a7258999884749a6c568598ee0037c2eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1c770dea8609bb04a1f02bb02f28e85" id="r_aa1c770dea8609bb04a1f02bb02f28e85"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa1c770dea8609bb04a1f02bb02f28e85">getEv</a> (uint8_t tableIndex, uint8_t evIndex)</td></tr>
 <tr class="separator:aa1c770dea8609bb04a1f02bb02f28e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a275d5d58705f018ba8ea8a05477ba716" id="r_a275d5d58705f018ba8ea8a05477ba716"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a275d5d58705f018ba8ea8a05477ba716">getEVs</a> (uint8_t tableIndex)</td></tr>
@@ -169,10 +151,8 @@ Functions</h2></td></tr>
 <tr class="separator:aaa1bcfeab543550146f0b9d15b4a1222"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef79de314cb4fdf348009d498ad5cbc6" id="r_aef79de314cb4fdf348009d498ad5cbc6"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aef79de314cb4fdf348009d498ad5cbc6">findEvent</a> (uint16_t nodeNumber, uint16_t eventNumber)</td></tr>
 <tr class="separator:aef79de314cb4fdf348009d498ad5cbc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84842311410155eccc83819eaf8ee985" id="r_a84842311410155eccc83819eaf8ee985"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a84842311410155eccc83819eaf8ee985">addEvent</a> (uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8_t evVal, uint8_t forceOwnNN)</td></tr>
-<tr class="separator:a84842311410155eccc83819eaf8ee985"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ccf826767b71505fb4b5ffb2b4ff5af" id="r_a2ccf826767b71505fb4b5ffb2b4ff5af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2ccf826767b71505fb4b5ffb2b4ff5af">checkRemoveTableEntry</a> (uint8_t tableIndex)</td></tr>
-<tr class="separator:a2ccf826767b71505fb4b5ffb2b4ff5af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0c26a766be6cd890ea7e04b18e54cd5" id="r_ab0c26a766be6cd890ea7e04b18e54cd5"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab0c26a766be6cd890ea7e04b18e54cd5">addEvent</a> (uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8_t evVal, <a class="el" href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a> forceOwnNN)</td></tr>
+<tr class="separator:ab0c26a766be6cd890ea7e04b18e54cd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -184,27 +164,20 @@ Variables</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of the VLCB <a class="el" href="struct_event.html">Event</a> Teach service. </p>
 <p><a class="el" href="struct_event.html">Event</a> teaching service The service definition object is called eventTeachService.</p>
-<p>The events are stored as a hash table in flash (flash is faster to read than EEPROM) There can be up to 255 events. Since the address in the hash table will be 16 bits, and the address of the whole event table can also be covered by a 16 bit address, there is no advantage in having a separate hashed index table pointing to the actual event table. Therefore the hashing algorithm produces the index into the actual event table, which can be shifted to give the address - each event table entry is 16 bytes. After the event number and hash table overhead, this allows up to 10 EVs per event.</p>
+<p>The events are stored in non volatile memory (note flash is faster to read than EEPROM) There can be up to 255 events.</p>
 <p>This generic code needs no knowledge of specific EV usage.</p>
 <dl class="section warning"><dt>Warning</dt><dd>BEWARE must set NUM_EVENTS to a maximum of 255! If set to 256 then the for (uint8_t i=0; i&lt;NUM_EVENTS; i++) loops will never end as they use an uint8_t instead of int for space/performance reasons.</dd>
 <dd>
 BEWARE Concurrency: The functions which use the eventtable and hash/lookup must not be used whilst there is a chance of the functions which modify the eventtable of RAM based hash/lookup tables being called. These functions should therefore either be called from the same thread or disable interrupts.</dd></dl>
-<p>define EVENT_HASH_TABLE to use event hash tables for fast access - at the expense of some RAM</p>
-<p>The code is responsible for storing EVs for each defined event and also for allowing speedy lookup of EVs given an <a class="el" href="struct_event.html">Event</a> or finding an <a class="el" href="struct_event.html">Event</a> given a Happening which is stored in the first EVs.</p>
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md13"></a>
 Dependencies on other Services</h1>
 <p>Although the <a class="el" href="struct_event.html">Event</a> Teach service does not depend upon any other services all modules must include the MNS service.</p>
-<h1><a class="anchor" id="autotoc_md13"></a>
+<h1><a class="anchor" id="autotoc_md14"></a>
 Module.h definitions required for the Event Teach service</h1>
 <ul>
-<li>#define EVENT_TABLE_WIDTH This the the width of the table - not the number of EVs per event as multiple rows in the table can be used to store an event.</li>
 <li>#define NUM_EVENTS The number of rows in the event table. The actual number of events may be less than this if any events use more the 1 row.</li>
 <li>#define EVENT_TABLE_ADDRESS The address where the event table is stored.</li>
-<li>#define EVENT_TABLE_NVM_TYPE Set to be either FLASH_NVM_TYPE or EEPROM_NVM_TYPE</li>
-<li>#define EVENT_HASH_TABLE If defined then hash tables will be used for quicker lookup of events at the expense of additional RAM.</li>
-<li>#define EVENT_HASH_LENGTH If hash tables are used then this sets the length of the hash.</li>
-<li>#define EVENT_CHAIN_LENGTH If hash tables are used then this sets the number of events in the hash chain.</li>
-<li>#define MAX_HAPPENING Set to be the maximum Happening value </li>
+<li>#define EVENT_TABLE_NVM_TYPE Set to be either FLASH_NVM_TYPE or EEPROM_NVM_TYPE </li>
 </ul>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a23612a14a15126da904d4b84fa851e82" name="a23612a14a15126da904d4b84fa851e82"></a>
@@ -267,96 +240,6 @@ Module.h definitions required for the Event Teach service</h1>
 
 </div>
 </div>
-<a id="a18783131dda4394667f41cb813ad21f7" name="a18783131dda4394667f41cb813ad21f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a18783131dda4394667f41cb813ad21f7">&#9670;&#160;</a></span>EVENTTABLE_OFFSET_EN</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define EVENTTABLE_OFFSET_EN&#160;&#160;&#160;4</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Byte index into an <a class="el" href="struct_event_table.html">EventTable</a> row to access the event en element. </p>
-
-</div>
-</div>
-<a id="a7260c350fcb83f00a88e51a4315e27da" name="a7260c350fcb83f00a88e51a4315e27da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7260c350fcb83f00a88e51a4315e27da">&#9670;&#160;</a></span>EVENTTABLE_OFFSET_EVS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define EVENTTABLE_OFFSET_EVS&#160;&#160;&#160;6</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Byte index into an <a class="el" href="struct_event_table.html">EventTable</a> row to access the event variables. </p>
-
-</div>
-</div>
-<a id="a1cdd20e3ef223f7ae11e791f60a5a835" name="a1cdd20e3ef223f7ae11e791f60a5a835"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1cdd20e3ef223f7ae11e791f60a5a835">&#9670;&#160;</a></span>EVENTTABLE_OFFSET_FLAGS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define EVENTTABLE_OFFSET_FLAGS&#160;&#160;&#160;0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Byte index into an <a class="el" href="struct_event_table.html">EventTable</a> row to access the flags element. </p>
-
-</div>
-</div>
-<a id="ad4a56380432dd046cc09e41b62b9689c" name="ad4a56380432dd046cc09e41b62b9689c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4a56380432dd046cc09e41b62b9689c">&#9670;&#160;</a></span>EVENTTABLE_OFFSET_NEXT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define EVENTTABLE_OFFSET_NEXT&#160;&#160;&#160;1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Byte index into an <a class="el" href="struct_event_table.html">EventTable</a> row to access the next element. </p>
-
-</div>
-</div>
-<a id="a3e855a60c5952255d6b2fccdb7b45528" name="a3e855a60c5952255d6b2fccdb7b45528"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e855a60c5952255d6b2fccdb7b45528">&#9670;&#160;</a></span>EVENTTABLE_OFFSET_NN</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define EVENTTABLE_OFFSET_NN&#160;&#160;&#160;2</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Byte index into an <a class="el" href="struct_event_table.html">EventTable</a> row to access the event nn element. </p>
-
-</div>
-</div>
-<a id="a06ff2b325b362e13f9e570d530089563" name="a06ff2b325b362e13f9e570d530089563"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06ff2b325b362e13f9e570d530089563">&#9670;&#160;</a></span>EVENTTABLE_ROW_WIDTH</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define EVENTTABLE_ROW_WIDTH&#160;&#160;&#160;16</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Total number of bytes in an <a class="el" href="struct_event_table.html">EventTable</a> row. </p>
-
-</div>
-</div>
 <a id="ab6cb9b05ea204a7905d0ae0143950a03" name="ab6cb9b05ea204a7905d0ae0143950a03"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab6cb9b05ea204a7905d0ae0143950a03">&#9670;&#160;</a></span>NO_INDEX</h2>
 
@@ -373,8 +256,8 @@ Module.h definitions required for the Event Teach service</h1>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a84842311410155eccc83819eaf8ee985" name="a84842311410155eccc83819eaf8ee985"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84842311410155eccc83819eaf8ee985">&#9670;&#160;</a></span>addEvent()</h2>
+<a id="ab0c26a766be6cd890ea7e04b18e54cd5" name="ab0c26a766be6cd890ea7e04b18e54cd5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0c26a766be6cd890ea7e04b18e54cd5">&#9670;&#160;</a></span>addEvent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -405,7 +288,7 @@ Module.h definitions required for the Event Teach service</h1>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>forceOwnNN</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a></td>          <td class="paramname"><span class="paramname"><em>forceOwnNN</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -481,38 +364,6 @@ Module.h definitions required for the Event Teach service</h1>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>error number or 0 for success </dd></dl>
-
-</div>
-</div>
-<a id="a2ccf826767b71505fb4b5ffb2b4ff5af" name="a2ccf826767b71505fb4b5ffb2b4ff5af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2ccf826767b71505fb4b5ffb2b4ff5af">&#9670;&#160;</a></span>checkRemoveTableEntry()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void checkRemoveTableEntry </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>tableIndex</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Check to see if any event entries can be removed. Entries can be removed if their EVs are all set to EV_FILL.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">tableIndex</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -691,39 +542,6 @@ Module.h definitions required for the Event Teach service</h1>
 
 </div>
 </div>
-<a id="a7258999884749a6c568598ee0037c2eb" name="a7258999884749a6c568598ee0037c2eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7258999884749a6c568598ee0037c2eb">&#9670;&#160;</a></span>validStart()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a> validStart </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>tableIndex</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Checks if the specified index is the start of a set of linked entries.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">tableIndex</td><td>the index into event table to check </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true if the specified index is the start of a linked set </dd></dl>
-
-</div>
-</div>
 <a id="ad66c29cafca265754d755a5129120df7" name="ad66c29cafca265754d755a5129120df7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad66c29cafca265754d755a5129120df7">&#9670;&#160;</a></span>writeEv()</h2>
 
@@ -811,7 +629,7 @@ Module.h definitions required for the Event Teach service</h1>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The EVs for an event after calling <a class="el" href="event__teach_8c.html#a275d5d58705f018ba8ea8a05477ba716">getEVs()</a> </p>
+<p>The EVs for an event after calling <a class="el" href="event__teach__large_8c.html#a275d5d58705f018ba8ea8a05477ba716">getEVs()</a> </p>
 
 </div>
 </div>

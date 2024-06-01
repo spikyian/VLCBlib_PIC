@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['diagnosticval_0',['DiagnosticVal',['../vlcb_8h.html#ab90c1a42242042feb599bbd102d1f596',1,'vlcb.h']]]
+  ['eeprom_5faddress_5ft_0',['eeprom_address_t',['../nvm_8h.html#a7a61772455acf72b30881bb0c1807d8b',1,'nvm.h']]],
+  ['eeprom_5fdata_5ft_1',['eeprom_data_t',['../nvm_8h.html#adc00a74d8315a1dbf3f4e970dee14eea',1,'nvm.h']]]
 ];

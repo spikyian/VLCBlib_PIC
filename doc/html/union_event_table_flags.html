@@ -98,7 +98,7 @@ $(function(){initNavTree('union_event_table_flags.html',''); initResizable(); })
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="event__teach_8h_source.html">event_teach.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="event__teach__large_8h_source.html">event_teach_large.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -131,11 +131,37 @@ struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>asByte</b></td></tr>
 <tr class="memdesc:aada9536de6acc6e1c85bf6c0e1fdf423"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to 0xFF for free entry, initially set to zero for entry in use, then producer flag set if required. <br /></td></tr>
 <tr class="separator:aada9536de6acc6e1c85bf6c0e1fdf423"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7bf6a25254c738f1e1f54b17feba091" id="r_ac7bf6a25254c738f1e1f54b17feba091"><td class="memItemLeft" ><a id="ac7bf6a25254c738f1e1f54b17feba091" name="ac7bf6a25254c738f1e1f54b17feba091"></a>
+struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99aaa4e95dda96e61e97e1499c3e4464" id="r_a99aaa4e95dda96e61e97e1499c3e4464"><td class="memItemLeft" >
+&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<b>eVsUsed</b>:4&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:a99aaa4e95dda96e61e97e1499c3e4464"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many of the EVs in this row are used. Only valid if continued is clear. <br /></td></tr>
+<tr class="separator:a99aaa4e95dda96e61e97e1499c3e4464"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19195b581ad3b4f299017993060a81d5" id="r_a19195b581ad3b4f299017993060a81d5"><td class="memItemLeft" >
+&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<b>continued</b>:1&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:a19195b581ad3b4f299017993060a81d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">there is another entry. <br /></td></tr>
+<tr class="separator:a19195b581ad3b4f299017993060a81d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac822e6d5f7ae5e33ce0ee0deb060e040" id="r_ac822e6d5f7ae5e33ce0ee0deb060e040"><td class="memItemLeft" >
+&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<b>continuation</b>:1&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:ac822e6d5f7ae5e33ce0ee0deb060e040"><td class="mdescLeft">&#160;</td><td class="mdescRight">Continuation of previous event entry. <br /></td></tr>
+<tr class="separator:ac822e6d5f7ae5e33ce0ee0deb060e040"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab56447ae5024f133e7a74ede13ee10a7" id="r_ab56447ae5024f133e7a74ede13ee10a7"><td class="memItemLeft" >
+&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<b>forceOwnNN</b>:1&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:ab56447ae5024f133e7a74ede13ee10a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ignore the specified NN and use module's own NN. <br /></td></tr>
+<tr class="separator:ab56447ae5024f133e7a74ede13ee10a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c1a9eba4efccc3436740c04ec450842" id="r_a5c1a9eba4efccc3436740c04ec450842"><td class="memItemLeft" >
+&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<b>freeEntry</b>:1&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memdesc:a5c1a9eba4efccc3436740c04ec450842"><td class="mdescLeft">&#160;</td><td class="mdescRight">this row in the table is not used - takes priority over other flags. <br /></td></tr>
+<tr class="separator:a5c1a9eba4efccc3436740c04ec450842"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7bf6a25254c738f1e1f54b17feba091" id="r_ac7bf6a25254c738f1e1f54b17feba091"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom">&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:ac7bf6a25254c738f1e1f54b17feba091"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The flags containing information about the event table entry. A union provides access as bits or as a complete byte. </p>
-</div><hr/>The documentation for this union was generated from the following file:<ul>
-<li><a class="el" href="event__teach_8h_source.html">event_teach.h</a></li>
+</div><hr/>The documentation for this union was generated from the following files:<ul>
+<li><a class="el" href="event__teach__large_8c.html">event_teach_large.c</a></li>
+<li><a class="el" href="event__teach__large_8h_source.html">event_teach_large.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

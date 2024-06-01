@@ -9,8 +9,6 @@ var mns_8h =
     [ "MNS_DIAGNOSTICS_UPTIMEH", "mns_8h.html#af23d00b578b6331b864c76ca71926609", null ],
     [ "MNS_DIAGNOSTICS_UPTIMEL", "mns_8h.html#a5a25d4cad4cd9217654172ac7ba0aa56", null ],
     [ "NUM_MNS_DIAGNOSTICS", "mns_8h.html#acf5ee9e09a5a5dd62715e8e01c3c941e", null ],
-    [ "updateModuleErrorStatus", "mns_8h.html#a57807e6772d17598b2608951ef49bdc6", null ],
-    [ "mnsDiagnostics", "mns_8h.html#ad17d3f6b2c418e3d30a2797dcf6fda1d", null ],
     [ "mnsService", "mns_8h.html#a05160624e3e355535f7bc7dae4fad5a4", null ],
     [ "mode_flags", "mns_8h.html#ae11d61a51505b9b853796f1ea7a7a905", null ],
     [ "mode_state", "mns_8h.html#a57751f3ccc9df6b53064e8a8546fd665", null ],

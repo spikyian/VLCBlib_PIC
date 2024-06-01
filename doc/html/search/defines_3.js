@@ -18,5 +18,5 @@ var searchData=
   ['can_5fdiag_5ftx_5fmessages_15',['CAN_DIAG_TX_MESSAGES',['../can_8h.html#a84dd9b8b957af7b489bbc01030734817',1,'can.h']]],
   ['can_5ftx_5ftimeout_16',['CAN_TX_TIMEOUT',['../can_8h.html#a74fd051d23e60127c82ee39caad0ea9a',1,'can.h']]],
   ['canid_5fdefault_17',['CANID_DEFAULT',['../can_8h.html#a5b23147ec34d8dd40ada34aadeb30505',1,'can.h']]],
-  ['consumer_5fdiag_5fnumconsumed_18',['CONSUMER_DIAG_NUMCONSUMED',['../event__consumer_8h.html#ae3f7c7a95b07b482db77fcbbcce35f79',1,'event_consumer.h']]]
+  ['consumer_5fdiag_5fnumconsumed_18',['CONSUMER_DIAG_NUMCONSUMED',['../event__consumer_8h.html#ae3f7c7a95b07b482db77fcbbcce35f79',1,'CONSUMER_DIAG_NUMCONSUMED:&#160;event_consumer.h'],['../event__consumer__simple_8h.html#ae3f7c7a95b07b482db77fcbbcce35f79',1,'CONSUMER_DIAG_NUMCONSUMED:&#160;event_consumer_simple.h']]]
 ];

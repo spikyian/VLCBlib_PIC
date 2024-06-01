@@ -105,7 +105,9 @@ $(function(){initNavTree('vlcb_8h.html',''); initResizable(); });
 
 <p>Baseline functionality required by VLCB and entry points into the application.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;vlcbdefs_enums.h&quot;</code><br />
+<div class="textblock"><code>#include &lt;xc.h&gt;</code><br />
+<code>#include &quot;module.h&quot;</code><br />
+<code>#include &quot;vlcbdefs_enums.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="nvm_8h_source.html">nvm.h</a>&quot;</code><br />
 </div>
 <p><a href="vlcb_8h_source.html">Go to the source code of this file.</a></p>
@@ -115,8 +117,6 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_message.html">Message</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="union_word.html">Word</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="union_diagnostic_val.html">DiagnosticVal</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_service.html">Service</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -208,8 +208,6 @@ Typedefs</h2></td></tr>
 <tr class="separator:a82fffef6ac8d8a796ab35b7d6a7a0dcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bbd0c6dc7d668b55f6a3eb986929862" id="r_a4bbd0c6dc7d668b55f6a3eb986929862"><td class="memItemLeft" align="right" valign="top">typedef union Word&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4bbd0c6dc7d668b55f6a3eb986929862">Word</a></td></tr>
 <tr class="separator:a4bbd0c6dc7d668b55f6a3eb986929862"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab90c1a42242042feb599bbd102d1f596" id="r_ab90c1a42242042feb599bbd102d1f596"><td class="memItemLeft" align="right" valign="top">typedef union DiagnosticVal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab90c1a42242042feb599bbd102d1f596">DiagnosticVal</a></td></tr>
-<tr class="separator:ab90c1a42242042feb599bbd102d1f596"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9aa490af7b5c08b0b76e2cd558c7d587" id="r_a9aa490af7b5c08b0b76e2cd558c7d587"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="#a60587b24892ebc76ee16bbfdb4d52544">Processed</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9aa490af7b5c08b0b76e2cd558c7d587">Processed</a></td></tr>
 <tr class="separator:a9aa490af7b5c08b0b76e2cd558c7d587"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66aa255b79f3ce6375c015e8db0f04b6" id="r_a66aa255b79f3ce6375c015e8db0f04b6"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="#a11444bb1686f1beb6cdf0482278a7c7f">Mode_state</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a66aa255b79f3ce6375c015e8db0f04b6">Mode_state</a></td></tr>
@@ -241,7 +239,8 @@ Enumerations</h2></td></tr>
 , <b>RESULT_SUCCESS</b>
  }</td></tr>
 <tr class="separator:a28287671eaf7406afd604bd055ba4066"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab951f47efbc96e7b5586e5a45b4aaa93" id="r_ab951f47efbc96e7b5586e5a45b4aaa93"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab951f47efbc96e7b5586e5a45b4aaa93">EventState</a> { <b>EVENT_OFF</b> =0
+<tr class="memitem:ab951f47efbc96e7b5586e5a45b4aaa93" id="r_ab951f47efbc96e7b5586e5a45b4aaa93"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab951f47efbc96e7b5586e5a45b4aaa93">EventState</a> { <b>EVENT_UNKNOWN</b> = 255
+, <b>EVENT_OFF</b> =0
 , <b>EVENT_ON</b> =1
  }</td></tr>
 <tr class="separator:ab951f47efbc96e7b5586e5a45b4aaa93"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -380,21 +379,6 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Logical boolean type. </p>
-
-</div>
-</div>
-<a id="ab90c1a42242042feb599bbd102d1f596" name="ab90c1a42242042feb599bbd102d1f596"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab90c1a42242042feb599bbd102d1f596">&#9670;&#160;</a></span>DiagnosticVal</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef union DiagnosticVal DiagnosticVal</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Diagnostic value which may be accessed either as a uint16, int16 or a pair of uint8s. A collection (array) of DiagnosticVals are typically saved by a service and one of the values incremented when something of interest happens. The DiagnosticVals may then be accessed using the getDiagnostic() <a class="el" href="struct_service.html">Service</a> method. The MNS service RDGN opcode allows the diagnostic values to be reported on the VLCB bus. </p>
 
 </div>
 </div>

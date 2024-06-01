@@ -1,8 +1,6 @@
 var struct_service =
 [
     [ "factoryReset", "struct_service.html#a2a73d072c49644eb3551211297ed112a", null ],
-    [ "getDiagnostic", "struct_service.html#aad806094933376394fc241ebcc31899b", null ],
-    [ "getESDdata", "struct_service.html#ac1af4dbef3cebf8d4a896f3da2341944", null ],
     [ "highIsr", "struct_service.html#a5faca701d3b14fb32cfebd3d12d3e1b2", null ],
     [ "lowIsr", "struct_service.html#a26e02f43ae5891ef33d126221e63d1c8", null ],
     [ "poll", "struct_service.html#a9d5017fbe19bbcb67455b16ed63308a1", null ],

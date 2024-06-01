@@ -2,7 +2,6 @@ var vlcb_8h =
 [
     [ "Message", "struct_message.html", "struct_message" ],
     [ "Word", "union_word.html", "union_word" ],
-    [ "DiagnosticVal", "union_diagnostic_val.html", "union_diagnostic_val" ],
     [ "Service", "struct_service.html", "struct_service" ],
     [ "Transport", "struct_transport.html", "struct_transport" ],
     [ "EVENT_CLR_MASK", "vlcb_8h.html#a23612a14a15126da904d4b84fa851e82", null ],
@@ -25,7 +24,6 @@ var vlcb_8h =
     [ "SERVICE_ID_ALL", "vlcb_8h.html#a8628c68948100f63909f5e070a052f05", null ],
     [ "SERVICE_ID_NOT_FOUND", "vlcb_8h.html#a9a82ed58543deac142c125962348c5e7", null ],
     [ "Boolean", "vlcb_8h.html#ad665bd4a0bff725979ec9dfbda92f5f5", null ],
-    [ "DiagnosticVal", "vlcb_8h.html#ab90c1a42242042feb599bbd102d1f596", null ],
     [ "Message", "vlcb_8h.html#a82fffef6ac8d8a796ab35b7d6a7a0dcb", null ],
     [ "MessageReceived", "vlcb_8h.html#ac86cce95c833e0b474dfd99d0afa0399", null ],
     [ "Mode_state", "vlcb_8h.html#a66aa255b79f3ce6375c015e8db0f04b6", null ],
@@ -42,6 +40,7 @@ var vlcb_8h =
       [ "TRUE", "vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13aa82764c3079aea4e60c80e45befbb839", null ]
     ] ],
     [ "EventState", "vlcb_8h.html#ab951f47efbc96e7b5586e5a45b4aaa93", [
+      [ "EVENT_UNKNOWN", "vlcb_8h.html#ab951f47efbc96e7b5586e5a45b4aaa93a26beca10d559b1d358c49a8b872cc5eb", null ],
       [ "EVENT_OFF", "vlcb_8h.html#ab951f47efbc96e7b5586e5a45b4aaa93a3c1793159711b266987130ce2ba278a2", null ],
       [ "EVENT_ON", "vlcb_8h.html#ab951f47efbc96e7b5586e5a45b4aaa93ade58c2bd9e3b138542df9fffe1f5c463", null ]
     ] ],

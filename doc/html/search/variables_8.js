@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['messages_0',['messages',['../struct_message_queue.html#a8c2fa896ebabce3ca2c2afb81fc0f29d',1,'MessageQueue']]],
-  ['mnsdiagnostics_1',['mnsDiagnostics',['../mns_8c.html#ad17d3f6b2c418e3d30a2797dcf6fda1d',1,'mnsDiagnostics:&#160;mns.c'],['../mns_8h.html#ad17d3f6b2c418e3d30a2797dcf6fda1d',1,'mnsDiagnostics:&#160;mns.c']]],
-  ['mnsservice_2',['mnsService',['../mns_8c.html#a05160624e3e355535f7bc7dae4fad5a4',1,'mnsService:&#160;mns.c'],['../mns_8h.html#a05160624e3e355535f7bc7dae4fad5a4',1,'mnsService:&#160;mns.c']]],
-  ['mode_5fflags_3',['mode_flags',['../mns_8c.html#ae11d61a51505b9b853796f1ea7a7a905',1,'mode_flags:&#160;mns.c'],['../mns_8h.html#ae11d61a51505b9b853796f1ea7a7a905',1,'mode_flags:&#160;mns.c']]],
-  ['mode_5fstate_4',['mode_state',['../mns_8c.html#a57751f3ccc9df6b53064e8a8546fd665',1,'mode_state:&#160;mns.c'],['../mns_8h.html#a57751f3ccc9df6b53064e8a8546fd665',1,'mode_state:&#160;mns.c']]]
+  ['next_0',['next',['../struct_event_table.html#a4c1777ff5a9d6448db88c226d0794d04',1,'EventTable']]],
+  ['nn_1',['NN',['../struct_event.html#a9fa657b4866420b2c3010ba9201990c0',1,'Event']]],
+  ['nn_2',['nn',['../mns_8c.html#a349d18d214352e095455e139e1606cf5',1,'nn:&#160;mns.c'],['../mns_8h.html#a349d18d214352e095455e139e1606cf5',1,'nn:&#160;mns.c']]],
+  ['no_3',['no',['../struct_config.html#af76c87939bfc1ccd7e8d8a702254b238',1,'Config']]],
+  ['nvservice_4',['nvService',['../nv_8c.html#a54cb92ae67b344b1663b74af93adf6f0',1,'nvService:&#160;nv.c'],['../nv_8h.html#a54cb92ae67b344b1663b74af93adf6f0',1,'nvService:&#160;nv.c']]]
 ];

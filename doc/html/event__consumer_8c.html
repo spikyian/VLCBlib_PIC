@@ -125,7 +125,7 @@ Variables</h2></td></tr>
 <dl class="section copyright"><dt>Copyright</dt><dd>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Ian Hogg </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>Dec 2022</dd></dl>
-<p>The service definition object is called eventConsumerService. Process consumed events. Process Long and Short events. Also handles events with data bytes if HANDLE_DATA_EVENTS is defined. The data is ignored. If COMSUMER_EVS_AS_ACTIONS is defined then EVs after the Happening are treated as Actions and are added to an Action queue to be processed by the application. </p>
+<p>The service definition object is called eventConsumerService. Process consumed events. Process Long and Short events. Also handles events with data bytes if HANDLE_DATA_EVENTS is defined. The data is ignored. If CONSUMER_EVS_AS_ACTIONS is defined then EVs after the Happening are treated as Actions and are added to an Action queue to be processed by the application. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a107a795a0f8d13dc9b975e70297ba29f" name="a107a795a0f8d13dc9b975e70297ba29f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a107a795a0f8d13dc9b975e70297ba29f">&#9670;&#160;</a></span>deleteActionRange()</h2>
@@ -169,7 +169,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Pull the next Action from the queue. If COMSUMER_EVS_AS_ACTIONS is defined in module.h then the event's EVs will be treated as Actions and will be pushed onto the Action queue. The application should use <a class="el" href="#a4664ca73d3f4d10b167230afcc7366dd">popAction()</a> to obtain the next Action for processing.</p>
+<p>Pull the next Action from the queue. If CONSUMER_EVS_AS_ACTIONS is defined in module.h then the event's EVs will be treated as Actions and will be pushed onto the Action queue. The application should use <a class="el" href="#a4664ca73d3f4d10b167230afcc7366dd">popAction()</a> to obtain the next Action for processing.</p>
 <dl class="section return"><dt>Returns</dt><dd>the next action of NULL if the queue was empty </dd></dl>
 
 </div>
@@ -221,8 +221,12 @@ Variables</h2></td></tr>
 <div class="line">    NULL,               </div>
 <div class="line">    NULL,               </div>
 <div class="line"> </div>
-<div class="line">    NULL,               </div>
-<div class="line">    consumerGetDiagnostic                </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"> </div>
 <div class="line">}</div>
 </div><!-- fragment --><p>The service descriptor for the eventConsumer service. The application must include this descriptor within the const <a class="el" href="struct_service.html">Service</a> * const services[] array and include the necessary settings within module.h in order to make use of the event consumer service. </p>
 

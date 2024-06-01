@@ -94,7 +94,6 @@ $(function(){initNavTree('mns_8h.html',''); initResizable(); });
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
-<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">mns.h File Reference</div></div>
 </div><!--header-->
@@ -145,11 +144,6 @@ Macros</h2></td></tr>
 <tr class="memdesc:a95540f9efe2e4c00e4b27c8c420c34d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of received messages acted upon. <br /></td></tr>
 <tr class="separator:a95540f9efe2e4c00e4b27c8c420c34d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a57807e6772d17598b2608951ef49bdc6" id="r_a57807e6772d17598b2608951ef49bdc6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a57807e6772d17598b2608951ef49bdc6">updateModuleErrorStatus</a> (void)</td></tr>
-<tr class="separator:a57807e6772d17598b2608951ef49bdc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a05160624e3e355535f7bc7dae4fad5a4" id="r_a05160624e3e355535f7bc7dae4fad5a4"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_service.html">Service</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05160624e3e355535f7bc7dae4fad5a4">mnsService</a></td></tr>
@@ -160,8 +154,6 @@ Variables</h2></td></tr>
 <tr class="separator:a57751f3ccc9df6b53064e8a8546fd665"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae11d61a51505b9b853796f1ea7a7a905" id="r_ae11d61a51505b9b853796f1ea7a7a905"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae11d61a51505b9b853796f1ea7a7a905">mode_flags</a></td></tr>
 <tr class="separator:ae11d61a51505b9b853796f1ea7a7a905"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad17d3f6b2c418e3d30a2797dcf6fda1d" id="r_ad17d3f6b2c418e3d30a2797dcf6fda1d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="union_diagnostic_val.html">DiagnosticVal</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad17d3f6b2c418e3d30a2797dcf6fda1d">mnsDiagnostics</a> [<a class="el" href="#acf5ee9e09a5a5dd62715e8e01c3c941e">NUM_MNS_DIAGNOSTICS</a>]</td></tr>
-<tr class="separator:ad17d3f6b2c418e3d30a2797dcf6fda1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a025b9760b10bb4bcb169fb87678451d5" id="r_a025b9760b10bb4bcb169fb87678451d5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="ticktime_8h.html#ab0669b003836b10a86aed5b3b829bae3">TickValue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a025b9760b10bb4bcb169fb87678451d5">pbTimer</a></td></tr>
 <tr class="separator:a025b9760b10bb4bcb169fb87678451d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -169,11 +161,11 @@ Variables</h2></td></tr>
 <div class="textblock"><p>Implementation of the VLCB Minimum Module <a class="el" href="struct_service.html">Service</a>. </p>
 <p>MNS provides functionality required by all VLCB modules.</p>
 <p>The service definition object is called mnsService. This is a large service as it handles mode transitions, including setting of node number. The module's LEDs and push button are also supported. <a class="el" href="struct_service.html">Service</a> discovery and Diagnostics are also processed from this service.</p>
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md18"></a>
 Dependencies on other Services</h1>
 <p>None.</p>
 <p>MNS is a mandatory service for all VLCB modules and is therefore to be included by all module applications.</p>
-<h1><a class="anchor" id="autotoc_md17"></a>
+<h1><a class="anchor" id="autotoc_md19"></a>
 Module.h definitions required for the MNS service</h1>
 <ul>
 <li>#define NUM_SERVICES to be the number of services implemented by the module. The application must put the services into the services array.</li>
@@ -217,57 +209,7 @@ Module.h definitions required for the MNS service</h1>
 
 </div>
 </div>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="a57807e6772d17598b2608951ef49bdc6" name="a57807e6772d17598b2608951ef49bdc6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a57807e6772d17598b2608951ef49bdc6">&#9670;&#160;</a></span>updateModuleErrorStatus()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void updateModuleErrorStatus </td>
-          <td>(</td>
-          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Update the module status with an error. This is safe to be called from the CAN send function. </p>
-
-</div>
-</div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="ad17d3f6b2c418e3d30a2797dcf6fda1d" name="ad17d3f6b2c418e3d30a2797dcf6fda1d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad17d3f6b2c418e3d30a2797dcf6fda1d">&#9670;&#160;</a></span>mnsDiagnostics</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="union_diagnostic_val.html">DiagnosticVal</a> mnsDiagnostics[<a class="el" href="#acf5ee9e09a5a5dd62715e8e01c3c941e">NUM_MNS_DIAGNOSTICS</a>]</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The diagnostic values supported by the MNS service. </p>
-
-</div>
-</div>
 <a id="a05160624e3e355535f7bc7dae4fad5a4" name="a05160624e3e355535f7bc7dae4fad5a4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a05160624e3e355535f7bc7dae4fad5a4">&#9670;&#160;</a></span>mnsService</h2>
 
