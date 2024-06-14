@@ -57,6 +57,7 @@
 static DiagnosticVal consumerDiagnostics[NUM_CONSUMER_DIAGNOSTICS];
 static Processed consumerProcessMessage(Message * m);
 static DiagnosticVal * consumerGetDiagnostic(uint8_t index); 
+static uint8_t consumerEsdData(uint8_t index);
         
 /**
  * The service descriptor for the eventConsumer service. The application must include this
@@ -76,7 +77,7 @@ const Service eventConsumerService = {
     NULL,               // lowIsr
 #endif
 #ifdef VLCB_SERVICE
-    NULL,               // Get ESD
+    consumerEsdData,               // Get ESD
 #endif
 #ifdef VLCB_DIAG
     consumerGetDiagnostic                // getDiagnostic
@@ -150,3 +151,18 @@ static DiagnosticVal * consumerGetDiagnostic(uint8_t index) {
 }
 #endif
 
+#ifdef VLCB_SERVICE
+/**
+ * Return the service extended definition bytes.
+ * @param id identifier for the extended service definition data
+ * @return the ESD data
+ */
+static uint8_t consumerEsdData(uint8_t index) {
+    switch (index){
+        case 0:
+            return CONSUMER_EV_NOT_SPECIFIED;
+        default:
+            return 0;
+    }
+}
+#endif

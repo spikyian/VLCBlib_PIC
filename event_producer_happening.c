@@ -73,6 +73,7 @@ static void producerPowerUp(void);
 static DiagnosticVal * producerGetDiagnostic(uint8_t index);
 static DiagnosticVal producerDiagnostics[NUM_PRODUCER_DIAGNOSTICS];
 #endif
+static uint8_t producerEsdData(uint8_t id);
 
 /**
  * The service descriptor for the event producer service. The application must include this
@@ -96,7 +97,7 @@ const Service eventProducerService = {
     NULL,               // lowIsr
 #endif
 #ifdef VLCB_SERVICE
-    NULL,               // Get ESD data
+    producerEsdData,               // Get ESD data
 #endif
 #ifdef VLCB_DIAG
     producerGetDiagnostic                // getDiagnostic
@@ -180,6 +181,24 @@ static DiagnosticVal * producerGetDiagnostic(uint8_t index) {
         return NULL;
     }
     return &(producerDiagnostics[index-1]);
+}
+#endif
+
+#ifdef VLCB_SERVICE
+/**
+ * Return the service extended definition bytes.
+ * @param id identifier for the extended service definition data
+ * @return the ESD data
+ */
+static uint8_t producerEsdData(uint8_t index) {
+    switch (index){
+        case 0:
+            return PRODUCER_EV_HAPPENING;
+        case 1:
+            return HAPPENING_SIZE;
+        default:
+            return 0;
+    }
 }
 #endif
 
