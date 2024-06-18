@@ -132,6 +132,7 @@ static union
 static flash_data_t       flashBuffer[FLASH_PAGE_SIZE];    // Assumes that Erase and Write are the same size
 #endif
 #if defined(_18FXXQ83_FAMILY_)
+// On the Q series the NVM peripheral uses a fixed RAM buffer at 0x3700
  flash_data_t        * flashBuffer = (flash_data_t *)BUFFER_RAM_START_ADDRESS;
 #endif
 static flash_address_t    flashBlock;     //address of current flash block
@@ -412,9 +413,10 @@ void flushFlashBlock(void) {
     while (NVMCON0bits.GO)
         ;
     //Load NVMADR with the start address of the memory page
-    NVMADRU = (uint8_t) (flashBlock >> 16);
+    /*NVMADRU = (uint8_t) (flashBlock >> 16);
     NVMADRH = (uint8_t) (flashBlock >> 8);
-    NVMADRL = (uint8_t) flashBlock;
+    NVMADRL = (uint8_t) flashBlock;*/
+    NVMADR = flashBlock;
 
     NVMCON1bits.NVMCMD = 0x05;      //Set the page write command
     //Perform the unlock sequence 
@@ -422,6 +424,7 @@ void flushFlashBlock(void) {
     NVMLOCK = 0xAA;
     NVMCON0bits.GO = 1;             //Start byte write
     while (NVMCON0bits.GO)          // Wait to complete
+
         ;
     NVMCON1bits.NVMCMD = 0x00;      //Clear the NVM Command
 

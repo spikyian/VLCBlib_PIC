@@ -62,6 +62,7 @@
 #include "timedResponse.h"
 #include "event_teach.h"
 #include "event_producer.h"
+#include "module.h"
 
 /**
  * @file

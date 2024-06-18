@@ -2,6 +2,12 @@
  * @copyright Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
  */
 /*
+ * BUGS
+ * Shouldn't persist SETUP mode
+ * Holding PB whilst in Setup should return to Uninitialised
+ * 
+ */
+/*
   This work is licensed under the:
       Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
    To view a copy of this license, visit:
@@ -134,7 +140,9 @@ DiagnosticVal mnsDiagnostics[NUM_MNS_DIAGNOSTICS];
 #include "event_producer.h"
 Boolean sendProducedEvent(Happening happening, EventState onOff);
 #endif
-
+#ifdef EVENT_HASH_TABLE
+extern void rebuildHashtable(void);
+#endif
 void setLEDsByMode(void);
 
 /**
@@ -359,6 +367,9 @@ static Processed mnsProcessMessage(Message * m) {
                     
                     mode_state = MODE_NORMAL;
 //                    writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode_state);
+#ifdef EVENT_HASH_TABLE
+                    rebuildHashtable();
+#endif
                     
                     sendMessage2(OPC_NNACK, nn.bytes.hi, nn.bytes.lo);
 #ifdef VLCB_DIAG
@@ -592,15 +603,18 @@ static uint8_t getParameterFlags() {
     if (have(SERVICE_ID_PRODUCER)) {
         flags |= PNN_FLAGS_PRODUCER;
     }
-    if (flags == (PNN_FLAGS_PRODUCER & PNN_FLAGS_CONSUMER)) flags |= PNN_FLAGS_COE;     // CoE
+    if (flags == (PNN_FLAGS_PRODUCER | PNN_FLAGS_CONSUMER)) flags |= PNN_FLAGS_COE;     // CoE
     if (have(SERVICE_ID_BOOT)) {
         flags |= PNN_FLAGS_BOOT;
     }
     if (mode_flags & FLAG_MODE_LEARN) {
         flags |= PNN_FLAGS_LEARN;
     }
+    if (mode_state == MODE_NORMAL) {
+        flags |= PNN_FLAGS_NORMAL;
+    }
 #ifdef VLCB
-    flags |= PNN_FLAGS_VLCB; // always add VLCB compatability
+    flags |= PNN_FLAGS_VLCB; // add VLCB compatability
 #endif
     return flags;
 }
