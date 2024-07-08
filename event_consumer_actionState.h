@@ -86,7 +86,7 @@ extern const Service eventConsumerService;
 #define Action uint8_t
 #endif
 #if ACTION_SIZE == 2
-#define Action unit16_t
+#define Action uint16_t
 #endif
 
 /**
