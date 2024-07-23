@@ -222,9 +222,10 @@ Boolean sendProducedEvent(Happening happening, EventState onOff) {
 #endif
 
 #ifdef EVENT_HASH_TABLE
-    if (happening2Event[happening] == NO_INDEX) return FALSE;
-    producedEventNN.word = getNN(happening2Event[happening]);
-    producedEventEN.word = getEN(happening2Event[happening]);
+    if ((happening < HAPPENING_BASE) || (happening > MAX_HAPPENING)) return FALSE;
+    if (happening2Event[happening-HAPPENING_BASE] == NO_INDEX) return FALSE;
+    producedEventNN.word = getNN(happening2Event[happening-HAPPENING_BASE]);
+    producedEventEN.word = getEN(happening2Event[happening-HAPPENING_BASE]);
 #else
     for (tableIndex=0; tableIndex < NUM_EVENTS; tableIndex++) {
         if (validStart(tableIndex)) {
