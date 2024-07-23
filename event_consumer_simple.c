@@ -94,30 +94,26 @@ const Service eventConsumerService = {
 static Processed consumerProcessMessage(Message *m) {
     Processed ret;
     uint8_t tableIndex;
+    uint16_t enn;
     
     if (m->len < 5) return NOT_PROCESSED;
     
-    tableIndex = findEvent(((uint16_t)m->bytes[0])*256+m->bytes[1], ((uint16_t)m->bytes[2])*256+m->bytes[3]);
-    if (tableIndex == NO_INDEX) return NOT_PROCESSED;
+    enn = ((uint16_t)m->bytes[0])*256+m->bytes[1];
 
     switch (m->opc) {
-        case OPC_ACON:
-#ifdef HANDLE_DATA_EVENTS
-        case OPC_ACON1:
-        case OPC_ACON2:
-        case OPC_ACON3:
-#endif
         case OPC_ASON:
 #ifdef HANDLE_DATA_EVENTS
         case OPC_ASON1:
         case OPC_ASON2:
         case OPC_ASON3:
 #endif
-        case OPC_ACOF:
+		enn = 0;
+		// fall through
+        case OPC_ACON:
 #ifdef HANDLE_DATA_EVENTS
-        case OPC_ACOF1:
-        case OPC_ACOF2:
-        case OPC_ACOF3:
+        case OPC_ACON1:
+        case OPC_ACON2:
+        case OPC_ACON3:
 #endif
         case OPC_ASOF:
 #ifdef HANDLE_DATA_EVENTS
@@ -125,10 +121,21 @@ static Processed consumerProcessMessage(Message *m) {
         case OPC_ASOF2:
         case OPC_ASOF3:
 #endif
+		enn = 0;
+		// fall through
+        case OPC_ACOF:
+#ifdef HANDLE_DATA_EVENTS
+        case OPC_ACOF1:
+        case OPC_ACOF2:
+        case OPC_ACOF3:
+#endif
             break;
         default:
             return NOT_PROCESSED;
     }
+
+    tableIndex = findEvent(enn, ((uint16_t)m->bytes[2])*256+m->bytes[3]);
+    if (tableIndex == NO_INDEX) return NOT_PROCESSED;
 
     ret = APP_processConsumedEvent(tableIndex, m);
     if (ret == PROCESSED) {

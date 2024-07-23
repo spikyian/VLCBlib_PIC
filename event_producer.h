@@ -82,7 +82,7 @@ typedef uint8_t Happening;
 extern const Service eventProducerService;
 
 #ifdef EVENT_HASH_TABLE
-extern uint8_t happening2Event[MAX_HAPPENING+1];
+extern uint8_t happening2Event[1+MAX_HAPPENING-HAPPENING_BASE];
 #endif
 
 #define NUM_PRODUCER_DIAGNOSTICS    1   ///< Number of diagnostics for this service

@@ -337,7 +337,7 @@ static const uint8_t eventTable[NUM_EVENTS * EVENTTABLE_ROW_WIDTH] __at(EVENT_TA
 #ifdef EVENT_HASH_TABLE
 uint8_t eventChains[EVENT_HASH_LENGTH][EVENT_CHAIN_LENGTH];
 #ifdef PRODUCED_EVENTS
-uint8_t happening2Event[MAX_HAPPENING+1];
+uint8_t happening2Event[1+MAX_HAPPENING-HAPPENING_BASE];
 #endif
 #endif
 
@@ -687,6 +687,9 @@ static void doEvlrn(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, ui
 #endif
         return;
     }
+    // Normally this will be #defined in module.h to be addEvent() but the 
+    // application may instead handle the adding of the event itself to 
+    // perform any special processing and/or call addEvent() itself.
     error = APP_addEvent(nodeNumber, eventNumber, evNum, evVal, FALSE);
     if (error) {
         // validation error
@@ -1330,7 +1333,7 @@ void rebuildHashtable(void) {
 #ifdef PRODUCED_EVENTS
     // first initialise to nothing
     Happening happening;
-    for (happening=0; happening<=MAX_HAPPENING; happening++) {
+    for (happening=0; happening<=(1+MAX_HAPPENING-HAPPENING_BASE); happening++) {
         happening2Event[happening] = NO_INDEX;
     }
 #endif
@@ -1362,8 +1365,8 @@ void rebuildHashtable(void) {
             if (ev < 0) continue;
             happening = (uint8_t) ev;
 #endif
-            if (happening<= MAX_HAPPENING) {
-                happening2Event[happening] = tableIndex;
+            if ((happening<= MAX_HAPPENING) && (happening >= HAPPENING_BASE)) {
+                happening2Event[happening-HAPPENING_BASE] = tableIndex;
             } 
 #endif
             hash = getHash(getNN(tableIndex), getEN(tableIndex));
