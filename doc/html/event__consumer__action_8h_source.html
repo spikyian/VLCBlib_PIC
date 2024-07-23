@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCB library: event_producer.h Source File</title>
+<title>VLCB library: event_consumer_action.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -71,7 +71,7 @@ $(function() { codefold.init(0); });
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('event__producer_8h_source.html',''); initResizable(); });
+$(function(){initNavTree('event__consumer__action_8h_source.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -97,10 +97,10 @@ $(function(){initNavTree('event__producer_8h_source.html',''); initResizable(); 
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">event_producer.h</div></div>
+  <div class="headertitle"><div class="title">event_consumer_action.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="event__producer_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef _EVENT_PRODUCER_H_</span></div>
+<a href="event__consumer__action_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef _EVENT_CONSUMER_H_</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">/*</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">  This work is licensed under the:</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">      Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.</span></div>
@@ -132,49 +132,51 @@ $(function(){initNavTree('event__producer_8h_source.html',''); initResizable(); 
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">    This software is distributed in the hope that it will be useful, but WITHOUT ANY</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#include &quot;module.h&quot;</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#include &quot;<a class="code" href="event__teach_8h.html">event_teach.h</a>&quot;</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="event__producer_8h.html#af4c8a9aa7772d7a3d3017a5dcfd218cf">   39</a></span><span class="preprocessor">#define _EVENT_PRODUCER_H_</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="preprocessor">#if HAPPENING_SIZE == 2</span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="keyword">typedef</span> <a class="code hl_union" href="union_word.html">Word</a> Happening;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">#if HAPPENING_SIZE == 1</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="keyword">typedef</span> uint8_t Happening;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="event__consumer__action_8h.html#a9b001e5ab2a5fbc9724b6f62f7d95a57">   41</a></span><span class="preprocessor">#define _EVENT_CONSUMER_H_</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#include &quot;module.h&quot;</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="keyword">extern</span> <span class="keyword">const</span> <a class="code hl_struct" href="struct_service.html">Service</a> <a class="code hl_variable" href="event__consumer__action_8h.html#a00bee6233d82533e4e0bc10911787455">eventConsumerService</a>;</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="keyword">extern</span> <span class="keyword">const</span> <a class="code hl_struct" href="struct_service.html">Service</a> <a class="code hl_variable" href="event__producer_8h.html#a6d039ebee6188cb69fc81dedf126c334">eventProducerService</a>;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="preprocessor">#ifdef EVENT_HASH_TABLE</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="keyword">extern</span> uint8_t happening2Event[1+MAX_HAPPENING-HAPPENING_BASE];</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="event__producer_8h.html#a3b1688acb88bcb4c5e901407b787fd7a">   88</a></span><span class="preprocessor">#define NUM_PRODUCER_DIAGNOSTICS    1   </span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="event__producer_8h.html#add89a476dd74b4bd4d8405e78ad9fd4c">   89</a></span><span class="preprocessor">#define PRODUCER_DIAG_NUMPRODUCED   0   </span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="keyword">extern</span> <a class="code hl_enumeration" href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a> <a class="code hl_function" href="event__producer_8h.html#af83038e138b25b0d5090ba4ec02c76b0">sendProducedEvent</a>(Happening h, <a class="code hl_enumeration" href="vlcb_8h.html#ab951f47efbc96e7b5586e5a45b4aaa93">EventState</a> state);</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="event__producer_8h.html#aaac50e46656d7d8605d14b508fffe792">deleteHappeningRange</a>(Happening happening, uint8_t number);</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="comment">//AREQ stuff</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="event__producer_8h.html#ac65e80dd8b8853aa2dd02b560d1731e6">  102</a></span><span class="keyword">extern</span> <a class="code hl_enumeration" href="vlcb_8h.html#ab951f47efbc96e7b5586e5a45b4aaa93">EventState</a> <a class="code hl_function" href="event__producer_8h.html#ac65e80dd8b8853aa2dd02b560d1731e6">APP_GetEventState</a>(Happening h);</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aevent__producer_8h_html_a6d039ebee6188cb69fc81dedf126c334"><div class="ttname"><a href="event__producer_8h.html#a6d039ebee6188cb69fc81dedf126c334">eventProducerService</a></div><div class="ttdeci">const Service eventProducerService</div><div class="ttdef"><b>Definition</b> event_producer_happening.c:84</div></div>
-<div class="ttc" id="aevent__producer_8h_html_aaac50e46656d7d8605d14b508fffe792"><div class="ttname"><a href="event__producer_8h.html#aaac50e46656d7d8605d14b508fffe792">deleteHappeningRange</a></div><div class="ttdeci">void deleteHappeningRange(Happening happening, uint8_t number)</div><div class="ttdef"><b>Definition</b> event_producer_happening.c:285</div></div>
-<div class="ttc" id="aevent__producer_8h_html_ac65e80dd8b8853aa2dd02b560d1731e6"><div class="ttname"><a href="event__producer_8h.html#ac65e80dd8b8853aa2dd02b560d1731e6">APP_GetEventState</a></div><div class="ttdeci">EventState APP_GetEventState(Happening h)</div></div>
-<div class="ttc" id="aevent__producer_8h_html_af83038e138b25b0d5090ba4ec02c76b0"><div class="ttname"><a href="event__producer_8h.html#af83038e138b25b0d5090ba4ec02c76b0">sendProducedEvent</a></div><div class="ttdeci">Boolean sendProducedEvent(Happening h, EventState state)</div><div class="ttdef"><b>Definition</b> event_producer_happening.c:216</div></div>
-<div class="ttc" id="aevent__teach_8h_html"><div class="ttname"><a href="event__teach_8h.html">event_teach.h</a></div><div class="ttdoc">Implementation of the VLCB Event Teach service.</div></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="event__consumer__action_8h.html#a2bfb1da191b649cb74e3e899b8a8765d">   82</a></span><span class="preprocessor">#define NUM_CONSUMER_DIAGNOSTICS    1   </span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="event__consumer__action_8h.html#ae3f7c7a95b07b482db77fcbbcce35f79">   83</a></span><span class="preprocessor">#define CONSUMER_DIAG_NUMCONSUMED   0   </span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="preprocessor">#if ACTION_SIZE == 1</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="keyword">typedef</span> <span class="keyword">union </span>{</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    uint8_t a;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    uint8_t bytes[1];</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>} Action;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="preprocessor">#if ACTION_SIZE == 2</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="keyword">typedef</span> <span class="keyword">union </span>{</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    uint16_t a;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    uint8_t bytes[2];</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>} Action;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="keyword">extern</span> Action * <a class="code hl_function" href="event__consumer__action_8h.html#af7cb4a49c5a5250e476389807d344125">popAction</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="keyword">extern</span> <a class="code hl_enumeration" href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a> <a class="code hl_function" href="event__consumer__action_8h.html#a58e6a9b1f48446feaa870dd5e1ffda23">pushAction</a>(Action a);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="event__consumer__action_8h.html#a107a795a0f8d13dc9b975e70297ba29f">deleteActionRange</a>(Action action, uint8_t number);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="preprocessor">#ifndef CONSUMER_EVS_AS_ACTIONS</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="event__consumer__action_8h.html#ae3e7ff224972a6af710861e141e1a093">  107</a></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="event__consumer__action_8h.html#ae3e7ff224972a6af710861e141e1a093">APP_processConsumedEvent</a>(uint8_t tableIndex, <a class="code hl_struct" href="struct_message.html">Message</a> * m);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aevent__consumer__action_8h_html_a00bee6233d82533e4e0bc10911787455"><div class="ttname"><a href="event__consumer__action_8h.html#a00bee6233d82533e4e0bc10911787455">eventConsumerService</a></div><div class="ttdeci">const Service eventConsumerService</div><div class="ttdef"><b>Definition</b> event_consumer_action.c:69</div></div>
+<div class="ttc" id="aevent__consumer__action_8h_html_a107a795a0f8d13dc9b975e70297ba29f"><div class="ttname"><a href="event__consumer__action_8h.html#a107a795a0f8d13dc9b975e70297ba29f">deleteActionRange</a></div><div class="ttdeci">void deleteActionRange(Action action, uint8_t number)</div><div class="ttdef"><b>Definition</b> event_consumer_action.c:243</div></div>
+<div class="ttc" id="aevent__consumer__action_8h_html_a58e6a9b1f48446feaa870dd5e1ffda23"><div class="ttname"><a href="event__consumer__action_8h.html#a58e6a9b1f48446feaa870dd5e1ffda23">pushAction</a></div><div class="ttdeci">Boolean pushAction(Action a)</div><div class="ttdef"><b>Definition</b> actionQueue.c:64</div></div>
+<div class="ttc" id="aevent__consumer__action_8h_html_ae3e7ff224972a6af710861e141e1a093"><div class="ttname"><a href="event__consumer__action_8h.html#ae3e7ff224972a6af710861e141e1a093">APP_processConsumedEvent</a></div><div class="ttdeci">void APP_processConsumedEvent(uint8_t tableIndex, Message *m)</div></div>
+<div class="ttc" id="aevent__consumer__action_8h_html_af7cb4a49c5a5250e476389807d344125"><div class="ttname"><a href="event__consumer__action_8h.html#af7cb4a49c5a5250e476389807d344125">popAction</a></div><div class="ttdeci">Action * popAction(void)</div><div class="ttdef"><b>Definition</b> actionQueue.c:84</div></div>
+<div class="ttc" id="astruct_message_html"><div class="ttname"><a href="struct_message.html">Message</a></div><div class="ttdef"><b>Definition</b> vlcb.h:119</div></div>
 <div class="ttc" id="astruct_service_html"><div class="ttname"><a href="struct_service.html">Service</a></div><div class="ttdef"><b>Definition</b> vlcb.h:307</div></div>
-<div class="ttc" id="aunion_word_html"><div class="ttname"><a href="union_word.html">Word</a></div><div class="ttdef"><b>Definition</b> vlcb.h:128</div></div>
-<div class="ttc" id="avlcb_8h_html_ab951f47efbc96e7b5586e5a45b4aaa93"><div class="ttname"><a href="vlcb_8h.html#ab951f47efbc96e7b5586e5a45b4aaa93">EventState</a></div><div class="ttdeci">EventState</div><div class="ttdef"><b>Definition</b> vlcb.h:140</div></div>
 <div class="ttc" id="avlcb_8h_html_ae7d38601dfbd73adbe5c1b3ec34e0e13"><div class="ttname"><a href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a></div><div class="ttdeci">Boolean</div><div class="ttdef"><b>Definition</b> vlcb.h:101</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="event__producer_8h.html">event_producer.h</a></li>
+    <li class="navelem"><a class="el" href="event__consumer__action_8h.html">event_consumer_action.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

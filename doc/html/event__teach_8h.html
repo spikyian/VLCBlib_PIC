@@ -169,10 +169,10 @@ Variables</h2></td></tr>
 <dl class="section warning"><dt>Warning</dt><dd>BEWARE must set NUM_EVENTS to a maximum of 255! If set to 256 then the for (uint8_t i=0; i&lt;NUM_EVENTS; i++) loops will never end as they use an uint8_t instead of int for space/performance reasons.</dd>
 <dd>
 BEWARE Concurrency: The functions which use the eventtable and hash/lookup must not be used whilst there is a chance of the functions which modify the eventtable of RAM based hash/lookup tables being called. These functions should therefore either be called from the same thread or disable interrupts.</dd></dl>
-<h1><a class="anchor" id="autotoc_md13"></a>
+<h1><a class="anchor" id="autotoc_md15"></a>
 Dependencies on other Services</h1>
 <p>Although the <a class="el" href="struct_event.html">Event</a> Teach service does not depend upon any other services all modules must include the MNS service.</p>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h1><a class="anchor" id="autotoc_md16"></a>
 Module.h definitions required for the Event Teach service</h1>
 <ul>
 <li>#define NUM_EVENTS The number of rows in the event table. The actual number of events may be less than this if any events use more the 1 row.</li>

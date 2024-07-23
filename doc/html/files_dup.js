@@ -1,5 +1,6 @@
 var files_dup =
 [
+    [ "actionQueue.h", "action_queue_8h_source.html", null ],
     [ "arduino.c", "arduino_8c.html", "arduino_8c" ],
     [ "arduino.h", "arduino_8h.html", "arduino_8h" ],
     [ "boot.c", "boot_8c.html", "boot_8c" ],
@@ -12,8 +13,10 @@ var files_dup =
     [ "event_acknowledge.h", "event__acknowledge_8h.html", "event__acknowledge_8h" ],
     [ "event_coe.c", "event__coe_8c.html", "event__coe_8c" ],
     [ "event_coe.h", "event__coe_8h.html", "event__coe_8h" ],
-    [ "event_consumer.c", "event__consumer_8c.html", "event__consumer_8c" ],
-    [ "event_consumer.h", "event__consumer_8h.html", "event__consumer_8h" ],
+    [ "event_consumer_action.c", "event__consumer__action_8c.html", "event__consumer__action_8c" ],
+    [ "event_consumer_action.h", "event__consumer__action_8h.html", "event__consumer__action_8h" ],
+    [ "event_consumer_actionState.c", "event__consumer__action_state_8c.html", "event__consumer__action_state_8c" ],
+    [ "event_consumer_actionState.h", "event__consumer__action_state_8h.html", "event__consumer__action_state_8h" ],
     [ "event_consumer_simple.c", "event__consumer__simple_8c.html", "event__consumer__simple_8c" ],
     [ "event_consumer_simple.h", "event__consumer__simple_8h.html", "event__consumer__simple_8h" ],
     [ "event_producer.h", "event__producer_8h.html", "event__producer_8h" ],
@@ -31,6 +34,7 @@ var files_dup =
     [ "nv.h", "nv_8h.html", "nv_8h" ],
     [ "nvm.c", "nvm_8c.html", "nvm_8c" ],
     [ "nvm.h", "nvm_8h.html", "nvm_8h" ],
+    [ "queue.h", "queue_8h_source.html", null ],
     [ "statusDisplay.h", "status_display_8h.html", "status_display_8h" ],
     [ "statusLeds.h", "status_leds_8h.html", "status_leds_8h" ],
     [ "statusLeds2.c", "status_leds2_8c.html", "status_leds2_8c" ],

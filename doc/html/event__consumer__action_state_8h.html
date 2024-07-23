@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCB library: event_consumer_simple.h File Reference</title>
+<title>VLCB library: event_consumer_actionState.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -66,7 +66,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('event__consumer__simple_8h.html',''); initResizable(); });
+$(function(){initNavTree('event__consumer__action_state_8h.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -93,10 +93,11 @@ $(function(){initNavTree('event__consumer__simple_8h.html',''); initResizable();
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
-  <div class="headertitle"><div class="title">event_consumer_simple.h File Reference</div></div>
+  <div class="headertitle"><div class="title">event_consumer_actionState.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -104,8 +105,13 @@ $(function(){initNavTree('event__consumer__simple_8h.html',''); initResizable();
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;module.h&quot;</code><br />
 </div>
-<p><a href="event__consumer__simple_8h_source.html">Go to the source code of this file.</a></p>
+<p><a href="event__consumer__action_state_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_action_and_state.html">ActionAndState</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a9b001e5ab2a5fbc9724b6f62f7d95a57" id="r_a9b001e5ab2a5fbc9724b6f62f7d95a57"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b001e5ab2a5fbc9724b6f62f7d95a57">_EVENT_CONSUMER_H_</a></td></tr>
@@ -121,8 +127,14 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ace8e8398aab17675419de68cf86e9880" id="r_ace8e8398aab17675419de68cf86e9880"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544">Processed</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ace8e8398aab17675419de68cf86e9880">APP_processConsumedEvent</a> (uint8_t tableIndex, <a class="el" href="struct_message.html">Message</a> *m)</td></tr>
-<tr class="separator:ace8e8398aab17675419de68cf86e9880"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4664ca73d3f4d10b167230afcc7366dd" id="r_a4664ca73d3f4d10b167230afcc7366dd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_action_and_state.html">ActionAndState</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4664ca73d3f4d10b167230afcc7366dd">popAction</a> (void)</td></tr>
+<tr class="separator:a4664ca73d3f4d10b167230afcc7366dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9781a14ddb956ed4ca7b73c91900eef4" id="r_a9781a14ddb956ed4ca7b73c91900eef4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9781a14ddb956ed4ca7b73c91900eef4">pushAction</a> (<a class="el" href="struct_action_and_state.html">ActionAndState</a> a)</td></tr>
+<tr class="separator:a9781a14ddb956ed4ca7b73c91900eef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a107a795a0f8d13dc9b975e70297ba29f" id="r_a107a795a0f8d13dc9b975e70297ba29f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a107a795a0f8d13dc9b975e70297ba29f">deleteActionRange</a> (Action action, uint8_t number)</td></tr>
+<tr class="separator:a107a795a0f8d13dc9b975e70297ba29f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3e7ff224972a6af710861e141e1a093" id="r_ae3e7ff224972a6af710861e141e1a093"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3e7ff224972a6af710861e141e1a093">APP_processConsumedEvent</a> (uint8_t tableIndex, <a class="el" href="struct_message.html">Message</a> *m)</td></tr>
+<tr class="separator:ae3e7ff224972a6af710861e141e1a093"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -131,13 +143,19 @@ Variables</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of the VLCB <a class="el" href="struct_event.html">Event</a> Consumer service. </p>
-<p>The service definition object is called eventConsumerService. Process consumed events. Processes Long and Short events. Also handles events with data bytes if HANDLE_DATA_EVENTS is defined within module.h although the data is ignored. Passes events to the <a class="el" href="#ace8e8398aab17675419de68cf86e9880">APP_processConsumedEvent()</a> function.</p>
+<p>The service definition object is called eventConsumerService. Process consumed events. Processes Long and Short events. Also handles events with data bytes if HANDLE_DATA_EVENTS is defined within module.h although the data is ignored. If CONSUMER_EVS_AS_ACTIONS is defined then EVs after the Happening are treated as Actions and are added to an Action queue to be processed by the application.</p>
+<h1><a class="anchor" id="autotoc_md10"></a>
+Dependencies on other Services</h1>
+<p>The <a class="el" href="struct_event.html">Event</a> Consumer service depends upon the <a class="el" href="struct_event.html">Event</a> Teach service. The <a class="el" href="struct_event.html">Event</a> Teach service MUST be included if the <a class="el" href="struct_event.html">Event</a> Consumer <a class="el" href="struct_service.html">Service</a> is included by the module.</p>
 <p>If only fixed events are to be consumed so that event teaching is not required then it is recommended to process the necessary ACON/ACOF and ASON/ASOF event messages from the application's Processed <a class="el" href="vlcb_8c.html#a664c7f5e506993130616dcf9604601d9">APP_postProcessMessage(Message * m)</a> function.</p>
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 Module.h definitions required for the Event Consumer service</h1>
 <ul>
 <li>#define CONSUMED_EVENTS Always defined whenever the <a class="el" href="struct_event.html">Event</a> Consumer service is included</li>
-<li>#define HANDLE_DATA_EVENTS Define if the ACON1/ACON2/ACON3 style events with data are to used in the same way as ACON style events. </li>
+<li>#define HANDLE_DATA_EVENTS Define if the ACON1/ACON2/ACON3 style events with data are to used in the same way as ACON style events.</li>
+<li>#define COMSUMER_EVS_AS_ACTIONS Define if the EVs are to be treated to be Actions</li>
+<li>#define ACTION_SIZE The number of bytes used to hold an Action. Currently must be 1.</li>
+<li>#define ACTION_QUEUE_SIZE The size of the Action queue. </li>
 </ul>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a9b001e5ab2a5fbc9724b6f62f7d95a57" name="a9b001e5ab2a5fbc9724b6f62f7d95a57"></a>
@@ -158,8 +176,8 @@ Module.h definitions required for the Event Consumer service</h1>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ace8e8398aab17675419de68cf86e9880" name="ace8e8398aab17675419de68cf86e9880"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace8e8398aab17675419de68cf86e9880">&#9670;&#160;</a></span>APP_processConsumedEvent()</h2>
+<a id="ae3e7ff224972a6af710861e141e1a093" name="ae3e7ff224972a6af710861e141e1a093"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3e7ff224972a6af710861e141e1a093">&#9670;&#160;</a></span>APP_processConsumedEvent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -168,7 +186,7 @@ Module.h definitions required for the Event Consumer service</h1>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544">Processed</a> APP_processConsumedEvent </td>
+          <td class="memname">void APP_processConsumedEvent </td>
           <td>(</td>
           <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>tableIndex</em>, </span></td>
         </tr>
@@ -185,6 +203,103 @@ Module.h definitions required for the Event Consumer service</h1>
 </table>
 </div><div class="memdoc">
 <p>Callback into the Application to allow the Application to perform specialised processing of VLCB events messages. This is only used if CONSUMER_EVS_AS_ACTIONS is not defined. </p>
+
+</div>
+</div>
+<a id="a107a795a0f8d13dc9b975e70297ba29f" name="a107a795a0f8d13dc9b975e70297ba29f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a107a795a0f8d13dc9b975e70297ba29f">&#9670;&#160;</a></span>deleteActionRange()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void deleteActionRange </td>
+          <td>(</td>
+          <td class="paramtype">Action</td>          <td class="paramname"><span class="paramname"><em>action</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>number</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Delete all occurrences of the consumer action. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">action</td><td>the start of the Action range to be deleted. </td></tr>
+    <tr><td class="paramname">number</td><td>the size of the rangel of Action values </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4664ca73d3f4d10b167230afcc7366dd" name="a4664ca73d3f4d10b167230afcc7366dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4664ca73d3f4d10b167230afcc7366dd">&#9670;&#160;</a></span>popAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_action_and_state.html">ActionAndState</a> * popAction </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Pull the next action from the buffer.</p>
+<dl class="section return"><dt>Returns</dt><dd>the next action</dd></dl>
+<p>Pull the next Action from the queue. If CONSUMER_EVS_AS_ACTIONS is defined in module.h then the event's EVs will be treated as Actions and will be pushed onto the Action queue. The application should use <a class="el" href="event__consumer__action_8c.html#af7cb4a49c5a5250e476389807d344125">popAction()</a> to obtain the next Action for processing.</p>
+<dl class="section return"><dt>Returns</dt><dd>the next action of NULL if the queue was empty </dd></dl>
+
+</div>
+</div>
+<a id="a9781a14ddb956ed4ca7b73c91900eef4" name="a9781a14ddb956ed4ca7b73c91900eef4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9781a14ddb956ed4ca7b73c91900eef4">&#9670;&#160;</a></span>pushAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a> pushAction </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_action_and_state.html">ActionAndState</a></td>          <td class="paramname"><span class="paramname"><em>a</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Push a message onto the Action queue. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a</td><td>the Action </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>TRUE for success FALSE for buffer full </dd></dl>
 
 </div>
 </div>
@@ -217,7 +332,7 @@ Module.h definitions required for the Event Consumer service</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="event__consumer__simple_8h.html">event_consumer_simple.h</a></li>
+    <li class="navelem"><a class="el" href="event__consumer__action_state_8h.html">event_consumer_actionState.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

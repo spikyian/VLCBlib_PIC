@@ -110,6 +110,7 @@ $(function(){initNavTree('event__teach__large_8c.html',''); initResizable(); });
 <code>#include &quot;<a class="el" href="timed_response_8h_source.html">timedResponse.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="event__teach_8h_source.html">event_teach.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="event__producer_8h_source.html">event_producer.h</a>&quot;</code><br />
+<code>#include &quot;module.h&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
@@ -187,7 +188,7 @@ Ian Hogg </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>BEWARE must set NUM_EVENTS to a maximum of 255! If set to 256 then the for (uint8_t i=0; i&lt;NUM_EVENTS; i++) loops will never end as they use an uint8_t instead of int for space/performance reasons.</dd>
 <dd>
 BEWARE Concurrency: The functions which use the eventtable and hash/lookup must not be used whilst there is a chance of the functions which modify the eventtable of RAM based hash/lookup tables being called. These functions should therefore either be called from the same thread or disable interrupts.</dd></dl>
-<h1><a class="anchor" id="autotoc_md15"></a>
+<h1><a class="anchor" id="autotoc_md17"></a>
 Module.h definitions required for the Event Teach service</h1>
 <ul>
 <li>#define EVENT_TABLE_WIDTH This the the width of the table - not the number of EVs per event as multiple rows in the table can be used to store an event.</li>

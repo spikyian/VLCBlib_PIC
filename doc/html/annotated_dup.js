@@ -8,6 +8,7 @@ var annotated_dup =
     [ "EventTableFlags", "union_event_table_flags.html", "union_event_table_flags" ],
     [ "Message", "struct_message.html", "struct_message" ],
     [ "MessageQueue", "struct_message_queue.html", "struct_message_queue" ],
+    [ "Queue", "struct_queue.html", null ],
     [ "Service", "struct_service.html", "struct_service" ],
     [ "Transport", "struct_transport.html", "struct_transport" ],
     [ "Word", "union_word.html", "union_word" ]
