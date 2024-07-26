@@ -102,7 +102,7 @@ asm("db 0");
 /** Used internally for calculating checksum.  */
 #define PRM_CKSUM1 PARAM_MANU+PARAM_MINOR_VERSION+PARAM_MODULE_ID+PARAM_NUM_EVENTS\
     +PARAM_NUM_EV_EVENT+PARAM_NUM_NV+PARAM_MAJOR_VERSION+(8)\
-    +P18F26K80+(8)+CPUM_MICROCHIP+PARAM_BUILD_VERSION\
+    +(8)+CPUM_MICROCHIP+PARAM_BUILD_VERSION\
     +(20)+(0x48)+(0x08)
 
 #ifdef CONSUMED_EVENTS
@@ -126,6 +126,13 @@ asm("db 0");
 /** Used internally for calculating checksum.  */
 #define PRM_CKSUM4      PRM_CKSUM3
 #endif
+#if defined(_18F66K80_FAMILY_)
+#define    PRM_CKSUM5  PRM_CKSUM4+P18F26K80
+#elif defined(_18FXXQ83_FAMILY_)
+#define    PRM_CKSUM5  PRM_CKSUM4+P18F27Q83
+#else
+    Error unrecognised CPU type,
+#endif 
 
 /**
  * @private
@@ -148,7 +155,14 @@ const uint8_t paramBlock[] __at(0x820) = {
             |0x02
 #endif
         ,
+#if defined(_18F66K80_FAMILY_)
     P18F26K80,          //0x828
+#elif defined(_18FXXQ83_FAMILY_)
+    P18F27Q83,          //0x828
+#else
+    Error unrecognised CPU type,
+#endif 
+    
 #ifdef CANID_ADDRESS
     PB_CAN,             //0x829 Protocol 1=
 #endif
@@ -166,8 +180,8 @@ const uint8_t paramBlock[] __at(0x820) = {
     0x08,               //0x83b address of NAME hi
     0,                  //0x83c address of NAME upper lo
     0,                  //0x83d address of NAME upper hi
-    ((PRM_CKSUM4)&0xFF),  //0x83e checksum lo
-    ((PRM_CKSUM4)>>8)     //0x83f checksum hi
+    ((PRM_CKSUM5)&0xFF),  //0x83e checksum lo
+    ((PRM_CKSUM5)>>8)     //0x83f checksum hi
 };
 
 
