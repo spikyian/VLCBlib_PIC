@@ -337,7 +337,7 @@ static const uint8_t eventTable[NUM_EVENTS * EVENTTABLE_ROW_WIDTH] __at(EVENT_TA
 #ifdef EVENT_HASH_TABLE
 uint8_t eventChains[EVENT_HASH_LENGTH][EVENT_CHAIN_LENGTH];
 #ifdef PRODUCED_EVENTS
-uint8_t happening2Event[1+MAX_HAPPENING-HAPPENING_BASE];
+uint8_t happening2Event[2+MAX_HAPPENING-HAPPENING_BASE];
 #endif
 #endif
 
