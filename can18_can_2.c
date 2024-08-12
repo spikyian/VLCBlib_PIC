@@ -188,10 +188,10 @@ static void canFillRxFifo(void);
  */
 // The CAN priorities
 static const uint8_t canPri[] = {
-    0b00000111, // pLOW
-    0b00000110, // pNORMAL
-    0b00000101, // pABOVE
-    0b00000010, // pHIGH
+    0b00001011, // pLOW
+    0b00001010, // pNORMAL
+    0b00001001, // pABOVE
+    0b00001000, // pHIGH
     0b00000000  // pSUPER
 };
 #define pSUPER  4   // Not message priority so supply here
@@ -600,8 +600,8 @@ static SendResult canSendMessage(Message * mp) {
     
     // Pointer to FIFO entry
     txFifoObj = (uint8_t*) C1FIFOUA2;
-    txFifoObj[0] = (canId & 0x7F);      // Put ID
-    txFifoObj[1] = canPri[priorities[mp->opc]];
+    txFifoObj[0] = ((canPri[priorities[mp->opc]] & 1) << 7) | (canId & 0x7F);      // Put ID
+    txFifoObj[1] = canPri[priorities[mp->opc]] >> 1;
     txFifoObj[4] = (mp->len&0xF);       // Standard frame, length in DLC
     txFifoObj[5] = 0;       // No sequence number
     txFifoObj[6] = 0;       // No sequence number

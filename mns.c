@@ -177,6 +177,9 @@ Word nn;            // node number
  */
 uint8_t mode_state; // operational mode
 static uint8_t last_mode_state;
+
+#define MODE_PRESETUP   0xFD    // hope not to clash with any defined by standard
+
 /**
  * Module operating mode flags.
  */
@@ -313,6 +316,7 @@ static void mnsPowerUp(void) {
     } else {
         mode_state = (uint8_t)temp;
     }
+    setupModePreviousMode = mode_state;
     temp = readNVM(MODE_FLAGS_NVM_TYPE, MODE_FLAGS_ADDRESS);
     if (temp < 0) {
         mode_flags = FLAG_MODE_HEARTBEAT;
@@ -657,7 +661,10 @@ static void mnsPoll(void) {
         last_mode_flags = mode_flags;
     }
     if (mode_state != last_mode_state) {
-        writeNVM(MODE_FLAGS_NVM_TYPE, MODE_ADDRESS, mode_state);
+        // don't persist setup mode
+        if ((mode_state == MODE_UNINITIALISED) || (mode_state == MODE_NORMAL)) {
+            writeNVM(MODE_FLAGS_NVM_TYPE, MODE_ADDRESS, mode_state);
+        }
         last_mode_state = mode_state;
     }
 #ifdef VLCB_DIAG
@@ -676,20 +683,31 @@ static void mnsPoll(void) {
         case MODE_UNINITIALISED:
             // check the PB status
             if (APP_pbPressed() == 0) {
-                // pb has not been pressed
+                // pb has been released
                 pbTimer.val = tickGet();
             } else {
                 // No need to release the PB
                 if (tickTimeSince(pbTimer) > 4*ONE_SECOND) {
                     // Do state transition from Uninitialised to Setup
-                    mode_state = MODE_SETUP;
+                    mode_state = MODE_PRESETUP;
                     setupModePreviousMode = MODE_UNINITIALISED;
-                    pbTimer.val = tickGet();    // reset the timer ready for Setup mode
-                    //start the request for NN
-                    sendMessage2(OPC_RQNN, nn.bytes.hi, nn.bytes.lo);
                     setLEDsByMode();
                 }
             }
+            break;
+        case MODE_PRESETUP:
+            if (APP_pbPressed() == 0) {
+                // pb has been released
+                
+                // Do state transition from Uninitialised to Setup
+                mode_state = MODE_SETUP;
+                setupModePreviousMode = MODE_UNINITIALISED;
+                pbTimer.val = tickGet();    // reset the timer ready for Setup mode
+                //start the request for NN
+                sendMessage2(OPC_RQNN, nn.bytes.hi, nn.bytes.lo);
+                setLEDsByMode();
+            }
+            pbTimer.val = tickGet();
             break;
         case MODE_SETUP:
             /* 
@@ -797,6 +815,7 @@ void setLEDsByMode(void) {
             showStatus(STATUS_UNINITIALISED);
             break;
         case MODE_SETUP:
+        case MODE_PRESETUP:
             showStatus(STATUS_SETUP);
             break;
         default:

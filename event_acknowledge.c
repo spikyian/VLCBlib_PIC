@@ -62,6 +62,8 @@ static DiagnosticVal * ackGetDiagnostic(uint8_t code);
 static DiagnosticVal ackDiagnostics[NUM_ACK_DIAGNOSTICS];
 #endif
 
+extern uint8_t isConsumedEvent(uint8_t eventIndex);
+
 /**
  * The service descriptor for the Event Acknowledge service. The application must include this
  * descriptor within the const Service * const services[] array and include the
@@ -161,8 +163,7 @@ static Processed ackEventProcessMessage(Message * m) {
     if (eventIndex != NO_INDEX) {
         // we have the event in the event table
         // check that we have a consumed Action
-        ev = getEv(eventIndex, HAPPENING_SIZE); // skip over the Happening EVs to the first Action
-        if (ev >= 0) {
+        if (isConsumedEvent(eventIndex)) {
             // sent the ack
             sendMessage7(OPC_ENACK, nn.bytes.hi, nn.bytes.lo, m->opc, m->bytes[0], m->bytes[1], m->bytes[2], m->bytes[3]);
 #ifdef VLCB_DIAG

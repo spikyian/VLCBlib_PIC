@@ -183,10 +183,10 @@ static void canFillRxFifo(void);
  */
 // The CAN priorities
 static const uint8_t canPri[] = {
-    0b01110000, // pLOW
-    0b01100000, // pNORMAL
-    0b01010000, // pABOVE
-    0b01000000, // pHIGH
+    0b10110000, // pLOW
+    0b10100000, // pNORMAL
+    0b10010000, // pABOVE
+    0b10000000, // pHIGH
     0b00000000  // pSUPER
 };
 #define pSUPER  4   // Not message priority so supply here

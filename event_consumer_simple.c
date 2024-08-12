@@ -58,6 +58,8 @@ static DiagnosticVal consumerDiagnostics[NUM_CONSUMER_DIAGNOSTICS];
 static Processed consumerProcessMessage(Message * m);
 static DiagnosticVal * consumerGetDiagnostic(uint8_t index); 
 static uint8_t consumerEsdData(uint8_t index);
+
+extern uint8_t APP_isConsumedEvent(uint8_t eventIndex);
         
 /**
  * The service descriptor for the eventConsumer service. The application must include this
@@ -142,6 +144,16 @@ static Processed consumerProcessMessage(Message *m) {
         consumerDiagnostics[CONSUMER_DIAG_NUMCONSUMED].asUint++;
     }
     return ret;
+}
+
+/**
+ * This simple service doesn't know if the event is consumed so hand off to the
+ * application to determine.
+ * @param eventIndex
+ * @return true if the event is a consumed event
+ */
+uint8_t isConsumedEvent(uint8_t eventIndex) {
+    return APP_isConsumedEvent(eventIndex);
 }
 
 #ifdef VLCB_DIAG
