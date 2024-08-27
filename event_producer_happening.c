@@ -71,7 +71,7 @@ static Processed producerProcessMessage(Message *m);
 #ifdef VLCB_DIAG
 static void producerPowerUp(void);
 static DiagnosticVal * producerGetDiagnostic(uint8_t index);
-static DiagnosticVal producerDiagnostics[NUM_PRODUCER_DIAGNOSTICS];
+static DiagnosticVal producerDiagnostics[NUM_PRODUCER_DIAGNOSTICS+1];
 #endif
 static uint8_t producerEsdData(uint8_t id);
 
@@ -107,9 +107,10 @@ const Service eventProducerService = {
 #ifdef VLCB_DIAG
 static void producerPowerUp(void) {
     uint8_t i;
-    for (i=0; i<NUM_PRODUCER_DIAGNOSTICS; i++) {
-        producerDiagnostics[i].asInt = 0;
+    for (i=1; i <= NUM_PRODUCER_DIAGNOSTICS; i++) {
+        producerDiagnostics[i].asUint = 0;
     }
+    producerDiagnostics[PRODUCER_DIAG_COUNT].asUint = NUM_PRODUCER_DIAGNOSTICS;
 }
 #endif
 
@@ -177,10 +178,10 @@ static Processed producerProcessMessage(Message *m) {
  * @return a pointer to the diagnostic data or NULL if the data isn't available
  */
 static DiagnosticVal * producerGetDiagnostic(uint8_t index) {
-    if ((index<1) || (index>NUM_PRODUCER_DIAGNOSTICS)) {
+    if (index > NUM_PRODUCER_DIAGNOSTICS) {
         return NULL;
     }
-    return &(producerDiagnostics[index-1]);
+    return &(producerDiagnostics[index]);
 }
 #endif
 

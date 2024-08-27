@@ -59,7 +59,7 @@ static Processed ackEventProcessMessage(Message * m);
 static Processed ackEventCheckLen(Message * m, uint8_t needed);
 #ifdef VLCB_DIAG
 static DiagnosticVal * ackGetDiagnostic(uint8_t code);
-static DiagnosticVal ackDiagnostics[NUM_ACK_DIAGNOSTICS];
+static DiagnosticVal ackDiagnostics[NUM_ACK_DIAGNOSTICS+1];
 #endif
 
 extern uint8_t isConsumedEvent(uint8_t eventIndex);
@@ -98,9 +98,10 @@ static void ackPowerUp(void) {
     uint8_t i;
     
     // Clear the diagnostics
-    for (i=0; i< NUM_ACK_DIAGNOSTICS; i++) {
-        ackDiagnostics[i].asInt = 0;
+    for (i=1; i<= NUM_ACK_DIAGNOSTICS; i++) {
+        ackDiagnostics[i].asUint = 0;
     }
+    ackDiagnostics[ACK_DIAG_COUNT].asUint = NUM_ACK_DIAGNOSTICS;
 }
 #endif
 
@@ -191,9 +192,9 @@ static Processed ackEventCheckLen(Message * m, uint8_t needed) {
  * @return a pointer to the diagnostic data or NULL if the data isn't available
  */
 static DiagnosticVal * ackGetDiagnostic(uint8_t index) {
-    if ((index<1) || (index>NUM_ACK_DIAGNOSTICS)) {
+    if (index > NUM_ACK_DIAGNOSTICS) {
         return NULL;
     }
-    return &(ackDiagnostics[index-1]);
+    return &(ackDiagnostics[index]);
 }
 #endif

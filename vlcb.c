@@ -1038,6 +1038,7 @@ static void poll(void) {
         }
     }
     if (handled) {
+        mnsDiagnostics[MNS_DIAGNOSTICS_RXMESS].asUint++;
         showStatus(STATUS_MESSAGE_ACTED);
     }
 }

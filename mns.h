@@ -112,13 +112,13 @@ extern const Service mnsService;
 
 /* The list of the diagnostics supported */
 #define NUM_MNS_DIAGNOSTICS 6   ///< The number of diagnostic values for this service
-#define MNS_DIAGNOSTICS_ALL         0x00    ///< The a series of DGN messages for each services? supported data.
-#define MNS_DIAGNOSTICS_STATUS      0x00    ///< The Global status Byte.
-#define MNS_DIAGNOSTICS_UPTIMEH     0x01    ///< The uptime upper word.
-#define MNS_DIAGNOSTICS_UPTIMEL     0x02    ///< The uptime lower word.
-#define MNS_DIAGNOSTICS_MEMERRS     0x03    ///< The memory status.
-#define MNS_DIAGNOSTICS_NNCHANGE    0x04    ///< The number of Node Number changes.
-#define MNS_DIAGNOSTICS_RXMESS      0x05    ///< The number of received messages acted upon.
+#define MNS_DIAGNOSTICS_COUNT       0x00    ///< The a series of DGN messages for each services? supported data.
+#define MNS_DIAGNOSTICS_STATUS      0x01    ///< The Global status Byte.
+#define MNS_DIAGNOSTICS_UPTIMEH     0x02    ///< The uptime upper word.
+#define MNS_DIAGNOSTICS_UPTIMEL     0x03    ///< The uptime lower word.
+#define MNS_DIAGNOSTICS_MEMERRS     0x04    ///< The memory status.
+#define MNS_DIAGNOSTICS_NNCHANGE    0x05    ///< The number of Node Number changes.
+#define MNS_DIAGNOSTICS_RXMESS      0x06    ///< The number of received messages acted upon.
 
 /*
  * The module's node number.
@@ -138,7 +138,7 @@ extern uint8_t mode_flags;
  * MNS diagnostics
  */
 #ifdef VLCB_DIAG
-extern DiagnosticVal mnsDiagnostics[NUM_MNS_DIAGNOSTICS];
+extern DiagnosticVal mnsDiagnostics[NUM_MNS_DIAGNOSTICS+1];
 extern void updateModuleErrorStatus(void);
 #endif
 

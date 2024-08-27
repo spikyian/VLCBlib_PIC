@@ -70,7 +70,7 @@ static uint8_t nvGetESDdata(uint8_t id);
 TimedResponseResult nvTRnvrdCallback(uint8_t type, uint8_t serviceIndex, uint8_t step);
 #ifdef VLCB_DIAG
 static DiagnosticVal * nvGetDiagnostic(uint8_t index);
-static DiagnosticVal nvDiagnostics[NUM_NV_DIAGNOSTICS];
+static DiagnosticVal nvDiagnostics[NUM_NV_DIAGNOSTICS+1];
 #endif
 
 /**
@@ -136,9 +136,10 @@ static void nvFactoryReset(void) {
 static void nvPowerUp(void) {
 #ifdef VLCB_DIAG
     uint8_t i;
-    for (i=0; i<NUM_NV_DIAGNOSTICS; i++) {
+    for (i=1; i <= NUM_NV_DIAGNOSTICS; i++) {
         nvDiagnostics[i].asUint = 0;
     }
+    nvDiagnostics[NV_DIAG_COUNT].asUint = NUM_NV_DIAGNOSTICS;
 #endif
 #ifdef NV_CACHE
     loadNvCache();
@@ -147,10 +148,10 @@ static void nvPowerUp(void) {
 
 #ifdef VLCB_DIAG
 static DiagnosticVal * nvGetDiagnostic(uint8_t index) {
-    if ((index<1) || (index>NUM_NV_DIAGNOSTICS)) {
+    if (index > NUM_NV_DIAGNOSTICS) {
         return NULL;
     }
-    return &(nvDiagnostics[index-1]);
+    return &(nvDiagnostics[index]);
 }
 #endif
 

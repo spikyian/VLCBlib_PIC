@@ -132,7 +132,7 @@ static DiagnosticVal * mnsGetDiagnostic(uint8_t index);
 /**
  * The diagnostic values supported by the MNS service.
  */
-DiagnosticVal mnsDiagnostics[NUM_MNS_DIAGNOSTICS];
+DiagnosticVal mnsDiagnostics[NUM_MNS_DIAGNOSTICS+1];
 #endif
 
 #ifdef PRODUCED_EVENTS
@@ -330,9 +330,10 @@ static void mnsPowerUp(void) {
     
 #ifdef VLCB_DIAG
     // Clear the diagnostics
-    for (i=0; i< NUM_MNS_DIAGNOSTICS; i++) {
+    for (i=1; i<= NUM_MNS_DIAGNOSTICS; i++) {
         mnsDiagnostics[i].asInt = 0;
     }
+    mnsDiagnostics[MNS_DIAGNOSTICS_COUNT].asInt = NUM_MNS_DIAGNOSTICS;
 #endif
     heartbeatSequence = 0;
     heartbeatTimer.val = 0;
@@ -465,7 +466,7 @@ static Processed mnsProcessMessage(Message * m) {
             if (previousNN.word != 0) {
                 sendMessage2(OPC_NNREL, previousNN.bytes.hi, previousNN.bytes.lo);
             }
-            return PROCESSED;
+            RESET();
 #ifdef VLCB_DIAG
         case OPC_RDGN:  // diagnostics
             if (m->len < 5) {
@@ -795,14 +796,14 @@ static void mnsLowIsr(void) {
 #ifdef VLCB_DIAG
 /**
  * Get the MNS diagnostic values.
- * @param index the index indicating which diagnostic is required. 1..NUM_MNS_DIAGNOSTICS
+ * @param index the index indicating which diagnostic is required. 0..NUM_MNS_DIAGNOSTICS
  * @return the Diagnostic value or NULL if the value does not exist.
  */
 static DiagnosticVal * mnsGetDiagnostic(uint8_t index) {
-    if ((index<1) || (index>NUM_MNS_DIAGNOSTICS)) {
+    if (index > NUM_MNS_DIAGNOSTICS) {
         return NULL;
     }
-    return &(mnsDiagnostics[index-1]);
+    return &(mnsDiagnostics[index]);
 }
 #endif
 
@@ -915,13 +916,13 @@ TimedResponseResult mnsTRallDiagnosticsCallback(uint8_t type, uint8_t serviceInd
     if (services[serviceIndex]->getDiagnostic == NULL) {
         return TIMED_RESPONSE_RESULT_FINISHED;
     }
-    DiagnosticVal * d = services[serviceIndex]->getDiagnostic(step+1);   // steps start at 0 whereas diagnostics start at 1
+    DiagnosticVal * d = services[serviceIndex]->getDiagnostic(step);   // get the actual diagnostic value
     if (d == NULL) {
         // the requested diagnostic doesn't exist
         return TIMED_RESPONSE_RESULT_FINISHED;
     }
-    // it was a request for a single diagnostic from a single service
-    sendMessage6(OPC_DGN, nn.bytes.hi, nn.bytes.lo, serviceIndex+1, step+1, d->asBytes.hi, d->asBytes.lo);
+    // return the diagnostic
+    sendMessage6(OPC_DGN, nn.bytes.hi, nn.bytes.lo, serviceIndex+1, step, d->asBytes.hi, d->asBytes.lo);
     return TIMED_RESPONSE_RESULT_NEXT;
 }
 #endif

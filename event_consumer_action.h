@@ -80,7 +80,8 @@
 extern const Service eventConsumerService;
 
 #define NUM_CONSUMER_DIAGNOSTICS    1   ///< Number of diagnostics
-#define CONSUMER_DIAG_NUMCONSUMED   0   ///< Number of events consumed
+#define CONSUMER_DIAG_COUNT         0   ///< Number of diagnostics
+#define CONSUMER_DIAG_NUMCONSUMED   1   ///< Number of events consumed
 
 #if ACTION_SIZE == 1
 typedef union {

@@ -98,7 +98,7 @@ static DiagnosticVal * canGetDiagnostic(uint8_t index);
 /**
  * The set of diagnostics for the CAN service
  */
-static DiagnosticVal canDiagnostics[NUM_CAN_DIAGNOSTICS];
+static DiagnosticVal canDiagnostics[NUM_CAN_DIAGNOSTICS+1];
 #endif
 
 /**
@@ -176,6 +176,10 @@ static void canInterruptHandler(void);
 static void processEnumeration(void);
 static MessageReceived handleSelfEnumeration(uint8_t * p);
 static void canFillRxFifo(void);
+#ifdef VLCB_DIAG
+static uint8_t getNumTxBuffersInUse(void);
+static uint8_t getNumRxBuffersInUse(void);
+#endif
 
 /*
  * The VLCB opcodes define a set of priorities for each opcode.
@@ -235,9 +239,10 @@ static void canPowerUp(void) {
     }
 #ifdef VLCB_DIAG
     // clear the diagnostic stats
-    for (temp=0; temp<NUM_CAN_DIAGNOSTICS; temp++) {
-        canDiagnostics[temp].asInt = 0;
+    for (temp=1; temp <= NUM_CAN_DIAGNOSTICS; temp++) {
+        canDiagnostics[temp].asUint = 0;
     }
+    canDiagnostics[CAN_DIAG_COUNT].asUint = NUM_CAN_DIAGNOSTICS;
 #endif
     
     canTransmitFailed=0;
@@ -431,10 +436,50 @@ uint8_t canEsdData(uint8_t id) {
  * @return a pointer to the diagnostic data or NULL if the data isn't available
  */
 static DiagnosticVal * canGetDiagnostic(uint8_t index) {
-    if ((index<1) || (index>NUM_CAN_DIAGNOSTICS)) {
+    if (index > NUM_CAN_DIAGNOSTICS) {
         return NULL;
     }
-    return &(canDiagnostics[index-1]);
+    switch (index) {
+        case CAN_DIAG_STATUS:
+            canDiagnostics[CAN_DIAG_STATUS].asUint = COMSTAT;
+            break;
+        case CAN_DIAG_TX_BUFFER_USAGE:
+            canDiagnostics[CAN_DIAG_TX_BUFFER_USAGE].asUint = getNumTxBuffersInUse();
+            break;
+        case CAN_DIAG_RX_BUFFER_USAGE:
+            canDiagnostics[CAN_DIAG_RX_BUFFER_USAGE].asUint = getNumRxBuffersInUse();
+            break;
+    }
+    return &(canDiagnostics[index]);
+}
+
+/**
+ * Determine the number of transmit buffers currently being used.
+ * 
+ * @return number of TX buffers in use
+ */
+static uint8_t getNumTxBuffersInUse(void) {
+    return quantity(&txQueue);
+}
+
+/**
+ * Determine the number of receive buffers currently being used.
+ * 
+ * @return number of RX buffers in use
+ */
+static uint8_t getNumRxBuffersInUse(void) {
+    uint8_t no;
+    uint8_t i;
+    uint8_t * ptr;
+    
+    no = quantity(&rxQueue);
+    for (i=0; i<8; i++) {
+        ptr = getBufferPointer(i);
+        if (ptr[CON] & 0x80) {
+            no++;
+        }
+    }
+    return no;
 }
 #endif
 
@@ -449,6 +494,10 @@ static SendResult canSendMessage(Message * mp) {
 #ifdef CONSUMED_EVENTS
     Message * m;
 #endif
+#ifdef VLCB_DIAG
+    uint8_t no;
+#endif
+    
     // first check to see if there are messages waiting in the TX queue
     TXBnIE = 0;      // disable the TX buffer transmission complete interrupt
     if (quantity(&txQueue) == 0) {
@@ -518,6 +567,12 @@ static SendResult canSendMessage(Message * mp) {
         TXBnIE = 1;      // re-enable interrupt
         return SEND_FAILED;
     }
+#ifdef VLCB_DIAG
+    no = getNumTxBuffersInUse();
+    if (canDiagnostics[CAN_DIAG_TX_HIGH_WATERMARK].asUint < no) {
+        canDiagnostics[CAN_DIAG_TX_HIGH_WATERMARK].asUint = no;
+    }
+#endif
     TXBnIE = 1;      // re-enable interrupt
     return SEND_OK;
 }
@@ -536,11 +591,20 @@ static MessageReceived canReceiveMessage(Message * m){
     uint8_t * p;
     MessageReceived messageAvailable;
     uint8_t incomingCanId;
+#ifdef VLCB_DIAG
+    uint8_t no;
+#endif
  
     FIFOWMIE = 0;  // Disable high watermark interrupt so ISR cannot fiddle with FIFOs or enumeration map
     processEnumeration();  // Start or finish canid enumeration if required
 
     // Check for any messages in the software fifo, which the ISR will have filled if there has been a high watermark interrupt
+#ifdef VLCB_DIAG
+    no = getNumRxBuffersInUse();
+    if (canDiagnostics[CAN_DIAG_RX_HIGH_WATERMARK].asUint < no) {
+        canDiagnostics[CAN_DIAG_RX_HIGH_WATERMARK].asUint = no;
+    }
+#endif
     mp = pop(&rxQueue);
     if (mp != NULL) {
         memcpy(m, mp, sizeof(Message));
@@ -582,6 +646,7 @@ static MessageReceived canReceiveMessage(Message * m){
             }
             // Record and Clear any previous invalid message bit flag.
             if (IRXIF) {
+                canDiagnostics[CAN_DIAG_RX_ERRORS].asUint++;
                 IRXIF = 0;
             }
             // Mark that this buffer is read and empty.
@@ -820,6 +885,9 @@ static void canFillRxFifo(void) {
         }
         // Record and Clear any previous invalid message bit flag.
         if (IRXIF) {
+#ifdef VLCB_DIAG
+            canDiagnostics[CAN_DIAG_RX_ERRORS].asUint++;
+#endif
             IRXIF = 0;
         }
         // Mark that this buffer is read and empty.

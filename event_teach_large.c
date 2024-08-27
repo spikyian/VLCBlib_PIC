@@ -303,7 +303,7 @@ static DiagnosticVal * teachGetDiagnostic(uint8_t code);
 /**
  * The diagnostic values supported by the MNS service.
  */
-static DiagnosticVal teachDiagnostics[NUM_TEACH_DIAGNOSTICS];
+static DiagnosticVal teachDiagnostics[NUM_TEACH_DIAGNOSTICS+1];
 #endif
 
 /**
@@ -363,9 +363,10 @@ static void teachPowerUp(void) {
 #endif
 #ifdef VLCB_DIAG
     // Clear the diagnostics
-    for (i=0; i< NUM_TEACH_DIAGNOSTICS; i++) {
-        teachDiagnostics[i].asInt = 0;
+    for (i=1; i<= NUM_TEACH_DIAGNOSTICS; i++) {
+        teachDiagnostics[i].asUint = 0;
     }
+    teachDiagnostics[TEACH_DIAG_COUNT].asUint = NUM_TEACH_DIAGNOSTICS;
 #endif
     mode_flags &= ~FLAG_MODE_LEARN; // revert to learn OFF on power up
 }
@@ -540,10 +541,10 @@ static uint8_t teachGetESDdata(uint8_t id) {
  * @return a pointer to the diagnostic data or NULL if the data isn't available
  */
 static DiagnosticVal * teachGetDiagnostic(uint8_t index) {
-    if ((index<1) || (index>NUM_TEACH_DIAGNOSTICS)) {
+    if (index > NUM_TEACH_DIAGNOSTICS) {
         return NULL;
     }
-    return &(teachDiagnostics[index-1]);
+    return &(teachDiagnostics[index]);
 }
 #endif
 

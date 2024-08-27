@@ -55,7 +55,7 @@
  * as Actions and are added to an Action queue to be processed by the application.
  */
 
-static DiagnosticVal consumerDiagnostics[NUM_CONSUMER_DIAGNOSTICS];
+static DiagnosticVal consumerDiagnostics[NUM_CONSUMER_DIAGNOSTICS+1];
 static void consumerPowerUp(void);
 static Processed consumerProcessMessage(Message * m);
 static DiagnosticVal * consumerGetDiagnostic(uint8_t index); 
@@ -93,6 +93,12 @@ Boolean pushAction(ActionAndState a);
 #endif
 
 static void consumerPowerUp(void) {
+#ifdef VLCB_DIAG
+    for (awriter = 1; awiter <= NUM_CONSUMER_DIAGNOSTICS; awiter++) {
+	consumerDiagnostics[awriter].asUint = 0;
+    }
+    consumerDiagnostics[CONSUMER_DIAG_COUNT].asUint = NUM_CONSUMER_DIAGNOSTICS;
+#endif
 #ifdef CONSUMER_EVS_AS_ACTIONS
     areader = 0;
     awriter = 0;
@@ -197,10 +203,10 @@ static Processed consumerProcessMessage(Message *m) {
  * @return a pointer to the diagnostic data or NULL if the data isn't available
  */
 static DiagnosticVal * consumerGetDiagnostic(uint8_t index) {
-    if ((index<1) || (index>NUM_CONSUMER_DIAGNOSTICS)) {
+    if (index>NUM_CONSUMER_DIAGNOSTICS) {
         return NULL;
     }
-    return &(consumerDiagnostics[index-1]);
+    return &(consumerDiagnostics[index]);
 }
 #endif
 

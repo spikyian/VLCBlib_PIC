@@ -86,7 +86,8 @@ extern uint8_t happening2Event[2+MAX_HAPPENING-HAPPENING_BASE];
 #endif
 
 #define NUM_PRODUCER_DIAGNOSTICS    1   ///< Number of diagnostics for this service
-#define PRODUCER_DIAG_NUMPRODUCED   0   ///< Number of events produced
+#define PRODUCER_DIAG_COUNT         0   ///< Number of diagnostics
+#define PRODUCER_DIAG_NUMPRODUCED   1   ///< Number of events produced
 
 
 extern Boolean sendProducedEvent(Happening h, EventState state);

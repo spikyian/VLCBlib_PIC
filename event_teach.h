@@ -157,6 +157,7 @@ typedef struct {
 #define     EVENT_SHORT_MASK 0b00001000
 
 #define NUM_TEACH_DIAGNOSTICS 1      ///< The number of diagnostic values associated with this service
-#define TEACH_DIAG_NUM_TEACH          0x00 ///< Number of teaches counter
+#define TEACH_DIAG_COUNT              0x00 ///< Number of diagnostics
+#define TEACH_DIAG_NUM_TEACH          0x01 ///< Number of teaches counter
 
 #endif

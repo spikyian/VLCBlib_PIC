@@ -104,8 +104,9 @@ extern NvValidation APP_nvValidate(uint8_t index, uint8_t value);
 
 /* The list of the diagnostics supported */
 #define NUM_NV_DIAGNOSTICS 2    ///< The number of diagnostics supported by this service
-#define NV_DIAGNOSTICS_NUM_ACCESS  0x00    ///< return Global status Byte.
-#define NV_DIAGNOSTICS_NUM_FAIL    0x01    ///< return uptime upper word.
+#define NV_DIAG_COUNT              0x00    ///< Number of NV service diagnostics
+#define NV_DIAGNOSTICS_NUM_ACCESS  0x01    ///< return Global status Byte.
+#define NV_DIAGNOSTICS_NUM_FAIL    0x02    ///< return uptime upper word.
 
 /**
  * Obtain the current value of a NV.

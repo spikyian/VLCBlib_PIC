@@ -88,23 +88,26 @@ extern const Service canService;
  */
 extern const Transport canTransport;
 
-#define NUM_CAN_DIAGNOSTICS 16      ///< The number of diagnostic values associated with this service
-#define CAN_DIAG_RX_ERRORS          0x00 ///< CAN RX error counter
-#define CAN_DIAG_TX_ERRORS          0x01 ///< CAN TX error counter
-#define CAN_DIAG_STATUS             0x02 ///< last CAN status byte (TBA) 
-#define CAN_DIAG_TX_BUFFER_USAGE    0x03 ///< Tx buffer usage count
-#define CAN_DIAG_TX_BUFFER_OVERRUN  0x04 ///< Tx buffer overrun count
-#define CAN_DIAG_TX_MESSAGES        0x05 ///< TX message count
-#define CAN_DIAG_RX_BUFFER_USAGE    0x06 ///< RX buffer usage count 
-#define CAN_DIAG_RX_BUFFER_OVERRUN  0x07 ///< RX buffer overrun count
-#define CAN_DIAG_RX_MESSAGES        0x08 ///< RX message counter 
-#define CAN_DIAG_ERROR_FRAMES_DET   0x09 ///< CAN error frames detected 
-#define CAN_DIAG_ERROR_FRAMES_GEN   0x0A ///< CAN error frames generated (both active and passive ?)
-#define CAN_DIAG_LOST_ARBITRATION   0x0B ///< Number of times CAN arbitration was lost
-#define CAN_DIAG_CANID_ENUMS        0x0C ///< number of CANID enumerations 
-#define CAN_DIAG_CANID_CONFLICTS    0x0D ///< number of CANID conflicts detected
-#define CAN_DIAG_CANID_CHANGES      0x0E ///< Number of CANID changes
-#define CAN_DIAG_CANID_ENUMS_FAIL   0x0F ///< Number of CANID enumeration failures
+#define NUM_CAN_DIAGNOSTICS 18      ///< The number of diagnostic values associated with this service
+#define CAN_DIAG_COUNT              0x00 ///< Count of the CAN diagnostics
+#define CAN_DIAG_RX_ERRORS          0x01 ///< CAN RX error counter
+#define CAN_DIAG_TX_ERRORS          0x02 ///< CAN TX error counter
+#define CAN_DIAG_STATUS             0x03 ///< last CAN status byte (TBA) 
+#define CAN_DIAG_TX_BUFFER_USAGE    0x04 ///< Tx buffer usage count
+#define CAN_DIAG_TX_BUFFER_OVERRUN  0x05 ///< Tx buffer overrun count
+#define CAN_DIAG_TX_MESSAGES        0x06 ///< TX message count
+#define CAN_DIAG_RX_BUFFER_USAGE    0x07 ///< RX buffer usage count 
+#define CAN_DIAG_RX_BUFFER_OVERRUN  0x08 ///< RX buffer overrun count
+#define CAN_DIAG_RX_MESSAGES        0x09 ///< RX message counter 
+#define CAN_DIAG_ERROR_FRAMES_DET   0x0A ///< CAN error frames detected 
+#define CAN_DIAG_ERROR_FRAMES_GEN   0x0B ///< CAN error frames generated (both active and passive ?)
+#define CAN_DIAG_LOST_ARBITRATION   0x0C ///< Number of times CAN arbitration was lost
+#define CAN_DIAG_CANID_ENUMS        0x0D ///< number of CANID enumerations 
+#define CAN_DIAG_CANID_CONFLICTS    0x0E ///< number of CANID conflicts detected
+#define CAN_DIAG_CANID_CHANGES      0x0F ///< Number of CANID changes
+#define CAN_DIAG_CANID_ENUMS_FAIL   0x10 ///< Number of CANID enumeration failures
+#define CAN_DIAG_TX_HIGH_WATERMARK  0x11 ///< TX buff high watermark exceeded count
+#define CAN_DIAG_RX_HIGH_WATERMARK  0x12 ///< RX buff high watermark exceeded count
 
 
 /**

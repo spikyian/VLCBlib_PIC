@@ -54,7 +54,7 @@
  * Also handles events with data bytes if HANDLE_DATA_EVENTS is defined. The data is ignored.
  */
 
-static DiagnosticVal consumerDiagnostics[NUM_CONSUMER_DIAGNOSTICS];
+static DiagnosticVal consumerDiagnostics[NUM_CONSUMER_DIAGNOSTICS+1];
 static Processed consumerProcessMessage(Message * m);
 static DiagnosticVal * consumerGetDiagnostic(uint8_t index); 
 static uint8_t consumerEsdData(uint8_t index);
@@ -71,7 +71,7 @@ const Service eventConsumerService = {
     SERVICE_ID_CONSUMER,// id
     1,                  // version
     NULL,               // factoryReset
-    NULL,               // powerUp
+    consumerPowerUp,    // powerUp
     consumerProcessMessage,               // processMessage
     NULL,               // poll
 #if defined(_18F66K80_FAMILY_)
@@ -86,6 +86,16 @@ const Service eventConsumerService = {
 #endif
 };
 
+static void consumerPowerUp(void) {
+#ifdef VLCB_DIAG
+    uint8_t temp;
+
+    for (temp=1; temp<=NUM_CONSUMER_DIAGNOSTICS; temp++) {
+	consumerDiagnostics[temp].asUint = 0;
+    }
+    consumerDiagnostics[CONSUMER_DIAG_COUNT].asUint = NUM_CONSUMER_DIAGNOSTICS;
+#endif
+}
 /**
  * Process consumed events. Process Long and Short events.
  * Also handles events with data bytes if HANDLE_DATA_EVENTS is defined. The data is ignored.

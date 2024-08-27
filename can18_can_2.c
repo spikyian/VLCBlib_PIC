@@ -107,7 +107,7 @@ static DiagnosticVal * canGetDiagnostic(uint8_t index);
 /**
  * The set of diagnostics for the CAN service
  */
-static DiagnosticVal canDiagnostics[NUM_CAN_DIAGNOSTICS];
+static DiagnosticVal canDiagnostics[NUM_CAN_DIAGNOSTICS+1];
 #endif
 
 /**
@@ -181,7 +181,10 @@ static void startEnumeration(Boolean txWaiting);
 static void processEnumeration(void);
 static void handleSelfEnumeration(uint8_t canid);
 static void canFillRxFifo(void);
-
+#ifdef VLCB_DIAG
+static uint8_t getNumTxBuffersInUse(void);
+static uint8_t getNumRxBuffersInUse(void);
+#endif
 /*
  * The VLCB opcodes define a set of priorities for each opcode.
  * Here we map these priorities to the CAN priority bits.
@@ -265,9 +268,10 @@ static void canPowerUp(void) {
     }
 #ifdef VLCB_DIAG
     // clear the diagnostic stats
-    for (temp=0; temp<NUM_CAN_DIAGNOSTICS; temp++) {
-        canDiagnostics[temp].asInt = 0;
+    for (temp=1; temp<NUM_CAN_DIAGNOSTICS; temp++) {
+        canDiagnostics[temp].asUint = 0;
     }
+    canDiagnostics[CAN_DIAG_COUNT].asUint = NUM_CAN_DIAGNOSTICS;
 #endif
     
     canTransmitFailed=0;
@@ -494,35 +498,18 @@ uint8_t canEsdData(uint8_t id) {
 static DiagnosticVal * canGetDiagnostic(uint8_t index) {
     int16_t i16;
     
-    if ((index<1) || (index>NUM_CAN_DIAGNOSTICS)) {
+    if (index > NUM_CAN_DIAGNOSTICS) {
         return NULL;
     }
-    switch (index-1) {
+    switch (index) {
         case CAN_DIAG_STATUS:
             canDiagnostics[CAN_DIAG_STATUS].asUint = C1TRECU;
             break;
         case CAN_DIAG_TX_BUFFER_USAGE:
-            if (! C1FIFOSTA2Lbits.TFNRFNIF) {   // FIFO full
-                canDiagnostics[CAN_DIAG_TX_BUFFER_USAGE].asInt = CAN1_FIFO2_SIZE;
-            } else {
-                i16 = (int16_t)((C1FIFOUA2 - CAN1_FIFO2_BUFFERS_BASE_ADDRESS)/(8+CAN1_FIFO2_PAYLOAD_SIZE)); // write index
-                i16 = (int16_t)(i16 - C1FIFOSTA2Hbits.FIFOCI); // quantity in buffer
-                if (i16 < 0) i16 += CAN1_FIFO2_SIZE;
-                canDiagnostics[CAN_DIAG_TX_BUFFER_USAGE].asInt = i16;
-            }
+            canDiagnostics[CAN_DIAG_TX_BUFFER_USAGE].asUint = getNumTxBuffersInUse();
             break;
         case CAN_DIAG_RX_BUFFER_USAGE:
-            if (C1FIFOSTA3Lbits.TFERFFIF) {   // FIFO full
-                canDiagnostics[CAN_DIAG_RX_BUFFER_USAGE].asInt = CAN1_FIFO3_SIZE;
-            } else {
-/*                i16 = (int16_t)((C1FIFOUA3 - CAN1_FIFO3_BUFFERS_BASE_ADDRESS)/CAN1_FIFO3_PAYLOAD_SIZE); // write index
-                i16 = (int16_t)(i16 - C1FIFOSTA3Hbits.FIFOCI); // quantity in buffer
-                if (i16 < 0) i16 += CAN1_FIFO3_SIZE;*/
-                i16 = (int16_t)((CAN1_FIFO3_BUFFERS_BASE_ADDRESS - C1FIFOUA3)/(8+CAN1_FIFO3_PAYLOAD_SIZE)); // write index
-                i16 += C1FIFOSTA3Hbits.FIFOCI; // read index
-                if (i16 < 0) i16 += CAN1_FIFO3_SIZE;
-                canDiagnostics[CAN_DIAG_RX_BUFFER_USAGE].asInt = i16;
-            }
+            canDiagnostics[CAN_DIAG_RX_BUFFER_USAGE].asUint = getNumRxBuffersInUse();
             break;
         case CAN_DIAG_TX_ERRORS:
             canDiagnostics[CAN_DIAG_TX_ERRORS].asUint = C1BDIAG0Hbits.NTERRCNT; // TX_ERRORS
@@ -530,10 +517,45 @@ static DiagnosticVal * canGetDiagnostic(uint8_t index) {
         case CAN_DIAG_RX_ERRORS:
             canDiagnostics[CAN_DIAG_RX_ERRORS].asUint = C1BDIAG0Lbits.NRERRCNT; // RX_ERRORS
             break;
-            
     }
 
-    return &(canDiagnostics[index-1]);
+    return &(canDiagnostics[index]);
+}
+
+/**
+ * Determine the number of transmit buffers currently being used.
+ * 
+ * @return number of TX buffers in use
+ */
+static uint8_t getNumTxBuffersInUse(void) {
+    if (! C1FIFOSTA2Lbits.TFNRFNIF) {   // FIFO full
+        return CAN1_FIFO2_SIZE;
+    } else {
+        int16_t i16;
+        
+        i16 = (int16_t)((C1FIFOUA2 - CAN1_FIFO2_BUFFERS_BASE_ADDRESS)/(8+CAN1_FIFO2_PAYLOAD_SIZE)); // write index
+        i16 = (int16_t)(i16 - C1FIFOSTA2Hbits.FIFOCI); // quantity in buffer
+        if (i16 < 0) i16 += CAN1_FIFO2_SIZE;
+        return (uint8_t)i16;
+    }
+}
+
+/**
+ * Determine the number of receive buffers currently being used.
+ * 
+ * @return number of RX buffers in use
+ */
+static uint8_t getNumRxBuffersInUse(void) {
+    if (C1FIFOSTA3Lbits.TFERFFIF) {   // FIFO full
+        return CAN1_FIFO3_SIZE;
+    } else {
+        int16_t i16;
+        
+        i16 = (int16_t)((CAN1_FIFO3_BUFFERS_BASE_ADDRESS - C1FIFOUA3)/(8+CAN1_FIFO3_PAYLOAD_SIZE)); // write index
+        i16 += C1FIFOSTA3Hbits.FIFOCI; // read index
+        if (i16 < 0) i16 += CAN1_FIFO3_SIZE;
+        return (uint8_t) i16;
+    }
 }
 #endif
 
@@ -546,6 +568,9 @@ static DiagnosticVal * canGetDiagnostic(uint8_t index) {
 static SendResult canSendMessage(Message * mp) {
     uint8_t i;
     uint8_t* txFifoObj;
+#ifdef VLCB_DIAG
+    uint16_t temp;
+#endif
 #ifdef CONSUMED_EVENTS
     Message * m;
 
@@ -572,6 +597,12 @@ static SendResult canSendMessage(Message * mp) {
                 m->bytes[5] = mp->bytes[5];
                 m->bytes[6] = mp->bytes[6];
             }
+#ifdef VLCB_DIAG
+            temp = getNumRxBuffersInUse();
+            if (temp > canDiagnostics[CAN_DIAG_RX_HIGH_WATERMARK].asUint) {
+                canDiagnostics[CAN_DIAG_RX_HIGH_WATERMARK].asUint = temp;
+            }
+#endif
         }
     }
 #endif
@@ -600,7 +631,7 @@ static SendResult canSendMessage(Message * mp) {
     
     // Pointer to FIFO entry
     txFifoObj = (uint8_t*) C1FIFOUA2;
-    txFifoObj[0] = ((canPri[priorities[mp->opc]] & 1) << 7) | (canId & 0x7F);      // Put ID
+    txFifoObj[0] = (uint8_t)((canPri[priorities[mp->opc]] & 1) << 7) | (canId & 0x7F);      // Put ID
     txFifoObj[1] = canPri[priorities[mp->opc]] >> 1;
     txFifoObj[4] = (mp->len&0xF);       // Standard frame, length in DLC
     txFifoObj[5] = 0;       // No sequence number
@@ -619,6 +650,12 @@ static SendResult canSendMessage(Message * mp) {
     canDiagnostics[CAN_DIAG_TX_MESSAGES].asUint++;
 #endif
     C1FIFOCON2H |= _C1FIFOCON2H_UINC_MASK; // add to TX queue
+#ifdef VLCB_DIAG
+    temp = getNumTxBuffersInUse();
+    if (temp > canDiagnostics[CAN_DIAG_TX_HIGH_WATERMARK].asUint) {
+        canDiagnostics[CAN_DIAG_TX_HIGH_WATERMARK].asUint = temp;
+    }
+#endif
     if (canId == 0) {
         // Not ready to send as we don't yet have a CANID so start the self enumeration
         startEnumeration(1);
@@ -656,6 +693,9 @@ static MessageReceived canReceiveMessage(Message * m){
     Message * mp;
     uint8_t incomingCanId;
     uint8_t* rxFifoObj;
+#ifdef VLCB_DIAG
+    uint16_t temp;
+#endif
 
     // Check for any messages in the software fifo, which will be self-consumed events
     mp = pop(&rxQueue);
@@ -668,6 +708,12 @@ static MessageReceived canReceiveMessage(Message * m){
             return NOT_RECEIVED;
         }
         // message in hardware FIFO
+#ifdef VLCB_DIAG
+        temp = getNumRxBuffersInUse();
+        if (temp > canDiagnostics[CAN_DIAG_RX_HIGH_WATERMARK].asUint) {
+            canDiagnostics[CAN_DIAG_RX_HIGH_WATERMARK].asUint = temp;
+        }
+#endif
         // get message
         rxFifoObj = (uint8_t*) C1FIFOUA3;   // Pointer to FIFO entry
         incomingCanId = rxFifoObj[0] & 0x7F;
