@@ -109,7 +109,7 @@ static DiagnosticVal canDiagnostics[NUM_CAN_DIAGNOSTICS+1];
  */
 const Service canService = {
     SERVICE_ID_CAN,     // id
-    1,                  // version
+    2,                  // version
     canFactoryReset,    // factoryReset
     canPowerUp,         // powerUp
     canProcessMessage,  // processMessage

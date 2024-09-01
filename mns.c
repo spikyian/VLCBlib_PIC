@@ -484,7 +484,7 @@ static Processed mnsProcessMessage(Message * m) {
                 }
                 if (services[m->bytes[2]-1]->getDiagnostic == NULL) {
                     // the service doesn't support diagnostics
-                    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_RDGN, 1, GRSP_INVALID_DIAGNOSTIC);
+                    sendMessage5(OPC_DGN, nn.bytes.hi, nn.bytes.lo, OPC_RDGN, m->bytes[2], 0);
                 } 
                 if (m->bytes[3] == 0) {
                     // a DGN for all diagnostics for a particular service
