@@ -914,6 +914,7 @@ TimedResponseResult mnsTRserviceDiscoveryCallback(uint8_t type, uint8_t serviceI
  */
 TimedResponseResult mnsTRallDiagnosticsCallback(uint8_t type, uint8_t serviceIndex, uint8_t step) {
     if (services[serviceIndex]->getDiagnostic == NULL) {
+        sendMessage6(OPC_DGN, nn.bytes.hi, nn.bytes.lo, serviceIndex+1, 0, 0, 0);
         return TIMED_RESPONSE_RESULT_FINISHED;
     }
     DiagnosticVal * d = services[serviceIndex]->getDiagnostic(step);   // get the actual diagnostic value
