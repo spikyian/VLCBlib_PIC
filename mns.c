@@ -362,7 +362,7 @@ static Processed mnsProcessMessage(Message * m) {
             case OPC_SNN:   // Set node number
                 if (m->len < 3) {
 #ifdef VLCB_GRSP
-                    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVRD, SERVICE_ID_MNS, CMDERR_INV_CMD);
+                    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_SNN, SERVICE_ID_MNS, CMDERR_INV_CMD);
 #endif
                 } else {    
                     nn.bytes.hi = m->bytes[0];

@@ -384,7 +384,7 @@ static Processed canProcessMessage(Message * m) {
         case OPC_CANID:
             if (m->len < 4) {
 #ifdef VLCB_GRSP
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVRD, SERVICE_ID_MNS, CMDERR_INV_CMD);
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_CANID, SERVICE_ID_MNS, CMDERR_INV_CMD);
 #endif
                 return PROCESSED;
             }

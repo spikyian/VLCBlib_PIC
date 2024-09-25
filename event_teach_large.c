@@ -665,7 +665,7 @@ static void doNnclr(void) {
     clearAllEvents();
     sendMessage2(OPC_WRACK, nn.bytes.hi, nn.bytes.lo);
 #ifdef VLCB_GRSP
-    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_OLD_TEACH, GRSP_OK);
+    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NNCLR, SERVICE_ID_OLD_TEACH, GRSP_OK);
 #endif
 } //doNnclr
 
@@ -705,7 +705,7 @@ static void doEvlrn(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, ui
 #endif
     sendMessage2(OPC_WRACK, nn.bytes.hi, nn.bytes.lo);
 #ifdef VLCB_GRSP
-    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_OLD_TEACH, GRSP_OK);
+    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVLRN, SERVICE_ID_OLD_TEACH, GRSP_OK);
 #endif
     return;
 }
@@ -768,7 +768,7 @@ static void doEvuln(uint16_t nodeNumber, uint16_t eventNumber) {
     // Send a WRACK - difference from CBUS
     sendMessage2(OPC_WRACK, nn.bytes.hi, nn.bytes.lo);
 #ifdef VLCB_GRSP
-    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_OLD_TEACH, GRSP_OK);
+    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVULN, SERVICE_ID_OLD_TEACH, GRSP_OK);
 #endif
 }
 
