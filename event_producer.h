@@ -100,6 +100,13 @@ extern void deleteHappeningRange(Happening happening, uint8_t number);
  * @param h the Happening for which the state should be returned
  * @return the EventState for the specified Happening
  */
-extern EventState APP_GetEventState(Happening h);
+extern EventState APP_GetEventState(Happening h);   // for the action/happenings model
+/**
+ * The application must provide a function to provide the current event state so
+ * that the service can respond to AREQ/ASRQ requests.
+ * @param tableIndex event for which the state should be returned
+ * @return the EventState for the specified event
+ */
+extern EventState APP_GetEventIndexState(uint8_t tableIndex);   // for the simple model
 
 #endif

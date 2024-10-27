@@ -55,11 +55,13 @@
  */
 
 static DiagnosticVal consumerDiagnostics[NUM_CONSUMER_DIAGNOSTICS+1];
+static void consumerPowerUp(void);
 static Processed consumerProcessMessage(Message * m);
 static DiagnosticVal * consumerGetDiagnostic(uint8_t index); 
 static uint8_t consumerEsdData(uint8_t index);
 
 extern uint8_t APP_isConsumedEvent(uint8_t eventIndex);
+uint8_t isConsumedEvent(uint8_t eventIndex);
         
 /**
  * The service descriptor for the eventConsumer service. The application must include this
@@ -127,6 +129,7 @@ static Processed consumerProcessMessage(Message *m) {
         case OPC_ACON2:
         case OPC_ACON3:
 #endif
+            break;
         case OPC_ASOF:
 #ifdef HANDLE_DATA_EVENTS
         case OPC_ASOF1:
@@ -149,6 +152,9 @@ static Processed consumerProcessMessage(Message *m) {
     tableIndex = findEvent(enn, ((uint16_t)m->bytes[2])*256+m->bytes[3]);
     if (tableIndex == NO_INDEX) return NOT_PROCESSED;
 
+    if (!isConsumedEvent(tableIndex)) {
+        return NOT_PROCESSED;
+    }
     ret = APP_processConsumedEvent(tableIndex, m);
     if (ret == PROCESSED) {
         consumerDiagnostics[CONSUMER_DIAG_NUMCONSUMED].asUint++;
@@ -173,7 +179,7 @@ uint8_t isConsumedEvent(uint8_t eventIndex) {
  * @return a pointer to the diagnostic data or NULL if the data isn't available
  */
 static DiagnosticVal * consumerGetDiagnostic(uint8_t index) {
-    if ((index<1) || (index>NUM_CONSUMER_DIAGNOSTICS)) {
+    if (index > NUM_CONSUMER_DIAGNOSTICS) {
         return NULL;
     }
     return &(consumerDiagnostics[index-1]);

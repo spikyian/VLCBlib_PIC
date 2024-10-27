@@ -367,7 +367,7 @@ static uint8_t teachGetESDdata(uint8_t id) {
  * @return a pointer to the diagnostic data or NULL if the data isn't available
  */
 static DiagnosticVal * teachGetDiagnostic(uint8_t index) {
-    if ((index<1) || (index>NUM_TEACH_DIAGNOSTICS)) {
+    if (index > NUM_TEACH_DIAGNOSTICS) {
         return NULL;
     }
     return &(teachDiagnostics[index]);
@@ -840,17 +840,13 @@ uint8_t evs[PARAM_NUM_EV_EVENT];
  */
 uint8_t getEVs(uint8_t tableIndex) {
 
-    uint8_t evNum;
+    uint8_t evIdx;
     if (tableIndex >= NUM_EVENTS) {
         return CMDERR_INV_EN_IDX;
     }
 
-    for (evNum=0; evNum < PARAM_NUM_EV_EVENT; ) {
-        uint8_t evIdx;
-        for (evIdx=0; evIdx < EVENTTABLE_WIDTH; evIdx++) {
-            evs[evNum] = (uint8_t)readNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_EVS+evIdx);
-            evNum++;
-        }
+    for (evIdx=0; evIdx < PARAM_NUM_EV_EVENT; evIdx++) {
+        evs[evIdx] = (uint8_t)readNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_EVS+evIdx);
     }
     return 0;
 }
