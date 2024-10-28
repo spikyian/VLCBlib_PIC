@@ -160,6 +160,13 @@ static DiagnosticVal * producerGetDiagnostic(uint8_t index) {
     }
     return &(producerDiagnostics[index]);
 }
+
+/**
+ * Bump the number produced diagnostic counter.
+ */
+void incrementProducerCounter() {
+    producerDiagnostics[PRODUCER_DIAG_NUMPRODUCED].asUint++;
+}
 #endif
 
 #ifdef VLCB_SERVICE

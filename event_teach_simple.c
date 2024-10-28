@@ -85,6 +85,7 @@
  * Events are stored in the EventTable which consists of rows containing the following 
  * fields:
  * * Event event                      4 bytes
+ * * uint8_t flags
  * * uint8_t evs[PARAM_NUM_EV_EVENT]  PARAM_NUM_EV_EVENT bytes
  * 
  * The number of table entries is defined by NUM_EVENTS.
@@ -383,7 +384,7 @@ static DiagnosticVal * teachGetDiagnostic(uint8_t index) {
  */
 static void clearAllEvents(void) {
     uint8_t tableIndex;
-    uint8_t i;
+
     for (tableIndex=0; tableIndex<NUM_EVENTS; tableIndex++) {
         removeTableEntry(tableIndex);
     }
@@ -490,7 +491,7 @@ static void doNnclr(void) {
     clearAllEvents();
     sendMessage2(OPC_WRACK, nn.bytes.hi, nn.bytes.lo);
 #ifdef VLCB_GRSP
-    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_OLD_TEACH, GRSP_OK);
+    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NNCLR, SERVICE_ID_OLD_TEACH, GRSP_OK);
 #endif
 } //doNnclr
 
@@ -527,7 +528,7 @@ static void doEvlrn(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, ui
 #endif
     sendMessage2(OPC_WRACK, nn.bytes.hi, nn.bytes.lo);
 #ifdef VLCB_GRSP
-    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_OLD_TEACH, GRSP_OK);
+    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVLRN, SERVICE_ID_OLD_TEACH, GRSP_OK);
 #endif
     return;
 }
@@ -559,6 +560,9 @@ static void doReval(uint8_t enNum, uint8_t evNum) {
     if (evVal < 0) {
         // a negative value is the error code
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(-evVal));
+#ifdef VLCB_GRSP
+        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REVAL, SERVICE_ID_OLD_TEACH, (uint8_t)(-evVal));
+#endif
         return;
     }
     sendMessage5(OPC_NEVAL, nn.bytes.hi, nn.bytes.lo, enNum, evNum, (uint8_t)evVal);            
@@ -582,7 +586,7 @@ static void doEvuln(uint16_t nodeNumber, uint16_t eventNumber) {
     // Send a WRACK - difference from CBUS
     sendMessage2(OPC_WRACK, nn.bytes.hi, nn.bytes.lo);
 #ifdef VLCB_GRSP
-    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_OLD_TEACH, GRSP_OK);
+    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVULN, SERVICE_ID_OLD_TEACH, GRSP_OK);
 #endif
 }
 
