@@ -276,8 +276,8 @@ static uint8_t getParameterFlags(void);
 static void mnsFactoryReset(void) {
     nn.bytes.hi = NN_HI_DEFAULT;
     nn.bytes.lo = NN_LO_DEFAULT;
-    writeNVM(NN_NVM_TYPE, NN_ADDRESS, nn.bytes.hi);
-    writeNVM(NN_NVM_TYPE, NN_ADDRESS+1, nn.bytes.lo);
+    writeNVM(NN_NVM_TYPE, NN_ADDRESS+1, nn.bytes.hi);
+    writeNVM(NN_NVM_TYPE, NN_ADDRESS, nn.bytes.lo);
     
     last_mode_state = mode_state = MODE_UNINITIALISED;
     writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode_state);
@@ -296,13 +296,13 @@ static void mnsPowerUp(void) {
     int temp;
     uint8_t i;
     
-    temp = readNVM(NN_NVM_TYPE, NN_ADDRESS);
+    temp = readNVM(NN_NVM_TYPE, NN_ADDRESS+1);
     if (temp < 0) {
         nn.bytes.hi = NN_HI_DEFAULT;
         nn.bytes.lo = NN_LO_DEFAULT;
     } else {
         nn.bytes.hi = (uint8_t)temp;
-        temp = readNVM(NN_NVM_TYPE, NN_ADDRESS+1);
+        temp = readNVM(NN_NVM_TYPE, NN_ADDRESS);
         if (temp < 0) {
             nn.bytes.hi = NN_HI_DEFAULT;
             nn.bytes.lo = NN_LO_DEFAULT;
@@ -367,8 +367,8 @@ static Processed mnsProcessMessage(Message * m) {
                 } else {    
                     nn.bytes.hi = m->bytes[0];
                     nn.bytes.lo = m->bytes[1];
-                    writeNVM(NN_NVM_TYPE, NN_ADDRESS, nn.bytes.hi);
-                    writeNVM(NN_NVM_TYPE, NN_ADDRESS+1, nn.bytes.lo);
+                    writeNVM(NN_NVM_TYPE, NN_ADDRESS+1, nn.bytes.hi);
+                    writeNVM(NN_NVM_TYPE, NN_ADDRESS, nn.bytes.lo);
                     
                     mode_state = MODE_NORMAL;
 //                    writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode_state);
@@ -562,8 +562,8 @@ static Processed mnsProcessMessage(Message * m) {
                         sendMessage2(OPC_RQNN, nn.bytes.hi, nn.bytes.lo);
                         
                         nn.bytes.lo = nn.bytes.hi = 0;
-                        writeNVM(NN_NVM_TYPE, NN_ADDRESS, nn.bytes.hi);
-                        writeNVM(NN_NVM_TYPE, NN_ADDRESS+1, nn.bytes.lo);
+                        writeNVM(NN_NVM_TYPE, NN_ADDRESS+1, nn.bytes.hi);
+                        writeNVM(NN_NVM_TYPE, NN_ADDRESS, nn.bytes.lo);
                         //return to setup
                         mode_state = MODE_SETUP;
                         setupModePreviousMode = MODE_NORMAL;
