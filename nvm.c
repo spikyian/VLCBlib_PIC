@@ -116,6 +116,14 @@
 #define EEPROM_SIZE                (1024U)
 #endif
 
+#define NVMCMD_READ             0x00
+#define NVMCMD_READ_POSTINC     0x01
+#define NVMCMD_READPAGE         0x02
+#define NVMCMD_WRITE            0x03
+#define NVMCMD_WRITE_POSTINC    0x04
+#define NVMCMD_WRITEPAGE        0x05
+#define NVMCMD_ERASEPAGE        0x06
+#define NVMCMD_NOP              0x07
 
 
 // Structure for tracking Flash operations
@@ -147,7 +155,7 @@ static flash_address_t    flashBlock;     //address of current flash block
  */
 void initRomOps(void) {
     flashFlags.asByte = 0;  // no write and no erase
-    flashBlock = 0x0000; // invalid but as long a write isn't needed it will be 
+    flashBlock = 0x0700; // invalid but as long a write isn't needed it will be 
                          // ok. Next write will always be to a different block.
     TBLPTRU = 0;
 #if defined(_18FXXQ83_FAMILY_)
@@ -188,7 +196,7 @@ eeprom_data_t EEPROM_Read(eeprom_address_t index) {
     NVMADRL = (uint8_t) index;
 
     //Set the byte read command
-    NVMCON1bits.NVMCMD = 0x00;
+    NVMCON1bits.NVMCMD = NVMCMD_READ;
     
     //Start byte read
     NVMCON0bits.GO = 1;
@@ -245,7 +253,7 @@ uint8_t EEPROM_Write(eeprom_address_t index, eeprom_data_t value) {
         NVMDATL = value;
 
         //Set the byte write command
-        NVMCON1bits.NVMCMD = 0x03;
+        NVMCON1bits.NVMCMD = NVMCMD_WRITE;
 
         //Disable global interrupt
         bothDi();
@@ -263,7 +271,7 @@ uint8_t EEPROM_Write(eeprom_address_t index, eeprom_data_t value) {
         }
 
         //Clear the NVM Command
-        NVMCON1bits.NVMCMD = 0x00;
+        NVMCON1bits.NVMCMD = NVMCMD_NOP;
 #endif
         // check that it worked
         if (EEPROM_Read(index) == value) {
@@ -344,7 +352,7 @@ void eraseFlashBlock(void) {
     NVMADRU = (uint8_t) (flashBlock >> 16);
     NVMADRH = (uint8_t) (flashBlock >> 8);
 
-    NVMCON1bits.NVMCMD = 0x06;      //Set the page erase command
+    NVMCON1bits.NVMCMD = NVMCMD_ERASEPAGE;      //Set the page erase command
     bothDi();                       // disable all interrupts
     //Perform the unlock sequence 
     NVMLOCK = 0x55;
@@ -352,7 +360,7 @@ void eraseFlashBlock(void) {
     NVMCON0bits.GO = 1;             //Start byte write
     while (NVMCON0bits.GO)          // Wait to complete
         ;
-    NVMCON1bits.NVMCMD = 0x00;      //Clear the NVM Command
+    NVMCON1bits.NVMCMD = NVMCMD_NOP;      //Clear the NVM Command
 #endif
     if (interruptEnabled) {     // Only enable interrupts if they were enabled at function entry
         bothEi();                   /* Enable Interrupts */
@@ -418,7 +426,7 @@ void flushFlashBlock(void) {
     NVMADRL = (uint8_t) flashBlock;*/
     NVMADR = flashBlock;
 
-    NVMCON1bits.NVMCMD = 0x05;      //Set the page write command
+    NVMCON1bits.NVMCMD = NVMCMD_WRITEPAGE;      //Set the page write command
     //Perform the unlock sequence 
     NVMLOCK = 0x55;
     NVMLOCK = 0xAA;
@@ -426,7 +434,7 @@ void flushFlashBlock(void) {
     while (NVMCON0bits.GO)          // Wait to complete
 
         ;
-    NVMCON1bits.NVMCMD = 0x00;      //Clear the NVM Command
+    NVMCON1bits.NVMCMD = NVMCMD_NOP;      //Clear the NVM Command
 
 #endif
     if (interruptEnabled) {     // Only enable interrupts if they were enabled at function entry
@@ -459,11 +467,11 @@ void loadFlashBlock(void) {
     NVMADRU = (uint8_t) (flashBlock >> 16);
     NVMADRH = (uint8_t) (flashBlock >> 8);
     NVMADRL = (uint8_t) flashBlock;
-    NVMCON1bits.NVMCMD = 0x02;      //Set the page read command
+    NVMCON1bits.NVMCMD = NVMCMD_READPAGE;      //Set the page read command
     NVMCON0bits.GO = 1;             //Start page read
     while (NVMCON0bits.GO)          // Wait to complete
         ;
-    NVMCON1bits.NVMCMD = 0x00;      //Clear the NVM Command
+    NVMCON1bits.NVMCMD = NVMCMD_NOP;      //Clear the NVM Command
 #endif
     flashFlags.asByte = 0; // no erase, no write needed
 }

@@ -63,7 +63,9 @@
  */
 
 // forward declarations
+static void bootPowerUp(void);
 static Processed bootProcessMessage(Message * m);
+static uint8_t bootEsdData(uint8_t id);
 
 /**
  * The service descriptor for the BOOT service. The application must include this
@@ -75,7 +77,7 @@ const Service bootService = {
     SERVICE_ID_BOOT,    // id
     1,                  // version
     NULL,               // factoryReset
-    NULL,               // powerUp
+    bootPowerUp,        // powerUp
     bootProcessMessage, // processMessage
     NULL,               // poll
 #if defined(_18F66K80_FAMILY_)
@@ -83,7 +85,7 @@ const Service bootService = {
     NULL,               // lowIsr
 #endif
 #ifdef VLCB_SERVICE
-    NULL,               // ESD data
+    bootEsdData,        // ESD data
 #endif
 #ifdef VLCB_DIAG
     NULL                // getDiagnostic
@@ -185,6 +187,37 @@ const uint8_t paramBlock[] __at(0x820) = {
 };
 
 
+const char bl_version[] = { 'B','L','_','V','E','R','S','I','O','N','='};
+static uint8_t bootloaderType;
+static uint8_t bootloaderVersion;
+#define BL_TYPE_Unknown 0
+
+void bootPowerUp(void) {
+    uint24_t a;
+    uint8_t i;
+    uint8_t b;
+    uint8_t found;
+    
+    bootloaderType = BL_TYPE_Unknown;
+    bootloaderVersion = 0;
+    
+    // attempt to find the bl_version string within the bootloader
+    for (a=0; a<0x7FF; a++) {
+        found = 1;
+        for (i=0; i<11; i++) {
+            b = (uint8_t)readNVM(FLASH_NVM_TYPE, a+i);
+            if (b != bl_version[i]) {
+                found = 0;
+                break;
+            }
+        }
+        if (found) {
+            bootloaderType = (uint8_t)readNVM(FLASH_NVM_TYPE, a+11);
+            bootloaderVersion = (uint8_t)readNVM(FLASH_NVM_TYPE, a+12);
+            return;
+        } 
+    }
+}
 /**
  * Process the bootloader specific messages. The only messages which need to be 
  * processed is BOOTM (also called BOOT) and MODE.
@@ -212,4 +245,17 @@ static Processed bootProcessMessage(Message * m) {
     }
 }
 
-        
+
+
+uint8_t bootEsdData(uint8_t id) {
+    switch (id) {
+        case 1:
+            // The bootloader type
+            return bootloaderType;
+        case 2:
+            // The bootloader version
+            return bootloaderVersion;
+        default:
+            return 0;
+    }
+} 
