@@ -75,7 +75,7 @@ static uint8_t bootEsdData(uint8_t id);
  */
 const Service bootService = {
     SERVICE_ID_BOOT,    // id
-    1,                  // version
+    2,                  // version 2 supporting versioning
     NULL,               // factoryReset
     bootPowerUp,        // powerUp
     bootProcessMessage, // processMessage
@@ -190,8 +190,10 @@ const uint8_t paramBlock[] __at(0x820) = {
 const char bl_version[] = { 'B','L','_','V','E','R','S','I','O','N','='};
 static uint8_t bootloaderType;
 static uint8_t bootloaderVersion;
-#define BL_TYPE_Unknown 0
 
+/**
+ * Power up the BOOT service. Search and extract the bootloader's version.
+ */
 void bootPowerUp(void) {
     uint24_t a;
     uint8_t i;
@@ -245,8 +247,11 @@ static Processed bootProcessMessage(Message * m) {
     }
 }
 
-
-
+/**
+ * The BOOT service ESD bytes. Return the bootloader type and version.
+ * @param id the identifier for the ESD requested
+ * @return  the ESD value
+ */
 uint8_t bootEsdData(uint8_t id) {
     switch (id) {
         case 1:
