@@ -465,7 +465,7 @@ void canPoll() {
  */
 uint8_t canEsdData(uint8_t id) {
     switch(id) {
-        case 0:
+        case 1:
             return CAN_HW_PIC_CAN_2_0;
         default:
             return 0;

@@ -113,7 +113,6 @@ static uint8_t tableIndexToEvtIdx(uint8_t tableIndex);
 uint8_t findEvent(uint16_t nodeNumber, uint16_t eventNumber);
 static uint8_t removeTableEntry(uint8_t tableIndex);
 uint8_t removeEvent(uint16_t nodeNumber, uint16_t eventNumber);
-void checkRemoveTableEntry(uint8_t tableIndex);
 static void doNnclr(void);
 static void doNerd(void);
 static void doNnevn(void);
@@ -742,7 +741,7 @@ uint8_t addEvent(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8
                 } else {
                     writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_FLAGS, 0);
                 }
-                for (e = 0; e < EVENTTABLE_WIDTH; e++) {
+                for (e = 0; e < EVENT_TABLE_WIDTH; e++) {   // in this case EVENT_TABLE_WIDTH == EVperEvt
                     writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_EVS+e, EV_FILL);
                 }
                 error = 0;

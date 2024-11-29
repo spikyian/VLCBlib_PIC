@@ -207,7 +207,11 @@ static Word previousNN;
  * Other UI options are not currently supported.
  */
 TickValue pbTimer;
-
+/** 
+ * Addition check if the pb was pressed and not just whether time since pbTimer 
+ * has been exceeded.
+ */
+static uint8_t pbWasPushed;
 
 /* Heartbeat controls */
 static uint8_t heartbeatSequence;
@@ -327,6 +331,7 @@ static void mnsPowerUp(void) {
     setLEDsByMode();
     
     pbTimer.val = tickGet();
+    pbWasPushed = FALSE;
     
 #ifdef VLCB_DIAG
     // Clear the diagnostics
@@ -539,40 +544,20 @@ static Processed mnsProcessMessage(Message * m) {
             newMode = m->bytes[2];
             previousNN.word = nn.word;  // save the old NN
             // check current mode
-            switch (mode_state) {
-                case MODE_UNINITIALISED:
-                    if (newMode == MODE_SETUP) {
-                        mode_state = MODE_SETUP;
-                        setupModePreviousMode = MODE_UNINITIALISED;
-                        sendMessage5(OPC_GRSP, previousNN.bytes.hi, previousNN.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
-                        //start the request for NN
-                        sendMessage2(OPC_RQNN, nn.bytes.hi, nn.bytes.lo);
-                        // Update the LEDs
-                        setLEDsByMode();
-                        return PROCESSED;
-                    }
-                    break;
-                case MODE_SETUP:
-                    break;
-                default:    // NORMAL modes
-                    if (newMode == MODE_SETUP) {
-                        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
-                        // Do State transition from Normal to Setup
-                        // request new nn
-                        sendMessage2(OPC_RQNN, nn.bytes.hi, nn.bytes.lo);
-                        
-                        nn.bytes.lo = nn.bytes.hi = 0;
-                        writeNVM(NN_NVM_TYPE, NN_ADDRESS+1, nn.bytes.hi);
-                        writeNVM(NN_NVM_TYPE, NN_ADDRESS, nn.bytes.lo);
-                        //return to setup
-                        mode_state = MODE_SETUP;
-                        setupModePreviousMode = MODE_NORMAL;
-                        // Update the LEDs
-                        setLEDsByMode();
-                        // Don't save SETUP to NVM
-                        return PROCESSED;
-                    } 
-                    break;
+            if (mode_state == MODE_NORMAL) {
+                if ((newMode == MODE_SETUP) || (newMode == MODE_UNINITIALISED)) {
+                    sendMessage2((newMode == MODE_SETUP) ? OPC_RQNN : OPC_NNREL, nn.bytes.hi, nn.bytes.lo);
+                    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
+                    nn.bytes.lo = nn.bytes.hi = 0;
+                    writeNVM(NN_NVM_TYPE, NN_ADDRESS+1, nn.bytes.hi);
+                    writeNVM(NN_NVM_TYPE, NN_ADDRESS, nn.bytes.lo);
+                    //return to setup
+                    mode_state = (newMode == MODE_SETUP) ? MODE_SETUP : MODE_UNINITIALISED;
+                    setupModePreviousMode = MODE_NORMAL;
+                    // Update the LEDs
+                    setLEDsByMode();
+                    return PROCESSED;
+                }
             }
             // Now do heartbeat change
             if (newMode == MODE_HEARTBEAT_ON) {
@@ -711,27 +696,14 @@ static void mnsPoll(void) {
             pbTimer.val = tickGet();
             break;
         case MODE_SETUP:
-            /* 
-            // check for 30secs in SETUP and timeout back to previous state
-            if (tickTimeSince(pbTimer) > 3*TEN_SECOND) {
-                // return to previous mode
-                mode_state = setupModePreviousMode;
-                writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode_state);
-                // restore the NN
-                if (mode_state == MODE_NORMAL) {
-                    nn.word = previousNN.word;
-                    sendMessage2(OPC_NNACK, nn.bytes.hi, nn.bytes.lo);
-                    mnsDiagnostics[MNS_DIAGNOSTICS_NNCHANGE].asUint++;
-                }
-            } */
             if (APP_pbPressed() == 0) {
                 // PB has been released
 
-                if (tickTimeSince(pbTimer) > 4*ONE_SECOND) {
-                    // was down for more than 4 sec
-                    // return to previous mode
+                if ((tickTimeSince(pbTimer) > ONE_SECOND) && (tickTimeSince(pbTimer) < 2*ONE_SECOND)) {
+                    // a short press returns to previous mode
                     mode_state = setupModePreviousMode;
                     if (mode_state == MODE_NORMAL) {
+                        // restore the NN
                         nn.word = previousNN.word;
                         sendMessage2(OPC_NNACK, nn.bytes.hi, nn.bytes.lo);
 #ifdef VLCB_DIAG
@@ -739,36 +711,47 @@ static void mnsPoll(void) {
 #endif
                     }
                     setLEDsByMode();
-                } else if (tickTimeSince(pbTimer) > ONE_SECOND) {
-                    // a short press returns to Uninitalised
-                    if (nn.word != 0) {
-                        sendMessage2(OPC_NNREL, nn.bytes.hi, nn.bytes.lo);
-                    }
-                    nn.word = 0;
+                }
+                if (tickTimeSince(pbTimer) > 4*ONE_SECOND) {
                     mode_state = MODE_UNINITIALISED;
                     setLEDsByMode();
                 }
                 pbTimer.val = tickGet();
+                pbWasPushed = FALSE;
+            } else {
+                pbWasPushed = TRUE;
             }
             break;
         default:    // Normal mode
             // check the PB status
             if (APP_pbPressed() == 0) {
                 // PB has been released
-                if (tickTimeSince(pbTimer) > 4*ONE_SECOND) {
-                    // was down for more than 4 sec
+                if (pbWasPushed && (tickTimeSince(pbTimer) > 1*ONE_SECOND) && (tickTimeSince(pbTimer) < 2*ONE_SECOND)) {
                     // Do State transition from Normal to Setup
                     previousNN.word = nn.word;  // save the old NN
                     nn.bytes.lo = nn.bytes.hi = 0;
                     //return to setup
                     mode_state = MODE_SETUP;
                     setupModePreviousMode = MODE_NORMAL;
-                    pbTimer.val = tickGet();
                     //start the request for NN
                     sendMessage2(OPC_RQNN, previousNN.bytes.hi, previousNN.bytes.lo);
                     setLEDsByMode();
                 }
+                if (pbWasPushed &&(tickTimeSince(pbTimer) >= 4*ONE_SECOND)) {
+                    // was down for more than 4 sec, Move to Uninitialised
+                    previousNN.word = nn.word;  // save the old NN
+                    nn.bytes.lo = nn.bytes.hi = 0;
+                    //go to uninitialised
+                    mode_state = MODE_UNINITIALISED;
+                    setupModePreviousMode = MODE_NORMAL;
+                    //start the request for NN
+                    sendMessage2(OPC_NNREL, previousNN.bytes.hi, previousNN.bytes.lo);
+                    setLEDsByMode();
+                }
                 pbTimer.val = tickGet();
+                pbWasPushed = FALSE;
+            } else {
+                pbWasPushed = TRUE;
             }
     }
 }

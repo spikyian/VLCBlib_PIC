@@ -421,7 +421,7 @@ static void canIsr(void) {
  */
 uint8_t canEsdData(uint8_t id) {
     switch(id) {
-        case 0:
+        case 1:
             return CAN_HW_PIC_ECAN;
         default:
             return 0;

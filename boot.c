@@ -187,7 +187,7 @@ const uint8_t paramBlock[] __at(0x820) = {
 };
 
 
-const char bl_version[] = { 'B','L','_','V','E','R','S','I','O','N','='};
+static const char bl_version[] = { 'B','L','_','V','E','R','S','I','O','N','='};
 static uint8_t bootloaderType;
 static uint8_t bootloaderVersion;
 
@@ -211,6 +211,8 @@ void bootPowerUp(void) {
             if (b != bl_version[i]) {
                 found = 0;
                 break;
+            } else {
+                found = 1;
             }
         }
         if (found) {
