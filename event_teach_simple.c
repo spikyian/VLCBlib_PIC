@@ -131,6 +131,9 @@ static DiagnosticVal * teachGetDiagnostic(uint8_t code);
 static DiagnosticVal teachDiagnostics[NUM_TEACH_DIAGNOSTICS+1];
 #endif
 
+/** Errno for error number. */
+uint8_t errno;
+
 /*
  * Each row in the event table consists of:
  * Event + flags + ev[PARAM_NUM_EV_EVENT] i.e. a total of 5 + PARAM_NUM_EV_EVENT bytes 
@@ -195,6 +198,7 @@ static void teachPowerUp(void) {
     }
     teachDiagnostics[TEACH_DIAG_COUNT].asUint = NUM_TEACH_DIAGNOSTICS;
 #endif
+    errno = 0;
     mode_flags &= ~FLAG_MODE_LEARN; // revert to learn OFF on power up
 }
 
@@ -513,8 +517,8 @@ static void doEvlrn(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, ui
 #endif
         return;
     }
-    error = APP_addEvent(nodeNumber, eventNumber, evNum, evVal, FALSE);
-    if (error) {
+    APP_addEvent(nodeNumber, eventNumber, evNum, evVal, FALSE);
+    if (errno) {
         // validation error
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, error);
 #ifdef VLCB_GRSP
@@ -710,22 +714,22 @@ static uint8_t removeTableEntry(uint8_t tableIndex) {
  * Teach or re-teach an EV for an event. 
  * This may (optionally) need to create a new event and then optionally
  * create additional chained entries. All newly allocated table entries need
- * to be initialised.
+ * to be initialised. Errors are returned in global uint8_t errno.
  * 
  * @param nodeNumber Event NN
  * @param eventNumber Event NN
  * @param evNum the EV index (starts at 0 for the produced action)
  * @param evVal the EV value
  * @param forceOwnNN the value of the flag
- * @return error number or 0 for success
+ * @return event table index
  */
 uint8_t addEvent(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8_t evVal, Boolean forceOwnNN) {
     uint8_t tableIndex;
-    uint8_t error;
+    
     // do we currently have an event
     tableIndex = findEvent(nodeNumber, eventNumber);
     if (tableIndex == NO_INDEX) {
-        error = 1;
+        errno = CMDERR_TOO_MANY_EVENTS;
         // didn't find the event so find an empty slot and create one
         for (tableIndex=0; tableIndex<NUM_EVENTS; tableIndex++) {
             uint16_t en = getEN(tableIndex);
@@ -744,22 +748,23 @@ uint8_t addEvent(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8
                 for (e = 0; e < EVENT_TABLE_WIDTH; e++) {   // in this case EVENT_TABLE_WIDTH == EVperEvt
                     writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_EVS+e, EV_FILL);
                 }
-                error = 0;
+                errno = 0;
                 break;
             }
         }
-        if (error) {
-            return CMDERR_TOO_MANY_EVENTS;
+        if (errno) {
+            return NO_INDEX;
         }
     }
  
     if (writeEv(tableIndex, evNum, evVal)) {
         // failed to write
-        return CMDERR_INV_EV_IDX;
+        errno = CMDERR_INV_EV_IDX;
+        return NO_INDEX
     }
     // success
     flushFlashBlock();
-    return 0;
+    return tableIndex;
 }
 
 /**

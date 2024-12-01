@@ -76,14 +76,6 @@
 #define PAR_LOAD3   (PAR_LOAD+2)            ///< Address for the third byte of the load address paramter.
 #define PAR_LOAD4   (PAR_LOAD+3)            ///< Address for the forth byte of the load address paramter.
 
-//
-/// MANUFACTURER  - Used in the parameter block. 
-#define MANU_VLCB	250
-/** MODULE ID for the 16 Input module   - Used in the parameter block. All VLCB modules have the same ID. */
-#define MTYP_VLCB_16INP     0x01
-/** MODULE ID for the 16 Output module   - Used in the parameter block. All VLCB modules have the same ID. */
-#define MTYP_VLCB_16OUT     0x02
-
 
 /**
  * Message priorities
