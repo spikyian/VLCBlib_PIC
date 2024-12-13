@@ -134,6 +134,10 @@ static DiagnosticVal teachDiagnostics[NUM_TEACH_DIAGNOSTICS+1];
 /** Errno for error number. */
 uint8_t errno;
 
+#ifdef EVENT_HASH_TABLE
+uint8_t eventChains[EVENT_HASH_LENGTH][EVENT_CHAIN_LENGTH];
+#endif
+
 /*
  * Each row in the event table consists of:
  * Event + flags + ev[PARAM_NUM_EV_EVENT] i.e. a total of 5 + PARAM_NUM_EV_EVENT bytes 
@@ -191,6 +195,9 @@ static void teachFactoryReset(void) {
 static void teachPowerUp(void) {
     uint8_t i;
 
+#ifdef EVENT_HASH_TABLE
+    rebuildHashtable();
+#endif
 #ifdef VLCB_DIAG
     // Clear the diagnostics
     for (i=1; i<= NUM_TEACH_DIAGNOSTICS; i++) {
@@ -391,6 +398,9 @@ static void clearAllEvents(void) {
     for (tableIndex=0; tableIndex<NUM_EVENTS; tableIndex++) {
         removeTableEntry(tableIndex);
     }
+#ifdef EVENT_HASH_TABLE
+    rebuildHashtable();
+#endif
 }
 
 /**
@@ -508,7 +518,7 @@ static void doNnclr(void) {
  * @param evVal the EV value
  */
 static void doEvlrn(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8_t evVal) {
-    uint8_t error;
+
     evNum--;    // convert VLCB message numbering (starts at 1) to internal numbering)
     if (evNum >= PARAM_NUM_EV_EVENT) {
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_EV_IDX);
@@ -520,9 +530,9 @@ static void doEvlrn(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, ui
     APP_addEvent(nodeNumber, eventNumber, evNum, evVal, FALSE);
     if (errno) {
         // validation error
-        sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, error);
+        sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, errno);
 #ifdef VLCB_GRSP
-        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVLRN, SERVICE_ID_OLD_TEACH, error);
+        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVLRN, SERVICE_ID_OLD_TEACH, errno);
 #endif
         return;
     }
@@ -706,6 +716,9 @@ static uint8_t removeTableEntry(uint8_t tableIndex) {
         writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex + (EVENTTABLE_OFFSET_EVS + i), 0x00);
     }
     flushFlashBlock();
+#ifdef EVENT_HASH_TABLE
+    rebuildHashtable();
+#endif
     return 0;
 }
 
@@ -760,10 +773,13 @@ uint8_t addEvent(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8
     if (writeEv(tableIndex, evNum, evVal)) {
         // failed to write
         errno = CMDERR_INV_EV_IDX;
-        return NO_INDEX
+        return NO_INDEX;
     }
     // success
     flushFlashBlock();
+#ifdef EVENT_HASH_TABLE
+    rebuildHashtable();
+#endif
     return tableIndex;
 }
 
@@ -775,6 +791,20 @@ uint8_t addEvent(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8
  * @return index into event table or NO_INDEX if not present
  */
 uint8_t findEvent(uint16_t nodeNumber, uint16_t eventNumber) {
+#ifdef EVENT_HASH_TABLE
+    uint8_t hash = getHash(nodeNumber, eventNumber);
+    uint8_t chainIdx;
+    for (chainIdx=0; chainIdx<EVENT_CHAIN_LENGTH; chainIdx++) {
+        uint8_t tableIndex = eventChains[hash][chainIdx];
+        uint16_t nn, en;
+        if (tableIndex == NO_INDEX) return NO_INDEX;
+        nn = getNN(tableIndex);
+        en = getEN(tableIndex);
+        if ((nn == nodeNumber) && (en == eventNumber)) {
+            return tableIndex;
+        }
+    }
+#else
     uint8_t tableIndex;
     for (tableIndex=0; tableIndex < NUM_EVENTS; tableIndex++) {
         uint16_t b = getEN(tableIndex);
@@ -785,6 +815,7 @@ uint8_t findEvent(uint16_t nodeNumber, uint16_t eventNumber) {
             }
         }
     }
+#endif
     return NO_INDEX;
 }
 
@@ -926,4 +957,65 @@ static uint8_t tableIndexToEvtIdx(uint8_t tableIndex) {
     return tableIndex + 1;
 }
 
+#ifdef EVENT_HASH_TABLE
+/**
+ * Obtain a hash for the specified Event. 
+ * 
+ * The hash table uses an algorithm of an XOR of all the bytes with appropriate shifts.
+ * 
+ * If we used just the node number, then all short events would hash to the same number
+ * If we used just the event number, then for long events the vast majority would 
+ * be 1 to 8, so not giving a very good spread.
+ *
+ * This algorithm hopefully produces a good spread for layouts with either
+ * predominantly short events, long events or a mixture.
+ * This also means that for layouts using the default FLiM node numbers from 256, 
+ * we are effectively starting from zero as far as the hash algorithm is concerned.
+ * 
+ * @param e the event
+ * @return the hash
+ */
+uint8_t getHash(uint16_t nn, uint16_t en) {
+    uint8_t hash;
+    // need to hash the NN and EN to a uniform distribution across HASH_LENGTH
+    hash = (uint8_t)(nn ^ (nn >> 8U));
+    hash = (uint8_t)(7U*hash + (en ^ (en>>8U))); 
+    // ensure it is within bounds of eventChains
+    hash %= EVENT_HASH_LENGTH;
+    return hash;
+}
 
+
+/**
+ * Initialise the RAM hash chain for reverse lookup of event to tableIndex.
+ */
+void rebuildHashtable(void) {
+    // invalidate the current hash table
+    uint8_t hash;
+    uint8_t chainIdx;
+    uint8_t tableIndex;
+    int a;
+
+    for (hash=0; hash<EVENT_HASH_LENGTH; hash++) {
+        for (chainIdx=0; chainIdx < EVENT_CHAIN_LENGTH; chainIdx++) {
+            eventChains[hash][chainIdx] = NO_INDEX;
+        }
+    }
+    // now scan the event2Action table and populate the hash and lookup tables
+    for (tableIndex=0; tableIndex<NUM_EVENTS; tableIndex++) {
+        if (getEN(tableIndex) != 0) {
+            int16_t ev;
+    
+            // found the start of an event definition
+            hash = getHash(getNN(tableIndex), getEN(tableIndex));            
+            for (chainIdx=0; chainIdx<EVENT_CHAIN_LENGTH; chainIdx++) {
+                if (eventChains[hash][chainIdx] == NO_INDEX) {
+                    // available
+                    eventChains[hash][chainIdx] = tableIndex;
+                    break;
+                }
+            }
+        }
+    }
+}
+#endif

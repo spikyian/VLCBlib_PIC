@@ -699,7 +699,7 @@ static void mnsPoll(void) {
             if (APP_pbPressed() == 0) {
                 // PB has been released
 
-                if ((tickTimeSince(pbTimer) > ONE_SECOND) && (tickTimeSince(pbTimer) < 2*ONE_SECOND)) {
+                if ((tickTimeSince(pbTimer) > HUNDRED_MILI_SECOND) && (tickTimeSince(pbTimer) < 2*ONE_SECOND)) {
                     // a short press returns to previous mode
                     mode_state = setupModePreviousMode;
                     if (mode_state == MODE_NORMAL) {
@@ -726,7 +726,7 @@ static void mnsPoll(void) {
             // check the PB status
             if (APP_pbPressed() == 0) {
                 // PB has been released
-                if (pbWasPushed && (tickTimeSince(pbTimer) > 1*ONE_SECOND) && (tickTimeSince(pbTimer) < 2*ONE_SECOND)) {
+                if (pbWasPushed && (tickTimeSince(pbTimer) > HUNDRED_MILI_SECOND) && (tickTimeSince(pbTimer) < 2*ONE_SECOND)) {
                     // Do State transition from Normal to Setup
                     previousNN.word = nn.word;  // save the old NN
                     nn.bytes.lo = nn.bytes.hi = 0;

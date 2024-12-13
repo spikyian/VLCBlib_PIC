@@ -336,7 +336,7 @@ static const uint8_t eventTable[NUM_EVENTS * EVENTTABLE_ROW_WIDTH] __at(EVENT_TA
 
 #ifdef EVENT_HASH_TABLE
 uint8_t eventChains[EVENT_HASH_LENGTH][EVENT_CHAIN_LENGTH];
-#ifdef PRODUCED_EVENTS
+#ifdef EVENT_PRODUCED_EVENT_HASH
 uint8_t happening2Event[2+MAX_HAPPENING-HAPPENING_BASE];
 #endif
 #endif
@@ -1331,7 +1331,7 @@ void rebuildHashtable(void) {
     uint8_t chainIdx;
     uint8_t tableIndex;
     int a;
-#ifdef PRODUCED_EVENTS
+#ifdef EVENT_PRODUCED_EVENT_HASH
     // first initialise to nothing
     Happening happening;
     for (happening=0; happening<=(1+MAX_HAPPENING-HAPPENING_BASE); happening++) {
@@ -1350,7 +1350,7 @@ void rebuildHashtable(void) {
             int16_t ev;
     
             // found the start of an event definition
-#ifdef PRODUCED_EVENTS
+#ifdef EVENT_PRODUCED_EVENT_HASH
             // ev[0] and ev[1] is used to store the Produced event's action
 #if HAPPENING_SIZE == 2
             ev = getEv(tableIndex, 0);
