@@ -341,7 +341,9 @@ uint8_t happening2Event[2+MAX_HAPPENING-HAPPENING_BASE];
 #endif
 #endif
 
-
+#ifdef VLCB_ZERO_RESPONSES
+static uint8_t timedResponseOpcode; // used to differentiate a timed response for reqev AND reval
+#endif 
 //
 // SERVICE FUNCTIONS
 //
@@ -734,6 +736,12 @@ static void doReval(uint8_t enNum, uint8_t evNum) {
         if (validStart(tableIndex)) {
             int evVal;
             if (evNum == 0) {
+#ifdef VLCB_ZERO_RESPONSES
+                // send all of the EVs
+                // Note this somewhat abuses the type parameter
+                timedResponseOpcode = OPC_NEVAL;
+                startTimedResponse(tableIndex, findServiceIndex(SERVICE_ID_OLD_TEACH), reqevCallback);
+#endif
                 evVal = numEv(tableIndex);
             } else {
                 evVal = getEv(tableIndex, evIndex);
@@ -801,6 +809,7 @@ static void doReqev(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum) {
         sendMessage6(OPC_EVANS, nodeNumber>>8, nodeNumber&0xFF, eventNumber>>8, eventNumber&0xFF, 0, numEv(tableIndex));
         // send all of the EVs
         // Note this somewhat abuses the type parameter
+        timedResponseOpcode = OPC_EVANS;
         startTimedResponse(tableIndex, findServiceIndex(SERVICE_ID_OLD_TEACH), reqevCallback);
         return;
 #else
@@ -823,7 +832,7 @@ static void doReqev(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum) {
     return;
 }
 /**
- * The callback to do the REQEV responses.
+ * The callback to do the REQEV and REVAL responses.
  * @param tableIndex the index of the event in the eventTable
  * @param serviceIndex the service
  * @param step how far through the processing, considered to be an EV#-1
@@ -843,7 +852,11 @@ TimedResponseResult reqevCallback(uint8_t tableIndex, uint8_t serviceIndex, uint
     eventNumber.word = getEN(tableIndex);
     ev = getEv(tableIndex, step);
     if (ev >= 0) {
-        sendMessage6(OPC_EVANS, nodeNumber.bytes.hi, nodeNumber.bytes.lo, eventNumber.bytes.hi, eventNumber.bytes.lo, step+1, (uint8_t)ev);
+        if (timedResponseOpcode == OPC_EVANS) {
+            sendMessage6(OPC_EVANS, nodeNumber.bytes.hi, nodeNumber.bytes.lo, eventNumber.bytes.hi, eventNumber.bytes.lo, step+1, (uint8_t)ev);
+        } else {
+            sendMessage5(OPC_NEVAL, nodeNumber.bytes.hi, nodeNumber.bytes.lo, tableIndexToEvtIdx(tableIndex), step+1, (uint8_t)ev);
+        }
     }
     return TIMED_RESPONSE_RESULT_NEXT;
 }

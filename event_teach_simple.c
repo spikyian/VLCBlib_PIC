@@ -138,6 +138,10 @@ uint8_t errno;
 uint8_t eventChains[EVENT_HASH_LENGTH][EVENT_CHAIN_LENGTH];
 #endif
 
+#ifdef VLCB_ZERO_RESPONSES
+static uint8_t timedResponseOpcode; // used to differentiate a timed response for reqev AND reval
+#endif 
+
 /*
  * Each row in the event table consists of:
  * Event + flags + ev[PARAM_NUM_EV_EVENT] i.e. a total of 5 + PARAM_NUM_EV_EVENT bytes 
@@ -566,6 +570,12 @@ static void doReval(uint8_t enNum, uint8_t evNum) {
 
     evIndex = evNum-1U;    // Convert from CBUS numbering (starts at 1 for produced action))
     if (evNum == 0) {
+#ifdef VLCB_ZERO_RESPONSES
+        // send all of the EVs
+        // Note this somewhat abuses the type parameter
+        timedResponseOpcode = OPC_NEVAL;
+        startTimedResponse(tableIndex, findServiceIndex(SERVICE_ID_OLD_TEACH), reqevCallback);
+#endif
         evVal = numEv(tableIndex);
     } else {
         evVal = getEv(tableIndex, evIndex);
@@ -632,6 +642,7 @@ static void doReqev(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum) {
         sendMessage6(OPC_EVANS, nodeNumber>>8, nodeNumber&0xFF, eventNumber>>8, eventNumber&0xFF, 0, numEv(tableIndex));
         // send all of the EVs
         // Note this somewhat abuses the type parameter
+        timedResponseOpcode = OPC_EVANS;
         startTimedResponse(tableIndex, findServiceIndex(SERVICE_ID_OLD_TEACH), reqevCallback);
         return;
 #else
@@ -674,7 +685,11 @@ TimedResponseResult reqevCallback(uint8_t tableIndex, uint8_t serviceIndex, uint
     eventNumber.word = getEN(tableIndex);
     ev = getEv(tableIndex, step);
     if (ev >= 0) {
-        sendMessage6(OPC_EVANS, nodeNumber.bytes.hi, nodeNumber.bytes.lo, eventNumber.bytes.hi, eventNumber.bytes.lo, step+1, (uint8_t)ev);
+        if (timedResponseOpcode == OPC_EVANS) {
+            sendMessage6(OPC_EVANS, nodeNumber.bytes.hi, nodeNumber.bytes.lo, eventNumber.bytes.hi, eventNumber.bytes.lo, step+1, (uint8_t)ev);
+        } else {
+            sendMessage5(OPC_NEVAL, nodeNumber.bytes.hi, nodeNumber.bytes.lo, tableIndexToEvtIdx(tableIndex), step+1, (uint8_t)ev);
+        }
     }
     return TIMED_RESPONSE_RESULT_NEXT;
 }
