@@ -155,7 +155,7 @@ static flash_address_t    flashBlock;     //address of current flash block
  */
 void initRomOps(void) {
     flashFlags.asByte = 0;  // no write and no erase
-    flashBlock = 0x0700; // invalid but as long a write isn't needed it will be 
+    flashBlock = 0x0800; // invalid but as long a write isn't needed it will be 
                          // ok. Next write will always be to a different block.
     TBLPTRU = 0;
 #if defined(_18FXXQ83_FAMILY_)
