@@ -332,7 +332,7 @@ const Service eventTeachService = {
 };
 
 // Space for the event table and initialise to 0xFF
-static const uint8_t eventTable[NUM_EVENTS * EVENTTABLE_ROW_WIDTH] __at(EVENT_TABLE_ADDRESS) ={[0 ... NUM_EVENTS * EVENTTABLE_ROW_WIDTH-1] = 0xFF};
+//static const uint8_t eventTable[NUM_EVENTS * EVENTTABLE_ROW_WIDTH] __at(EVENT_TABLE_ADDRESS) ={[0 ... NUM_EVENTS * EVENTTABLE_ROW_WIDTH-1] = 0xFF};
 
 #ifdef EVENT_HASH_TABLE
 uint8_t eventChains[EVENT_HASH_LENGTH][EVENT_CHAIN_LENGTH];
