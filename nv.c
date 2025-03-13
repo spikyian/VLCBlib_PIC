@@ -81,7 +81,7 @@ static DiagnosticVal nvDiagnostics[NUM_NV_DIAGNOSTICS+1];
  */
 const Service nvService = {
     SERVICE_ID_NV,      // id
-    1,                  // version
+    2,                  // version
     nvFactoryReset,     // factoryReset
     nvPowerUp,          // powerUp
     nvProcessMessage,   // processMessage
@@ -274,12 +274,11 @@ static Processed nvProcessMessage(Message * m) {
             nvDiagnostics[NV_DIAGNOSTICS_NUM_ACCESS].asUint++;
 #endif
             sendMessage4(OPC_NVANS, nn.bytes.hi, nn.bytes.lo, m->bytes[2], (uint8_t)(valueOrError));
-#ifdef VLCB_ZERO_RESPONSES
-            if (m->bytes[2] == 0) {
+
+            if (((mode_flags & FLAG_MODE_FCUCOMPAT) == 0) && (m->bytes[2] == 0)) {
                 // a NVANS response for all of the NVs
                 startTimedResponse(TIMED_RESPONSE_NVRD, findServiceIndex(SERVICE_ID_NV), nvTRnvrdCallback);
             }
-#endif
             return PROCESSED;
         case OPC_NVSET:
             if (m->len < 5) {
@@ -360,7 +359,6 @@ static uint8_t nvGetESDdata(uint8_t id) {
 }
 #endif
 
-#ifdef VLCB_ZERO_RESPONSES
 /**
  * This is the callback used by the service discovery responses.
  * @param type always set to TIMED_RESPONSE_NVRD
@@ -383,4 +381,4 @@ TimedResponseResult nvTRnvrdCallback(uint8_t type, uint8_t serviceIndex, uint8_t
 #endif
     return TIMED_RESPONSE_RESULT_NEXT;
 }
-#endif
+

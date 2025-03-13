@@ -138,9 +138,7 @@ uint8_t errno;
 uint8_t eventChains[EVENT_HASH_LENGTH][EVENT_CHAIN_LENGTH];
 #endif
 
-#ifdef VLCB_ZERO_RESPONSES
 static uint8_t timedResponseOpcode; // used to differentiate a timed response for reqev AND reval
-#endif 
 
 /*
  * Each row in the event table consists of:
@@ -569,17 +567,19 @@ static void doReval(uint8_t enNum, uint8_t evNum) {
     }
 
     evIndex = evNum-1U;    // Convert from CBUS numbering (starts at 1 for produced action))
+    
     if (evNum == 0) {
-#ifdef VLCB_ZERO_RESPONSES
-        // send all of the EVs
-        // Note this somewhat abuses the type parameter
-        timedResponseOpcode = OPC_NEVAL;
-        startTimedResponse(tableIndex, findServiceIndex(SERVICE_ID_OLD_TEACH), reqevCallback);
-#endif
-        evVal = numEv(tableIndex);
+        evVal = EVperEVT;
+        if ((mode_flags & FLAG_MODE_FCUCOMPAT) == 0) {
+            // send all of the EVs
+            // Note this somewhat abuses the type parameter
+            timedResponseOpcode = OPC_NEVAL;
+            startTimedResponse(tableIndex, findServiceIndex(SERVICE_ID_OLD_TEACH), reqevCallback);
+        } 
     } else {
         evVal = getEv(tableIndex, evIndex);
     }
+    
     if (evVal < 0) {
         // a negative value is the error code
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(-evVal));
@@ -637,21 +637,21 @@ static void doReqev(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum) {
 #endif
         return;
     }
+    
     if (evNum == 0) {
-#ifdef VLCB_ZERO_RESPONSES
-        sendMessage6(OPC_EVANS, nodeNumber>>8, nodeNumber&0xFF, eventNumber>>8, eventNumber&0xFF, 0, numEv(tableIndex));
-        // send all of the EVs
-        // Note this somewhat abuses the type parameter
-        timedResponseOpcode = OPC_EVANS;
-        startTimedResponse(tableIndex, findServiceIndex(SERVICE_ID_OLD_TEACH), reqevCallback);
-        return;
-#else
-        sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_EV_IDX);
-        return;
-#endif
+        evVal = EVperEVT;
+        if ((mode_flags & FLAG_MODE_FCUCOMPAT) == 0) {
+            sendMessage6(OPC_EVANS, nodeNumber>>8, nodeNumber&0xFF, eventNumber>>8, eventNumber&0xFF, 0, numEv(tableIndex));
+            // send all of the EVs
+            // Note this somewhat abuses the type parameter
+            timedResponseOpcode = OPC_EVANS;
+            startTimedResponse(tableIndex, findServiceIndex(SERVICE_ID_OLD_TEACH), reqevCallback);
+            return;
+        } 
     } else {
         evVal = getEv(tableIndex, evNum-1);
     }
+    
     if (evVal < 0) {
         // a negative value is the error code
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(-evVal));

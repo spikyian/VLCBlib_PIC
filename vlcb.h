@@ -61,7 +61,6 @@
 #define VLCB_DIAG
 #define VLCB_SERVICE
 #define VLCB_MODE
-#define VLCB_ZERO_RESPONSES
 #define VLCB_GRSP
 #define VLCB_NVSETRD
 #endif
@@ -175,6 +174,7 @@ typedef enum Mode_state {
 #define FLAG_MODE_LEARN     1            ///< flag representing Learn mode.
 #define FLAG_MODE_EVENTACK  2            ///< flag representing Event Acknowledge mode.
 #define FLAG_MODE_HEARTBEAT 4            ///< flag representing Heartbeat mode.
+#define FLAG_MODE_FCUCOMPAT 8            ///< flag representing FCU compatibility mode 
 
 extern const Priority priorities[256];
 

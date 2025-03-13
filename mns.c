@@ -1,12 +1,7 @@
 /**
  * @copyright Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
  */
-/*
- * BUGS
- * Shouldn't persist SETUP mode
- * Holding PB whilst in Setup should return to Uninitialised
- * 
- */
+
 /*
   This work is licensed under the:
       Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -92,6 +87,10 @@
  *                      7 characters. Shorter names should be padded on the right 
  *                      with spaces. The name must leave off the communications 
  *                      protocol e.g. the CANMIO module would be set to "MIO    ".
+ * - \#define FCU_COMPAT    When defined the module will in start and return to FCU
+ *                      compatible mode after reset as the default. When not 
+ *                      defined the default is to support VLCB zero item responses
+ *                      which improves efficiency and performance.
  * 
  * The following parameter values are required to be defined for use by MNS:
  * - \#define PARAM_MANU              See the manufacturer settings in vlcb.h
@@ -150,7 +149,7 @@ void setLEDsByMode(void);
  */
 const Service mnsService = {
     SERVICE_ID_MNS,         // id
-    1,                      // version
+    2,                      // version
     mnsFactoryReset,        // factoryReset
     mnsPowerUp,             // powerUp
     mnsProcessMessage,      // processMessage
@@ -286,7 +285,6 @@ static void mnsFactoryReset(void) {
     last_mode_state = mode_state = MODE_UNINITIALISED;
     writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode_state);
 
-    //last_mode_flags = mode_flags = FLAG_MODE_HEARTBEAT; // heartbeat enabled by default
     last_mode_flags = mode_flags = 0;       // heartbeat disabled by default
     writeNVM(MODE_FLAGS_NVM_TYPE, MODE_FLAGS_ADDRESS, mode_flags);
 }
@@ -327,6 +325,10 @@ static void mnsPowerUp(void) {
     } else {
         mode_flags = (uint8_t)temp;
     }
+    mode_flags &= ~FLAG_MODE_FCUCOMPAT; // force FCU compat off
+#ifdef FCU_COMPAT
+    mode_flags |= FLAG_MODE_FCUCOMPAT;  // force FCU compat on if defined
+#endif
     
     setLEDsByMode();
     
@@ -459,11 +461,11 @@ static Processed mnsProcessMessage(Message * m) {
             }
             i = getParameter(m->bytes[2]);
             sendMessage4(OPC_PARAN, nn.bytes.hi, nn.bytes.lo, m->bytes[2], i);
-#ifdef VLCB_ZERO_RESPONSES
-            if (m->bytes[2] == 0) {
+
+            if (((mode_flags & FLAG_MODE_FCUCOMPAT) == 0) && (m->bytes[2] == 0)) {
                 startTimedResponse(TIMED_RESPONSE_RQNPN, findServiceIndex(SERVICE_ID_MNS), mnsTRrqnpnCallback);
             }
-#endif
+
             return PROCESSED;
         case OPC_NNRSM: // reset to manufacturer defaults
             previousNN.word = nn.word;  // save the old NN
@@ -566,6 +568,16 @@ static Processed mnsProcessMessage(Message * m) {
                 return PROCESSED;
             } else if (newMode == MODE_HEARTBEAT_OFF) {
                 mode_flags &= ~FLAG_MODE_HEARTBEAT;
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
+                return PROCESSED;
+            }
+            // Now do FCU compatibility change
+            if (newMode == MODE_FCUCOMPAT_ON) {
+                mode_flags |= FLAG_MODE_FCUCOMPAT;
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
+                return PROCESSED;
+            } else if (newMode == MODE_FCUCOMPAT_OFF) {
+                mode_flags &= ~FLAG_MODE_FCUCOMPAT;
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
                 return PROCESSED;
             }
@@ -911,7 +923,6 @@ TimedResponseResult mnsTRallDiagnosticsCallback(uint8_t type, uint8_t serviceInd
 }
 #endif
 
-#ifdef VLCB_ZERO_RESPONSES
 /**
  * This is the callback used by the RQNPN Parameter responses. 
  * @param type always set to TIMED_RESPONSE_RQNPN
@@ -926,4 +937,3 @@ TimedResponseResult  mnsTRrqnpnCallback(uint8_t type, uint8_t serviceIndex, uint
     sendMessage4(OPC_PARAN, nn.bytes.hi, nn.bytes.lo, step+1, getParameter(step+1));
     return TIMED_RESPONSE_RESULT_NEXT;
 }
-#endif

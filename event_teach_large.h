@@ -74,6 +74,11 @@ typedef union
  * Defines a row within the Event table.
  * Each row consists of 1 byte of flags, an index into the table for the next
  * row if this event is spread over multiple rows, the event and the events EVs.
+ * 
+ * Do NOT allocate space for this table but instead define EVENT_TABLE_ADDRESS in your module.h
+ * file and ensure that this space is not used by the Linker by setting this 
+ * outside of the memory range defined in project properties
+ * Properties->XC8 Global Options->XC8 Linker->memory model->ROM ranges
  */
 typedef struct {
     EventTableFlags flags;          ///< put first so could potentially use the Event bytes for EVs in subsequent rows.

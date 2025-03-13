@@ -43,6 +43,7 @@
 #include "vlcb.h"
 #include "event_consumer_simple.h"
 #include "event_teach.h"
+#include "mns.h"
 
 /**
  * @file
@@ -59,7 +60,7 @@ static void consumerPowerUp(void);
 static Processed consumerProcessMessage(Message * m);
 static DiagnosticVal * consumerGetDiagnostic(uint8_t index); 
 static uint8_t consumerEsdData(uint8_t index);
-
+static Processed consumerEventCheckLen(Message * m, uint8_t needed);
 extern uint8_t APP_isConsumedEvent(uint8_t eventIndex);
 uint8_t isConsumedEvent(uint8_t eventIndex);
         
@@ -71,7 +72,7 @@ uint8_t isConsumedEvent(uint8_t eventIndex);
  */
 const Service eventConsumerService = {
     SERVICE_ID_CONSUMER,// id
-    1,                  // version
+    2,                  // version
     NULL,               // factoryReset
     consumerPowerUp,    // powerUp
     consumerProcessMessage,               // processMessage
@@ -93,11 +94,12 @@ static void consumerPowerUp(void) {
     uint8_t temp;
 
     for (temp=1; temp<=NUM_CONSUMER_DIAGNOSTICS; temp++) {
-	consumerDiagnostics[temp].asUint = 0;
+        consumerDiagnostics[temp].asUint = 0;
     }
     consumerDiagnostics[CONSUMER_DIAG_COUNT].asUint = NUM_CONSUMER_DIAGNOSTICS;
 #endif
 }
+
 /**
  * Process consumed events. Process Long and Short events.
  * Also handles events with data bytes if HANDLE_DATA_EVENTS is defined. The data is ignored.
@@ -109,6 +111,24 @@ static Processed consumerProcessMessage(Message *m) {
     Processed ret;
     uint8_t tableIndex;
     uint16_t enn;
+    
+    #ifdef VLCB_MODE
+    if (m->opc == OPC_MODE) {      // 76 MODE - NN, mode
+        if (consumerEventCheckLen(m, 4) == PROCESSED) return PROCESSED;
+        if ((m->bytes[0] == nn.bytes.hi) && (m->bytes[1] == nn.bytes.lo)) {
+            if (m->bytes[2] == MODE_EVENT_ACK_ON) {
+                // Do enter Learn mode
+                mode_flags |= FLAG_MODE_EVENTACK;
+                return PROCESSED;
+            } else if (m->bytes[2] == MODE_EVENT_ACK_OFF) {
+                // Do exit Learn mode
+                mode_flags &= ~FLAG_MODE_EVENTACK;
+                return PROCESSED;
+            }
+        } 
+        return NOT_PROCESSED;   // mode probably processed by other services
+    }
+#endif
     
     if (m->len < 5) return NOT_PROCESSED;
     
@@ -155,6 +175,23 @@ static Processed consumerProcessMessage(Message *m) {
     if (!isConsumedEvent(tableIndex)) {
         return NOT_PROCESSED;
     }
+    
+    
+    
+    // we have the event in the event table
+    // check that we have a consumed Action
+    if ((mode_flags & FLAG_MODE_EVENTACK) && (isConsumedEvent(tableIndex))) {
+        // sent the ack
+        sendMessage7(OPC_ENACK, nn.bytes.hi, nn.bytes.lo, m->opc, m->bytes[0], m->bytes[1], m->bytes[2], m->bytes[3]);
+#ifdef VLCB_DIAG
+        consumerDiagnostics[CONSUMER_DIAG_NUMACKED].asInt++;
+#endif
+    }
+    
+    
+    
+    
+    
     ret = APP_processConsumedEvent(tableIndex, m);
     if (ret == PROCESSED) {
         consumerDiagnostics[CONSUMER_DIAG_NUMCONSUMED].asUint++;
@@ -182,7 +219,7 @@ static DiagnosticVal * consumerGetDiagnostic(uint8_t index) {
     if (index > NUM_CONSUMER_DIAGNOSTICS) {
         return NULL;
     }
-    return &(consumerDiagnostics[index-1]);
+    return &(consumerDiagnostics[index]);
 }
 #endif
 
@@ -201,3 +238,13 @@ static uint8_t consumerEsdData(uint8_t index) {
     }
 }
 #endif
+
+/**
+ * Check the message length is sufficient for the opcode.
+ * @param m the message
+ * @param needed the number of bytes needed
+ * @return PROCESSED if the message is invalid and should not be processed further
+ */
+static Processed consumerEventCheckLen(Message * m, uint8_t needed) {
+    return checkLen(m, needed, SERVICE_ID_CONSUMER);
+}
