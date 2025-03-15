@@ -421,15 +421,22 @@ static Processed mnsProcessMessage(Message * m) {
             }
             if ((m->bytes[0] == 0) && (m->bytes[1] == 0)) { // Global MODE
                 newMode = m->bytes[2];
-                // do heartbeat change
-                if (newMode == MODE_HEARTBEAT_ON) {
-                    mode_flags |= FLAG_MODE_HEARTBEAT;
-//                    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
-                    return PROCESSED;
-                } else if (newMode == MODE_HEARTBEAT_OFF) {
-                    mode_flags &= ~FLAG_MODE_HEARTBEAT;
-//                    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
-                    return PROCESSED;
+                // do broadcast MODE flag changes
+                switch (newMode) {
+                    case MODE_HEARTBEAT_ON:
+                        mode_flags |= FLAG_MODE_HEARTBEAT;
+                        return PROCESSED;
+                    case MODE_HEARTBEAT_OFF:
+                        mode_flags &= ~FLAG_MODE_HEARTBEAT;
+                        return PROCESSED;
+                    case MODE_FCUCOMPAT_ON:
+                        mode_flags |= FLAG_MODE_FCUCOMPAT;
+                        return PROCESSED;
+                    case MODE_FCUCOMPAT_OFF:
+                        mode_flags &= ~FLAG_MODE_FCUCOMPAT;
+                        return PROCESSED;
+                    default:
+                        break;
                 }
             }
             break;
@@ -545,41 +552,42 @@ static Processed mnsProcessMessage(Message * m) {
             }
             newMode = m->bytes[2];
             previousNN.word = nn.word;  // save the old NN
-            // check current mode
-            if (mode_state == MODE_NORMAL) {
-                if ((newMode == MODE_SETUP) || (newMode == MODE_UNINITIALISED)) {
-                    sendMessage2((newMode == MODE_SETUP) ? OPC_RQNN : OPC_NNREL, nn.bytes.hi, nn.bytes.lo);
+            
+            switch (newMode) {
+                case MODE_SETUP:
+                case MODE_UNINITIALISED:
+                    if (mode_state == MODE_NORMAL) { // check current mode
+                        sendMessage2((newMode == MODE_SETUP) ? OPC_RQNN : OPC_NNREL, nn.bytes.hi, nn.bytes.lo);
+                        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
+                        nn.bytes.lo = nn.bytes.hi = 0;
+                        writeNVM(NN_NVM_TYPE, NN_ADDRESS+1, nn.bytes.hi);
+                        writeNVM(NN_NVM_TYPE, NN_ADDRESS, nn.bytes.lo);
+                        //return to setup
+                        mode_state = (newMode == MODE_SETUP) ? MODE_SETUP : MODE_UNINITIALISED;
+                        setupModePreviousMode = MODE_NORMAL;
+                        // Update the LEDs
+                        setLEDsByMode();
+                        return PROCESSED;
+                    }
+                    break;
+                case MODE_HEARTBEAT_ON:
+                    mode_flags |= FLAG_MODE_HEARTBEAT;
                     sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
-                    nn.bytes.lo = nn.bytes.hi = 0;
-                    writeNVM(NN_NVM_TYPE, NN_ADDRESS+1, nn.bytes.hi);
-                    writeNVM(NN_NVM_TYPE, NN_ADDRESS, nn.bytes.lo);
-                    //return to setup
-                    mode_state = (newMode == MODE_SETUP) ? MODE_SETUP : MODE_UNINITIALISED;
-                    setupModePreviousMode = MODE_NORMAL;
-                    // Update the LEDs
-                    setLEDsByMode();
                     return PROCESSED;
-                }
-            }
-            // Now do heartbeat change
-            if (newMode == MODE_HEARTBEAT_ON) {
-                mode_flags |= FLAG_MODE_HEARTBEAT;
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
-                return PROCESSED;
-            } else if (newMode == MODE_HEARTBEAT_OFF) {
-                mode_flags &= ~FLAG_MODE_HEARTBEAT;
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
-                return PROCESSED;
-            }
-            // Now do FCU compatibility change
-            if (newMode == MODE_FCUCOMPAT_ON) {
-                mode_flags |= FLAG_MODE_FCUCOMPAT;
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
-                return PROCESSED;
-            } else if (newMode == MODE_FCUCOMPAT_OFF) {
-                mode_flags &= ~FLAG_MODE_FCUCOMPAT;
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
-                return PROCESSED;
+                case MODE_HEARTBEAT_OFF:
+                    mode_flags &= ~FLAG_MODE_HEARTBEAT;
+                    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
+                    return PROCESSED;
+                case MODE_FCUCOMPAT_ON:
+                    mode_flags |= FLAG_MODE_FCUCOMPAT;
+                    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
+                    return PROCESSED;
+                case MODE_FCUCOMPAT_OFF:
+                    mode_flags &= ~FLAG_MODE_FCUCOMPAT;
+                    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
+                    return PROCESSED;
+                default:
+                    break;
             }
             return NOT_PROCESSED;
 #endif
