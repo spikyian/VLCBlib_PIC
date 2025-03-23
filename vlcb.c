@@ -950,6 +950,8 @@ uint8_t pbUpTimer(uint8_t timeout) {
  * Factory reset
  *   The push button is held down at power up for between 10 and 30 seconds
  *   then released and then pressed again for between 2 and 4 seconds.
+ * The actual numbers used in the code reflect the fact that to get here the bootloader
+ * would have already ensured that the PB has been held down for 2 seconds.
  */
 static void checkPowerOnPb(void) {
     uint8_t i;
@@ -957,13 +959,13 @@ static void checkPowerOnPb(void) {
     // check for the push button being pressed at power up
     if (APP_pbPressed()) {
         // determine how long the button is held for
-        i = pbDownTimer(30);
+        i = pbDownTimer(28);
         if (i == 0) {
             //Timeout
             return;
-        } else if ((i>=2) && (i < 6)) {
+        } else if (i < 4) {
             APP_testMode();
-        } else if (i >= 10) {
+        } else if (i >= 8) {
             showStatus(STATUS_RESET_WARNING);
             // wait for pb down max 5 seconds
             i = pbUpTimer(5);
