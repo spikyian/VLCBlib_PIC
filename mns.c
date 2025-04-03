@@ -321,7 +321,7 @@ static void mnsPowerUp(void) {
     setupModePreviousMode = mode_state;
     temp = readNVM(MODE_FLAGS_NVM_TYPE, MODE_FLAGS_ADDRESS);
     if (temp < 0) {
-        mode_flags = FLAG_MODE_HEARTBEAT;
+        mode_flags = 0;
     } else {
         mode_flags = (uint8_t)temp;
     }

@@ -795,6 +795,16 @@ void setup(void);
  */
 void loop(void);
 
+/*
+ * Code to ensure that it EEPROM flag is checked then a factoryReset will take 
+ * place. Sets the data version to 0xFF
+ */
+/** @private */
+asm("PSECT eeprom_data,class=EEDATA");
+/** @private */
+asm("ORG " ___mkstr(VERSION_ADDRESS));
+/** @private */
+asm("db 0xFF");
 
 /////////////////////////////////////////////
 // SERVICE CHECKING FUNCTIONS
@@ -1100,7 +1110,7 @@ Processed checkLen(Message * m, uint8_t needed, uint8_t service) {
 #ifdef VLCB_GRSP
         if (m->len > 2) {
             if ((m->bytes[0] == nn.bytes.hi) && (m->bytes[1] == nn.bytes.lo)) {
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, m->opc, service, CMDERR_INV_CMD);
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, (uint8_t)(m->opc), service, CMDERR_INV_CMD);
             }
         }
 #endif

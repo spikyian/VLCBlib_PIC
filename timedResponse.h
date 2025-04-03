@@ -101,6 +101,11 @@ typedef TimedResponseResult (* TimedResponseCallback)(uint8_t type, const Servic
 extern void initTimedResponse(void);
 
 /**
+ * Test to see if a timed response is in progress.
+ */
+extern uint8_t timedResponseInProgress(void);
+
+/**
  * Request callbacks at a regular rate.
  * @param type  indicate to the callback function the type of the callback.
  * @param serviceIndex passed to the user's callback function. If SERVICE_ID_ALL is passed then the callback is repeatedly for each service.

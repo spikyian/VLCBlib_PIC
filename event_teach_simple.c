@@ -348,7 +348,7 @@ static Processed teachCheckLen(Message * m, uint8_t needed, uint8_t learn) {
             if (mode_flags & FLAG_MODE_LEARN) {
                 // This module is in Learn mode so we should indicate an error
 #ifdef VLCB_GRSP
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, m->opc, SERVICE_ID_OLD_TEACH, CMDERR_INV_CMD);
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, (uint8_t)(m->opc), SERVICE_ID_OLD_TEACH, CMDERR_INV_CMD);
 #endif
             }
             return PROCESSED;

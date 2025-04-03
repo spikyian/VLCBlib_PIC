@@ -166,7 +166,7 @@ static Processed ackEventProcessMessage(Message * m) {
         // check that we have a consumed Action
         if (isConsumedEvent(eventIndex)) {
             // sent the ack
-            sendMessage7(OPC_ENACK, nn.bytes.hi, nn.bytes.lo, m->opc, m->bytes[0], m->bytes[1], m->bytes[2], m->bytes[3]);
+            sendMessage7(OPC_ENACK, nn.bytes.hi, nn.bytes.lo, (uint8_t)(m->opc), m->bytes[0], m->bytes[1], m->bytes[2], m->bytes[3]);
 #ifdef VLCB_DIAG
             ackDiagnostics[ACK_DIAG_NUM_ACKED].asInt++;
 #endif

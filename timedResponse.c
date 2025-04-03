@@ -75,6 +75,14 @@ void initTimedResponse(void) {
     timedResponseType = TIMED_RESPONSE_NONE;
 }
 
+/**
+ * Test to see if a timedResponse is in progress.
+ * @return true if timed response is in progress
+ */
+uint8_t timedResponseInProgress(void) {
+    return timedResponseType != TIMED_RESPONSE_NONE;
+}
+
 /*
  * Request callbacks at a regular rate.
  * 

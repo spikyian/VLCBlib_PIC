@@ -112,7 +112,7 @@ static Processed consumerProcessMessage(Message *m) {
     uint8_t tableIndex;
     uint16_t enn;
     
-    #ifdef VLCB_MODE
+#ifdef VLCB_MODE
     if (m->opc == OPC_MODE) {      // 76 MODE - NN, mode
         if (consumerEventCheckLen(m, 4) == PROCESSED) return PROCESSED;
         if ((m->bytes[0] == nn.bytes.hi) && (m->bytes[1] == nn.bytes.lo)) {
@@ -121,7 +121,7 @@ static Processed consumerProcessMessage(Message *m) {
                 mode_flags |= FLAG_MODE_EVENTACK;
                 return PROCESSED;
             } else if (m->bytes[2] == MODE_EVENT_ACK_OFF) {
-                // Do exit Learn mode
+                // Stop event ack
                 mode_flags &= ~FLAG_MODE_EVENTACK;
                 return PROCESSED;
             }
@@ -182,7 +182,7 @@ static Processed consumerProcessMessage(Message *m) {
     // check that we have a consumed Action
     if ((mode_flags & FLAG_MODE_EVENTACK) && (isConsumedEvent(tableIndex))) {
         // sent the ack
-        sendMessage7(OPC_ENACK, nn.bytes.hi, nn.bytes.lo, m->opc, m->bytes[0], m->bytes[1], m->bytes[2], m->bytes[3]);
+        sendMessage7(OPC_ENACK, nn.bytes.hi, nn.bytes.lo, (uint8_t)(m->opc), m->bytes[0], m->bytes[1], m->bytes[2], m->bytes[3]);
 #ifdef VLCB_DIAG
         consumerDiagnostics[CONSUMER_DIAG_NUMACKED].asInt++;
 #endif
