@@ -117,7 +117,7 @@ static Processed consumerProcessMessage(Message *m) {
         if (consumerEventCheckLen(m, 4) == PROCESSED) return PROCESSED;
         if ((m->bytes[0] == nn.bytes.hi) && (m->bytes[1] == nn.bytes.lo)) {
             if (m->bytes[2] == MODE_EVENT_ACK_ON) {
-                // Do enter Learn mode
+                // Enable event ack mode
                 mode_flags |= FLAG_MODE_EVENTACK;
                 return PROCESSED;
             } else if (m->bytes[2] == MODE_EVENT_ACK_OFF) {

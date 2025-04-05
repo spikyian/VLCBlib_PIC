@@ -216,8 +216,8 @@ eeprom_data_t EEPROM_Read(eeprom_address_t index) {
 uint8_t EEPROM_Write(eeprom_address_t index, eeprom_data_t value) {
     uint8_t interruptEnabled;
     interruptEnabled = geti(); // store current global interrupt state
-    do {
 #if defined (_18F66K80_FAMILY_)
+    do {
         SET_EADDRH((index >> 8)&0xFF);      // High byte of address to write
         EEADR = index & 0xFF;       	/* Low byte of Data Memory Address to write */
         EEDATA = value;
@@ -273,6 +273,7 @@ uint8_t EEPROM_Write(eeprom_address_t index, eeprom_data_t value) {
         //Clear the NVM Command
         NVMCON1bits.NVMCMD = NVMCMD_NOP;
 #endif
+#if defined (_18F66K80_FAMILY_)
         // check that it worked
         if (EEPROM_Read(index) == value) {
             break;
@@ -282,6 +283,7 @@ uint8_t EEPROM_Write(eeprom_address_t index, eeprom_data_t value) {
         updateModuleErrorStatus();
 #endif
     } while (1);
+#endif
     return GRSP_OK;
 }
 
