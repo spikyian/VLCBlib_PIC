@@ -1260,6 +1260,7 @@ void sendMessage(VlcbOpCodes opc, uint8_t len, uint8_t data1, uint8_t data2, uin
  */
 void main(void) {
     uint8_t i;
+    uint8_t t1,t2;
     
     /*
      * Set up the processor clock
@@ -1275,6 +1276,19 @@ void main(void) {
          * Here we leave PLLEN=0 so peripherals do NOT use the PLL.
          */
 #endif
+    
+    /* Introduce a startup delay so that the power supply can stabilise */
+    /* Without this EEPROM can get corrupted during power up. A  MCP111-450 
+     * dongle does resolve this but is unnecessary with this software fix. 
+     * Delay is approx 1 second. */
+    for (t1=0; t1<64; t1++) {
+        for (t2=0; t2<255; t2++) {
+            for (i=0; i<255; i++) {
+                // do something innocuous
+                APP_writeLED1(0);
+            }
+        }
+    }
     
     /*
      * Set up the interrupts

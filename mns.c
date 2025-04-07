@@ -329,7 +329,7 @@ static void mnsPowerUp(void) {
 #ifdef FCU_COMPAT
     mode_flags |= FLAG_MODE_FCUCOMPAT;  // force FCU compat on if defined
 #endif
-    
+    last_mode_flags = mode_flags;
     setLEDsByMode();
     
     pbTimer.val = tickGet();

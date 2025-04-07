@@ -203,6 +203,8 @@ eeprom_data_t EEPROM_Read(eeprom_address_t index) {
     while (NVMCON0bits.GO)
         ;
 
+    //Clear the NVM Command
+    NVMCON1bits.NVMCMD = NVMCMD_NOP;
     return NVMDATL;
 #endif
 }
@@ -216,64 +218,10 @@ eeprom_data_t EEPROM_Read(eeprom_address_t index) {
 uint8_t EEPROM_Write(eeprom_address_t index, eeprom_data_t value) {
     uint8_t interruptEnabled;
     interruptEnabled = geti(); // store current global interrupt state
-#if defined (_18F66K80_FAMILY_)
+
     do {
-        SET_EADDRH((index >> 8)&0xFF);      // High byte of address to write
-        EEADR = index & 0xFF;       	/* Low byte of Data Memory Address to write */
-        EEDATA = value;
-        EECON1bits.EEPGD = 0;       /* Point to DATA memory */
-        EECON1bits.CFGS = 0;        /* Access program FLASH/Data EEPROM memory */
-        EECON1bits.WREN = 1;        /* Enable writes */
-        /* Disable Interrupts */
-        bothDi();                       
-        EECON2 = 0x55;
-        EECON2 = 0xAA;
-        EECON1bits.WR = 1;
-        while (EECON1bits.WR)       // should wait until WR clears
-            ;
-        while (!EEIF)
-            ;
-        EEIF = 0;
-        if (interruptEnabled) {     // Only enable interrupts if they were enabled at function entry
-            /* Re-enable Interrupts */
-            bothEi();                  
-        }
-        EECON1bits.WREN = 0;		/* Disable writes */
-#endif
-#if defined(_18FXXQ83_FAMILY_)
-        // ready?
-        while (NVMCON0bits.GO)
-            ;
-        //Load NVMADR with the target address of the byte
-        NVMADRU = 0x38;
-        NVMADRH = (uint8_t) (index >> 8);
-        NVMADRL = (uint8_t) index;
+        EEPROM_WriteNoVerify(index, value);
 
-        //Load NVMDAT with the desired value
-        NVMDATL = value;
-
-        //Set the byte write command
-        NVMCON1bits.NVMCMD = NVMCMD_WRITE;
-
-        //Disable global interrupt
-        bothDi();
-
-        //Perform the unlock sequence 
-        NVMLOCK = 0x55;
-        NVMLOCK = 0xAA;
-        
-        //Start byte write
-        NVMCON0bits.GO = 1;
-
-        if (interruptEnabled) {     // Only enable interrupts if they were enabled at function entry
-            /* Re-enable Interrupts */
-            bothEi();                  
-        }
-
-        //Clear the NVM Command
-        NVMCON1bits.NVMCMD = NVMCMD_NOP;
-#endif
-#if defined (_18F66K80_FAMILY_)
         // check that it worked
         if (EEPROM_Read(index) == value) {
             break;
@@ -283,6 +231,76 @@ uint8_t EEPROM_Write(eeprom_address_t index, eeprom_data_t value) {
         updateModuleErrorStatus();
 #endif
     } while (1);
+#if defined(_18FXXQ83_FAMILY_)
+    //Clear the NVM Command
+    NVMCON1bits.NVMCMD = NVMCMD_NOP;
+    NVMADR = 0;
+#endif
+    return GRSP_OK;
+}
+
+/**
+ * Write a byte to EEPROM without verification
+ * @param index the address
+ * @param value the value to be written
+ * @return 0 for success or error otherwise
+ */
+uint8_t EEPROM_WriteNoVerify(eeprom_address_t index, eeprom_data_t value) {
+    uint8_t interruptEnabled;
+    interruptEnabled = geti(); // store current global interrupt state
+#if defined (_18F66K80_FAMILY_)
+    SET_EADDRH((index >> 8)&0xFF);      // High byte of address to write
+    EEADR = index & 0xFF;       	/* Low byte of Data Memory Address to write */
+    EEDATA = value;
+    EECON1bits.EEPGD = 0;       /* Point to DATA memory */
+    EECON1bits.CFGS = 0;        /* Access program FLASH/Data EEPROM memory */
+    EECON1bits.WREN = 1;        /* Enable writes */
+    /* Disable Interrupts */
+    bothDi();                       
+    EECON2 = 0x55;
+    EECON2 = 0xAA;
+    EECON1bits.WR = 1;
+    while (EECON1bits.WR)       // should wait until WR clears
+        ;
+    while (!EEIF)
+        ;
+    EEIF = 0;
+    if (interruptEnabled) {     // Only enable interrupts if they were enabled at function entry
+        /* Re-enable Interrupts */
+        bothEi();                  
+    }
+    EECON1bits.WREN = 0;		/* Disable writes */
+#endif
+#if defined(_18FXXQ83_FAMILY_)
+    // ready?
+    while (NVMCON0bits.GO)
+        ;
+    //Load NVMADR with the target address of the byte
+    NVMADRU = 0x38;
+    NVMADRH = (uint8_t) (index >> 8);
+    NVMADRL = (uint8_t) index;
+
+    //Load NVMDAT with the desired value
+    NVMDATL = value;
+
+    //Set the byte write command
+    NVMCON1bits.NVMCMD = NVMCMD_WRITE;
+
+    //Disable global interrupt
+    bothDi();
+
+    //Perform the unlock sequence 
+    NVMLOCK = 0x55;
+    NVMLOCK = 0xAA;
+
+    //Start byte write
+    NVMCON0bits.GO = 1;
+
+    if (interruptEnabled) {     // Only enable interrupts if they were enabled at function entry
+        /* Re-enable Interrupts */
+        bothEi();                  
+    }
+
 #endif
     return GRSP_OK;
 }

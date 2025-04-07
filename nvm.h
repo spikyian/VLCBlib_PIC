@@ -160,13 +160,24 @@ extern void initRomOps(void);
 extern int16_t readNVM(NVMtype type, uint24_t index);
 
 /*
- * Write a byte to NVM.
+ * Write a byte to NVM with verification of success.
+ * Goes through a write/read/verify loop until read matches written data.
+ * May be blocking.
  * @param type specify the type of NVM required
  * @param index is the address to be written
  * @param value the byte value to be written
  * @return 0 for success or error number
  */
 extern uint8_t writeNVM(NVMtype type, uint24_t index, uint8_t value);
+
+/*
+ * Write a byte to EEPROM without verification.
+ * @param type specify the type of NVM required
+ * @param index is the address to be written
+ * @param value the byte value to be written
+ * @return 0 for success or error number
+ */
+extern uint8_t EEPROM_WriteNoVerify(eeprom_address_t index, eeprom_data_t value);
 
 /**
  * Call back into the application to check if now is a good time to write the flash
