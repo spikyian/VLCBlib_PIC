@@ -510,7 +510,7 @@ static Processed teachCheckLen(Message * m, uint8_t needed, uint8_t learn) {
             if (mode_flags & FLAG_MODE_LEARN) {
                 // This module is in Learn mode so we should indicate an error
 #ifdef VLCB_GRSP
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, m->opc, SERVICE_ID_OLD_TEACH, CMDERR_INV_CMD);
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, (uint8_t)(m->opc), SERVICE_ID_OLD_TEACH, CMDERR_INV_CMD);
 #endif
             }
             return PROCESSED;
@@ -976,7 +976,7 @@ uint8_t addEvent(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8
                 writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_ROW_WIDTH*tableIndex+EVENTTABLE_OFFSET_EN, eventNumber&0xFF);
                 writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_ROW_WIDTH*tableIndex+EVENTTABLE_OFFSET_EN+1, eventNumber>>8);
                 f.asByte = 0;
-                f.forceOwnNN = forceOwnNN;
+                f.forceOwnNN = forceOwnNN?1:0;
                 writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_ROW_WIDTH*tableIndex+EVENTTABLE_OFFSET_FLAGS, f.asByte);
             
                 for (e = 0; e < EVENT_TABLE_WIDTH; e++) {
