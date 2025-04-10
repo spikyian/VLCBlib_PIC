@@ -1153,6 +1153,9 @@ int16_t getEv(uint8_t tableIndex, uint8_t evNum) {
         evNum -= EVENT_TABLE_WIDTH;
     }
     if (evNum+1 > f.eVsUsed) {
+        if (f.continued) {
+            return EV_FILL;
+        }
         return -CMDERR_NO_EV;
     }
     // it is within this entry
