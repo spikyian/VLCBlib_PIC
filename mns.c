@@ -476,9 +476,11 @@ static Processed mnsProcessMessage(Message * m) {
             return PROCESSED;
         case OPC_NNRSM: // reset to manufacturer defaults
             previousNN.word = nn.word;  // save the old NN
-            factoryReset();
+            // Invalidate the version number so that a factoryReset() is done as the module restarts)
+            writeNVM(VERSION_NVM_TYPE, VERSION_ADDRESS, 0xFF);
             if (previousNN.word != 0) {
                 sendMessage2(OPC_NNREL, previousNN.bytes.hi, previousNN.bytes.lo);
+                transport->waitForTxQueueToDrain();
             }
             RESET();
 #ifdef VLCB_DIAG

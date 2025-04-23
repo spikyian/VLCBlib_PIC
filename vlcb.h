@@ -422,6 +422,7 @@ typedef enum SendResult {
 typedef struct Transport {
     SendResult (* sendMessage)(Message * m);   ///< function call to send a message.
     MessageReceived (* receiveMessage)(Message * m); ///< check to see if message is available and return in the structure provided.
+    void (*waitForTxQueueToDrain)(void);    /// blocks waiting for all messages to be transmitted
 } Transport;
 
 /**

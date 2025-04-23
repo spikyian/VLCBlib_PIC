@@ -1269,12 +1269,17 @@ void main(void) {
     OSCTUNEbits.PLLEN = 1;      // enable the Phase Locked Loop x4
 #endif
 #if defined(_18FXXQ83_FAMILY_)
-    OSCCON1bits.NOSC = 2;   // EXTOSC and 4 x PLL
+    OSCCON1bits.NOSC = 2;   // EXTOSC and 4 x PLL for CPU and Fosc
     OSCCON1bits.NDIV = 0;   // Divider = 1 (no divide)
         /* Note PLLEN is used by the PIC18F27Q83 to control whether peripherals
-         * Use the Ext clock or the 4 x PLL.
-         * Here we leave PLLEN=0 so peripherals do NOT use the PLL.
+         * use the Ext clock or the 4 x PLL. 
+         * Here we leave OSCEN.PLLEN=0 so peripherals do NOT use the PLL but
+         * instead can use the Fosc at 64MHz.
          */
+    //OSCENbits.PLLEN = 1;
+    while ( ! OSCCON3bits.ORDY) {   // Wait for oscillator to be ready
+        ;
+    }
 #endif
     
     /* Introduce a startup delay so that the power supply can stabilise */

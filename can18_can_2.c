@@ -134,6 +134,7 @@ const Service canService = {
 // forward declarations
 static SendResult canSendMessage(Message * mp);
 static MessageReceived canReceiveMessage(Message * m);
+static void canWaitForTxQueueToDrain(void);
 
 /**
  * The transport descriptor for the CAN service. The application must set
@@ -143,7 +144,8 @@ static MessageReceived canReceiveMessage(Message * m);
  */
 const Transport canTransport = {
     canSendMessage,
-    canReceiveMessage
+    canReceiveMessage,
+    canWaitForTxQueueToDrain
 };
 
 /**
@@ -664,6 +666,12 @@ static SendResult canSendMessage(Message * mp) {
         C1FIFOCON2H |= _C1FIFOCON2H_TXREQ_MASK; // transmit
     }
     return SEND_OK;
+}
+
+static void canWaitForTxQueueToDrain(void) {
+    while (C1FIFOCON2H & _C1FIFOCON2H_TXREQ_MASK) {
+        ;
+    }
 }
 
 /** 

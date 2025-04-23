@@ -75,7 +75,7 @@ static uint8_t bootEsdData(uint8_t id);
  */
 const Service bootService = {
     SERVICE_ID_BOOT,    // id
-    2,                  // version 2 supporting versioning
+    3,                  // version 2 supporting versioning
     NULL,               // factoryReset
     bootPowerUp,        // powerUp
     bootProcessMessage, // processMessage
@@ -234,11 +234,6 @@ static Processed bootProcessMessage(Message * m) {
     if (m->bytes[1] != nn.bytes.lo) return NOT_PROCESSED;
     
     switch (m->opc) {
-#ifdef VLCB_MODE
-        case OPC_MODE:
-            if (m->bytes[2] != MODE_BOOT) return NOT_PROCESSED;
-            // FALL THROUGH
-#endif
         case OPC_BOOT:
             // Set the bootloader flag to be picked up by the bootloader
             writeNVM(BOOT_FLAG_NVM_TYPE, BOOT_FLAG_ADDRESS, 0xFF); 
