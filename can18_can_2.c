@@ -347,7 +347,7 @@ static void canPowerUp(void) {
         
         /* Place CAN1 module in Normal Operation mode */
         (void)CAN1_OperationModeSet(CAN_NORMAL_2_0_MODE);
-    }
+     }
 
     // Preload FIFO1 with a zero length packet containing CANID for  use in self enumeration
     prepareSelfEnumResponse();
