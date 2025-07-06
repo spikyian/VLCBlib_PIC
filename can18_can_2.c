@@ -514,10 +514,14 @@ static DiagnosticVal * canGetDiagnostic(uint8_t index) {
             canDiagnostics[CAN_DIAG_RX_BUFFER_USAGE].asUint = getNumRxBuffersInUse();
             break;
         case CAN_DIAG_TX_ERRORS:
-            canDiagnostics[CAN_DIAG_TX_ERRORS].asUint = C1BDIAG0Hbits.NTERRCNT; // TX_ERRORS
+            // 4c2 despite what datasheet says this error count seem to be zero'ed
+            // after reading so here we add to previous count.
+            canDiagnostics[CAN_DIAG_TX_ERRORS].asUint += C1BDIAG0Hbits.NTERRCNT; // TX_ERRORS
             break;
         case CAN_DIAG_RX_ERRORS:
-            canDiagnostics[CAN_DIAG_RX_ERRORS].asUint = C1BDIAG0Lbits.NRERRCNT; // RX_ERRORS
+            // 4c2 despite what datasheet says this error count seem to be zero'ed
+            // after reading so here we add to previous count.
+            canDiagnostics[CAN_DIAG_RX_ERRORS].asUint += C1BDIAG0Lbits.NRERRCNT; // RX_ERRORS
             break;
     }
 
