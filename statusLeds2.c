@@ -124,14 +124,14 @@ void leds_poll(void) {
             break;
         case LED_SINGLE_FLICKER_ON:
             APP_writeLED2(1);
-            if (flashCounter[YELLOW_LED] >= 25) {     // 250ms
+            if (flashCounter[YELLOW_LED] >= 2) {     // 20ms
                 flashCounter[YELLOW_LED] = 0;
                 ledState[YELLOW_LED] = LED_OFF;
             }
             break;
         case LED_SINGLE_FLICKER_OFF:
             APP_writeLED2(0);
-            if (flashCounter[YELLOW_LED] >= 25) {     // 250ms
+            if (flashCounter[YELLOW_LED] >= 2) {     // 20ms
                 flashCounter[YELLOW_LED] = 0;
                 ledState[YELLOW_LED] = LED_ON;
             }
@@ -190,14 +190,14 @@ void leds_poll(void) {
             break;
         case LED_SINGLE_FLICKER_ON:
             APP_writeLED1(1);
-            if (flashCounter[GREEN_LED] >= 25) {     // 250ms
+            if (flashCounter[GREEN_LED] >= 2) {     // 25ms
                 flashCounter[GREEN_LED] = 0;
                 ledState[GREEN_LED] = LED_OFF;
             }
             break;
         case LED_SINGLE_FLICKER_OFF:
             APP_writeLED1(0);
-            if (flashCounter[GREEN_LED] >= 25) {     // 250ms
+            if (flashCounter[GREEN_LED] >= 2) {     // 25ms
                 flashCounter[GREEN_LED] = 0;
                 ledState[GREEN_LED] = LED_ON;
             }

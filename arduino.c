@@ -165,9 +165,8 @@ void pinMode(uint8_t channel, PinMode mode) {
                         TRISA &= ~(1 << configs[channel].no);
                         break;
                     case INPUT:
-                        TRISA |= (1 << configs[channel].no);
-                        break;
                     case ANALOGUE:
+                        TRISA |= (1 << configs[channel].no);
                         break;
                 }
                 break;
@@ -177,9 +176,8 @@ void pinMode(uint8_t channel, PinMode mode) {
                         TRISB &= ~(1 << configs[channel].no);
                         break;
                     case INPUT:
-                        TRISB |= (1 << configs[channel].no);
-                        break;
                     case ANALOGUE:
+                        TRISB |= (1 << configs[channel].no);
                         break;
                 }
                 break;
@@ -189,9 +187,8 @@ void pinMode(uint8_t channel, PinMode mode) {
                         TRISC &= ~(1 << configs[channel].no);
                         break;
                     case INPUT:
-                        TRISC |= (1 << configs[channel].no);
-                        break;
                     case ANALOGUE:
+                        TRISC |= (1 << configs[channel].no);
                         break;
                 }
                 break;
