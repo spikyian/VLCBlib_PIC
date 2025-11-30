@@ -109,14 +109,14 @@ asm("db 0");
 
 #ifdef CONSUMED_EVENTS
 /** Used internally for calculating checksum.  */
-#define PRM_CKSUM2      PRM_CKSUM1+1
+#define PRM_CKSUM2      PRM_CKSUM1+PF_CONSUMER
 #else
 /** Used internally for calculating checksum.  */
 #define PRM_CKSUM2      PRM_CKSUM1
 #endif
 #ifdef PRODUCED_EVENTS
 /** Used internally for calculating checksum.  */
-#define PRM_CKSUM3      PRM_CKSUM2+2
+#define PRM_CKSUM3      PRM_CKSUM2+PF_PRODUCER
 #else
 /** Used internally for calculating checksum.  */
 #define PRM_CKSUM3      PRM_CKSUM2
@@ -135,6 +135,13 @@ asm("db 0");
 #else
     Error unrecognised CPU type,
 #endif 
+#ifdef VLCB
+/** Used internally for calculating checksum.  */
+#define PRM_CKSUM6      PRM_CKSUM5+PF_VLCB
+#else
+/** Used internally for calculating checksum.  */
+#define PRM_CKSUM6      PRM_CKSUM5
+#endif
 
 /**
  * @private
@@ -149,14 +156,17 @@ const uint8_t paramBlock[] __at(0x820) = {
     PARAM_NUM_EV_EVENT, //0x824
     PARAM_NUM_NV,       //0x825
     PARAM_MAJOR_VERSION,//0x826
-    0x08                // definitely BOOTABLE 
+    PF_BOOT                // definitely BOOTABLE 
 #ifdef CONSUMED_EVENTS
-            |0x01
+            |PF_CONSUMER
 #endif
 #ifdef PRODUCED_EVENTS
-            |0x02
+            |PF_PRODUCER
 #endif
-        ,
+#ifdef VLCB
+            |PF_VLCB
+#endif
+        ,   // yes that is a comma and not a mark on the screen
 #if defined(_18F66K80_FAMILY_)
     P18F26K80,          //0x828
 #elif defined(_18FXXQ83_FAMILY_)
@@ -182,8 +192,8 @@ const uint8_t paramBlock[] __at(0x820) = {
     0x08,               //0x83b address of NAME hi
     0,                  //0x83c address of NAME upper lo
     0,                  //0x83d address of NAME upper hi
-    ((PRM_CKSUM5)&0xFF),  //0x83e checksum lo
-    ((PRM_CKSUM5)>>8)     //0x83f checksum hi
+    ((PRM_CKSUM6)&0xFF),  //0x83e checksum lo
+    ((PRM_CKSUM6)>>8)     //0x83f checksum hi
 };
 
 
