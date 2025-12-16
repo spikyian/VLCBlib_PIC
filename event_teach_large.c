@@ -471,24 +471,6 @@ static Processed teachProcessMessage(Message* m) {
             // do RQEVN
             doRqevn();
             return PROCESSED;
-        case OPC_NENRD:     // 72 NENRD - NN, EN#
-            if (teachCheckLen(m, 4, 0) == PROCESSED) return PROCESSED;
-            if ((m->bytes[0] != nn.bytes.hi) || (m->bytes[1] != nn.bytes.lo)) return PROCESSED;  // not us
-            // do NENRD
-            doNenrd(m->bytes[2]);
-            return PROCESSED;
-        case OPC_REVAL:     // 9C REVAL - NN, EN#, EV#
-            if (teachCheckLen(m, 5, 0) == PROCESSED) return PROCESSED;
-            if ((m->bytes[0] != nn.bytes.hi) || (m->bytes[1] != nn.bytes.lo)) return PROCESSED;  // not us
-            // do REVAL
-            doReval(m->bytes[2], m->bytes[3]);
-            return PROCESSED;
-        case OPC_EVLRNI:    // F5 EVLRNI - NN, EN, EN#, EV#, EVval
-            if (teachCheckLen(m, 8, 1) == PROCESSED) return PROCESSED;
-            if ((m->bytes[0] != nn.bytes.hi) || (m->bytes[1] != nn.bytes.lo)) return PROCESSED;  // not us
-            // do EVLRNI
-            doEvlrn((uint16_t)(m->bytes[0]<<8) | (m->bytes[1]), (uint16_t)(m->bytes[2]<<8) | (m->bytes[3]), m->bytes[5], m->bytes[6]);
-            return PROCESSED;
         default:
             break;
     }

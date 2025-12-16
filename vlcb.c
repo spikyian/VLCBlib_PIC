@@ -886,7 +886,7 @@ void factoryReset(void) {
 static void powerUp(void) {
     uint8_t i;
     uint8_t divider;
-    
+       
     // Initialise the Tick timer. Uses low priority interrupts
     initTicker(0);
     initTimedResponse();
