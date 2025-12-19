@@ -36,7 +36,7 @@
 
 /**
  * @author Ian Hogg 
- * @date May 2024
+ * @date Dec 2025
  * 
  */ 
 /*
@@ -59,10 +59,10 @@
 /**
  * @file
  * @brief
- * Simple implementation of the VLCB Event Teach Service.
+ * Implementation of the VLCB Indexed Event Teach Service.
  * @details
- * Event teaching service
- * The service definition object is called eventTeachService.
+ * Indexed Event teaching service
+ * The service definition object is called indexedTeachService.
  *
  * The events are stored as a hash table in NVM (flash is faster to read than EEPROM)
  * There can be up to 255 events. 
@@ -85,7 +85,7 @@
  * Events are stored in the EventTable which consists of rows containing the following 
  * fields:
  * * Event event                      4 bytes
- * * uint8_t flags
+ * * uint8_t flags		      1 byte
  * * uint8_t evs[PARAM_NUM_EV_EVENT]  PARAM_NUM_EV_EVENT bytes
  * 
  * The number of table entries is defined by NUM_EVENTS.
@@ -161,8 +161,8 @@ static uint8_t timedResponseOpcode; // used to differentiate a timed response fo
  * necessary settings within module.h in order to make use of the event teach
  * service.
  */
-const Service eventTeachService = {
-    SERVICE_ID_OLD_TEACH,      // id
+const Service indexedTeachService = {
+    SERVICE_ID_INDEXED_TEACH, // id
     1,                  // version
     teachFactoryReset,  // factoryReset
     teachPowerUp,       // powerUp
@@ -249,16 +249,6 @@ static Processed teachProcessMessage(Message* m) {
             return NOT_PROCESSED;   // mode probably processed by other services
 #endif
         /* This block must be in Learn mode and NN doesn't need to match ours */
-        case OPC_EVLRN:     // D2 EVLRN - NN, EN, EV#, EVval
-            if (teachCheckLen(m, 7, 1) == PROCESSED) {
-                sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_CMD);
-//                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVLRN, SERVICE_ID_OLD_TEACH, CMDERR_INV_CMD);
-                return PROCESSED;
-            }
-            if (! (mode_flags & FLAG_MODE_LEARN)) return PROCESSED;
-            // Do learn
-            doEvlrn((uint16_t)(m->bytes[0]<<8) | (m->bytes[1]), (uint16_t)(m->bytes[2]<<8) | (m->bytes[3]), m->bytes[4], m->bytes[5]);
-            return PROCESSED;
         case OPC_EVULN:     // 95 EVULN - NN, EN
             if (teachCheckLen(m, 5, 1) == PROCESSED) return PROCESSED;
             if (! (mode_flags & FLAG_MODE_LEARN)) return PROCESSED;
@@ -271,6 +261,8 @@ static Processed teachProcessMessage(Message* m) {
             // do read EV
             doReqev((uint16_t)(m->bytes[0]<<8) | (m->bytes[1]), (uint16_t)(m->bytes[2]<<8) | (m->bytes[3]), m->bytes[4]);
             return PROCESSED;
+
+
         /* This block contain an NN which needs to match our NN */
         case OPC_NNULN:     // 54 NNULN - NN
             if (teachCheckLen(m, 3, 0) == PROCESSED) return PROCESSED;
@@ -310,13 +302,23 @@ static Processed teachProcessMessage(Message* m) {
             // do RQEVN
             doRqevn();
             return PROCESSED;
-	    
-            // The following Opcodes use Index so shouldn't be here but FCU needs them
+        case OPC_NENRD:     // 72 NENRD - NN, EN#
+            if (teachCheckLen(m, 4, 0) == PROCESSED) return PROCESSED;
+            if ((m->bytes[0] != nn.bytes.hi) || (m->bytes[1] != nn.bytes.lo)) return PROCESSED;  // not us
+            // do NENRD
+            doNenrd(m->bytes[2]);
+            return PROCESSED;
         case OPC_REVAL:     // 9C REVAL - NN, EN#, EV#
             if (teachCheckLen(m, 5, 0) == PROCESSED) return PROCESSED;
             if ((m->bytes[0] != nn.bytes.hi) || (m->bytes[1] != nn.bytes.lo)) return PROCESSED;  // not us
             // do REVAL
             doReval(m->bytes[2], m->bytes[3]);
+            return PROCESSED;
+        case OPC_EVLRNI:    // F5 EVLRNI - NN, EN, EN#, EV#, EVval
+            if (teachCheckLen(m, 8, 1) == PROCESSED) return PROCESSED;
+            if (! (mode_flags & FLAG_MODE_LEARN)) return PROCESSED;
+            // do EVLRNI
+            doEvlrn((uint16_t)(m->bytes[0]<<8) | (m->bytes[1]), (uint16_t)(m->bytes[2]<<8) | (m->bytes[3]), m->bytes[5], m->bytes[6]);
             return PROCESSED;
         default:
             break;
@@ -505,12 +507,11 @@ static void doNnclr(void) {
  * Teach event whilst in learn mode.
  * Teach or reteach an event associated with an action. 
 
- * @param nodeNumber event's NN
- * @param eventNumber the EN
+ * @param enNum the event index
  * @param evNum the EV number
  * @param evVal the EV value
  */
-static void doEvlrn(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8_t evVal) {
+static void doEvlrn(uint8_t enNum, uint8_t evNum, uint8_t evVal) {
 
     evNum--;    // convert VLCB message numbering (starts at 1) to internal numbering)
     if (evNum >= PARAM_NUM_EV_EVENT) {

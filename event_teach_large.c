@@ -471,6 +471,14 @@ static Processed teachProcessMessage(Message* m) {
             // do RQEVN
             doRqevn();
             return PROCESSED;
+            
+        // The following Opcodes use Index so shouldn't be here but FCU needs them
+        case OPC_REVAL:     // 9C REVAL - NN, EN#, EV#
+            if (teachCheckLen(m, 5, 0) == PROCESSED) return PROCESSED;
+            if ((m->bytes[0] != nn.bytes.hi) || (m->bytes[1] != nn.bytes.lo)) return PROCESSED;  // not us
+            // do REVAL
+            doReval(m->bytes[2], m->bytes[3]);
+            return PROCESSED;
         default:
             break;
     }
