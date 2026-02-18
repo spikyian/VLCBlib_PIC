@@ -4,5 +4,7 @@ var searchData=
   ['nn_1',['NN',['../struct_event.html#a9fa657b4866420b2c3010ba9201990c0',1,'Event']]],
   ['nn_2',['nn',['../mns_8c.html#a349d18d214352e095455e139e1606cf5',1,'nn:&#160;mns.c'],['../mns_8h.html#a349d18d214352e095455e139e1606cf5',1,'nn:&#160;mns.c']]],
   ['no_3',['no',['../struct_config.html#af76c87939bfc1ccd7e8d8a702254b238',1,'Config']]],
-  ['nvservice_4',['nvService',['../nv_8c.html#a54cb92ae67b344b1663b74af93adf6f0',1,'nvService:&#160;nv.c'],['../nv_8h.html#a54cb92ae67b344b1663b74af93adf6f0',1,'nvService:&#160;nv.c']]]
+  ['normalreadidx_4',['normalReadIdx',['../action_queue_8c.html#a392dd6d65cb8ceafcd4ec2283be97269',1,'actionQueue.c']]],
+  ['normalwriteidx_5',['normalWriteIdx',['../action_queue_8c.html#af11f1d59f316a53627879ad11e2045d4',1,'actionQueue.c']]],
+  ['nvservice_6',['nvService',['../nv_8c.html#a54cb92ae67b344b1663b74af93adf6f0',1,'nvService:&#160;nv.c'],['../nv_8h.html#a54cb92ae67b344b1663b74af93adf6f0',1,'nvService:&#160;nv.c']]]
 ];

@@ -5,15 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCB library: can.h File Reference</title>
+<title>My Project: C:/Users/ianwh/github/VLCBlib_PIC/can.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <script type="text/javascript" src="clipboard.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
@@ -27,9 +23,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
+   <div id="projectname">My Project
    </div>
-   <div id="projectbrief">VLCB C library for PIC</div>
+   <div id="projectbrief">VLCB library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -53,23 +49,6 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('can_8h.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -91,14 +70,14 @@ $(function(){initNavTree('can_8h.html',''); initResizable(); });
 </div>
 </div>
 
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
-  <div class="headertitle"><div class="title">can.h File Reference</div></div>
+  <div class="headertitle"><div class="title">C:/Users/ianwh/github/VLCBlib_PIC/can.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -114,128 +93,87 @@ $(function(){initNavTree('can_8h.html',''); initResizable(); });
 Macros</h2></td></tr>
 <tr class="memitem:a7ef773c721c520c2e5e67c2a43327d12" id="r_a7ef773c721c520c2e5e67c2a43327d12"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7ef773c721c520c2e5e67c2a43327d12">_CAN_H_</a></td></tr>
 <tr class="separator:a7ef773c721c520c2e5e67c2a43327d12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac35e9cd4fbb4c72ee9f1b486b74b0a37" id="r_ac35e9cd4fbb4c72ee9f1b486b74b0a37"><td class="memItemLeft" align="right" valign="top"><a id="ac35e9cd4fbb4c72ee9f1b486b74b0a37" name="ac35e9cd4fbb4c72ee9f1b486b74b0a37"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUM_CAN_DIAGNOSTICS</b>&#160;&#160;&#160;16</td></tr>
-<tr class="memdesc:ac35e9cd4fbb4c72ee9f1b486b74b0a37"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of diagnostic values associated with this service. <br /></td></tr>
+<tr class="memitem:ac35e9cd4fbb4c72ee9f1b486b74b0a37" id="r_ac35e9cd4fbb4c72ee9f1b486b74b0a37"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac35e9cd4fbb4c72ee9f1b486b74b0a37">NUM_CAN_DIAGNOSTICS</a>&#160;&#160;&#160;18</td></tr>
+<tr class="memdesc:ac35e9cd4fbb4c72ee9f1b486b74b0a37"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of diagnostic values associated with this service.  <br /></td></tr>
 <tr class="separator:ac35e9cd4fbb4c72ee9f1b486b74b0a37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6131de9191a5a84f7d5afca33f308f93" id="r_a6131de9191a5a84f7d5afca33f308f93"><td class="memItemLeft" align="right" valign="top"><a id="a6131de9191a5a84f7d5afca33f308f93" name="a6131de9191a5a84f7d5afca33f308f93"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CAN_DIAG_RX_ERRORS</b>&#160;&#160;&#160;0x00</td></tr>
-<tr class="memdesc:a6131de9191a5a84f7d5afca33f308f93"><td class="mdescLeft">&#160;</td><td class="mdescRight">CAN RX error counter. <br /></td></tr>
+<tr class="memitem:a24e7c30c6c6e2b86fb98b7117a1fdc53" id="r_a24e7c30c6c6e2b86fb98b7117a1fdc53"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a24e7c30c6c6e2b86fb98b7117a1fdc53">CAN_DIAG_COUNT</a>&#160;&#160;&#160;0x00</td></tr>
+<tr class="memdesc:a24e7c30c6c6e2b86fb98b7117a1fdc53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Count of the CAN diagnostics.  <br /></td></tr>
+<tr class="separator:a24e7c30c6c6e2b86fb98b7117a1fdc53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6131de9191a5a84f7d5afca33f308f93" id="r_a6131de9191a5a84f7d5afca33f308f93"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6131de9191a5a84f7d5afca33f308f93">CAN_DIAG_RX_ERRORS</a>&#160;&#160;&#160;0x01</td></tr>
+<tr class="memdesc:a6131de9191a5a84f7d5afca33f308f93"><td class="mdescLeft">&#160;</td><td class="mdescRight">CAN RX error counter.  <br /></td></tr>
 <tr class="separator:a6131de9191a5a84f7d5afca33f308f93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c9a7b523d0417237996566fb4ae4ad9" id="r_a6c9a7b523d0417237996566fb4ae4ad9"><td class="memItemLeft" align="right" valign="top"><a id="a6c9a7b523d0417237996566fb4ae4ad9" name="a6c9a7b523d0417237996566fb4ae4ad9"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CAN_DIAG_TX_ERRORS</b>&#160;&#160;&#160;0x01</td></tr>
-<tr class="memdesc:a6c9a7b523d0417237996566fb4ae4ad9"><td class="mdescLeft">&#160;</td><td class="mdescRight">CAN TX error counter. <br /></td></tr>
+<tr class="memitem:a6c9a7b523d0417237996566fb4ae4ad9" id="r_a6c9a7b523d0417237996566fb4ae4ad9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c9a7b523d0417237996566fb4ae4ad9">CAN_DIAG_TX_ERRORS</a>&#160;&#160;&#160;0x02</td></tr>
+<tr class="memdesc:a6c9a7b523d0417237996566fb4ae4ad9"><td class="mdescLeft">&#160;</td><td class="mdescRight">CAN TX error counter.  <br /></td></tr>
 <tr class="separator:a6c9a7b523d0417237996566fb4ae4ad9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3186eead1026c930912e39f8e6b09624" id="r_a3186eead1026c930912e39f8e6b09624"><td class="memItemLeft" align="right" valign="top"><a id="a3186eead1026c930912e39f8e6b09624" name="a3186eead1026c930912e39f8e6b09624"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CAN_DIAG_STATUS</b>&#160;&#160;&#160;0x02</td></tr>
-<tr class="memdesc:a3186eead1026c930912e39f8e6b09624"><td class="mdescLeft">&#160;</td><td class="mdescRight">last CAN status byte (TBA) <br /></td></tr>
+<tr class="memitem:a3186eead1026c930912e39f8e6b09624" id="r_a3186eead1026c930912e39f8e6b09624"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3186eead1026c930912e39f8e6b09624">CAN_DIAG_STATUS</a>&#160;&#160;&#160;0x03</td></tr>
+<tr class="memdesc:a3186eead1026c930912e39f8e6b09624"><td class="mdescLeft">&#160;</td><td class="mdescRight">last CAN status byte (TBA)  <br /></td></tr>
 <tr class="separator:a3186eead1026c930912e39f8e6b09624"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31f5c8765c09350c7651949cbe5772dc" id="r_a31f5c8765c09350c7651949cbe5772dc"><td class="memItemLeft" align="right" valign="top"><a id="a31f5c8765c09350c7651949cbe5772dc" name="a31f5c8765c09350c7651949cbe5772dc"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CAN_DIAG_TX_BUFFER_USAGE</b>&#160;&#160;&#160;0x03</td></tr>
-<tr class="memdesc:a31f5c8765c09350c7651949cbe5772dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tx buffer usage count. <br /></td></tr>
+<tr class="memitem:a31f5c8765c09350c7651949cbe5772dc" id="r_a31f5c8765c09350c7651949cbe5772dc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a31f5c8765c09350c7651949cbe5772dc">CAN_DIAG_TX_BUFFER_USAGE</a>&#160;&#160;&#160;0x04</td></tr>
+<tr class="memdesc:a31f5c8765c09350c7651949cbe5772dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tx buffer usage count.  <br /></td></tr>
 <tr class="separator:a31f5c8765c09350c7651949cbe5772dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76e1211bbd04388842e9bcd53485b6e3" id="r_a76e1211bbd04388842e9bcd53485b6e3"><td class="memItemLeft" align="right" valign="top"><a id="a76e1211bbd04388842e9bcd53485b6e3" name="a76e1211bbd04388842e9bcd53485b6e3"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CAN_DIAG_TX_BUFFER_OVERRUN</b>&#160;&#160;&#160;0x04</td></tr>
-<tr class="memdesc:a76e1211bbd04388842e9bcd53485b6e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tx buffer overrun count. <br /></td></tr>
+<tr class="memitem:a76e1211bbd04388842e9bcd53485b6e3" id="r_a76e1211bbd04388842e9bcd53485b6e3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a76e1211bbd04388842e9bcd53485b6e3">CAN_DIAG_TX_BUFFER_OVERRUN</a>&#160;&#160;&#160;0x05</td></tr>
+<tr class="memdesc:a76e1211bbd04388842e9bcd53485b6e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tx buffer overrun count.  <br /></td></tr>
 <tr class="separator:a76e1211bbd04388842e9bcd53485b6e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84dd9b8b957af7b489bbc01030734817" id="r_a84dd9b8b957af7b489bbc01030734817"><td class="memItemLeft" align="right" valign="top"><a id="a84dd9b8b957af7b489bbc01030734817" name="a84dd9b8b957af7b489bbc01030734817"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CAN_DIAG_TX_MESSAGES</b>&#160;&#160;&#160;0x05</td></tr>
-<tr class="memdesc:a84dd9b8b957af7b489bbc01030734817"><td class="mdescLeft">&#160;</td><td class="mdescRight">TX message count. <br /></td></tr>
+<tr class="memitem:a84dd9b8b957af7b489bbc01030734817" id="r_a84dd9b8b957af7b489bbc01030734817"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a84dd9b8b957af7b489bbc01030734817">CAN_DIAG_TX_MESSAGES</a>&#160;&#160;&#160;0x06</td></tr>
+<tr class="memdesc:a84dd9b8b957af7b489bbc01030734817"><td class="mdescLeft">&#160;</td><td class="mdescRight">TX message count.  <br /></td></tr>
 <tr class="separator:a84dd9b8b957af7b489bbc01030734817"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab58387eaa0992391a0b61e9e0b71b81d" id="r_ab58387eaa0992391a0b61e9e0b71b81d"><td class="memItemLeft" align="right" valign="top"><a id="ab58387eaa0992391a0b61e9e0b71b81d" name="ab58387eaa0992391a0b61e9e0b71b81d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CAN_DIAG_RX_BUFFER_USAGE</b>&#160;&#160;&#160;0x06</td></tr>
-<tr class="memdesc:ab58387eaa0992391a0b61e9e0b71b81d"><td class="mdescLeft">&#160;</td><td class="mdescRight">RX buffer usage count. <br /></td></tr>
+<tr class="memitem:ab58387eaa0992391a0b61e9e0b71b81d" id="r_ab58387eaa0992391a0b61e9e0b71b81d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab58387eaa0992391a0b61e9e0b71b81d">CAN_DIAG_RX_BUFFER_USAGE</a>&#160;&#160;&#160;0x07</td></tr>
+<tr class="memdesc:ab58387eaa0992391a0b61e9e0b71b81d"><td class="mdescLeft">&#160;</td><td class="mdescRight">RX buffer usage count.  <br /></td></tr>
 <tr class="separator:ab58387eaa0992391a0b61e9e0b71b81d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f03a15224a6a652c36b68ecaec3a58e" id="r_a9f03a15224a6a652c36b68ecaec3a58e"><td class="memItemLeft" align="right" valign="top"><a id="a9f03a15224a6a652c36b68ecaec3a58e" name="a9f03a15224a6a652c36b68ecaec3a58e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CAN_DIAG_RX_BUFFER_OVERRUN</b>&#160;&#160;&#160;0x07</td></tr>
-<tr class="memdesc:a9f03a15224a6a652c36b68ecaec3a58e"><td class="mdescLeft">&#160;</td><td class="mdescRight">RX buffer overrun count. <br /></td></tr>
+<tr class="memitem:a9f03a15224a6a652c36b68ecaec3a58e" id="r_a9f03a15224a6a652c36b68ecaec3a58e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9f03a15224a6a652c36b68ecaec3a58e">CAN_DIAG_RX_BUFFER_OVERRUN</a>&#160;&#160;&#160;0x08</td></tr>
+<tr class="memdesc:a9f03a15224a6a652c36b68ecaec3a58e"><td class="mdescLeft">&#160;</td><td class="mdescRight">RX buffer overrun count.  <br /></td></tr>
 <tr class="separator:a9f03a15224a6a652c36b68ecaec3a58e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9c16cc7bd223c3620ab0619a80499ff" id="r_ac9c16cc7bd223c3620ab0619a80499ff"><td class="memItemLeft" align="right" valign="top"><a id="ac9c16cc7bd223c3620ab0619a80499ff" name="ac9c16cc7bd223c3620ab0619a80499ff"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CAN_DIAG_RX_MESSAGES</b>&#160;&#160;&#160;0x08</td></tr>
-<tr class="memdesc:ac9c16cc7bd223c3620ab0619a80499ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">RX message counter. <br /></td></tr>
+<tr class="memitem:ac9c16cc7bd223c3620ab0619a80499ff" id="r_ac9c16cc7bd223c3620ab0619a80499ff"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac9c16cc7bd223c3620ab0619a80499ff">CAN_DIAG_RX_MESSAGES</a>&#160;&#160;&#160;0x09</td></tr>
+<tr class="memdesc:ac9c16cc7bd223c3620ab0619a80499ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">RX message counter.  <br /></td></tr>
 <tr class="separator:ac9c16cc7bd223c3620ab0619a80499ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90e7ed2bf41c0d15961421f407f519d4" id="r_a90e7ed2bf41c0d15961421f407f519d4"><td class="memItemLeft" align="right" valign="top"><a id="a90e7ed2bf41c0d15961421f407f519d4" name="a90e7ed2bf41c0d15961421f407f519d4"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CAN_DIAG_ERROR_FRAMES_DET</b>&#160;&#160;&#160;0x09</td></tr>
-<tr class="memdesc:a90e7ed2bf41c0d15961421f407f519d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">CAN error frames detected. <br /></td></tr>
+<tr class="memitem:a90e7ed2bf41c0d15961421f407f519d4" id="r_a90e7ed2bf41c0d15961421f407f519d4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a90e7ed2bf41c0d15961421f407f519d4">CAN_DIAG_ERROR_FRAMES_DET</a>&#160;&#160;&#160;0x0A</td></tr>
+<tr class="memdesc:a90e7ed2bf41c0d15961421f407f519d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">CAN error frames detected.  <br /></td></tr>
 <tr class="separator:a90e7ed2bf41c0d15961421f407f519d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a6ed46899cfcc6f3cacb6cc3d972941" id="r_a3a6ed46899cfcc6f3cacb6cc3d972941"><td class="memItemLeft" align="right" valign="top"><a id="a3a6ed46899cfcc6f3cacb6cc3d972941" name="a3a6ed46899cfcc6f3cacb6cc3d972941"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CAN_DIAG_ERROR_FRAMES_GEN</b>&#160;&#160;&#160;0x0A</td></tr>
-<tr class="memdesc:a3a6ed46899cfcc6f3cacb6cc3d972941"><td class="mdescLeft">&#160;</td><td class="mdescRight">CAN error frames generated (both active and passive ?) <br /></td></tr>
+<tr class="memitem:a3a6ed46899cfcc6f3cacb6cc3d972941" id="r_a3a6ed46899cfcc6f3cacb6cc3d972941"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a6ed46899cfcc6f3cacb6cc3d972941">CAN_DIAG_ERROR_FRAMES_GEN</a>&#160;&#160;&#160;0x0B</td></tr>
+<tr class="memdesc:a3a6ed46899cfcc6f3cacb6cc3d972941"><td class="mdescLeft">&#160;</td><td class="mdescRight">CAN error frames generated (both active and passive ?)  <br /></td></tr>
 <tr class="separator:a3a6ed46899cfcc6f3cacb6cc3d972941"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b0878bd8e838756116c22f6d5543fcc" id="r_a6b0878bd8e838756116c22f6d5543fcc"><td class="memItemLeft" align="right" valign="top"><a id="a6b0878bd8e838756116c22f6d5543fcc" name="a6b0878bd8e838756116c22f6d5543fcc"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CAN_DIAG_LOST_ARBITRATION</b>&#160;&#160;&#160;0x0B</td></tr>
-<tr class="memdesc:a6b0878bd8e838756116c22f6d5543fcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of times CAN arbitration was lost. <br /></td></tr>
+<tr class="memitem:a6b0878bd8e838756116c22f6d5543fcc" id="r_a6b0878bd8e838756116c22f6d5543fcc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b0878bd8e838756116c22f6d5543fcc">CAN_DIAG_LOST_ARBITRATION</a>&#160;&#160;&#160;0x0C</td></tr>
+<tr class="memdesc:a6b0878bd8e838756116c22f6d5543fcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of times CAN arbitration was lost.  <br /></td></tr>
 <tr class="separator:a6b0878bd8e838756116c22f6d5543fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac886b41a379ae1eb1d64b07ea0f8fcba" id="r_ac886b41a379ae1eb1d64b07ea0f8fcba"><td class="memItemLeft" align="right" valign="top"><a id="ac886b41a379ae1eb1d64b07ea0f8fcba" name="ac886b41a379ae1eb1d64b07ea0f8fcba"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CAN_DIAG_CANID_ENUMS</b>&#160;&#160;&#160;0x0C</td></tr>
-<tr class="memdesc:ac886b41a379ae1eb1d64b07ea0f8fcba"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of CANID enumerations <br /></td></tr>
+<tr class="memitem:ac886b41a379ae1eb1d64b07ea0f8fcba" id="r_ac886b41a379ae1eb1d64b07ea0f8fcba"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac886b41a379ae1eb1d64b07ea0f8fcba">CAN_DIAG_CANID_ENUMS</a>&#160;&#160;&#160;0x0D</td></tr>
+<tr class="memdesc:ac886b41a379ae1eb1d64b07ea0f8fcba"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of CANID enumerations  <br /></td></tr>
 <tr class="separator:ac886b41a379ae1eb1d64b07ea0f8fcba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24cab90aab1e816693e5f241bf635d2d" id="r_a24cab90aab1e816693e5f241bf635d2d"><td class="memItemLeft" align="right" valign="top"><a id="a24cab90aab1e816693e5f241bf635d2d" name="a24cab90aab1e816693e5f241bf635d2d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CAN_DIAG_CANID_CONFLICTS</b>&#160;&#160;&#160;0x0D</td></tr>
-<tr class="memdesc:a24cab90aab1e816693e5f241bf635d2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of CANID conflicts detected <br /></td></tr>
+<tr class="memitem:a24cab90aab1e816693e5f241bf635d2d" id="r_a24cab90aab1e816693e5f241bf635d2d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a24cab90aab1e816693e5f241bf635d2d">CAN_DIAG_CANID_CONFLICTS</a>&#160;&#160;&#160;0x0E</td></tr>
+<tr class="memdesc:a24cab90aab1e816693e5f241bf635d2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of CANID conflicts detected  <br /></td></tr>
 <tr class="separator:a24cab90aab1e816693e5f241bf635d2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab85a18b52aeafd266cf464212c4468ba" id="r_ab85a18b52aeafd266cf464212c4468ba"><td class="memItemLeft" align="right" valign="top"><a id="ab85a18b52aeafd266cf464212c4468ba" name="ab85a18b52aeafd266cf464212c4468ba"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CAN_DIAG_CANID_CHANGES</b>&#160;&#160;&#160;0x0E</td></tr>
-<tr class="memdesc:ab85a18b52aeafd266cf464212c4468ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of CANID changes. <br /></td></tr>
+<tr class="memitem:ab85a18b52aeafd266cf464212c4468ba" id="r_ab85a18b52aeafd266cf464212c4468ba"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab85a18b52aeafd266cf464212c4468ba">CAN_DIAG_CANID_CHANGES</a>&#160;&#160;&#160;0x0F</td></tr>
+<tr class="memdesc:ab85a18b52aeafd266cf464212c4468ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of CANID changes.  <br /></td></tr>
 <tr class="separator:ab85a18b52aeafd266cf464212c4468ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ff3b85d3c40625fbadc111cfcba135f" id="r_a1ff3b85d3c40625fbadc111cfcba135f"><td class="memItemLeft" align="right" valign="top"><a id="a1ff3b85d3c40625fbadc111cfcba135f" name="a1ff3b85d3c40625fbadc111cfcba135f"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CAN_DIAG_CANID_ENUMS_FAIL</b>&#160;&#160;&#160;0x0F</td></tr>
-<tr class="memdesc:a1ff3b85d3c40625fbadc111cfcba135f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of CANID enumeration failures. <br /></td></tr>
+<tr class="memitem:a1ff3b85d3c40625fbadc111cfcba135f" id="r_a1ff3b85d3c40625fbadc111cfcba135f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ff3b85d3c40625fbadc111cfcba135f">CAN_DIAG_CANID_ENUMS_FAIL</a>&#160;&#160;&#160;0x10</td></tr>
+<tr class="memdesc:a1ff3b85d3c40625fbadc111cfcba135f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of CANID enumeration failures.  <br /></td></tr>
 <tr class="separator:a1ff3b85d3c40625fbadc111cfcba135f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6ecfc299622cf888757a1b7813742b1" id="r_ae6ecfc299622cf888757a1b7813742b1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae6ecfc299622cf888757a1b7813742b1">CAN_DIAG_TX_HIGH_WATERMARK</a>&#160;&#160;&#160;0x11</td></tr>
+<tr class="memdesc:ae6ecfc299622cf888757a1b7813742b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">TX buff high watermark exceeded count.  <br /></td></tr>
+<tr class="separator:ae6ecfc299622cf888757a1b7813742b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eacdc0509a0624118da60c844916904" id="r_a8eacdc0509a0624118da60c844916904"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8eacdc0509a0624118da60c844916904">CAN_DIAG_RX_HIGH_WATERMARK</a>&#160;&#160;&#160;0x12</td></tr>
+<tr class="memdesc:a8eacdc0509a0624118da60c844916904"><td class="mdescLeft">&#160;</td><td class="mdescRight">RX buff high watermark exceeded count.  <br /></td></tr>
+<tr class="separator:a8eacdc0509a0624118da60c844916904"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b23147ec34d8dd40ada34aadeb30505" id="r_a5b23147ec34d8dd40ada34aadeb30505"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b23147ec34d8dd40ada34aadeb30505">CANID_DEFAULT</a>&#160;&#160;&#160;0</td></tr>
 <tr class="memdesc:a5b23147ec34d8dd40ada34aadeb30505"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setting to zero will trigger an enumeration on first send.  <br /></td></tr>
 <tr class="separator:a5b23147ec34d8dd40ada34aadeb30505"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11f43a49a8f7e14cef3ddc69baf10153" id="r_a11f43a49a8f7e14cef3ddc69baf10153"><td class="memItemLeft" align="right" valign="top"><a id="a11f43a49a8f7e14cef3ddc69baf10153" name="a11f43a49a8f7e14cef3ddc69baf10153"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ENUMERATION_TIMEOUT</b>&#160;&#160;&#160;<a class="el" href="ticktime_8h.html#a795d19057b24de06131d25249431afb6">HUNDRED_MILI_SECOND</a></td></tr>
-<tr class="memdesc:a11f43a49a8f7e14cef3ddc69baf10153"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait time for enumeration responses before setting CANID. <br /></td></tr>
+<tr class="memitem:a11f43a49a8f7e14cef3ddc69baf10153" id="r_a11f43a49a8f7e14cef3ddc69baf10153"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a11f43a49a8f7e14cef3ddc69baf10153">ENUMERATION_TIMEOUT</a>&#160;&#160;&#160;<a class="el" href="ticktime_8h.html#a795d19057b24de06131d25249431afb6">HUNDRED_MILI_SECOND</a></td></tr>
+<tr class="memdesc:a11f43a49a8f7e14cef3ddc69baf10153"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait time for enumeration responses before setting CANID.  <br /></td></tr>
 <tr class="separator:a11f43a49a8f7e14cef3ddc69baf10153"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabc5c9ad540bf9ebad39f0db93725929" id="r_aabc5c9ad540bf9ebad39f0db93725929"><td class="memItemLeft" align="right" valign="top"><a id="aabc5c9ad540bf9ebad39f0db93725929" name="aabc5c9ad540bf9ebad39f0db93725929"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ENUMERATION_HOLDOFF</b>&#160;&#160;&#160;2 * <a class="el" href="ticktime_8h.html#a795d19057b24de06131d25249431afb6">HUNDRED_MILI_SECOND</a></td></tr>
-<tr class="memdesc:aabc5c9ad540bf9ebad39f0db93725929"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delay afer receiving conflict before initiating our own self enumeration. <br /></td></tr>
+<tr class="memitem:aabc5c9ad540bf9ebad39f0db93725929" id="r_aabc5c9ad540bf9ebad39f0db93725929"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aabc5c9ad540bf9ebad39f0db93725929">ENUMERATION_HOLDOFF</a>&#160;&#160;&#160;2 * <a class="el" href="ticktime_8h.html#a795d19057b24de06131d25249431afb6">HUNDRED_MILI_SECOND</a></td></tr>
+<tr class="memdesc:aabc5c9ad540bf9ebad39f0db93725929"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delay afer receiving conflict before initiating our own self enumeration.  <br /></td></tr>
 <tr class="separator:aabc5c9ad540bf9ebad39f0db93725929"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea008ce0c0245ed39562ab6710c33304" id="r_aea008ce0c0245ed39562ab6710c33304"><td class="memItemLeft" align="right" valign="top"><a id="aea008ce0c0245ed39562ab6710c33304" name="aea008ce0c0245ed39562ab6710c33304"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_CANID</b>&#160;&#160;&#160;0x7F</td></tr>
-<tr class="memdesc:aea008ce0c0245ed39562ab6710c33304"><td class="mdescLeft">&#160;</td><td class="mdescRight">Theorhetical maximum value of a CANID. <br /></td></tr>
+<tr class="memitem:aea008ce0c0245ed39562ab6710c33304" id="r_aea008ce0c0245ed39562ab6710c33304"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea008ce0c0245ed39562ab6710c33304">MAX_CANID</a>&#160;&#160;&#160;0x7F</td></tr>
+<tr class="memdesc:aea008ce0c0245ed39562ab6710c33304"><td class="mdescLeft">&#160;</td><td class="mdescRight">Theorhetical maximum value of a CANID.  <br /></td></tr>
 <tr class="separator:aea008ce0c0245ed39562ab6710c33304"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6fabdad5b08944e7ec8ccb98a8febcf" id="r_ad6fabdad5b08944e7ec8ccb98a8febcf"><td class="memItemLeft" align="right" valign="top"><a id="ad6fabdad5b08944e7ec8ccb98a8febcf" name="ad6fabdad5b08944e7ec8ccb98a8febcf"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ENUM_ARRAY_SIZE</b>&#160;&#160;&#160;(<a class="el" href="#aea008ce0c0245ed39562ab6710c33304">MAX_CANID</a>/8)+1</td></tr>
-<tr class="memdesc:ad6fabdad5b08944e7ec8ccb98a8febcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of array for enumeration results. <br /></td></tr>
+<tr class="memitem:ad6fabdad5b08944e7ec8ccb98a8febcf" id="r_ad6fabdad5b08944e7ec8ccb98a8febcf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6fabdad5b08944e7ec8ccb98a8febcf">ENUM_ARRAY_SIZE</a>&#160;&#160;&#160;(<a class="el" href="#aea008ce0c0245ed39562ab6710c33304">MAX_CANID</a>/8)+1</td></tr>
+<tr class="memdesc:ad6fabdad5b08944e7ec8ccb98a8febcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of array for enumeration results.  <br /></td></tr>
 <tr class="separator:ad6fabdad5b08944e7ec8ccb98a8febcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefb26b609ff94740a5894a898523ee74" id="r_aefb26b609ff94740a5894a898523ee74"><td class="memItemLeft" align="right" valign="top"><a id="aefb26b609ff94740a5894a898523ee74" name="aefb26b609ff94740a5894a898523ee74"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>LARB_RETRIES</b>&#160;&#160;&#160;10</td></tr>
-<tr class="memdesc:aefb26b609ff94740a5894a898523ee74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of retries for lost arbitration. <br /></td></tr>
+<tr class="memitem:aefb26b609ff94740a5894a898523ee74" id="r_aefb26b609ff94740a5894a898523ee74"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aefb26b609ff94740a5894a898523ee74">LARB_RETRIES</a>&#160;&#160;&#160;10</td></tr>
+<tr class="memdesc:aefb26b609ff94740a5894a898523ee74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of retries for lost arbitration.  <br /></td></tr>
 <tr class="separator:aefb26b609ff94740a5894a898523ee74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74fd051d23e60127c82ee39caad0ea9a" id="r_a74fd051d23e60127c82ee39caad0ea9a"><td class="memItemLeft" align="right" valign="top"><a id="a74fd051d23e60127c82ee39caad0ea9a" name="a74fd051d23e60127c82ee39caad0ea9a"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>CAN_TX_TIMEOUT</b>&#160;&#160;&#160;<a class="el" href="ticktime_8h.html#ac93edbf7e8fdbf7398453d51bbd37a97">ONE_SECOND</a></td></tr>
-<tr class="memdesc:a74fd051d23e60127c82ee39caad0ea9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time for CAN transmit timeout (will resolve to one second intervals due to timer interrupt period). <br /></td></tr>
+<tr class="memitem:a74fd051d23e60127c82ee39caad0ea9a" id="r_a74fd051d23e60127c82ee39caad0ea9a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a74fd051d23e60127c82ee39caad0ea9a">CAN_TX_TIMEOUT</a>&#160;&#160;&#160;<a class="el" href="ticktime_8h.html#ac93edbf7e8fdbf7398453d51bbd37a97">ONE_SECOND</a></td></tr>
+<tr class="memdesc:a74fd051d23e60127c82ee39caad0ea9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time for CAN transmit timeout (will resolve to one second intervals due to timer interrupt period).  <br /></td></tr>
 <tr class="separator:a74fd051d23e60127c82ee39caad0ea9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b3c219470edb49c626ecad9f592e962" id="r_a8b3c219470edb49c626ecad9f592e962"><td class="memItemLeft" align="right" valign="top"><a id="a8b3c219470edb49c626ecad9f592e962" name="a8b3c219470edb49c626ecad9f592e962"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>TXBnIE</b>&#160;&#160;&#160;PIE5bits.TXBnIE</td></tr>
-<tr class="separator:a8b3c219470edb49c626ecad9f592e962"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30878534f3e5262700a4f07b8430f680" id="r_a30878534f3e5262700a4f07b8430f680"><td class="memItemLeft" align="right" valign="top"><a id="a30878534f3e5262700a4f07b8430f680" name="a30878534f3e5262700a4f07b8430f680"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>TXBnIF</b>&#160;&#160;&#160;PIR5bits.TXBnIF</td></tr>
-<tr class="separator:a30878534f3e5262700a4f07b8430f680"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e06257308190ec132aa0930f80fe0c9" id="r_a2e06257308190ec132aa0930f80fe0c9"><td class="memItemLeft" align="right" valign="top"><a id="a2e06257308190ec132aa0930f80fe0c9" name="a2e06257308190ec132aa0930f80fe0c9"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ERRIE</b>&#160;&#160;&#160;PIE5bits.ERRIE</td></tr>
-<tr class="separator:a2e06257308190ec132aa0930f80fe0c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a010b564cfe7fe6356d3e1fe9975b483d" id="r_a010b564cfe7fe6356d3e1fe9975b483d"><td class="memItemLeft" align="right" valign="top"><a id="a010b564cfe7fe6356d3e1fe9975b483d" name="a010b564cfe7fe6356d3e1fe9975b483d"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ERRIF</b>&#160;&#160;&#160;PIR5bits.ERRIF</td></tr>
-<tr class="separator:a010b564cfe7fe6356d3e1fe9975b483d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a474ed32ed05a43a02adbad65043e9a28" id="r_a474ed32ed05a43a02adbad65043e9a28"><td class="memItemLeft" align="right" valign="top"><a id="a474ed32ed05a43a02adbad65043e9a28" name="a474ed32ed05a43a02adbad65043e9a28"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FIFOWMIE</b>&#160;&#160;&#160;PIE5bits.FIFOWMIE</td></tr>
-<tr class="separator:a474ed32ed05a43a02adbad65043e9a28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fde7bb6f5fc1d7ceebb6ac743835af8" id="r_a2fde7bb6f5fc1d7ceebb6ac743835af8"><td class="memItemLeft" align="right" valign="top"><a id="a2fde7bb6f5fc1d7ceebb6ac743835af8" name="a2fde7bb6f5fc1d7ceebb6ac743835af8"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FIFOWMIF</b>&#160;&#160;&#160;PIR5bits.FIFOWMIF</td></tr>
-<tr class="separator:a2fde7bb6f5fc1d7ceebb6ac743835af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8a22172eb99bb4cda063ca53dd2b134" id="r_ac8a22172eb99bb4cda063ca53dd2b134"><td class="memItemLeft" align="right" valign="top"><a id="ac8a22172eb99bb4cda063ca53dd2b134" name="ac8a22172eb99bb4cda063ca53dd2b134"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RXBnIF</b>&#160;&#160;&#160;PIR5bits.RXBnIF</td></tr>
-<tr class="separator:ac8a22172eb99bb4cda063ca53dd2b134"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86bcd27aa7dc5b228367bcfd92637e56" id="r_a86bcd27aa7dc5b228367bcfd92637e56"><td class="memItemLeft" align="right" valign="top"><a id="a86bcd27aa7dc5b228367bcfd92637e56" name="a86bcd27aa7dc5b228367bcfd92637e56"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>IRXIF</b>&#160;&#160;&#160;PIR5bits.IRXIF</td></tr>
-<tr class="separator:a86bcd27aa7dc5b228367bcfd92637e56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a86d6c7fa3446c679556e44ec91a809" id="r_a9a86d6c7fa3446c679556e44ec91a809"><td class="memItemLeft" align="right" valign="top"><a id="a9a86d6c7fa3446c679556e44ec91a809" name="a9a86d6c7fa3446c679556e44ec91a809"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RXBnOVFL</b>&#160;&#160;&#160;COMSTATbits.RXB1OVFL</td></tr>
-<tr class="separator:a9a86d6c7fa3446c679556e44ec91a809"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -244,39 +182,10 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:aecf3cc02d03d7c3b91fd646516d565fa" id="r_aecf3cc02d03d7c3b91fd646516d565fa"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aecf3cc02d03d7c3b91fd646516d565fa">CanidResult</a> { <b>CANID_FAIL</b>
-, <b>CANID_OK</b>
+<tr class="memitem:aecf3cc02d03d7c3b91fd646516d565fa" id="r_aecf3cc02d03d7c3b91fd646516d565fa"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aecf3cc02d03d7c3b91fd646516d565fa">CanidResult</a> { <a class="el" href="#aecf3cc02d03d7c3b91fd646516d565faa61cc0ac3d04a103789d7267165881ae0">CANID_FAIL</a>
+, <a class="el" href="#aecf3cc02d03d7c3b91fd646516d565faa124398844032773322b98c601b8e8060">CANID_OK</a>
  }</td></tr>
 <tr class="separator:aecf3cc02d03d7c3b91fd646516d565fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf6f08edd09adf034118a73a7acea9f9" id="r_adf6f08edd09adf034118a73a7acea9f9"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf6f08edd09adf034118a73a7acea9f9">CAN_OP_MODES</a> { <br />
-&#160;&#160;<a class="el" href="#adf6f08edd09adf034118a73a7acea9f9abcb8d7f150e61bd9e037729e75d725ea">CAN_NORMAL_FD_MODE</a> = 0x0
-, <a class="el" href="#adf6f08edd09adf034118a73a7acea9f9a32b3f8fc79f3c7bc425c2b5210d51c4a">CAN_DISABLE_MODE</a> = 0x1
-, <a class="el" href="#adf6f08edd09adf034118a73a7acea9f9a8611e4b0659822cb6884e1b56c1b4f49">CAN_INTERNAL_LOOPBACK_MODE</a> = 0x2
-, <a class="el" href="#adf6f08edd09adf034118a73a7acea9f9a26235b6e55aa176156126830508fcf77">CAN_LISTEN_ONLY_MODE</a> = 0x3
-, <br />
-&#160;&#160;<a class="el" href="#adf6f08edd09adf034118a73a7acea9f9aed7a0f764d7b00b8fbfb3dd348a207d5">CAN_CONFIGURATION_MODE</a> = 0x4
-, <a class="el" href="#adf6f08edd09adf034118a73a7acea9f9ae09483fc4ba4e1920c1d9849039068ab">CAN_EXTERNAL_LOOPBACK_MODE</a> = 0x5
-, <a class="el" href="#adf6f08edd09adf034118a73a7acea9f9abe71a3c45e347e25289e6dd429f47a4c">CAN_NORMAL_2_0_MODE</a> = 0x6
-, <a class="el" href="#adf6f08edd09adf034118a73a7acea9f9a5401fc57e16b751f391dfcbb28dec885">CAN_RESTRICTED_OPERATION_MODE</a> =0x7
-<br />
- }</td></tr>
-<tr class="memdesc:adf6f08edd09adf034118a73a7acea9f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the CAN operation modes that are available for the module to use.  <a href="#adf6f08edd09adf034118a73a7acea9f9">More...</a><br /></td></tr>
-<tr class="separator:adf6f08edd09adf034118a73a7acea9f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89d5894e1e1c614eb64d163304613f19" id="r_a89d5894e1e1c614eb64d163304613f19"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a89d5894e1e1c614eb64d163304613f19">CAN_OP_MODE_STATUS</a> { <a class="el" href="#a89d5894e1e1c614eb64d163304613f19ae296371b842557f61dfda2775a45a589">CAN_OP_MODE_REQUEST_SUCCESS</a>
-, <a class="el" href="#a89d5894e1e1c614eb64d163304613f19abdbae12a637dd536b0803e7bf17c477a">CAN_OP_MODE_REQUEST_FAIL</a>
-, <a class="el" href="#a89d5894e1e1c614eb64d163304613f19a3802b1de5642c1b7167b5fe64e69cac7">CAN_OP_MODE_SYS_ERROR_OCCURED</a>
- }</td></tr>
-<tr class="memdesc:a89d5894e1e1c614eb64d163304613f19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the return status of CAN operation mode set API.  <a href="#a89d5894e1e1c614eb64d163304613f19">More...</a><br /></td></tr>
-<tr class="separator:a89d5894e1e1c614eb64d163304613f19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:af5fa07221c88fc4aadfb447301ebfb0e" id="r_af5fa07221c88fc4aadfb447301ebfb0e"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="#a89d5894e1e1c614eb64d163304613f19">CAN_OP_MODE_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af5fa07221c88fc4aadfb447301ebfb0e">CAN1_OperationModeSet</a> (const enum <a class="el" href="#adf6f08edd09adf034118a73a7acea9f9">CAN_OP_MODES</a> requestMode)</td></tr>
-<tr class="memdesc:af5fa07221c88fc4aadfb447301ebfb0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the CAN1 Operation mode.  <br /></td></tr>
-<tr class="separator:af5fa07221c88fc4aadfb447301ebfb0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedd6e334545a38cd71fe86ff4f9e78c3" id="r_aedd6e334545a38cd71fe86ff4f9e78c3"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="#adf6f08edd09adf034118a73a7acea9f9">CAN_OP_MODES</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aedd6e334545a38cd71fe86ff4f9e78c3">CAN1_OperationModeGet</a> (void)</td></tr>
-<tr class="memdesc:aedd6e334545a38cd71fe86ff4f9e78c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the CAN1 Operation mode.  <br /></td></tr>
-<tr class="separator:aedd6e334545a38cd71fe86ff4f9e78c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -320,6 +229,326 @@ Module.h definitions required for the CAN service</h1>
 
 </div>
 </div>
+<a id="ab85a18b52aeafd266cf464212c4468ba" name="ab85a18b52aeafd266cf464212c4468ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab85a18b52aeafd266cf464212c4468ba">&#9670;&#160;</a></span>CAN_DIAG_CANID_CHANGES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_DIAG_CANID_CHANGES&#160;&#160;&#160;0x0F</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Number of CANID changes. </p>
+
+</div>
+</div>
+<a id="a24cab90aab1e816693e5f241bf635d2d" name="a24cab90aab1e816693e5f241bf635d2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24cab90aab1e816693e5f241bf635d2d">&#9670;&#160;</a></span>CAN_DIAG_CANID_CONFLICTS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_DIAG_CANID_CONFLICTS&#160;&#160;&#160;0x0E</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>number of CANID conflicts detected </p>
+
+</div>
+</div>
+<a id="ac886b41a379ae1eb1d64b07ea0f8fcba" name="ac886b41a379ae1eb1d64b07ea0f8fcba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac886b41a379ae1eb1d64b07ea0f8fcba">&#9670;&#160;</a></span>CAN_DIAG_CANID_ENUMS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_DIAG_CANID_ENUMS&#160;&#160;&#160;0x0D</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>number of CANID enumerations </p>
+
+</div>
+</div>
+<a id="a1ff3b85d3c40625fbadc111cfcba135f" name="a1ff3b85d3c40625fbadc111cfcba135f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ff3b85d3c40625fbadc111cfcba135f">&#9670;&#160;</a></span>CAN_DIAG_CANID_ENUMS_FAIL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_DIAG_CANID_ENUMS_FAIL&#160;&#160;&#160;0x10</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Number of CANID enumeration failures. </p>
+
+</div>
+</div>
+<a id="a24e7c30c6c6e2b86fb98b7117a1fdc53" name="a24e7c30c6c6e2b86fb98b7117a1fdc53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24e7c30c6c6e2b86fb98b7117a1fdc53">&#9670;&#160;</a></span>CAN_DIAG_COUNT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_DIAG_COUNT&#160;&#160;&#160;0x00</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Count of the CAN diagnostics. </p>
+
+</div>
+</div>
+<a id="a90e7ed2bf41c0d15961421f407f519d4" name="a90e7ed2bf41c0d15961421f407f519d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90e7ed2bf41c0d15961421f407f519d4">&#9670;&#160;</a></span>CAN_DIAG_ERROR_FRAMES_DET</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_DIAG_ERROR_FRAMES_DET&#160;&#160;&#160;0x0A</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>CAN error frames detected. </p>
+
+</div>
+</div>
+<a id="a3a6ed46899cfcc6f3cacb6cc3d972941" name="a3a6ed46899cfcc6f3cacb6cc3d972941"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a6ed46899cfcc6f3cacb6cc3d972941">&#9670;&#160;</a></span>CAN_DIAG_ERROR_FRAMES_GEN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_DIAG_ERROR_FRAMES_GEN&#160;&#160;&#160;0x0B</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>CAN error frames generated (both active and passive ?) </p>
+
+</div>
+</div>
+<a id="a6b0878bd8e838756116c22f6d5543fcc" name="a6b0878bd8e838756116c22f6d5543fcc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b0878bd8e838756116c22f6d5543fcc">&#9670;&#160;</a></span>CAN_DIAG_LOST_ARBITRATION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_DIAG_LOST_ARBITRATION&#160;&#160;&#160;0x0C</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Number of times CAN arbitration was lost. </p>
+
+</div>
+</div>
+<a id="a9f03a15224a6a652c36b68ecaec3a58e" name="a9f03a15224a6a652c36b68ecaec3a58e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f03a15224a6a652c36b68ecaec3a58e">&#9670;&#160;</a></span>CAN_DIAG_RX_BUFFER_OVERRUN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_DIAG_RX_BUFFER_OVERRUN&#160;&#160;&#160;0x08</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>RX buffer overrun count. </p>
+
+</div>
+</div>
+<a id="ab58387eaa0992391a0b61e9e0b71b81d" name="ab58387eaa0992391a0b61e9e0b71b81d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab58387eaa0992391a0b61e9e0b71b81d">&#9670;&#160;</a></span>CAN_DIAG_RX_BUFFER_USAGE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_DIAG_RX_BUFFER_USAGE&#160;&#160;&#160;0x07</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>RX buffer usage count. </p>
+
+</div>
+</div>
+<a id="a6131de9191a5a84f7d5afca33f308f93" name="a6131de9191a5a84f7d5afca33f308f93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6131de9191a5a84f7d5afca33f308f93">&#9670;&#160;</a></span>CAN_DIAG_RX_ERRORS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_DIAG_RX_ERRORS&#160;&#160;&#160;0x01</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>CAN RX error counter. </p>
+
+</div>
+</div>
+<a id="a8eacdc0509a0624118da60c844916904" name="a8eacdc0509a0624118da60c844916904"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8eacdc0509a0624118da60c844916904">&#9670;&#160;</a></span>CAN_DIAG_RX_HIGH_WATERMARK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_DIAG_RX_HIGH_WATERMARK&#160;&#160;&#160;0x12</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>RX buff high watermark exceeded count. </p>
+
+</div>
+</div>
+<a id="ac9c16cc7bd223c3620ab0619a80499ff" name="ac9c16cc7bd223c3620ab0619a80499ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9c16cc7bd223c3620ab0619a80499ff">&#9670;&#160;</a></span>CAN_DIAG_RX_MESSAGES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_DIAG_RX_MESSAGES&#160;&#160;&#160;0x09</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>RX message counter. </p>
+
+</div>
+</div>
+<a id="a3186eead1026c930912e39f8e6b09624" name="a3186eead1026c930912e39f8e6b09624"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3186eead1026c930912e39f8e6b09624">&#9670;&#160;</a></span>CAN_DIAG_STATUS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_DIAG_STATUS&#160;&#160;&#160;0x03</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>last CAN status byte (TBA) </p>
+
+</div>
+</div>
+<a id="a76e1211bbd04388842e9bcd53485b6e3" name="a76e1211bbd04388842e9bcd53485b6e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76e1211bbd04388842e9bcd53485b6e3">&#9670;&#160;</a></span>CAN_DIAG_TX_BUFFER_OVERRUN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_DIAG_TX_BUFFER_OVERRUN&#160;&#160;&#160;0x05</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Tx buffer overrun count. </p>
+
+</div>
+</div>
+<a id="a31f5c8765c09350c7651949cbe5772dc" name="a31f5c8765c09350c7651949cbe5772dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31f5c8765c09350c7651949cbe5772dc">&#9670;&#160;</a></span>CAN_DIAG_TX_BUFFER_USAGE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_DIAG_TX_BUFFER_USAGE&#160;&#160;&#160;0x04</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Tx buffer usage count. </p>
+
+</div>
+</div>
+<a id="a6c9a7b523d0417237996566fb4ae4ad9" name="a6c9a7b523d0417237996566fb4ae4ad9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c9a7b523d0417237996566fb4ae4ad9">&#9670;&#160;</a></span>CAN_DIAG_TX_ERRORS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_DIAG_TX_ERRORS&#160;&#160;&#160;0x02</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>CAN TX error counter. </p>
+
+</div>
+</div>
+<a id="ae6ecfc299622cf888757a1b7813742b1" name="ae6ecfc299622cf888757a1b7813742b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6ecfc299622cf888757a1b7813742b1">&#9670;&#160;</a></span>CAN_DIAG_TX_HIGH_WATERMARK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_DIAG_TX_HIGH_WATERMARK&#160;&#160;&#160;0x11</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>TX buff high watermark exceeded count. </p>
+
+</div>
+</div>
+<a id="a84dd9b8b957af7b489bbc01030734817" name="a84dd9b8b957af7b489bbc01030734817"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84dd9b8b957af7b489bbc01030734817">&#9670;&#160;</a></span>CAN_DIAG_TX_MESSAGES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_DIAG_TX_MESSAGES&#160;&#160;&#160;0x06</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>TX message count. </p>
+
+</div>
+</div>
+<a id="a74fd051d23e60127c82ee39caad0ea9a" name="a74fd051d23e60127c82ee39caad0ea9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74fd051d23e60127c82ee39caad0ea9a">&#9670;&#160;</a></span>CAN_TX_TIMEOUT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CAN_TX_TIMEOUT&#160;&#160;&#160;<a class="el" href="ticktime_8h.html#ac93edbf7e8fdbf7398453d51bbd37a97">ONE_SECOND</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Time for CAN transmit timeout (will resolve to one second intervals due to timer interrupt period). </p>
+
+</div>
+</div>
 <a id="a5b23147ec34d8dd40ada34aadeb30505" name="a5b23147ec34d8dd40ada34aadeb30505"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5b23147ec34d8dd40ada34aadeb30505">&#9670;&#160;</a></span>CANID_DEFAULT</h2>
 
@@ -334,6 +563,102 @@ Module.h definitions required for the CAN service</h1>
 
 <p>Setting to zero will trigger an enumeration on first send. </p>
 <p>The default value of the CANID. </p>
+
+</div>
+</div>
+<a id="ad6fabdad5b08944e7ec8ccb98a8febcf" name="ad6fabdad5b08944e7ec8ccb98a8febcf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6fabdad5b08944e7ec8ccb98a8febcf">&#9670;&#160;</a></span>ENUM_ARRAY_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ENUM_ARRAY_SIZE&#160;&#160;&#160;(<a class="el" href="#aea008ce0c0245ed39562ab6710c33304">MAX_CANID</a>/8)+1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Size of array for enumeration results. </p>
+
+</div>
+</div>
+<a id="aabc5c9ad540bf9ebad39f0db93725929" name="aabc5c9ad540bf9ebad39f0db93725929"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabc5c9ad540bf9ebad39f0db93725929">&#9670;&#160;</a></span>ENUMERATION_HOLDOFF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ENUMERATION_HOLDOFF&#160;&#160;&#160;2 * <a class="el" href="ticktime_8h.html#a795d19057b24de06131d25249431afb6">HUNDRED_MILI_SECOND</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Delay afer receiving conflict before initiating our own self enumeration. </p>
+
+</div>
+</div>
+<a id="a11f43a49a8f7e14cef3ddc69baf10153" name="a11f43a49a8f7e14cef3ddc69baf10153"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11f43a49a8f7e14cef3ddc69baf10153">&#9670;&#160;</a></span>ENUMERATION_TIMEOUT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ENUMERATION_TIMEOUT&#160;&#160;&#160;<a class="el" href="ticktime_8h.html#a795d19057b24de06131d25249431afb6">HUNDRED_MILI_SECOND</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Wait time for enumeration responses before setting CANID. </p>
+
+</div>
+</div>
+<a id="aefb26b609ff94740a5894a898523ee74" name="aefb26b609ff94740a5894a898523ee74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefb26b609ff94740a5894a898523ee74">&#9670;&#160;</a></span>LARB_RETRIES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LARB_RETRIES&#160;&#160;&#160;10</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Number of retries for lost arbitration. </p>
+
+</div>
+</div>
+<a id="aea008ce0c0245ed39562ab6710c33304" name="aea008ce0c0245ed39562ab6710c33304"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea008ce0c0245ed39562ab6710c33304">&#9670;&#160;</a></span>MAX_CANID</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MAX_CANID&#160;&#160;&#160;0x7F</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Theorhetical maximum value of a CANID. </p>
+
+</div>
+</div>
+<a id="ac35e9cd4fbb4c72ee9f1b486b74b0a37" name="ac35e9cd4fbb4c72ee9f1b486b74b0a37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac35e9cd4fbb4c72ee9f1b486b74b0a37">&#9670;&#160;</a></span>NUM_CAN_DIAGNOSTICS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NUM_CAN_DIAGNOSTICS&#160;&#160;&#160;18</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The number of diagnostic values associated with this service. </p>
 
 </div>
 </div>
@@ -354,64 +679,6 @@ Module.h definitions required for the CAN service</h1>
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="a89d5894e1e1c614eb64d163304613f19" name="a89d5894e1e1c614eb64d163304613f19"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89d5894e1e1c614eb64d163304613f19">&#9670;&#160;</a></span>CAN_OP_MODE_STATUS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#a89d5894e1e1c614eb64d163304613f19">CAN_OP_MODE_STATUS</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Defines the return status of CAN operation mode set API. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a89d5894e1e1c614eb64d163304613f19ae296371b842557f61dfda2775a45a589" name="a89d5894e1e1c614eb64d163304613f19ae296371b842557f61dfda2775a45a589"></a>CAN_OP_MODE_REQUEST_SUCCESS&#160;</td><td class="fielddoc"><p>The requested operation mode set successfully </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a89d5894e1e1c614eb64d163304613f19abdbae12a637dd536b0803e7bf17c477a" name="a89d5894e1e1c614eb64d163304613f19abdbae12a637dd536b0803e7bf17c477a"></a>CAN_OP_MODE_REQUEST_FAIL&#160;</td><td class="fielddoc"><p>The requested operation mode set failure </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a89d5894e1e1c614eb64d163304613f19a3802b1de5642c1b7167b5fe64e69cac7" name="a89d5894e1e1c614eb64d163304613f19a3802b1de5642c1b7167b5fe64e69cac7"></a>CAN_OP_MODE_SYS_ERROR_OCCURED&#160;</td><td class="fielddoc"><p>The system error occurred while setting operation mode. </p>
-</td></tr>
-</table>
-
-</div>
-</div>
-<a id="adf6f08edd09adf034118a73a7acea9f9" name="adf6f08edd09adf034118a73a7acea9f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf6f08edd09adf034118a73a7acea9f9">&#9670;&#160;</a></span>CAN_OP_MODES</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#adf6f08edd09adf034118a73a7acea9f9">CAN_OP_MODES</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Defines the CAN operation modes that are available for the module to use. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="adf6f08edd09adf034118a73a7acea9f9abcb8d7f150e61bd9e037729e75d725ea" name="adf6f08edd09adf034118a73a7acea9f9abcb8d7f150e61bd9e037729e75d725ea"></a>CAN_NORMAL_FD_MODE&#160;</td><td class="fielddoc"><p>CAN FD Normal Operation Mode (Supported only in CAN FD mode) </p>
-</td></tr>
-<tr><td class="fieldname"><a id="adf6f08edd09adf034118a73a7acea9f9a32b3f8fc79f3c7bc425c2b5210d51c4a" name="adf6f08edd09adf034118a73a7acea9f9a32b3f8fc79f3c7bc425c2b5210d51c4a"></a>CAN_DISABLE_MODE&#160;</td><td class="fielddoc"><p>CAN Disable Operation Mode </p>
-</td></tr>
-<tr><td class="fieldname"><a id="adf6f08edd09adf034118a73a7acea9f9a8611e4b0659822cb6884e1b56c1b4f49" name="adf6f08edd09adf034118a73a7acea9f9a8611e4b0659822cb6884e1b56c1b4f49"></a>CAN_INTERNAL_LOOPBACK_MODE&#160;</td><td class="fielddoc"><p>CAN Internal Loopback Operation Mode </p>
-</td></tr>
-<tr><td class="fieldname"><a id="adf6f08edd09adf034118a73a7acea9f9a26235b6e55aa176156126830508fcf77" name="adf6f08edd09adf034118a73a7acea9f9a26235b6e55aa176156126830508fcf77"></a>CAN_LISTEN_ONLY_MODE&#160;</td><td class="fielddoc"><p>CAN Listen only Operation Mode </p>
-</td></tr>
-<tr><td class="fieldname"><a id="adf6f08edd09adf034118a73a7acea9f9aed7a0f764d7b00b8fbfb3dd348a207d5" name="adf6f08edd09adf034118a73a7acea9f9aed7a0f764d7b00b8fbfb3dd348a207d5"></a>CAN_CONFIGURATION_MODE&#160;</td><td class="fielddoc"><p>CAN Configuration Operation Mode </p>
-</td></tr>
-<tr><td class="fieldname"><a id="adf6f08edd09adf034118a73a7acea9f9ae09483fc4ba4e1920c1d9849039068ab" name="adf6f08edd09adf034118a73a7acea9f9ae09483fc4ba4e1920c1d9849039068ab"></a>CAN_EXTERNAL_LOOPBACK_MODE&#160;</td><td class="fielddoc"><p>CAN External Loopback Operation Mode </p>
-</td></tr>
-<tr><td class="fieldname"><a id="adf6f08edd09adf034118a73a7acea9f9abe71a3c45e347e25289e6dd429f47a4c" name="adf6f08edd09adf034118a73a7acea9f9abe71a3c45e347e25289e6dd429f47a4c"></a>CAN_NORMAL_2_0_MODE&#160;</td><td class="fielddoc"><p>CAN 2.0 Operation Mode </p>
-</td></tr>
-<tr><td class="fieldname"><a id="adf6f08edd09adf034118a73a7acea9f9a5401fc57e16b751f391dfcbb28dec885" name="adf6f08edd09adf034118a73a7acea9f9a5401fc57e16b751f391dfcbb28dec885"></a>CAN_RESTRICTED_OPERATION_MODE&#160;</td><td class="fielddoc"><p>CAN Restricted Operation Mode </p>
-</td></tr>
-</table>
-
-</div>
-</div>
 <a id="aecf3cc02d03d7c3b91fd646516d565fa" name="aecf3cc02d03d7c3b91fd646516d565fa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aecf3cc02d03d7c3b91fd646516d565fa">&#9670;&#160;</a></span>CanidResult</h2>
 
@@ -424,70 +691,10 @@ Module.h definitions required for the CAN service</h1>
       </table>
 </div><div class="memdoc">
 <p>Indicates whether a self enumeration was successful. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="aedd6e334545a38cd71fe86ff4f9e78c3" name="aedd6e334545a38cd71fe86ff4f9e78c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aedd6e334545a38cd71fe86ff4f9e78c3">&#9670;&#160;</a></span>CAN1_OperationModeGet()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#adf6f08edd09adf034118a73a7acea9f9">CAN_OP_MODES</a> CAN1_OperationModeGet </td>
-          <td>(</td>
-          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Gets the CAN1 Operation mode. </p>
-<dl class="section pre"><dt>Precondition</dt><dd>CAN1_Initialize() function is already called. </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">None.</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The present CAN1 Operation mode as described in CAN_OP_MODES.</dd></dl>
-<p>Get the current operating mode of the CAN peripheral.</p>
-<dl class="section return"><dt>Returns</dt><dd>the current operating mode </dd></dl>
-
-</div>
-</div>
-<a id="af5fa07221c88fc4aadfb447301ebfb0e" name="af5fa07221c88fc4aadfb447301ebfb0e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af5fa07221c88fc4aadfb447301ebfb0e">&#9670;&#160;</a></span>CAN1_OperationModeSet()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#a89d5894e1e1c614eb64d163304613f19">CAN_OP_MODE_STATUS</a> CAN1_OperationModeSet </td>
-          <td>(</td>
-          <td class="paramtype">const enum <a class="el" href="#adf6f08edd09adf034118a73a7acea9f9">CAN_OP_MODES</a></td>          <td class="paramname"><span class="paramname"><em>requestMode</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets the CAN1 Operation mode. </p>
-<dl class="section pre"><dt>Precondition</dt><dd>CAN1_Initialize() function is already called. </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">requestMode</td><td>- CAN1 Operation mode as described in CAN_OP_MODES. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Status of request to set the CAN1 Operation mode as described in CAN_OP_MODE_STATUS.</dd></dl>
-<p>Set the mode of the CAN peripheral. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">requestMode</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>status result of the request </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aecf3cc02d03d7c3b91fd646516d565faa61cc0ac3d04a103789d7267165881ae0" name="aecf3cc02d03d7c3b91fd646516d565faa61cc0ac3d04a103789d7267165881ae0"></a>CANID_FAIL&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aecf3cc02d03d7c3b91fd646516d565faa124398844032773322b98c601b8e8060" name="aecf3cc02d03d7c3b91fd646516d565faa124398844032773322b98c601b8e8060"></a>CANID_OK&#160;</td><td class="fielddoc"></td></tr>
+</table>
 
 </div>
 </div>
@@ -511,8 +718,7 @@ Module.h definitions required for the CAN service</h1>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The Handle for the CAN <a class="el" href="struct_service.html">Service</a> descriptor.</p>
-<p>The service descriptor for the CAN service. The application must include this descriptor within the const <a class="el" href="struct_service.html">Service</a> * const services[] array and include the necessary settings within module.h in order to make use of the CAN service. </p>
+<p>The Handle for the CAN <a class="el" href="struct_service.html">Service</a> descriptor. </p>
 
 </div>
 </div>
@@ -535,19 +741,14 @@ Module.h definitions required for the CAN service</h1>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The handle for the <a class="el" href="struct_transport.html">Transport</a>.</p>
-<p>The transport descriptor for the CAN service. The application must set const <a class="el" href="struct_transport.html">Transport</a> * transport to the address of the CAN transport descriptor thus: transport = &amp;canTransport; In order to make use of the CAN transport. </p>
+<p>The handle for the <a class="el" href="struct_transport.html">Transport</a>. </p>
 
 </div>
 </div>
 </div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="can_8h.html">can.h</a></li>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0
+</small></address>
 </body>
 </html>

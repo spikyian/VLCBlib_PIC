@@ -5,15 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCB library: Globals</title>
+<title>My Project: Globals</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <script type="text/javascript" src="clipboard.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
@@ -27,9 +23,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
+   <div id="projectname">My Project
    </div>
-   <div id="projectbrief">VLCB C library for PIC</div>
+   <div id="projectbrief">VLCB library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -54,22 +50,6 @@ $(function() {
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('globals_defs.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -92,7 +72,7 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 </div>
 
 <div class="contents">
-<div class="textblock">Here is a list of all documented macros with links to the documentation:</div>
+<div class="textblock">Here is a list of all macros with links to the files they belong to:</div>
 
 <h3><a id="index__5F" name="index__5F"></a>- _ -</h3><ul>
 <li>_ARDUINO_H_&#160;:&#160;<a class="el" href="arduino_8h.html#ae30690e9b43dab7b541ab34c3734f88e">arduino.h</a></li>
@@ -104,18 +84,21 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 <li>_NV_H_&#160;:&#160;<a class="el" href="nv_8h.html#ac863c2ed790907c8aa5a22a377543245">nv.h</a></li>
 <li>_NVM_H_&#160;:&#160;<a class="el" href="nvm_8h.html#af414c577fd0f54d1a739a49086531e50">nvm.h</a></li>
 <li>_QUEUE_H_&#160;:&#160;<a class="el" href="message_queue_8h.html#a1794c45f3c6fb77a12c97a5c910779de">messageQueue.h</a></li>
+<li>_STATUS_DISPLAY_H_&#160;:&#160;<a class="el" href="status_display_8h.html#a3784f4e207ba7ed657d341112d85ea72">statusDisplay.h</a></li>
 <li>_STATUSLEDS_H_&#160;:&#160;<a class="el" href="status_leds_8h.html#a3d7c68d2da2e5df947f79d980067fb6c">statusLeds.h</a></li>
+<li>_TICKTIME_H_&#160;:&#160;<a class="el" href="ticktime_8h.html#a6965b2dfbf12496eceb76f96f6033628">ticktime.h</a></li>
+<li>_TIMEDRESPONSE_H&#160;:&#160;<a class="el" href="timed_response_8h.html#a460aad6b95ef739409be41ac68c3c443">timedResponse.h</a></li>
 </ul>
 
 
 <h3><a id="index_a" name="index_a"></a>- a -</h3><ul>
+<li>ACK_DIAG_COUNT&#160;:&#160;<a class="el" href="event__acknowledge_8h.html#aed184653e80c160bc02ba5f69f4cb823">event_acknowledge.h</a></li>
 <li>ACK_DIAG_NUM_ACKED&#160;:&#160;<a class="el" href="event__acknowledge_8h.html#a9a0f242f9f901358e999375e2a4baa09">event_acknowledge.h</a></li>
 </ul>
 
 
 <h3><a id="index_b" name="index_b"></a>- b -</h3><ul>
 <li>BLOCK&#160;:&#160;<a class="el" href="nvm_8c.html#ab8b4481f7d97c22165b8895a205e934e">nvm.c</a></li>
-<li>BUFFER_RAM_START_ADDRESS&#160;:&#160;<a class="el" href="nvm_8c.html#a9def0a7d8c17786461ea2eee89f5a51c">nvm.c</a></li>
 </ul>
 
 
@@ -124,40 +107,52 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 <li>CAN_DIAG_CANID_CONFLICTS&#160;:&#160;<a class="el" href="can_8h.html#a24cab90aab1e816693e5f241bf635d2d">can.h</a></li>
 <li>CAN_DIAG_CANID_ENUMS&#160;:&#160;<a class="el" href="can_8h.html#ac886b41a379ae1eb1d64b07ea0f8fcba">can.h</a></li>
 <li>CAN_DIAG_CANID_ENUMS_FAIL&#160;:&#160;<a class="el" href="can_8h.html#a1ff3b85d3c40625fbadc111cfcba135f">can.h</a></li>
+<li>CAN_DIAG_COUNT&#160;:&#160;<a class="el" href="can_8h.html#a24e7c30c6c6e2b86fb98b7117a1fdc53">can.h</a></li>
 <li>CAN_DIAG_ERROR_FRAMES_DET&#160;:&#160;<a class="el" href="can_8h.html#a90e7ed2bf41c0d15961421f407f519d4">can.h</a></li>
 <li>CAN_DIAG_ERROR_FRAMES_GEN&#160;:&#160;<a class="el" href="can_8h.html#a3a6ed46899cfcc6f3cacb6cc3d972941">can.h</a></li>
 <li>CAN_DIAG_LOST_ARBITRATION&#160;:&#160;<a class="el" href="can_8h.html#a6b0878bd8e838756116c22f6d5543fcc">can.h</a></li>
 <li>CAN_DIAG_RX_BUFFER_OVERRUN&#160;:&#160;<a class="el" href="can_8h.html#a9f03a15224a6a652c36b68ecaec3a58e">can.h</a></li>
 <li>CAN_DIAG_RX_BUFFER_USAGE&#160;:&#160;<a class="el" href="can_8h.html#ab58387eaa0992391a0b61e9e0b71b81d">can.h</a></li>
 <li>CAN_DIAG_RX_ERRORS&#160;:&#160;<a class="el" href="can_8h.html#a6131de9191a5a84f7d5afca33f308f93">can.h</a></li>
+<li>CAN_DIAG_RX_HIGH_WATERMARK&#160;:&#160;<a class="el" href="can_8h.html#a8eacdc0509a0624118da60c844916904">can.h</a></li>
 <li>CAN_DIAG_RX_MESSAGES&#160;:&#160;<a class="el" href="can_8h.html#ac9c16cc7bd223c3620ab0619a80499ff">can.h</a></li>
 <li>CAN_DIAG_STATUS&#160;:&#160;<a class="el" href="can_8h.html#a3186eead1026c930912e39f8e6b09624">can.h</a></li>
 <li>CAN_DIAG_TX_BUFFER_OVERRUN&#160;:&#160;<a class="el" href="can_8h.html#a76e1211bbd04388842e9bcd53485b6e3">can.h</a></li>
 <li>CAN_DIAG_TX_BUFFER_USAGE&#160;:&#160;<a class="el" href="can_8h.html#a31f5c8765c09350c7651949cbe5772dc">can.h</a></li>
 <li>CAN_DIAG_TX_ERRORS&#160;:&#160;<a class="el" href="can_8h.html#a6c9a7b523d0417237996566fb4ae4ad9">can.h</a></li>
+<li>CAN_DIAG_TX_HIGH_WATERMARK&#160;:&#160;<a class="el" href="can_8h.html#ae6ecfc299622cf888757a1b7813742b1">can.h</a></li>
 <li>CAN_DIAG_TX_MESSAGES&#160;:&#160;<a class="el" href="can_8h.html#a84dd9b8b957af7b489bbc01030734817">can.h</a></li>
 <li>CAN_TX_TIMEOUT&#160;:&#160;<a class="el" href="can_8h.html#a74fd051d23e60127c82ee39caad0ea9a">can.h</a></li>
 <li>CANID_DEFAULT&#160;:&#160;<a class="el" href="can_8h.html#a5b23147ec34d8dd40ada34aadeb30505">can.h</a></li>
+<li>CONSUMER_DIAG_COUNT&#160;:&#160;<a class="el" href="event__consumer__action_8h.html#a97b8701908b74cd414ebee0f8e425ccf">event_consumer_action.h</a>, <a class="el" href="event__consumer__action_state_8h.html#a97b8701908b74cd414ebee0f8e425ccf">event_consumer_actionState.h</a>, <a class="el" href="event__consumer__simple_8h.html#a97b8701908b74cd414ebee0f8e425ccf">event_consumer_simple.h</a></li>
+<li>CONSUMER_DIAG_NUMACKED&#160;:&#160;<a class="el" href="event__consumer__simple_8h.html#a95e475b3b46417c446ef7fd31081a895">event_consumer_simple.h</a></li>
 <li>CONSUMER_DIAG_NUMCONSUMED&#160;:&#160;<a class="el" href="event__consumer__action_8h.html#ae3f7c7a95b07b482db77fcbbcce35f79">event_consumer_action.h</a>, <a class="el" href="event__consumer__action_state_8h.html#ae3f7c7a95b07b482db77fcbbcce35f79">event_consumer_actionState.h</a>, <a class="el" href="event__consumer__simple_8h.html#ae3f7c7a95b07b482db77fcbbcce35f79">event_consumer_simple.h</a></li>
+<li>CPUF18F&#160;:&#160;<a class="el" href="devincs_8h.html#a7c5f2948561711b7989aff48772aca89">devincs.h</a></li>
 </ul>
 
 
 <h3><a id="index_e" name="index_e"></a>- e -</h3><ul>
-<li>EEPROM_SIZE&#160;:&#160;<a class="el" href="nvm_8c.html#ae3ef7bba113f663df6996f286b632a3f">nvm.c</a></li>
-<li>EEPROM_START_ADDRESS&#160;:&#160;<a class="el" href="nvm_8c.html#a96932befbe81496318633eab6e623adb">nvm.c</a></li>
+<li>EE1024&#160;:&#160;<a class="el" href="devincs_8h.html#a823ab76df619a65ce3d9002a5f09dd94">devincs.h</a></li>
 <li>ENUM_ARRAY_SIZE&#160;:&#160;<a class="el" href="can_8h.html#ad6fabdad5b08944e7ec8ccb98a8febcf">can.h</a></li>
 <li>ENUMERATION_HOLDOFF&#160;:&#160;<a class="el" href="can_8h.html#aabc5c9ad540bf9ebad39f0db93725929">can.h</a></li>
 <li>ENUMERATION_TIMEOUT&#160;:&#160;<a class="el" href="can_8h.html#a11f43a49a8f7e14cef3ddc69baf10153">can.h</a></li>
 <li>EVENT_CLR_MASK&#160;:&#160;<a class="el" href="event__teach_8h.html#a23612a14a15126da904d4b84fa851e82">event_teach.h</a>, <a class="el" href="vlcb_8h.html#a23612a14a15126da904d4b84fa851e82">vlcb.h</a></li>
+<li>EVENT_FLAG_DEFAULT&#160;:&#160;<a class="el" href="event__teach__indexed_8c.html#ac00f67bbcb55361a500b2943a31743ba">event_teach_indexed.c</a>, <a class="el" href="event__teach__simple_8c.html#ac00f67bbcb55361a500b2943a31743ba">event_teach_simple.c</a></li>
 <li>EVENT_ON_MASK&#160;:&#160;<a class="el" href="event__teach_8h.html#aae21a70035c121d75ba6e48ad6dd2e0e">event_teach.h</a>, <a class="el" href="vlcb_8h.html#aae21a70035c121d75ba6e48ad6dd2e0e">vlcb.h</a></li>
 <li>EVENT_SET_MASK&#160;:&#160;<a class="el" href="event__teach_8h.html#a5599ca1c7dbab5832ab986e73eddc913">event_teach.h</a>, <a class="el" href="vlcb_8h.html#a5599ca1c7dbab5832ab986e73eddc913">vlcb.h</a></li>
 <li>EVENT_SHORT_MASK&#160;:&#160;<a class="el" href="event__teach_8h.html#a1fc4b29ff184ee7bc9bd9e81fb16e68a">event_teach.h</a>, <a class="el" href="vlcb_8h.html#a1fc4b29ff184ee7bc9bd9e81fb16e68a">vlcb.h</a></li>
+<li>EVENT_TABLE_WIDTH&#160;:&#160;<a class="el" href="event__teach__indexed_8c.html#ace6efb6651c8d5a0917fb04322fa012e">event_teach_indexed.c</a></li>
 <li>EVENTTABLE_OFFSET_EN&#160;:&#160;<a class="el" href="event__teach__large_8c.html#a18783131dda4394667f41cb813ad21f7">event_teach_large.c</a>, <a class="el" href="event__teach__large_8h.html#a18783131dda4394667f41cb813ad21f7">event_teach_large.h</a></li>
-<li>EVENTTABLE_OFFSET_EVS&#160;:&#160;<a class="el" href="event__teach__large_8c.html#a7260c350fcb83f00a88e51a4315e27da">event_teach_large.c</a>, <a class="el" href="event__teach__large_8h.html#a7260c350fcb83f00a88e51a4315e27da">event_teach_large.h</a></li>
-<li>EVENTTABLE_OFFSET_FLAGS&#160;:&#160;<a class="el" href="event__teach__large_8c.html#a1cdd20e3ef223f7ae11e791f60a5a835">event_teach_large.c</a>, <a class="el" href="event__teach__large_8h.html#a1cdd20e3ef223f7ae11e791f60a5a835">event_teach_large.h</a></li>
+<li>EVENTTABLE_OFFSET_ENH&#160;:&#160;<a class="el" href="event__teach__indexed_8c.html#ab3d278e4d8b6d864ff24262b27f79183">event_teach_indexed.c</a>, <a class="el" href="event__teach__simple_8c.html#ab3d278e4d8b6d864ff24262b27f79183">event_teach_simple.c</a></li>
+<li>EVENTTABLE_OFFSET_ENL&#160;:&#160;<a class="el" href="event__teach__indexed_8c.html#ad3428ccfbebc6d99876505ed6e39e969">event_teach_indexed.c</a>, <a class="el" href="event__teach__simple_8c.html#ad3428ccfbebc6d99876505ed6e39e969">event_teach_simple.c</a></li>
+<li>EVENTTABLE_OFFSET_EVS&#160;:&#160;<a class="el" href="event__teach__indexed_8c.html#a7260c350fcb83f00a88e51a4315e27da">event_teach_indexed.c</a>, <a class="el" href="event__teach__large_8c.html#a7260c350fcb83f00a88e51a4315e27da">event_teach_large.c</a>, <a class="el" href="event__teach__large_8h.html#a7260c350fcb83f00a88e51a4315e27da">event_teach_large.h</a>, <a class="el" href="event__teach__simple_8c.html#a7260c350fcb83f00a88e51a4315e27da">event_teach_simple.c</a></li>
+<li>EVENTTABLE_OFFSET_FLAGS&#160;:&#160;<a class="el" href="event__teach__indexed_8c.html#a1cdd20e3ef223f7ae11e791f60a5a835">event_teach_indexed.c</a>, <a class="el" href="event__teach__large_8c.html#a1cdd20e3ef223f7ae11e791f60a5a835">event_teach_large.c</a>, <a class="el" href="event__teach__large_8h.html#a1cdd20e3ef223f7ae11e791f60a5a835">event_teach_large.h</a>, <a class="el" href="event__teach__simple_8c.html#a1cdd20e3ef223f7ae11e791f60a5a835">event_teach_simple.c</a></li>
 <li>EVENTTABLE_OFFSET_NEXT&#160;:&#160;<a class="el" href="event__teach__large_8c.html#ad4a56380432dd046cc09e41b62b9689c">event_teach_large.c</a>, <a class="el" href="event__teach__large_8h.html#ad4a56380432dd046cc09e41b62b9689c">event_teach_large.h</a></li>
 <li>EVENTTABLE_OFFSET_NN&#160;:&#160;<a class="el" href="event__teach__large_8c.html#a3e855a60c5952255d6b2fccdb7b45528">event_teach_large.c</a>, <a class="el" href="event__teach__large_8h.html#a3e855a60c5952255d6b2fccdb7b45528">event_teach_large.h</a></li>
+<li>EVENTTABLE_OFFSET_NNH&#160;:&#160;<a class="el" href="event__teach__indexed_8c.html#a1aef11f775591f3d7137d4f70cf1510a">event_teach_indexed.c</a>, <a class="el" href="event__teach__simple_8c.html#a1aef11f775591f3d7137d4f70cf1510a">event_teach_simple.c</a></li>
+<li>EVENTTABLE_OFFSET_NNL&#160;:&#160;<a class="el" href="event__teach__indexed_8c.html#adb82275ab002ea7c59a80791f4d50503">event_teach_indexed.c</a>, <a class="el" href="event__teach__simple_8c.html#adb82275ab002ea7c59a80791f4d50503">event_teach_simple.c</a></li>
 <li>EVENTTABLE_ROW_WIDTH&#160;:&#160;<a class="el" href="event__teach__large_8c.html#a06ff2b325b362e13f9e570d530089563">event_teach_large.c</a>, <a class="el" href="event__teach__large_8h.html#a06ff2b325b362e13f9e570d530089563">event_teach_large.h</a></li>
+<li>EVENTTABLE_WIDTH&#160;:&#160;<a class="el" href="event__teach__indexed_8c.html#ad057d68b1805992292d5bc71e21f938f">event_teach_indexed.c</a>, <a class="el" href="event__teach__simple_8c.html#ad057d68b1805992292d5bc71e21f938f">event_teach_simple.c</a></li>
 </ul>
 
 
@@ -165,15 +160,14 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 <li>FIVE_MILI_SECOND&#160;:&#160;<a class="el" href="ticktime_8h.html#a7ab7af56c4be4e53449a3caed24a0adb">ticktime.h</a></li>
 <li>FIVE_SECOND&#160;:&#160;<a class="el" href="ticktime_8h.html#a6a4dfcd79dbded78ae326f3470025713">ticktime.h</a></li>
 <li>FLAG_MODE_EVENTACK&#160;:&#160;<a class="el" href="vlcb_8h.html#ad6e7393de68571c21c3f75400cef993f">vlcb.h</a></li>
+<li>FLAG_MODE_FCUCOMPAT&#160;:&#160;<a class="el" href="vlcb_8h.html#a6488931f4d55fa14db0027f92a1d2bf9">vlcb.h</a></li>
 <li>FLAG_MODE_HEARTBEAT&#160;:&#160;<a class="el" href="vlcb_8h.html#a25c7c3b061c39ecfddd3e724dedffdbc">vlcb.h</a></li>
 <li>FLAG_MODE_LEARN&#160;:&#160;<a class="el" href="vlcb_8h.html#a200fefa4b58ef24b6ef79283f1dc3d54">vlcb.h</a></li>
-<li>FLASH_PAGE_SIZE&#160;:&#160;<a class="el" href="nvm_8c.html#a4cc14e2c99ae7f8e5a8e371d03c8532c">nvm.c</a></li>
 <li>FORTY_MILI_SECOND&#160;:&#160;<a class="el" href="ticktime_8h.html#a5caee098612767a4220cd2f0c5d34283">ticktime.h</a></li>
 </ul>
 
 
 <h3><a id="index_g" name="index_g"></a>- g -</h3><ul>
-<li>geti&#160;:&#160;<a class="el" href="hardware_8h.html#a5db3050b08b6cce080a339d212a0c9bd">hardware.h</a></li>
 <li>GREEN_LED&#160;:&#160;<a class="el" href="status_leds2_8c.html#a01649d652fa50957c6ef3c32b1238038">statusLeds2.c</a></li>
 </ul>
 
@@ -192,9 +186,8 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 
 
 <h3><a id="index_m" name="index_m"></a>- m -</h3><ul>
-<li>MANU_VLCB&#160;:&#160;<a class="el" href="vlcb_8h.html#a80cb0124451e7f73bf7a95694045ea27">vlcb.h</a></li>
 <li>MAX_CANID&#160;:&#160;<a class="el" href="can_8h.html#aea008ce0c0245ed39562ab6710c33304">can.h</a></li>
-<li>MNS_DIAGNOSTICS_ALL&#160;:&#160;<a class="el" href="mns_8h.html#a0feb2ac3a4c895ebe269507c6c8220fb">mns.h</a></li>
+<li>MNS_DIAGNOSTICS_COUNT&#160;:&#160;<a class="el" href="mns_8h.html#a971802b0ac3d77fa1a15e09921ebb319">mns.h</a></li>
 <li>MNS_DIAGNOSTICS_MEMERRS&#160;:&#160;<a class="el" href="mns_8h.html#a506d91d40f7dfa90cc579e21ed0c6850">mns.h</a></li>
 <li>MNS_DIAGNOSTICS_NNCHANGE&#160;:&#160;<a class="el" href="mns_8h.html#a5614b154854a19ddb37c88b6adad8598">mns.h</a></li>
 <li>MNS_DIAGNOSTICS_RXMESS&#160;:&#160;<a class="el" href="mns_8h.html#a95540f9efe2e4c00e4b27c8c420c34d4">mns.h</a></li>
@@ -203,8 +196,7 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 <li>MNS_DIAGNOSTICS_UPTIMEL&#160;:&#160;<a class="el" href="mns_8h.html#a5a25d4cad4cd9217654172ac7ba0aa56">mns.h</a></li>
 <li>MNS_VERSION&#160;:&#160;<a class="el" href="mns_8c.html#afca0dd15dbf75ba1f070213af700bf8a">mns.c</a></li>
 <li>MODE_DEFAULT&#160;:&#160;<a class="el" href="vlcb_8h.html#aa2ac0f45d353352c766262721c40e3b8">vlcb.h</a></li>
-<li>MTYP_VLCB_16INP&#160;:&#160;<a class="el" href="vlcb_8h.html#ae87acb3854722fc2ec59aa21fb47bf4b">vlcb.h</a></li>
-<li>MTYP_VLCB_16OUT&#160;:&#160;<a class="el" href="vlcb_8h.html#accba88edc3be81b6ebda0f9ce1a3da0d">vlcb.h</a></li>
+<li>MODE_PRESETUP&#160;:&#160;<a class="el" href="mns_8c.html#a7078eda05fc1f49c664dbf4a54a48395">mns.c</a></li>
 </ul>
 
 
@@ -219,8 +211,17 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 <li>NUM_NV_DIAGNOSTICS&#160;:&#160;<a class="el" href="nv_8h.html#ad1f7641b557aac1f7af325367337c785">nv.h</a></li>
 <li>NUM_PRODUCER_DIAGNOSTICS&#160;:&#160;<a class="el" href="event__producer_8h.html#a3b1688acb88bcb4c5e901407b787fd7a">event_producer.h</a></li>
 <li>NUM_TEACH_DIAGNOSTICS&#160;:&#160;<a class="el" href="event__teach_8h.html#ab0f97d32db4722878271eec18722c68d">event_teach.h</a></li>
+<li>NV_DIAG_COUNT&#160;:&#160;<a class="el" href="nv_8h.html#a2756d67fad396cc64bb3e7b9cca20477">nv.h</a></li>
 <li>NV_DIAGNOSTICS_NUM_ACCESS&#160;:&#160;<a class="el" href="nv_8h.html#a9ba127a005e57ca381fa2efc1ef27c93">nv.h</a></li>
 <li>NV_DIAGNOSTICS_NUM_FAIL&#160;:&#160;<a class="el" href="nv_8h.html#a0caee9ec25e8b8405f7fa2f7fff44ec7">nv.h</a></li>
+<li>NVMCMD_ERASEPAGE&#160;:&#160;<a class="el" href="nvm_8c.html#a37b6cf1b75e0bcb6d3baae7b04525909">nvm.c</a></li>
+<li>NVMCMD_NOP&#160;:&#160;<a class="el" href="nvm_8c.html#ad29fab7c9593aeccca62b1f5af919c83">nvm.c</a></li>
+<li>NVMCMD_READ&#160;:&#160;<a class="el" href="nvm_8c.html#a5192c5aa585bcfcb8fca69c105ab74d3">nvm.c</a></li>
+<li>NVMCMD_READ_POSTINC&#160;:&#160;<a class="el" href="nvm_8c.html#a9f7e1737dd2d1e68a2b42f3c31c220c4">nvm.c</a></li>
+<li>NVMCMD_READPAGE&#160;:&#160;<a class="el" href="nvm_8c.html#ac21881f9bf0f6c7f52e952e5bf206050">nvm.c</a></li>
+<li>NVMCMD_WRITE&#160;:&#160;<a class="el" href="nvm_8c.html#a6842bd21662aff3dad9c6f2243eca598">nvm.c</a></li>
+<li>NVMCMD_WRITE_POSTINC&#160;:&#160;<a class="el" href="nvm_8c.html#a17a0ea290c8e88670a2947a9c8ddeda7">nvm.c</a></li>
+<li>NVMCMD_WRITEPAGE&#160;:&#160;<a class="el" href="nvm_8c.html#a563ac478b3b1ecd286e7f1236c8c7b15">nvm.c</a></li>
 </ul>
 
 
@@ -249,8 +250,9 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 <li>PRM_CKSUM2&#160;:&#160;<a class="el" href="boot_8c.html#abcde0871dc4a6f660a1be9ec3fbc4924">boot.c</a></li>
 <li>PRM_CKSUM3&#160;:&#160;<a class="el" href="boot_8c.html#adfbe4243816f079d2f0a97ea29c2db6a">boot.c</a></li>
 <li>PRM_CKSUM4&#160;:&#160;<a class="el" href="boot_8c.html#a4c270237a8aff6430e17f048b26f03f5">boot.c</a></li>
+<li>PRM_CKSUM6&#160;:&#160;<a class="el" href="boot_8c.html#a3e483116b4789b4222bc201dc85c7548">boot.c</a></li>
+<li>PRODUCER_DIAG_COUNT&#160;:&#160;<a class="el" href="event__producer_8h.html#abb74d8a536cb7842d9fee60952bce93d">event_producer.h</a></li>
 <li>PRODUCER_DIAG_NUMPRODUCED&#160;:&#160;<a class="el" href="event__producer_8h.html#add89a476dd74b4bd4d8405e78ad9fd4c">event_producer.h</a></li>
-<li>PROGMEM_SIZE&#160;:&#160;<a class="el" href="nvm_8c.html#a417273bfdc3786b851ab3c7b4aa09f15">nvm.c</a></li>
 </ul>
 
 
@@ -261,6 +263,7 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 
 
 <h3><a id="index_t" name="index_t"></a>- t -</h3><ul>
+<li>TEACH_DIAG_COUNT&#160;:&#160;<a class="el" href="event__teach_8h.html#a7df1eb2de28d5c1289a21dfb32205f0a">event_teach.h</a></li>
 <li>TEACH_DIAG_NUM_TEACH&#160;:&#160;<a class="el" href="event__teach_8h.html#af83034d2d1c987a0bc584cbe8016506c">event_teach.h</a></li>
 <li>TEN_MILI_SECOND&#160;:&#160;<a class="el" href="ticktime_8h.html#a0f81465e923ee193bfcd549a71af0245">ticktime.h</a></li>
 <li>TEN_SECOND&#160;:&#160;<a class="el" href="ticktime_8h.html#a3f6fef41ef52e036596790ef501223a9">ticktime.h</a></li>
@@ -284,12 +287,9 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 <li>YELLOW_LED&#160;:&#160;<a class="el" href="status_leds2_8c.html#aaa9a0918932bceef70e8eb4dbb988fbe">statusLeds2.c</a></li>
 </ul>
 </div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0
+</small></address>
 </body>
 </html>

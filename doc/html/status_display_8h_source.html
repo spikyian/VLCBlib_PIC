@@ -5,15 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCB library: statusDisplay.h Source File</title>
+<title>My Project: C:/Users/ianwh/github/VLCBlib_PIC/statusDisplay.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <script type="text/javascript" src="clipboard.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
@@ -27,9 +23,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
+   <div id="projectname">My Project
    </div>
-   <div id="projectbrief">VLCB C library for PIC</div>
+   <div id="projectbrief">VLCB library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -59,22 +55,6 @@ $(function() { codefold.init(0); });
 /* @license-end */
 </script>
 </div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('status_display_8h_source.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -97,7 +77,7 @@ $(function(){initNavTree('status_display_8h_source.html',''); initResizable(); }
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">statusDisplay.h</div></div>
+  <div class="headertitle"><div class="title">C:/Users/ianwh/github/VLCBlib_PIC/statusDisplay.h</div></div>
 </div><!--header-->
 <div class="contents">
 <a href="status_display_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef _STATUS_DISPLAY_H_</span></div>
@@ -132,36 +112,45 @@ $(function(){initNavTree('status_display_8h_source.html',''); initResizable(); }
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">    This software is distributed in the hope that it will be useful, but WITHOUT ANY</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#define _STATUS_DISPLAY_H_</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="status_display_8h.html#a3784f4e207ba7ed657d341112d85ea72">   49</a></span><span class="preprocessor">#define _STATUS_DISPLAY_H_</span></div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
 <div class="foldopen" id="foldopen00055" data-start="{" data-end="};">
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902e">   55</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code hl_enumeration" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902e">StatusDisplay</a> {</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    STATUS_OFF,</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    STATUS_UNINITIALISED,</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    STATUS_SETUP,</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    STATUS_NORMAL,</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    STATUS_RESET_WARNING,</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    STATUS_LEARN,</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    STATUS_BOOT,</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    STATUS_MESSAGE_RECEIVED,</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    STATUS_MESSAGE_ACTED,</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    STATUS_TRANSMIT_ERROR,</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    STATUS_RECEIVE_ERROR,</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    STATUS_MEMORY_FAULT,</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    STATUS_FATAL_ERROR    </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="status_display_8h.html#ab833f11af6571fc9ddecd04d37460d4c">   69</a></span>} <a class="code hl_enumeration" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902e">StatusDisplay</a>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ea3755eefbbbc999b49f6ad486190b06db">   56</a></span>    <a class="code hl_enumvalue" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ea3755eefbbbc999b49f6ad486190b06db">STATUS_OFF</a>,</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902eaec1c7b5c1d324b82640377f10b95985e">   57</a></span>    <a class="code hl_enumvalue" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902eaec1c7b5c1d324b82640377f10b95985e">STATUS_UNINITIALISED</a>,</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902eaa6de5690bdd1f64689a310444ed13442">   58</a></span>    <a class="code hl_enumvalue" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902eaa6de5690bdd1f64689a310444ed13442">STATUS_SETUP</a>,</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ead98b0fc232d7ddd6d4d6402764bdf576">   59</a></span>    <a class="code hl_enumvalue" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ead98b0fc232d7ddd6d4d6402764bdf576">STATUS_NORMAL</a>,</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ea48ce3f7c18e4741ac296043950944d6e">   60</a></span>    <a class="code hl_enumvalue" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ea48ce3f7c18e4741ac296043950944d6e">STATUS_RESET_WARNING</a>,</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ea25c657144a0716877c3d072b3088417d">   61</a></span>    <a class="code hl_enumvalue" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ea25c657144a0716877c3d072b3088417d">STATUS_LEARN</a>,</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ead2b3d1b423b6d576c9a16811eb6ddee5">   62</a></span>    <a class="code hl_enumvalue" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ead2b3d1b423b6d576c9a16811eb6ddee5">STATUS_BOOT</a>,</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902eaf9701e589a6f77590443fc49e859761a">   63</a></span>    <a class="code hl_enumvalue" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902eaf9701e589a6f77590443fc49e859761a">STATUS_MESSAGE_RECEIVED</a>,</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902eaf5dd81ab6abcf6f450387f65a0fb102c">   64</a></span>    <a class="code hl_enumvalue" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902eaf5dd81ab6abcf6f450387f65a0fb102c">STATUS_MESSAGE_ACTED</a>,</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902eaf767bf4cda2a69a92fe9fbf06dd6bd12">   65</a></span>    <a class="code hl_enumvalue" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902eaf767bf4cda2a69a92fe9fbf06dd6bd12">STATUS_TRANSMIT_ERROR</a>,</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ea2fe5832a475dfbb043e49adf3da2038a">   66</a></span>    <a class="code hl_enumvalue" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ea2fe5832a475dfbb043e49adf3da2038a">STATUS_RECEIVE_ERROR</a>,</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902eaa9a8d76778d441b527923d876977eb6e">   67</a></span>    <a class="code hl_enumvalue" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902eaa9a8d76778d441b527923d876977eb6e">STATUS_MEMORY_FAULT</a>,</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <a class="code hl_enumvalue" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ea61500639474bd638c907633eecef8df6">STATUS_FATAL_ERROR</a>    </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ea61500639474bd638c907633eecef8df6">   69</a></span>} <a class="code hl_enumeration" href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902e">StatusDisplay</a>;</div>
 </div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="astatus_display_8h_html_a02c5b571a84044d3d1e6ab3dd848902e"><div class="ttname"><a href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902e">StatusDisplay</a></div><div class="ttdeci">StatusDisplay</div><div class="ttdef"><b>Definition</b> statusDisplay.h:55</div></div>
+<div class="ttc" id="astatus_display_8h_html_a02c5b571a84044d3d1e6ab3dd848902ea25c657144a0716877c3d072b3088417d"><div class="ttname"><a href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ea25c657144a0716877c3d072b3088417d">STATUS_LEARN</a></div><div class="ttdeci">@ STATUS_LEARN</div><div class="ttdef"><b>Definition</b> statusDisplay.h:61</div></div>
+<div class="ttc" id="astatus_display_8h_html_a02c5b571a84044d3d1e6ab3dd848902ea2fe5832a475dfbb043e49adf3da2038a"><div class="ttname"><a href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ea2fe5832a475dfbb043e49adf3da2038a">STATUS_RECEIVE_ERROR</a></div><div class="ttdeci">@ STATUS_RECEIVE_ERROR</div><div class="ttdef"><b>Definition</b> statusDisplay.h:66</div></div>
+<div class="ttc" id="astatus_display_8h_html_a02c5b571a84044d3d1e6ab3dd848902ea3755eefbbbc999b49f6ad486190b06db"><div class="ttname"><a href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ea3755eefbbbc999b49f6ad486190b06db">STATUS_OFF</a></div><div class="ttdeci">@ STATUS_OFF</div><div class="ttdef"><b>Definition</b> statusDisplay.h:56</div></div>
+<div class="ttc" id="astatus_display_8h_html_a02c5b571a84044d3d1e6ab3dd848902ea48ce3f7c18e4741ac296043950944d6e"><div class="ttname"><a href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ea48ce3f7c18e4741ac296043950944d6e">STATUS_RESET_WARNING</a></div><div class="ttdeci">@ STATUS_RESET_WARNING</div><div class="ttdef"><b>Definition</b> statusDisplay.h:60</div></div>
+<div class="ttc" id="astatus_display_8h_html_a02c5b571a84044d3d1e6ab3dd848902ea61500639474bd638c907633eecef8df6"><div class="ttname"><a href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ea61500639474bd638c907633eecef8df6">STATUS_FATAL_ERROR</a></div><div class="ttdeci">@ STATUS_FATAL_ERROR</div><div class="ttdef"><b>Definition</b> statusDisplay.h:68</div></div>
+<div class="ttc" id="astatus_display_8h_html_a02c5b571a84044d3d1e6ab3dd848902eaa6de5690bdd1f64689a310444ed13442"><div class="ttname"><a href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902eaa6de5690bdd1f64689a310444ed13442">STATUS_SETUP</a></div><div class="ttdeci">@ STATUS_SETUP</div><div class="ttdef"><b>Definition</b> statusDisplay.h:58</div></div>
+<div class="ttc" id="astatus_display_8h_html_a02c5b571a84044d3d1e6ab3dd848902eaa9a8d76778d441b527923d876977eb6e"><div class="ttname"><a href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902eaa9a8d76778d441b527923d876977eb6e">STATUS_MEMORY_FAULT</a></div><div class="ttdeci">@ STATUS_MEMORY_FAULT</div><div class="ttdef"><b>Definition</b> statusDisplay.h:67</div></div>
+<div class="ttc" id="astatus_display_8h_html_a02c5b571a84044d3d1e6ab3dd848902ead2b3d1b423b6d576c9a16811eb6ddee5"><div class="ttname"><a href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ead2b3d1b423b6d576c9a16811eb6ddee5">STATUS_BOOT</a></div><div class="ttdeci">@ STATUS_BOOT</div><div class="ttdef"><b>Definition</b> statusDisplay.h:62</div></div>
+<div class="ttc" id="astatus_display_8h_html_a02c5b571a84044d3d1e6ab3dd848902ead98b0fc232d7ddd6d4d6402764bdf576"><div class="ttname"><a href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902ead98b0fc232d7ddd6d4d6402764bdf576">STATUS_NORMAL</a></div><div class="ttdeci">@ STATUS_NORMAL</div><div class="ttdef"><b>Definition</b> statusDisplay.h:59</div></div>
+<div class="ttc" id="astatus_display_8h_html_a02c5b571a84044d3d1e6ab3dd848902eaec1c7b5c1d324b82640377f10b95985e"><div class="ttname"><a href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902eaec1c7b5c1d324b82640377f10b95985e">STATUS_UNINITIALISED</a></div><div class="ttdeci">@ STATUS_UNINITIALISED</div><div class="ttdef"><b>Definition</b> statusDisplay.h:57</div></div>
+<div class="ttc" id="astatus_display_8h_html_a02c5b571a84044d3d1e6ab3dd848902eaf5dd81ab6abcf6f450387f65a0fb102c"><div class="ttname"><a href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902eaf5dd81ab6abcf6f450387f65a0fb102c">STATUS_MESSAGE_ACTED</a></div><div class="ttdeci">@ STATUS_MESSAGE_ACTED</div><div class="ttdef"><b>Definition</b> statusDisplay.h:64</div></div>
+<div class="ttc" id="astatus_display_8h_html_a02c5b571a84044d3d1e6ab3dd848902eaf767bf4cda2a69a92fe9fbf06dd6bd12"><div class="ttname"><a href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902eaf767bf4cda2a69a92fe9fbf06dd6bd12">STATUS_TRANSMIT_ERROR</a></div><div class="ttdeci">@ STATUS_TRANSMIT_ERROR</div><div class="ttdef"><b>Definition</b> statusDisplay.h:65</div></div>
+<div class="ttc" id="astatus_display_8h_html_a02c5b571a84044d3d1e6ab3dd848902eaf9701e589a6f77590443fc49e859761a"><div class="ttname"><a href="status_display_8h.html#a02c5b571a84044d3d1e6ab3dd848902eaf9701e589a6f77590443fc49e859761a">STATUS_MESSAGE_RECEIVED</a></div><div class="ttdeci">@ STATUS_MESSAGE_RECEIVED</div><div class="ttdef"><b>Definition</b> statusDisplay.h:63</div></div>
 </div><!-- fragment --></div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="status_display_8h.html">statusDisplay.h</a></li>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0
+</small></address>
 </body>
 </html>

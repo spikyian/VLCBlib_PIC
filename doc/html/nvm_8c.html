@@ -5,15 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCB library: nvm.c File Reference</title>
+<title>My Project: C:/Users/ianwh/github/VLCBlib_PIC/nvm.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <script type="text/javascript" src="clipboard.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
@@ -27,9 +23,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
+   <div id="projectname">My Project
    </div>
-   <div id="projectbrief">VLCB C library for PIC</div>
+   <div id="projectbrief">VLCB library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -53,23 +49,6 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('nvm_8c.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -91,11 +70,12 @@ $(function(){initNavTree('nvm_8c.html',''); initResizable(); });
 </div>
 </div>
 
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
-  <div class="headertitle"><div class="title">nvm.c File Reference</div></div>
+  <div class="headertitle"><div class="title">C:/Users/ianwh/github/VLCBlib_PIC/nvm.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -109,42 +89,48 @@ $(function(){initNavTree('nvm_8c.html',''); initResizable(); });
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a4cc14e2c99ae7f8e5a8e371d03c8532c" id="r_a4cc14e2c99ae7f8e5a8e371d03c8532c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4cc14e2c99ae7f8e5a8e371d03c8532c">FLASH_PAGE_SIZE</a>&#160;&#160;&#160;_FLASH_ERASE_SIZE</td></tr>
-<tr class="separator:a4cc14e2c99ae7f8e5a8e371d03c8532c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cc14e2c99ae7f8e5a8e371d03c8532c" id="r_a4cc14e2c99ae7f8e5a8e371d03c8532c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4cc14e2c99ae7f8e5a8e371d03c8532c">FLASH_PAGE_SIZE</a>&#160;&#160;&#160;(256U)</td></tr>
-<tr class="separator:a4cc14e2c99ae7f8e5a8e371d03c8532c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a417273bfdc3786b851ab3c7b4aa09f15" id="r_a417273bfdc3786b851ab3c7b4aa09f15"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a417273bfdc3786b851ab3c7b4aa09f15">PROGMEM_SIZE</a>&#160;&#160;&#160;(0x020000U)</td></tr>
-<tr class="separator:a417273bfdc3786b851ab3c7b4aa09f15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9def0a7d8c17786461ea2eee89f5a51c" id="r_a9def0a7d8c17786461ea2eee89f5a51c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9def0a7d8c17786461ea2eee89f5a51c">BUFFER_RAM_START_ADDRESS</a>&#160;&#160;&#160;(0x3700U)</td></tr>
-<tr class="separator:a9def0a7d8c17786461ea2eee89f5a51c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96932befbe81496318633eab6e623adb" id="r_a96932befbe81496318633eab6e623adb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96932befbe81496318633eab6e623adb">EEPROM_START_ADDRESS</a>&#160;&#160;&#160;(0x380000U)</td></tr>
-<tr class="separator:a96932befbe81496318633eab6e623adb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3ef7bba113f663df6996f286b632a3f" id="r_ae3ef7bba113f663df6996f286b632a3f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3ef7bba113f663df6996f286b632a3f">EEPROM_SIZE</a>&#160;&#160;&#160;(1024U)</td></tr>
-<tr class="separator:ae3ef7bba113f663df6996f286b632a3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8b4481f7d97c22165b8895a205e934e" id="r_ab8b4481f7d97c22165b8895a205e934e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab8b4481f7d97c22165b8895a205e934e">BLOCK</a>(A)&#160;&#160;&#160;(A&amp;(~((<a class="el" href="nvm_8h.html#a7a9b2de58e1a7feb8e66319b4ff4898b">flash_address_t</a>)<a class="el" href="#a4cc14e2c99ae7f8e5a8e371d03c8532c">FLASH_PAGE_SIZE</a>-1)))</td></tr>
+<tr class="memitem:a5192c5aa585bcfcb8fca69c105ab74d3" id="r_a5192c5aa585bcfcb8fca69c105ab74d3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5192c5aa585bcfcb8fca69c105ab74d3">NVMCMD_READ</a>&#160;&#160;&#160;0x00</td></tr>
+<tr class="separator:a5192c5aa585bcfcb8fca69c105ab74d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f7e1737dd2d1e68a2b42f3c31c220c4" id="r_a9f7e1737dd2d1e68a2b42f3c31c220c4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9f7e1737dd2d1e68a2b42f3c31c220c4">NVMCMD_READ_POSTINC</a>&#160;&#160;&#160;0x01</td></tr>
+<tr class="separator:a9f7e1737dd2d1e68a2b42f3c31c220c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac21881f9bf0f6c7f52e952e5bf206050" id="r_ac21881f9bf0f6c7f52e952e5bf206050"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac21881f9bf0f6c7f52e952e5bf206050">NVMCMD_READPAGE</a>&#160;&#160;&#160;0x02</td></tr>
+<tr class="separator:ac21881f9bf0f6c7f52e952e5bf206050"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6842bd21662aff3dad9c6f2243eca598" id="r_a6842bd21662aff3dad9c6f2243eca598"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6842bd21662aff3dad9c6f2243eca598">NVMCMD_WRITE</a>&#160;&#160;&#160;0x03</td></tr>
+<tr class="separator:a6842bd21662aff3dad9c6f2243eca598"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17a0ea290c8e88670a2947a9c8ddeda7" id="r_a17a0ea290c8e88670a2947a9c8ddeda7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a17a0ea290c8e88670a2947a9c8ddeda7">NVMCMD_WRITE_POSTINC</a>&#160;&#160;&#160;0x04</td></tr>
+<tr class="separator:a17a0ea290c8e88670a2947a9c8ddeda7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a563ac478b3b1ecd286e7f1236c8c7b15" id="r_a563ac478b3b1ecd286e7f1236c8c7b15"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a563ac478b3b1ecd286e7f1236c8c7b15">NVMCMD_WRITEPAGE</a>&#160;&#160;&#160;0x05</td></tr>
+<tr class="separator:a563ac478b3b1ecd286e7f1236c8c7b15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37b6cf1b75e0bcb6d3baae7b04525909" id="r_a37b6cf1b75e0bcb6d3baae7b04525909"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37b6cf1b75e0bcb6d3baae7b04525909">NVMCMD_ERASEPAGE</a>&#160;&#160;&#160;0x06</td></tr>
+<tr class="separator:a37b6cf1b75e0bcb6d3baae7b04525909"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad29fab7c9593aeccca62b1f5af919c83" id="r_ad29fab7c9593aeccca62b1f5af919c83"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad29fab7c9593aeccca62b1f5af919c83">NVMCMD_NOP</a>&#160;&#160;&#160;0x07</td></tr>
+<tr class="separator:ad29fab7c9593aeccca62b1f5af919c83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8b4481f7d97c22165b8895a205e934e" id="r_ab8b4481f7d97c22165b8895a205e934e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab8b4481f7d97c22165b8895a205e934e">BLOCK</a>(A)&#160;&#160;&#160;(A&amp;(~((flash_address_t)FLASH_PAGE_SIZE-1)))</td></tr>
 <tr class="separator:ab8b4481f7d97c22165b8895a205e934e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e15205a53bddef5c5a3cb650dfd9c84" id="r_a9e15205a53bddef5c5a3cb650dfd9c84"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9e15205a53bddef5c5a3cb650dfd9c84">OFFSET</a>(A)&#160;&#160;&#160;(A&amp;(<a class="el" href="#a4cc14e2c99ae7f8e5a8e371d03c8532c">FLASH_PAGE_SIZE</a>-1))</td></tr>
+<tr class="memitem:a9e15205a53bddef5c5a3cb650dfd9c84" id="r_a9e15205a53bddef5c5a3cb650dfd9c84"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9e15205a53bddef5c5a3cb650dfd9c84">OFFSET</a>(A)&#160;&#160;&#160;(A&amp;(FLASH_PAGE_SIZE-1))</td></tr>
 <tr class="separator:a9e15205a53bddef5c5a3cb650dfd9c84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a02557928852521f6abecc4d65c6ba12b" id="r_a02557928852521f6abecc4d65c6ba12b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a02557928852521f6abecc4d65c6ba12b">initRomOps</a> (void)</td></tr>
 <tr class="separator:a02557928852521f6abecc4d65c6ba12b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83fd3efd9c767d1e104201737183f86c" id="r_a83fd3efd9c767d1e104201737183f86c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nvm_8h.html#adc00a74d8315a1dbf3f4e970dee14eea">eeprom_data_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a83fd3efd9c767d1e104201737183f86c">EEPROM_Read</a> (<a class="el" href="nvm_8h.html#a7a61772455acf72b30881bb0c1807d8b">eeprom_address_t</a> index)</td></tr>
+<tr class="memitem:a83fd3efd9c767d1e104201737183f86c" id="r_a83fd3efd9c767d1e104201737183f86c"><td class="memItemLeft" align="right" valign="top">eeprom_data_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a83fd3efd9c767d1e104201737183f86c">EEPROM_Read</a> (eeprom_address_t index)</td></tr>
 <tr class="separator:a83fd3efd9c767d1e104201737183f86c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1c1c8896c08e933c0b0288601683c16" id="r_ab1c1c8896c08e933c0b0288601683c16"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab1c1c8896c08e933c0b0288601683c16">EEPROM_Write</a> (<a class="el" href="nvm_8h.html#a7a61772455acf72b30881bb0c1807d8b">eeprom_address_t</a> index, <a class="el" href="nvm_8h.html#adc00a74d8315a1dbf3f4e970dee14eea">eeprom_data_t</a> value)</td></tr>
+<tr class="memitem:ab1c1c8896c08e933c0b0288601683c16" id="r_ab1c1c8896c08e933c0b0288601683c16"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab1c1c8896c08e933c0b0288601683c16">EEPROM_Write</a> (eeprom_address_t index, eeprom_data_t value)</td></tr>
 <tr class="separator:ab1c1c8896c08e933c0b0288601683c16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad706a6efd747d4b880e464968e1cce6" id="r_aad706a6efd747d4b880e464968e1cce6"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aad706a6efd747d4b880e464968e1cce6">EEPROM_WriteNoVerify</a> (eeprom_address_t index, eeprom_data_t value)</td></tr>
+<tr class="separator:aad706a6efd747d4b880e464968e1cce6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46652625f2e3b0fbd1c2a00a3ef8c5a2" id="r_a46652625f2e3b0fbd1c2a00a3ef8c5a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a46652625f2e3b0fbd1c2a00a3ef8c5a2">eraseFlashBlock</a> (void)</td></tr>
 <tr class="separator:a46652625f2e3b0fbd1c2a00a3ef8c5a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0fcdc24440e40c3ff3cded548b912008" id="r_a0fcdc24440e40c3ff3cded548b912008"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0fcdc24440e40c3ff3cded548b912008">flushFlashBlock</a> (void)</td></tr>
 <tr class="separator:a0fcdc24440e40c3ff3cded548b912008"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1649c85b55bfaa99f3994be0c632b48" id="r_ad1649c85b55bfaa99f3994be0c632b48"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad1649c85b55bfaa99f3994be0c632b48">loadFlashBlock</a> (void)</td></tr>
 <tr class="separator:ad1649c85b55bfaa99f3994be0c632b48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f1087c4219e98e3c6482ee7e51d9dd3" id="r_a5f1087c4219e98e3c6482ee7e51d9dd3"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f1087c4219e98e3c6482ee7e51d9dd3">FLASH_Write</a> (<a class="el" href="nvm_8h.html#a7a9b2de58e1a7feb8e66319b4ff4898b">flash_address_t</a> index, <a class="el" href="nvm_8h.html#a55e42207a64de404bca02864514e5f6d">flash_data_t</a> value)</td></tr>
+<tr class="memitem:a5f1087c4219e98e3c6482ee7e51d9dd3" id="r_a5f1087c4219e98e3c6482ee7e51d9dd3"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f1087c4219e98e3c6482ee7e51d9dd3">FLASH_Write</a> (flash_address_t index, flash_data_t value)</td></tr>
 <tr class="separator:a5f1087c4219e98e3c6482ee7e51d9dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c179e5ce4a0973b69dab3e12edc0eb3" id="r_a6c179e5ce4a0973b69dab3e12edc0eb3"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c179e5ce4a0973b69dab3e12edc0eb3">writeNVM</a> (<a class="el" href="nvm_8h.html#a4edc8ede417a683709eaaf0ed26f441e">NVMtype</a> type, uint24_t index, uint8_t value)</td></tr>
+<tr class="memitem:a6c179e5ce4a0973b69dab3e12edc0eb3" id="r_a6c179e5ce4a0973b69dab3e12edc0eb3"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c179e5ce4a0973b69dab3e12edc0eb3">writeNVM</a> (<a class="el" href="nvm_8h.html#a4edc8ede417a683709eaaf0ed26f441e">NVMtype</a> <a class="el" href="boot_8c.html#ac2be0627bea289e008d468b07b24bda9">type</a>, uint24_t index, uint8_t value)</td></tr>
 <tr class="separator:a6c179e5ce4a0973b69dab3e12edc0eb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b5c8c0d5034f4598a4933db88ac3ba2" id="r_a0b5c8c0d5034f4598a4933db88ac3ba2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b5c8c0d5034f4598a4933db88ac3ba2">readNVM</a> (<a class="el" href="nvm_8h.html#a4edc8ede417a683709eaaf0ed26f441e">NVMtype</a> type, uint24_t index)</td></tr>
+<tr class="memitem:a0b5c8c0d5034f4598a4933db88ac3ba2" id="r_a0b5c8c0d5034f4598a4933db88ac3ba2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b5c8c0d5034f4598a4933db88ac3ba2">readNVM</a> (<a class="el" href="nvm_8h.html#a4edc8ede417a683709eaaf0ed26f441e">NVMtype</a> <a class="el" href="boot_8c.html#ac2be0627bea289e008d468b07b24bda9">type</a>, uint24_t index)</td></tr>
 <tr class="separator:a0b5c8c0d5034f4598a4933db88ac3ba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -176,7 +162,7 @@ Major rewrite Ian Hogg <br  />
           <td class="memname">#define BLOCK</td>
           <td>(</td>
           <td class="paramtype"></td>          <td class="paramname"><span class="paramname">A</span></td><td>)</td>
-          <td>&#160;&#160;&#160;(A&amp;(~((<a class="el" href="nvm_8h.html#a7a9b2de58e1a7feb8e66319b4ff4898b">flash_address_t</a>)<a class="el" href="#a4cc14e2c99ae7f8e5a8e371d03c8532c">FLASH_PAGE_SIZE</a>-1)))</td>
+          <td>&#160;&#160;&#160;(A&amp;(~((flash_address_t)FLASH_PAGE_SIZE-1)))</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -184,78 +170,115 @@ Major rewrite Ian Hogg <br  />
 
 </div>
 </div>
-<a id="a9def0a7d8c17786461ea2eee89f5a51c" name="a9def0a7d8c17786461ea2eee89f5a51c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9def0a7d8c17786461ea2eee89f5a51c">&#9670;&#160;</a></span>BUFFER_RAM_START_ADDRESS</h2>
+<a id="a37b6cf1b75e0bcb6d3baae7b04525909" name="a37b6cf1b75e0bcb6d3baae7b04525909"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37b6cf1b75e0bcb6d3baae7b04525909">&#9670;&#160;</a></span>NVMCMD_ERASEPAGE</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define BUFFER_RAM_START_ADDRESS&#160;&#160;&#160;(0x3700U)</td>
+          <td class="memname">#define NVMCMD_ERASEPAGE&#160;&#160;&#160;0x06</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Contains the starting address of the buffer RAM. </p>
 
 </div>
 </div>
-<a id="ae3ef7bba113f663df6996f286b632a3f" name="ae3ef7bba113f663df6996f286b632a3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3ef7bba113f663df6996f286b632a3f">&#9670;&#160;</a></span>EEPROM_SIZE</h2>
+<a id="ad29fab7c9593aeccca62b1f5af919c83" name="ad29fab7c9593aeccca62b1f5af919c83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad29fab7c9593aeccca62b1f5af919c83">&#9670;&#160;</a></span>NVMCMD_NOP</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define EEPROM_SIZE&#160;&#160;&#160;(1024U)</td>
+          <td class="memname">#define NVMCMD_NOP&#160;&#160;&#160;0x07</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Contains the size of EEPROM in bytes. </p>
 
 </div>
 </div>
-<a id="a96932befbe81496318633eab6e623adb" name="a96932befbe81496318633eab6e623adb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96932befbe81496318633eab6e623adb">&#9670;&#160;</a></span>EEPROM_START_ADDRESS</h2>
+<a id="a5192c5aa585bcfcb8fca69c105ab74d3" name="a5192c5aa585bcfcb8fca69c105ab74d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5192c5aa585bcfcb8fca69c105ab74d3">&#9670;&#160;</a></span>NVMCMD_READ</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define EEPROM_START_ADDRESS&#160;&#160;&#160;(0x380000U)</td>
+          <td class="memname">#define NVMCMD_READ&#160;&#160;&#160;0x00</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Contains the starting address of EEPROM. </p>
 
 </div>
 </div>
-<a id="a4cc14e2c99ae7f8e5a8e371d03c8532c" name="a4cc14e2c99ae7f8e5a8e371d03c8532c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4cc14e2c99ae7f8e5a8e371d03c8532c">&#9670;&#160;</a></span>FLASH_PAGE_SIZE <span class="overload">[1/2]</span></h2>
+<a id="a9f7e1737dd2d1e68a2b42f3c31c220c4" name="a9f7e1737dd2d1e68a2b42f3c31c220c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f7e1737dd2d1e68a2b42f3c31c220c4">&#9670;&#160;</a></span>NVMCMD_READ_POSTINC</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define FLASH_PAGE_SIZE&#160;&#160;&#160;_FLASH_ERASE_SIZE</td>
+          <td class="memname">#define NVMCMD_READ_POSTINC&#160;&#160;&#160;0x01</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Contains the size of a Flash page in bytes. </p>
 
 </div>
 </div>
-<a id="a4cc14e2c99ae7f8e5a8e371d03c8532c" name="a4cc14e2c99ae7f8e5a8e371d03c8532c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4cc14e2c99ae7f8e5a8e371d03c8532c">&#9670;&#160;</a></span>FLASH_PAGE_SIZE <span class="overload">[2/2]</span></h2>
+<a id="ac21881f9bf0f6c7f52e952e5bf206050" name="ac21881f9bf0f6c7f52e952e5bf206050"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac21881f9bf0f6c7f52e952e5bf206050">&#9670;&#160;</a></span>NVMCMD_READPAGE</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define FLASH_PAGE_SIZE&#160;&#160;&#160;(256U)</td>
+          <td class="memname">#define NVMCMD_READPAGE&#160;&#160;&#160;0x02</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Contains the size of a Flash page in bytes. </p>
+
+</div>
+</div>
+<a id="a6842bd21662aff3dad9c6f2243eca598" name="a6842bd21662aff3dad9c6f2243eca598"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6842bd21662aff3dad9c6f2243eca598">&#9670;&#160;</a></span>NVMCMD_WRITE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NVMCMD_WRITE&#160;&#160;&#160;0x03</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a17a0ea290c8e88670a2947a9c8ddeda7" name="a17a0ea290c8e88670a2947a9c8ddeda7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17a0ea290c8e88670a2947a9c8ddeda7">&#9670;&#160;</a></span>NVMCMD_WRITE_POSTINC</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NVMCMD_WRITE_POSTINC&#160;&#160;&#160;0x04</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a563ac478b3b1ecd286e7f1236c8c7b15" name="a563ac478b3b1ecd286e7f1236c8c7b15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a563ac478b3b1ecd286e7f1236c8c7b15">&#9670;&#160;</a></span>NVMCMD_WRITEPAGE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NVMCMD_WRITEPAGE&#160;&#160;&#160;0x05</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -269,26 +292,11 @@ Major rewrite Ian Hogg <br  />
           <td class="memname">#define OFFSET</td>
           <td>(</td>
           <td class="paramtype"></td>          <td class="paramname"><span class="paramname">A</span></td><td>)</td>
-          <td>&#160;&#160;&#160;(A&amp;(<a class="el" href="#a4cc14e2c99ae7f8e5a8e371d03c8532c">FLASH_PAGE_SIZE</a>-1))</td>
+          <td>&#160;&#160;&#160;(A&amp;(FLASH_PAGE_SIZE-1))</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Provides the offset into a Flash Block given an address. </p>
-
-</div>
-</div>
-<a id="a417273bfdc3786b851ab3c7b4aa09f15" name="a417273bfdc3786b851ab3c7b4aa09f15"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a417273bfdc3786b851ab3c7b4aa09f15">&#9670;&#160;</a></span>PROGMEM_SIZE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PROGMEM_SIZE&#160;&#160;&#160;(0x020000U)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Contains the total size of Flash in bytes. </p>
 
 </div>
 </div>
@@ -300,9 +308,9 @@ Major rewrite Ian Hogg <br  />
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="nvm_8h.html#adc00a74d8315a1dbf3f4e970dee14eea">eeprom_data_t</a> EEPROM_Read </td>
+          <td class="memname">eeprom_data_t EEPROM_Read </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="nvm_8h.html#a7a61772455acf72b30881bb0c1807d8b">eeprom_address_t</a></td>          <td class="paramname"><span class="paramname"><em>index</em></span></td><td>)</td>
+          <td class="paramtype">eeprom_address_t</td>          <td class="paramname"><span class="paramname"><em>index</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -327,16 +335,45 @@ Major rewrite Ian Hogg <br  />
         <tr>
           <td class="memname">uint8_t EEPROM_Write </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="nvm_8h.html#a7a61772455acf72b30881bb0c1807d8b">eeprom_address_t</a></td>          <td class="paramname"><span class="paramname"><em>index</em>, </span></td>
+          <td class="paramtype">eeprom_address_t</td>          <td class="paramname"><span class="paramname"><em>index</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="nvm_8h.html#adc00a74d8315a1dbf3f4e970dee14eea">eeprom_data_t</a></td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
+          <td class="paramtype">eeprom_data_t</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Write a byte to EEPROM </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>the address </td></tr>
+    <tr><td class="paramname">value</td><td>the value to be written </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 for success or error otherwise </dd></dl>
+
+</div>
+</div>
+<a id="aad706a6efd747d4b880e464968e1cce6" name="aad706a6efd747d4b880e464968e1cce6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad706a6efd747d4b880e464968e1cce6">&#9670;&#160;</a></span>EEPROM_WriteNoVerify()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t EEPROM_WriteNoVerify </td>
+          <td>(</td>
+          <td class="paramtype">eeprom_address_t</td>          <td class="paramname"><span class="paramname"><em>index</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">eeprom_data_t</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Write a byte to EEPROM without verification </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">index</td><td>the address </td></tr>
     <tr><td class="paramname">value</td><td>the value to be written </td></tr>
@@ -374,12 +411,12 @@ Major rewrite Ian Hogg <br  />
         <tr>
           <td class="memname">uint8_t FLASH_Write </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="nvm_8h.html#a7a9b2de58e1a7feb8e66319b4ff4898b">flash_address_t</a></td>          <td class="paramname"><span class="paramname"><em>index</em>, </span></td>
+          <td class="paramtype">flash_address_t</td>          <td class="paramname"><span class="paramname"><em>index</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="nvm_8h.html#a55e42207a64de404bca02864514e5f6d">flash_data_t</a></td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
+          <td class="paramtype">flash_data_t</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -512,14 +549,53 @@ Major rewrite Ian Hogg <br  />
 
 </div>
 </div>
-</div><!-- contents -->
-</div><!-- doc-content -->
-<!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="nvm_8c.html">nvm.c</a></li>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
-  </ul>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="aada9536de6acc6e1c85bf6c0e1fdf423" name="aada9536de6acc6e1c85bf6c0e1fdf423"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aada9536de6acc6e1c85bf6c0e1fdf423">&#9670;&#160;</a></span>asByte</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t asByte</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
 </div>
+</div>
+<a id="ac82558731733c0d9bc0fc95a8da77568" name="ac82558731733c0d9bc0fc95a8da77568"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac82558731733c0d9bc0fc95a8da77568">&#9670;&#160;</a></span>eraseNeeded</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t eraseNeeded</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad126b8bcd38e8887ba014ea73ab70cd2" name="ad126b8bcd38e8887ba014ea73ab70cd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad126b8bcd38e8887ba014ea73ab70cd2">&#9670;&#160;</a></span>writeNeeded</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t writeNeeded</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0
+</small></address>
 </body>
 </html>

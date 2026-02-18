@@ -11,15 +11,14 @@ var searchData=
   ['led_5fon_8',['LED_ON',['../status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eadd01b80eb93658fb4cf7eb9aceb89a1d',1,'statusLeds.h']]],
   ['led_5fsingle_5fflicker_5foff_9',['LED_SINGLE_FLICKER_OFF',['../status_leds_8h.html#a406de9d429029db9e502b1c78c73d46ea8bb1d7e0e328880ccd4ec781b0ccab5c',1,'statusLeds.h']]],
   ['led_5fsingle_5fflicker_5fon_10',['LED_SINGLE_FLICKER_ON',['../status_leds_8h.html#a406de9d429029db9e502b1c78c73d46eadbcfa1eed62ae2570a6fbeacb301b07c',1,'statusLeds.h']]],
-  ['leds_5fpoll_11',['leds_poll',['../status_leds_8h.html#a1356190e73bdabc63810e671813ebea6',1,'leds_poll(void):&#160;statusLeds1.c'],['../status_leds2_8c.html#a1356190e73bdabc63810e671813ebea6',1,'leds_poll(void):&#160;statusLeds2.c']]],
-  ['leds_5fpowerup_12',['leds_powerUp',['../status_leds_8h.html#a59fcfd22c1ffa1a62242b1854ddbc685',1,'leds_powerUp(void):&#160;statusLeds1.c'],['../status_leds2_8c.html#a59fcfd22c1ffa1a62242b1854ddbc685',1,'leds_powerUp(void):&#160;statusLeds2.c']]],
-  ['ledstate_13',['ledState',['../status_leds2_8c.html#a64d0d0167cd465c9676e08e8275b9ad5',1,'statusLeds2.c']]],
+  ['leds_5fpoll_11',['leds_poll',['../status_leds_8h.html#a1356190e73bdabc63810e671813ebea6',1,'leds_poll(void):&#160;statusLeds1.c'],['../status_leds1_8c.html#a1356190e73bdabc63810e671813ebea6',1,'leds_poll(void):&#160;statusLeds1.c'],['../status_leds2_8c.html#a1356190e73bdabc63810e671813ebea6',1,'leds_poll(void):&#160;statusLeds2.c']]],
+  ['leds_5fpowerup_12',['leds_powerUp',['../status_leds_8h.html#a59fcfd22c1ffa1a62242b1854ddbc685',1,'leds_powerUp(void):&#160;statusLeds1.c'],['../status_leds1_8c.html#a59fcfd22c1ffa1a62242b1854ddbc685',1,'leds_powerUp(void):&#160;statusLeds1.c'],['../status_leds2_8c.html#a59fcfd22c1ffa1a62242b1854ddbc685',1,'leds_powerUp(void):&#160;statusLeds2.c']]],
+  ['ledstate_13',['ledState',['../status_leds1_8c.html#a49136eae940370cc264fa0a8628a9b08',1,'ledState:&#160;statusLeds1.c'],['../status_leds2_8c.html#a64d0d0167cd465c9676e08e8275b9ad5',1,'ledState:&#160;statusLeds2.c']]],
   ['ledstate_14',['LedState',['../status_leds_8h.html#a406de9d429029db9e502b1c78c73d46e',1,'statusLeds.h']]],
   ['len_15',['len',['../struct_message.html#a5723e60ffd628510c699eddbce90be23',1,'Message']]],
-  ['library_16',['The structure of the library',['../index.html#autotoc_md24',1,'']]],
+  ['library_16',['The structure of the library',['../index.html#autotoc_md33',1,'']]],
   ['lo_17',['lo',['../union_word.html#a9d0956f4e4e86bda245a8a68c0086d9b',1,'Word']]],
   ['loadflashblock_18',['loadFlashBlock',['../nvm_8c.html#ad1649c85b55bfaa99f3994be0c632b48',1,'nvm.c']]],
   ['loadnvcache_19',['loadNvCache',['../nv_8c.html#a73848e01f235ea24851be0145521f3e1',1,'loadNvCache(void):&#160;nv.c'],['../nv_8h.html#a73848e01f235ea24851be0145521f3e1',1,'loadNvCache(void):&#160;nv.h']]],
-  ['loop_20',['loop',['../vlcb_8c.html#a0b33edabd7f1c4e4a0bf32c67269be2f',1,'vlcb.c']]],
-  ['lowisr_21',['lowIsr',['../struct_service.html#a26e02f43ae5891ef33d126221e63d1c8',1,'Service']]]
+  ['loop_20',['loop',['../vlcb_8c.html#a0b33edabd7f1c4e4a0bf32c67269be2f',1,'vlcb.c']]]
 ];

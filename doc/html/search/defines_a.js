@@ -10,6 +10,15 @@ var searchData=
   ['num_5fnv_5fdiagnostics_7',['NUM_NV_DIAGNOSTICS',['../nv_8h.html#ad1f7641b557aac1f7af325367337c785',1,'nv.h']]],
   ['num_5fproducer_5fdiagnostics_8',['NUM_PRODUCER_DIAGNOSTICS',['../event__producer_8h.html#a3b1688acb88bcb4c5e901407b787fd7a',1,'event_producer.h']]],
   ['num_5fteach_5fdiagnostics_9',['NUM_TEACH_DIAGNOSTICS',['../event__teach_8h.html#ab0f97d32db4722878271eec18722c68d',1,'event_teach.h']]],
-  ['nv_5fdiagnostics_5fnum_5faccess_10',['NV_DIAGNOSTICS_NUM_ACCESS',['../nv_8h.html#a9ba127a005e57ca381fa2efc1ef27c93',1,'nv.h']]],
-  ['nv_5fdiagnostics_5fnum_5ffail_11',['NV_DIAGNOSTICS_NUM_FAIL',['../nv_8h.html#a0caee9ec25e8b8405f7fa2f7fff44ec7',1,'nv.h']]]
+  ['nv_5fdiag_5fcount_10',['NV_DIAG_COUNT',['../nv_8h.html#a2756d67fad396cc64bb3e7b9cca20477',1,'nv.h']]],
+  ['nv_5fdiagnostics_5fnum_5faccess_11',['NV_DIAGNOSTICS_NUM_ACCESS',['../nv_8h.html#a9ba127a005e57ca381fa2efc1ef27c93',1,'nv.h']]],
+  ['nv_5fdiagnostics_5fnum_5ffail_12',['NV_DIAGNOSTICS_NUM_FAIL',['../nv_8h.html#a0caee9ec25e8b8405f7fa2f7fff44ec7',1,'nv.h']]],
+  ['nvmcmd_5ferasepage_13',['NVMCMD_ERASEPAGE',['../nvm_8c.html#a37b6cf1b75e0bcb6d3baae7b04525909',1,'nvm.c']]],
+  ['nvmcmd_5fnop_14',['NVMCMD_NOP',['../nvm_8c.html#ad29fab7c9593aeccca62b1f5af919c83',1,'nvm.c']]],
+  ['nvmcmd_5fread_15',['NVMCMD_READ',['../nvm_8c.html#a5192c5aa585bcfcb8fca69c105ab74d3',1,'nvm.c']]],
+  ['nvmcmd_5fread_5fpostinc_16',['NVMCMD_READ_POSTINC',['../nvm_8c.html#a9f7e1737dd2d1e68a2b42f3c31c220c4',1,'nvm.c']]],
+  ['nvmcmd_5freadpage_17',['NVMCMD_READPAGE',['../nvm_8c.html#ac21881f9bf0f6c7f52e952e5bf206050',1,'nvm.c']]],
+  ['nvmcmd_5fwrite_18',['NVMCMD_WRITE',['../nvm_8c.html#a6842bd21662aff3dad9c6f2243eca598',1,'nvm.c']]],
+  ['nvmcmd_5fwrite_5fpostinc_19',['NVMCMD_WRITE_POSTINC',['../nvm_8c.html#a17a0ea290c8e88670a2947a9c8ddeda7',1,'nvm.c']]],
+  ['nvmcmd_5fwritepage_20',['NVMCMD_WRITEPAGE',['../nvm_8c.html#a563ac478b3b1ecd286e7f1236c8c7b15',1,'nvm.c']]]
 ];

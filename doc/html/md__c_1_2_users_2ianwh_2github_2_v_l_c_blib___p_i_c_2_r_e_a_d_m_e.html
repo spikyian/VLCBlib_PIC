@@ -5,15 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCBlib_PIC: VLCBlib_PIC</title>
+<title>My Project: VLCBlib_PIC</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <script type="text/javascript" src="clipboard.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
@@ -26,11 +22,10 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="VLCB.png"/></td>
   <td id="projectalign">
-   <div id="projectname">VLCBlib_PIC
+   <div id="projectname">My Project
    </div>
-   <div id="projectbrief">VLCB library for module developemnt using PIC processors</div>
+   <div id="projectbrief">VLCB library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -54,23 +49,6 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -92,15 +70,16 @@ $(function(){initNavTree('md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_
 </div>
 </div>
 
+</div><!-- top -->
 <div><div class="header">
   <div class="headertitle"><div class="title">VLCBlib_PIC</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md20"></a>C library for VLCB for use on PIC devices. Uses XC8. Has CAN transport functionality using the PIC18 ECAN peripheral.</p>
-<h1><a class="anchor" id="autotoc_md21"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md24"></a>C library for VLCB for use on PIC devices. Uses XC8. Has CAN transport functionality using the PIC18 ECAN peripheral.</p>
+<h1><a class="anchor" id="autotoc_md25"></a>
 The module application</h1>
 <p>An VLCB module using this library needs to consider the following application responsibilities:</p>
-<h2><a class="anchor" id="autotoc_md22"></a>
+<h2><a class="anchor" id="autotoc_md26"></a>
 Inputs</h2>
 <ul>
 <li>Monitoring input pins,</li>
@@ -108,7 +87,7 @@ Inputs</h2>
 <li>Save input state according to type of input in RAM</li>
 <li>Send events to the transport layer according to behaviour requirements</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md23"></a>
+<h2><a class="anchor" id="autotoc_md27"></a>
 Outputs</h2>
 <ul>
 <li>Receive messages from the transport layer or receive actions from the action queue</li>
@@ -116,18 +95,18 @@ Outputs</h2>
 <li>Save state into non volatile memory e.g. EEPROM</li>
 <li>Make changes to the output pin state</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md24"></a>
+<h2><a class="anchor" id="autotoc_md28"></a>
 On power on</h2>
 <ul>
 <li>Restore output state using the information stored in non volatile memory</li>
 <li>Initialise input state based upon current input pin state</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md25"></a>
+<h2><a class="anchor" id="autotoc_md29"></a>
 Regular poll</h2>
 <ul>
 <li>Update and perform time based behaviour</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md26"></a>
+<h1><a class="anchor" id="autotoc_md30"></a>
 A module designer needs to:</h1>
 <ol type="1">
 <li>Determine which services the module will use.</li>
@@ -156,7 +135,7 @@ A module designer needs to:</h1>
 </ul>
 </li>
 <li>If the module also supports consumed events then:<ul>
-<li>If Actions concept is to be used then the size of the <a class="el" href="struct_action.html">Action</a> queue should be defined.</li>
+<li>If Actions concept is to be used then the size of the Action queue should be defined.</li>
 </ul>
 </li>
 <li>All modules also need:<ul>
@@ -169,7 +148,7 @@ A module designer needs to:</h1>
 </ul>
 </li>
 </ol>
-<h1><a class="anchor" id="autotoc_md27"></a>
+<h1><a class="anchor" id="autotoc_md31"></a>
 Other information</h1>
 <ul>
 <li>The module mode is available using the uint8_t mode global variable.</li>
@@ -177,17 +156,14 @@ Other information</h1>
 <li>A module may define a function to process VLCB messages before being handled by the library.</li>
 <li>A module may also define a function to process VLCB messages if not handled by the library.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md28"></a>
+<h1><a class="anchor" id="autotoc_md32"></a>
 Full documentation</h1>
 <p>The full user documentation (look in the *.h files) and developer documentation (look in the *.c files) can be viewed by opening doc/html/index.html in your browser. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0
+</small></address>
 </body>
 </html>

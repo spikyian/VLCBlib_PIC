@@ -5,15 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>VLCB library: VLCB</title>
+<title>My Project: VLCB</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <script type="text/javascript" src="clipboard.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
@@ -27,9 +23,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
+   <div id="projectname">My Project
    </div>
-   <div id="projectbrief">VLCB C library for PIC</div>
+   <div id="projectbrief">VLCB library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -54,22 +50,6 @@ $(function() {
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('index.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -100,7 +80,7 @@ $(function(){initNavTree('index.html',''); initResizable(); });
 <dl class="section date"><dt>Date</dt><dd>Dec 2022   </dd></dl>
 <hr  />
 <p> C library for VLCB. Written for XC8.</p>
-<h1><a class="anchor" id="autotoc_md24"></a>
+<h1><a class="anchor" id="autotoc_md33"></a>
 The structure of the library</h1>
 <table style="border-collapse: collapse;">
 <tr>
@@ -117,13 +97,13 @@ The structure of the library</h1>
 <td colspan="2" style="text-align:center;">Module I/O </td><td>&#160; </td><td>&#160; </td><td>&#160; </td><td>&#160; </td><td>&#160; </td><td colspan="3" style="text-align:center;">BUS  </td></tr>
 </table>
 <p>All services must support the <a class="el" href="struct_service.html">Service</a> interface. <a class="el" href="struct_transport.html">Transport</a> services must also support the <a class="el" href="struct_transport.html">Transport</a> interface. The APP makes use of VLCB functionality and also provides functionality to VLCB.</p>
-<h1><a class="anchor" id="autotoc_md25"></a>
+<h1><a class="anchor" id="autotoc_md34"></a>
 Application</h1>
 <p>The application provides the module specific functionality. VLCB provides much of the standard functionality of VLCB modules. Different VLCB capabilities are enabled through the use of VLCB services. For example CAN bus support can be enabled by including the CAN service.</p>
-<h2><a class="anchor" id="autotoc_md26"></a>
+<h2><a class="anchor" id="autotoc_md35"></a>
 Application functionality</h2>
 <p>An VLCB module using this library needs to consider the following application responsibilities:</p>
-<h3><a class="anchor" id="autotoc_md27"></a>
+<h3><a class="anchor" id="autotoc_md36"></a>
 Inputs</h3>
 <ul>
 <li>Monitoring input pins,</li>
@@ -131,7 +111,7 @@ Inputs</h3>
 <li>Save input state according to type of input in RAM</li>
 <li>Send events to the transport layer according to behaviour requirements</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md28"></a>
+<h3><a class="anchor" id="autotoc_md37"></a>
 Outputs</h3>
 <ul>
 <li>Receive messages from the transport layer or receive actions from the action queue</li>
@@ -139,18 +119,18 @@ Outputs</h3>
 <li>Save state into non volatile memory e.g. EEPROM</li>
 <li>Make changes to the output pin state</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md29"></a>
+<h3><a class="anchor" id="autotoc_md38"></a>
 On power on</h3>
 <ul>
 <li>Restore output state using the information stored in non volatile memory</li>
 <li>Initialise input state based upon current input pin state</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md30"></a>
+<h3><a class="anchor" id="autotoc_md39"></a>
 Regular poll</h3>
 <ul>
 <li>Update and perform time based behaviour</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md31"></a>
+<h2><a class="anchor" id="autotoc_md40"></a>
 Module design</h2>
 <p>The designer of a module needs to:</p><ol type="1">
 <li>Determine which services the module will use.</li>
@@ -192,17 +172,17 @@ Module design</h2>
 </ul>
 </li>
 </ol>
-<h2><a class="anchor" id="autotoc_md32"></a>
+<h2><a class="anchor" id="autotoc_md41"></a>
 Other information</h2>
 <ul>
 <li>The module mode is available using the uint8_t mode global variable.</li>
 <li>The module submodes are available using the uint8_t mode_flags global variable.</li>
 <li>The module's node number is available as <a class="el" href="union_word.html">Word</a> nn global variable.</li>
-<li>A module should include either statusLeds1.c or <a class="el" href="status_leds2_8c.html" title="LED handling for 2 LEDs.">statusLeds2.c</a> depending whether it has one or two LEDs.</li>
+<li>A module should include either <a class="el" href="status_leds1_8c.html">statusLeds1.c</a> or <a class="el" href="status_leds2_8c.html" title="LED handling for 2 LEDs.">statusLeds2.c</a> depending whether it has one or two LEDs.</li>
 <li>A module may define a function to process VLCB messages before being handled by the library.</li>
 <li>A module may also define a function to process VLCB messages if not handled by the library.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md33"></a>
+<h2><a class="anchor" id="autotoc_md42"></a>
 Application source</h2>
 <p>The application source file must provide:</p><ol type="1">
 <li>An array of <a class="el" href="struct_service.html">Service</a> definitions const <a class="el" href="struct_service.html">Service</a> * const services[] which must be initialised with pointers to each service definition for the services required by the application. For example <div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_struct" href="struct_service.html">Service</a> * <span class="keyword">const</span> <a class="code hl_variable" href="vlcb_8h.html#a8d4c9b659f98c72e727bca232c257bfe">services</a>[] = {</div>
@@ -215,15 +195,15 @@ Application source</h2>
 <div class="line">    &amp;<a class="code hl_variable" href="event__producer_8h.html#a6d039ebee6188cb69fc81dedf126c334">eventProducerService</a>,</div>
 <div class="line">    &amp;<a class="code hl_variable" href="event__acknowledge_8c.html#a8dace442c6fec52297eed2d68ed100d6">eventAckService</a></div>
 <div class="line">};</div>
-<div class="ttc" id="aboot_8c_html_a6a89fc238ad82ace7c465216a3e5575d"><div class="ttname"><a href="boot_8c.html#a6a89fc238ad82ace7c465216a3e5575d">bootService</a></div><div class="ttdeci">const Service bootService</div><div class="ttdef"><b>Definition</b> boot.c:74</div></div>
-<div class="ttc" id="acan_8h_html_a2710ddf8079472011d4b89bcdacd52a4"><div class="ttname"><a href="can_8h.html#a2710ddf8079472011d4b89bcdacd52a4">canService</a></div><div class="ttdeci">const Service canService</div><div class="ttdef"><b>Definition</b> can18_can_2.c:119</div></div>
-<div class="ttc" id="aevent__acknowledge_8c_html_a8dace442c6fec52297eed2d68ed100d6"><div class="ttname"><a href="event__acknowledge_8c.html#a8dace442c6fec52297eed2d68ed100d6">eventAckService</a></div><div class="ttdeci">const Service eventAckService</div><div class="ttdef"><b>Definition</b> event_acknowledge.c:71</div></div>
+<div class="ttc" id="aboot_8c_html_a6a89fc238ad82ace7c465216a3e5575d"><div class="ttname"><a href="boot_8c.html#a6a89fc238ad82ace7c465216a3e5575d">bootService</a></div><div class="ttdeci">const Service bootService</div><div class="ttdef"><b>Definition</b> boot.c:76</div></div>
+<div class="ttc" id="acan_8h_html_a2710ddf8079472011d4b89bcdacd52a4"><div class="ttname"><a href="can_8h.html#a2710ddf8079472011d4b89bcdacd52a4">canService</a></div><div class="ttdeci">const Service canService</div></div>
+<div class="ttc" id="aevent__acknowledge_8c_html_a8dace442c6fec52297eed2d68ed100d6"><div class="ttname"><a href="event__acknowledge_8c.html#a8dace442c6fec52297eed2d68ed100d6">eventAckService</a></div><div class="ttdeci">const Service eventAckService</div><div class="ttdef"><b>Definition</b> event_acknowledge.c:73</div></div>
 <div class="ttc" id="aevent__consumer__action_8c_html_a00bee6233d82533e4e0bc10911787455"><div class="ttname"><a href="event__consumer__action_8c.html#a00bee6233d82533e4e0bc10911787455">eventConsumerService</a></div><div class="ttdeci">const Service eventConsumerService</div><div class="ttdef"><b>Definition</b> event_consumer_action.c:69</div></div>
 <div class="ttc" id="aevent__producer_8h_html_a6d039ebee6188cb69fc81dedf126c334"><div class="ttname"><a href="event__producer_8h.html#a6d039ebee6188cb69fc81dedf126c334">eventProducerService</a></div><div class="ttdeci">const Service eventProducerService</div><div class="ttdef"><b>Definition</b> event_producer_happening.c:84</div></div>
-<div class="ttc" id="aevent__teach_8h_html_a25dbd341349525d3b0917340575378b7"><div class="ttname"><a href="event__teach_8h.html#a25dbd341349525d3b0917340575378b7">eventTeachService</a></div><div class="ttdeci">const Service eventTeachService</div><div class="ttdef"><b>Definition</b> event_teach_large.c:315</div></div>
-<div class="ttc" id="amns_8c_html_a05160624e3e355535f7bc7dae4fad5a4"><div class="ttname"><a href="mns_8c.html#a05160624e3e355535f7bc7dae4fad5a4">mnsService</a></div><div class="ttdeci">const Service mnsService</div><div class="ttdef"><b>Definition</b> mns.c:151</div></div>
+<div class="ttc" id="aevent__teach_8h_html_a25dbd341349525d3b0917340575378b7"><div class="ttname"><a href="event__teach_8h.html#a25dbd341349525d3b0917340575378b7">eventTeachService</a></div><div class="ttdeci">const Service eventTeachService</div><div class="ttdef"><b>Definition</b> event_teach_indexed.c:196</div></div>
+<div class="ttc" id="amns_8c_html_a05160624e3e355535f7bc7dae4fad5a4"><div class="ttname"><a href="mns_8c.html#a05160624e3e355535f7bc7dae4fad5a4">mnsService</a></div><div class="ttdeci">const Service mnsService</div><div class="ttdef"><b>Definition</b> mns.c:150</div></div>
 <div class="ttc" id="anv_8c_html_a54cb92ae67b344b1663b74af93adf6f0"><div class="ttname"><a href="nv_8c.html#a54cb92ae67b344b1663b74af93adf6f0">nvService</a></div><div class="ttdeci">const Service nvService</div><div class="ttdef"><b>Definition</b> nv.c:82</div></div>
-<div class="ttc" id="astruct_service_html"><div class="ttname"><a href="struct_service.html">Service</a></div><div class="ttdef"><b>Definition</b> vlcb.h:307</div></div>
+<div class="ttc" id="astruct_service_html"><div class="ttname"><a href="struct_service.html">Service</a></div><div class="ttdef"><b>Definition</b> vlcb.h:299</div></div>
 <div class="ttc" id="avlcb_8h_html_a8d4c9b659f98c72e727bca232c257bfe"><div class="ttname"><a href="vlcb_8h.html#a8d4c9b659f98c72e727bca232c257bfe">services</a></div><div class="ttdeci">const Service *const services[]</div></div>
 </div><!-- fragment --></li>
 <li>A void init(void) function which sets the transport status pointer e.g. transport = &amp;canTransport; This function must also do any additional, application specific initialisation.</li>
@@ -242,19 +222,16 @@ Application source</h2>
 </ul>
 </li>
 </ol>
-<h2><a class="anchor" id="autotoc_md34"></a>
+<h2><a class="anchor" id="autotoc_md43"></a>
 Module.h</h2>
 <p>The developer of an application must provide a module.h which has module/application specific definitions which influence the behaviour of VLCB.</p>
 <p>Each service documents any requirements it may add for the module.h file. </p>
 </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"/>
 </div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0
+</small></address>
 </body>
 </html>

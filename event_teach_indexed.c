@@ -62,12 +62,27 @@
  * Implementation of the VLCB Indexed Event Teach Service.
  * @details
  * Indexed Event teaching service
- * The service definition object is called indexedTeachService.
+ * The service definition object is called eventTeachService to ensure that only
+ * one version of eventTeach can be used in a module.
  *
- * The events are stored as a hash table in NVM (flash is faster to read than EEPROM)
+ * The events are stored as a table in NVM (flash is faster to read than EEPROM)
  * There can be up to 255 events. 
  *
  * This generic code needs no knowledge of specific EV usage.
+ * 
+ * The following defines may be required in module.h
+ * 
+ * #define INDEX_EVENT  // This is mandatory and must be defined when using the indexed event service.
+ * 
+ * #define NUM_EVENTS   // Mandatory and is the number of rows in the event table. 
+ * 
+ * #define EVperEVT     // Mandatory and is the number of EVs per event.
+ * 
+ * #define EVENT_HASH_TABLE // Optional to enable faster event lookup using a hash table.
+ * 
+ * #define EVENT_HASH_LENGTH  // Required if EVENT_HASH_TABLE is defined and defines the length of the hash table.
+ * 
+ * #define EVENT_CHAIN_LENGTH // Required if EVENT_HASH_TABLE is defined and defines the length of the hash chain.
  *
  * @warning
  * BEWARE must set NUM_EVENTS to a maximum of 255!
@@ -123,6 +138,19 @@ static void doEvuln(uint16_t nodeNumber, uint16_t eventNumber);
 static void doReqev(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum);
 static void doEvlrni(uint8_t enNum, uint8_t nnh, uint8_t nnl, uint8_t enh, uint8_t enl,uint8_t evNum, uint8_t evVal);
 
+/**
+ * Application routine called when an event is taught to the module. This would normally
+ * call addIndexedEvent() but allows the application to perform additional checks and validation.
+ * @param enNum event index
+ * @param nnh event node number high
+ * @param nnl event node number low
+ * @param enh event number high
+ * @param enl event node number low
+ * @param evNum event variable index
+ * @param evVal event variable value
+ * @param forceOwnNN boolean to ensure event nn is updated if the module's node number is changed.
+ * @return error number
+ */
 extern uint8_t APP_addIndexedEvent(uint8_t enNum, uint8_t nnh, uint8_t nnl, uint8_t enh, uint8_t enl, uint8_t evNum, uint8_t evVal, Boolean forceOwnNN);
 
 #ifdef VLCB_DIAG
@@ -160,7 +188,7 @@ static uint8_t timedResponseOpcode; // used to differentiate a timed response fo
 #define EVENT_TABLE_WIDTH   PARAM_NUM_EV_EVENT
 
 /**
- * The service descriptor for the event teach service. The application must include this
+ * The service descriptor for the indexed event teach service. The application must include this
  * descriptor within the const Service * const services[] array and include the
  * necessary settings within module.h in order to make use of the event teach
  * service.
