@@ -41,7 +41,7 @@
 #define _STATUSLEDS_H_
 #include "vlcb.h"
 #include "ticktime.h"
-#include "module.h"
+
 #include "statusDisplay.h"
 
 /**

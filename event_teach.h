@@ -96,6 +96,7 @@ extern uint16_t getNN(uint8_t tableIndex);
 extern uint16_t getEN(uint8_t tableIndex);
 extern uint8_t findEvent(uint16_t nodeNumber, uint16_t eventNumber);
 extern uint8_t addEvent(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8_t evVal, Boolean forceOwnNN);
+extern uint8_t addIndexedEvent(uint8_t enNum, uint8_t nnh, uint8_t nnl, uint8_t enh, uint8_t enl, uint8_t evNum, uint8_t evVal, Boolean forceOwnNN);
 
 #ifdef EVENT_HASH_TABLE
 extern void rebuildHashtable(void);

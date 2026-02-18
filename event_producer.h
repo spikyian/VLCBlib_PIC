@@ -93,6 +93,7 @@ extern uint8_t happening2Event[2+MAX_HAPPENING-HAPPENING_BASE];
 
 
 extern Boolean sendProducedEvent(Happening h, EventState state);
+extern void sendSimpleProducedEvent(uint8_t tableIndex, EventState state);
 extern void deleteHappeningRange(Happening happening, uint8_t number);
 extern void incrementProducerCounter(void);
 

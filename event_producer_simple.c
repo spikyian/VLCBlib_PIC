@@ -187,3 +187,25 @@ static uint8_t producerEsdData(uint8_t index) {
 }
 #endif
 
+void sendSimpleProducedEvent(uint8_t tableIndex, EventState state) {
+    uint16_t enn = getNN(tableIndex);
+    uint16_t een = getEN(tableIndex);
+    if (enn == 0) {
+        // short
+        if (state == EVENT_ON) {
+            // Short on
+            sendMessage4(OPC_ASON, nn.bytes.hi, nn.bytes.lo, een/256, een&0xFF);
+        } else {
+            // Short off
+            sendMessage4(OPC_ASOF, nn.bytes.hi, nn.bytes.lo, een/256, een&0xFF);
+        }
+    } else {
+        if (state == EVENT_ON) {
+            // Long on
+            sendMessage4(OPC_ACON, enn/256, enn&0xFF, een/256, een&0xFF);
+        } else {
+            // Long off
+            sendMessage4(OPC_ACOF, enn/256, enn&0xFF, een/256, een&0xFF);
+        }
+    }
+}

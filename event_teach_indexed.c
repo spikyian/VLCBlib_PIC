@@ -121,7 +121,9 @@ static void doNenrd(uint8_t index);
 static void doReval(uint8_t enNum, uint8_t evNum);
 static void doEvuln(uint16_t nodeNumber, uint16_t eventNumber);
 static void doReqev(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum);
-static void doEvlrn(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8_t evVal);
+static void doEvlrni(uint8_t enNum, uint8_t nnh, uint8_t nnl, uint8_t enh, uint8_t enl,uint8_t evNum, uint8_t evVal);
+
+extern uint8_t APP_addIndexedEvent(uint8_t enNum, uint8_t nnh, uint8_t nnl, uint8_t enh, uint8_t enl, uint8_t evNum, uint8_t evVal, Boolean forceOwnNN);
 
 #ifdef VLCB_DIAG
 static DiagnosticVal * teachGetDiagnostic(uint8_t code);
@@ -155,13 +157,15 @@ static uint8_t timedResponseOpcode; // used to differentiate a timed response fo
 // The flags
 #define EVENT_FLAG_DEFAULT      1
 
+#define EVENT_TABLE_WIDTH   PARAM_NUM_EV_EVENT
+
 /**
  * The service descriptor for the event teach service. The application must include this
  * descriptor within the const Service * const services[] array and include the
  * necessary settings within module.h in order to make use of the event teach
  * service.
  */
-const Service indexedTeachService = {
+const Service eventTeachService = {
     SERVICE_ID_INDEXED_TEACH, // id
     1,                  // version
     teachFactoryReset,  // factoryReset
@@ -219,6 +223,8 @@ static void teachPowerUp(void) {
  * @return PROCESSED if the message need no further processing
  */
 static Processed teachProcessMessage(Message* m) {
+    uint8_t idx;
+    
     switch(m->opc) {
         /* First mode changes. Another check if we are going into Learn or another node is going to Learn */
         case OPC_NNLRN:
@@ -277,7 +283,7 @@ static Processed teachProcessMessage(Message* m) {
             if (! (mode_flags & FLAG_MODE_LEARN)) {
                 sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_NOT_LRN);
 #ifdef VLCB_GRSP
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NNCLR, SERVICE_ID_OLD_TEACH, CMDERR_NOT_LRN);
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NNCLR, SERVICE_ID_INDEXED_TEACH, CMDERR_NOT_LRN);
 #endif
                 return PROCESSED;
             }
@@ -318,7 +324,7 @@ static Processed teachProcessMessage(Message* m) {
             if (teachCheckLen(m, 8, 1) == PROCESSED) return PROCESSED;
             if (! (mode_flags & FLAG_MODE_LEARN)) return PROCESSED;
             // do EVLRNI
-            doEvlrn((uint16_t)(m->bytes[0]<<8) | (m->bytes[1]), (uint16_t)(m->bytes[2]<<8) | (m->bytes[3]), m->bytes[5], m->bytes[6]);
+            doEvlrni(m->bytes[4] , m->bytes[0], m->bytes[1], m->bytes[2], m->bytes[3], m->bytes[5], m->bytes[6]);
             return PROCESSED;
         default:
             break;
@@ -341,14 +347,14 @@ static Processed teachCheckLen(Message * m, uint8_t needed, uint8_t learn) {
             if (mode_flags & FLAG_MODE_LEARN) {
                 // This module is in Learn mode so we should indicate an error
 #ifdef VLCB_GRSP
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, (uint8_t)(m->opc), SERVICE_ID_OLD_TEACH, CMDERR_INV_CMD);
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, (uint8_t)(m->opc), SERVICE_ID_INDEXED_TEACH, CMDERR_INV_CMD);
 #endif
             }
             return PROCESSED;
         }
         return NOT_PROCESSED;   // message length ok
     }
-    return checkLen(m, needed, SERVICE_ID_OLD_TEACH);
+    return checkLen(m, needed, SERVICE_ID_INDEXED_TEACH);
 }
 
 #ifdef VLCB_SERVICE
@@ -422,7 +428,7 @@ static void doNnevn(void) {
  * This sets things up so that timedResponse will do the right stuff.
  */
 static void doNerd(void) {
-    startTimedResponse(TIMED_RESPONSE_NERD, findServiceIndex(SERVICE_ID_OLD_TEACH), nerdCallback);
+    startTimedResponse(TIMED_RESPONSE_NERD, findServiceIndex(SERVICE_ID_INDEXED_TEACH), nerdCallback);
 }
 
 /**
@@ -463,7 +469,7 @@ static void doNenrd(uint8_t index) {
     if (tableIndex >= NUM_EVENTS) {
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_EN_IDX);
 #ifdef VLCB_GRSP
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NENRD, SERVICE_ID_OLD_TEACH, CMDERR_INV_EN_IDX);
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NENRD, SERVICE_ID_INDEXED_TEACH, CMDERR_INV_EN_IDX);
 #endif
         return;
     }
@@ -499,7 +505,7 @@ static void doNnclr(void) {
     clearAllEvents();
     sendMessage2(OPC_WRACK, nn.bytes.hi, nn.bytes.lo);
 #ifdef VLCB_GRSP
-    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NNCLR, SERVICE_ID_OLD_TEACH, GRSP_OK);
+    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NNCLR, SERVICE_ID_INDEXED_TEACH, GRSP_OK);
 #endif
 } //doNnclr
 
@@ -508,25 +514,28 @@ static void doNnclr(void) {
  * Teach or reteach an event associated with an action. 
 
  * @param enNum the event index
+ * @param nnh the node number high byte
+ * @param nnl the node number low byte
+ * @param enh the event number high byte
+ * @param enl the event number low byte
  * @param evNum the EV number
  * @param evVal the EV value
  */
-static void doEvlrn(uint8_t enNum, uint8_t evNum, uint8_t evVal) {
+static void doEvlrni(uint8_t enNum, uint8_t nnh, uint8_t nnl, uint8_t enh, uint8_t enl,uint8_t evNum, uint8_t evVal) {
 
-    evNum--;    // convert VLCB message numbering (starts at 1) to internal numbering)
-    if (evNum >= PARAM_NUM_EV_EVENT) {
+    if (evNum > PARAM_NUM_EV_EVENT) {
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_EV_IDX);
 #ifdef VLCB_GRSP
-        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVLRN, SERVICE_ID_OLD_TEACH, CMDERR_INV_EV_IDX);
+        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVLRN, SERVICE_ID_INDEXED_TEACH, CMDERR_INV_EV_IDX);
 #endif
         return;
     }
-    APP_addEvent(nodeNumber, eventNumber, evNum, evVal, FALSE);
+    errno = APP_addIndexedEvent(enNum, nnh, nnl, enh, enl, evNum, evVal, FALSE);
     if (errno) {
         // validation error
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, errno);
 #ifdef VLCB_GRSP
-        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVLRN, SERVICE_ID_OLD_TEACH, errno);
+        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVLRN, SERVICE_ID_INDEXED_TEACH, errno);
 #endif
         return;
     }
@@ -535,7 +544,7 @@ static void doEvlrn(uint8_t enNum, uint8_t evNum, uint8_t evVal) {
 #endif
     sendMessage2(OPC_WRACK, nn.bytes.hi, nn.bytes.lo);
 #ifdef VLCB_GRSP
-    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVLRN, SERVICE_ID_OLD_TEACH, GRSP_OK);
+    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVLRN, SERVICE_ID_INDEXED_TEACH, GRSP_OK);
 #endif
     return;
 }
@@ -566,7 +575,7 @@ static void doReval(uint8_t enNum, uint8_t evNum) {
             // send all of the EVs
             // Note this somewhat abuses the type parameter
             timedResponseOpcode = OPC_NEVAL;
-            startTimedResponse(tableIndex, findServiceIndex(SERVICE_ID_OLD_TEACH), reqevCallback);
+            startTimedResponse(tableIndex, findServiceIndex(SERVICE_ID_INDEXED_TEACH), reqevCallback);
         } 
     } else {
         evVal = getEv(tableIndex, evIndex);
@@ -576,7 +585,7 @@ static void doReval(uint8_t enNum, uint8_t evNum) {
         // a negative value is the error code
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(-evVal));
 #ifdef VLCB_GRSP
-        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REVAL, SERVICE_ID_OLD_TEACH, (uint8_t)(-evVal));
+        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REVAL, SERVICE_ID_INDEXED_TEACH, (uint8_t)(-evVal));
 #endif
         return;
     }
@@ -594,14 +603,14 @@ static void doEvuln(uint16_t nodeNumber, uint16_t eventNumber) {
     if (result) {
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, result);
 #ifdef VLCB_GRSP
-        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVULN, SERVICE_ID_OLD_TEACH, result);
+        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVULN, SERVICE_ID_INDEXED_TEACH, result);
 #endif
         return;
     }
     // Send a WRACK - difference from CBUS
     sendMessage2(OPC_WRACK, nn.bytes.hi, nn.bytes.lo);
 #ifdef VLCB_GRSP
-    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVULN, SERVICE_ID_OLD_TEACH, GRSP_OK);
+    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_EVULN, SERVICE_ID_INDEXED_TEACH, GRSP_OK);
 #endif
 }
 
@@ -618,14 +627,14 @@ static void doReqev(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum) {
     if (tableIndex == NO_INDEX) {
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INVALID_EVENT);
 #ifdef VLCB_GRSP
-        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_OLD_TEACH, CMDERR_INVALID_EVENT);
+        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_INDEXED_TEACH, CMDERR_INVALID_EVENT);
 #endif
         return;
     }
     if (evNum > PARAM_NUM_EV_EVENT) {
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_EV_IDX);
 #ifdef VLCB_GRSP
-        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_OLD_TEACH, CMDERR_INV_EV_IDX);
+        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_INDEXED_TEACH, CMDERR_INV_EV_IDX);
 #endif
         return;
     }
@@ -637,7 +646,7 @@ static void doReqev(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum) {
             // send all of the EVs
             // Note this somewhat abuses the type parameter
             timedResponseOpcode = OPC_EVANS;
-            startTimedResponse(tableIndex, findServiceIndex(SERVICE_ID_OLD_TEACH), reqevCallback);
+            startTimedResponse(tableIndex, findServiceIndex(SERVICE_ID_INDEXED_TEACH), reqevCallback);
             return;
         } 
     } else {
@@ -648,7 +657,7 @@ static void doReqev(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum) {
         // a negative value is the error code
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(-evVal));
 #ifdef VLCB_GRSP
-        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_OLD_TEACH, (uint8_t)(-evVal));
+        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_REQEV, SERVICE_ID_INDEXED_TEACH, (uint8_t)(-evVal));
 #endif
         return;
     }
@@ -741,53 +750,36 @@ static uint8_t removeTableEntry(uint8_t tableIndex) {
  * @param evNum the EV index (starts at 0 for the produced action)
  * @param evVal the EV value
  * @param forceOwnNN the value of the flag
- * @return event table index
+ * @return error
  */
-uint8_t addEvent(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8_t evVal, Boolean forceOwnNN) {
-    uint8_t tableIndex;
-    
-    // do we currently have an event
-    tableIndex = findEvent(nodeNumber, eventNumber);
-    if (tableIndex == NO_INDEX) {
-        errno = CMDERR_TOO_MANY_EVENTS;
-        // didn't find the event so find an empty slot and create one
-        for (tableIndex=0; tableIndex<NUM_EVENTS; tableIndex++) {
-            uint16_t en = getEN(tableIndex);
-            if (en == 0) {
-                uint8_t e;
-                // found a free slot, initialise it
-                writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_NNL, nodeNumber&0xFF);
-                writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_NNH, nodeNumber>>8);
-                writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_ENL, eventNumber&0xFF);
-                writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_ENH, eventNumber>>8);
-                if (forceOwnNN) {
-                    writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_FLAGS, EVENT_FLAG_DEFAULT);
-                } else {
-                    writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_FLAGS, 0);
-                }
-                for (e = 0; e < EVENT_TABLE_WIDTH; e++) {   // in this case EVENT_TABLE_WIDTH == EVperEvt
-                    writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_EVS+e, EV_FILL);
-                }
-                errno = 0;
-                break;
-            }
-        }
-        if (errno) {
-            return NO_INDEX;
+uint8_t addIndexedEvent(uint8_t tableIndex, uint8_t nnh, uint8_t nnl, uint8_t enh, uint8_t enl, uint8_t evNum, uint8_t evVal, Boolean forceOwnNN) {
+    uint8_t e;
+    errno = 0;
+    // do we currently have an event NN:EN?
+    if ((nnh != 0) || (nnl != 0) || (enh != 0) || (enl != 0)) {
+        writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_NNL, nnl);
+        writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_NNH, nnh);
+        writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_ENL, enl);
+        writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_ENH, enh);
+         if (forceOwnNN) {
+            writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_FLAGS, EVENT_FLAG_DEFAULT);
+        } else {
+            writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_FLAGS, 0);
         }
     }
- 
-    if (writeEv(tableIndex, evNum, evVal)) {
-        // failed to write
-        errno = CMDERR_INV_EV_IDX;
-        return NO_INDEX;
+    if (evNum > 0) {
+        evNum--;    // convert VLCB message numbering (starts at 1) to internal numbering)
+        if (writeEv(tableIndex, evNum, evVal)) {
+            // failed to write
+            return CMDERR_INV_EV_IDX;
+        }
     }
     // success
     flushFlashBlock();
 #ifdef EVENT_HASH_TABLE
     rebuildHashtable();
 #endif
-    return tableIndex;
+    return 0;
 }
 
 /**

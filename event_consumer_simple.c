@@ -131,8 +131,6 @@ static Processed consumerProcessMessage(Message *m) {
 #endif
     
     if (m->len < 5) return NOT_PROCESSED;
-    
-    enn = ((uint16_t)m->bytes[0])*256+m->bytes[1];
 
     switch (m->opc) {
         case OPC_ASON:
@@ -169,15 +167,36 @@ static Processed consumerProcessMessage(Message *m) {
             return NOT_PROCESSED;
     }
 
+#ifdef INDEX_EVENT
+    ret = NOT_PROCESSED;
+    for (tableIndex = 0; tableIndex < NUM_EVENTS; tableIndex++) {
+        if (isConsumedEvent(tableIndex)) {
+            if (getNN(tableIndex) == ((uint16_t)(m->bytes[0])*256+m->bytes[1])) {
+                if (getEN(tableIndex) == ((uint16_t)(m->bytes[2])*256+m->bytes[3])) {
+                    if (APP_processConsumedEvent(tableIndex, m) == PROCESSED) {
+                        ret = PROCESSED;
+                    }
+                }
+            }
+        }
+    }
+    if (ret == PROCESSED) {
+        if ((mode_flags & FLAG_MODE_EVENTACK) && (isConsumedEvent(tableIndex))) {
+            // sent the ack
+            sendMessage7(OPC_ENACK, nn.bytes.hi, nn.bytes.lo, (uint8_t)(m->opc), m->bytes[0], m->bytes[1], m->bytes[2], m->bytes[3]);
+#ifdef VLCB_DIAG
+            consumerDiagnostics[CONSUMER_DIAG_NUMACKED].asInt++;
+#endif
+        }
+    }
+#else
+    enn = ((uint16_t)m->bytes[0])*256+m->bytes[1];
     tableIndex = findEvent(enn, ((uint16_t)m->bytes[2])*256+m->bytes[3]);
     if (tableIndex == NO_INDEX) return NOT_PROCESSED;
 
     if (!isConsumedEvent(tableIndex)) {
         return NOT_PROCESSED;
     }
-    
-    
-    
     // we have the event in the event table
     // check that we have a consumed Action
     if ((mode_flags & FLAG_MODE_EVENTACK) && (isConsumedEvent(tableIndex))) {
@@ -187,15 +206,13 @@ static Processed consumerProcessMessage(Message *m) {
         consumerDiagnostics[CONSUMER_DIAG_NUMACKED].asInt++;
 #endif
     }
-    
-    
-    
-    
-    
     ret = APP_processConsumedEvent(tableIndex, m);
+#endif
+#ifdef VLCB_DIAG
     if (ret == PROCESSED) {
         consumerDiagnostics[CONSUMER_DIAG_NUMCONSUMED].asUint++;
     }
+#endif
     return ret;
 }
 
