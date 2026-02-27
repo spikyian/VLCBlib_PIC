@@ -558,7 +558,7 @@ static void doEvlrni(uint8_t enNum, uint8_t nnh, uint8_t nnl, uint8_t enh, uint8
 #endif
         return;
     }
-    errno = APP_addIndexedEvent(enNum, nnh, nnl, enh, enl, evNum, evVal, FALSE);
+    errno = APP_addIndexedEvent(enNum-1, nnh, nnl, enh, enl, evNum, evVal, FALSE);
     if (errno) {
         // validation error
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, errno);
@@ -783,6 +783,9 @@ static uint8_t removeTableEntry(uint8_t tableIndex) {
 uint8_t addIndexedEvent(uint8_t tableIndex, uint8_t nnh, uint8_t nnl, uint8_t enh, uint8_t enl, uint8_t evNum, uint8_t evVal, Boolean forceOwnNN) {
     uint8_t e;
     errno = 0;
+    if (tableIndex >= NUM_EVENTS) {
+        return CMDERR_INV_EN_IDX;
+    }
     // do we currently have an event NN:EN?
     if ((nnh != 0) || (nnl != 0) || (enh != 0) || (enl != 0)) {
         writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_NNL, nnl);
@@ -794,6 +797,13 @@ uint8_t addIndexedEvent(uint8_t tableIndex, uint8_t nnh, uint8_t nnl, uint8_t en
         } else {
             writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_FLAGS, 0);
         }
+    } else {
+        // either ignore the NN:EN or delete the event
+        if (evNum == 0) {
+            // delete the event
+            removeTableEntry(tableIndex);
+        }
+        // ignore
     }
     if (evNum > 0) {
         evNum--;    // convert VLCB message numbering (starts at 1) to internal numbering)
