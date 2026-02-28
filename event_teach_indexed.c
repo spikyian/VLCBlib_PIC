@@ -503,7 +503,7 @@ static void doNenrd(uint8_t index) {
     }
     nodeNumber = getNN(tableIndex);
     eventNumber = getEN(tableIndex);
-    sendMessage7(OPC_ENRSP, nn.bytes.hi, nn.bytes.lo, nodeNumber>>8, nodeNumber&0xFF, eventNumber>>8, eventNumber&0xFF, tableIndex);
+    sendMessage7(OPC_ENRSP, nn.bytes.hi, nn.bytes.lo, nodeNumber>>8, nodeNumber&0xFF, eventNumber>>8, eventNumber&0xFF, tableIndexToEvtIdx(tableIndex));
 
 } // doNenrd
 
@@ -558,7 +558,7 @@ static void doEvlrni(uint8_t enNum, uint8_t nnh, uint8_t nnl, uint8_t enh, uint8
 #endif
         return;
     }
-    errno = APP_addIndexedEvent(enNum-1, nnh, nnl, enh, enl, evNum, evVal, FALSE);
+    errno = APP_addIndexedEvent(evtIdxToTableIndex(enNum), nnh, nnl, enh, enl, evNum, evVal, FALSE);
     if (errno) {
         // validation error
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, errno);
