@@ -78,6 +78,8 @@
 #include "nvm.h"
 #include "mns.h"
 
+#pragma optimize 1
+
 #if defined(_18F66K80_FAMILY_)
 #define FLASH_PAGE_SIZE _FLASH_ERASE_SIZE
 #endif

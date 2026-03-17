@@ -89,9 +89,9 @@ static Processed canProcessMessage(Message * m);
 static void canIsr(void);
 static uint8_t canEsdData(uint8_t id);
 // ISR functions
-static void canTxError(void);
-static void checkTxFifo(void);
-static void checkCANTimeout(void);
+static void canTxError(void) __reentrant;
+static void checkTxFifo(void) __reentrant;
+static void checkCANTimeout(void) __reentrant;
 
 #ifdef VLCB_DIAG
 static DiagnosticVal * canGetDiagnostic(uint8_t index);
@@ -175,7 +175,7 @@ static uint8_t * getBufferPointer(uint8_t b);
 static void canInterruptHandler(void);
 static void processEnumeration(void);
 static MessageReceived handleSelfEnumeration(uint8_t * p);
-static void canFillRxFifo(void);
+static void canFillRxFifo(void) __reentrant;
 #ifdef VLCB_DIAG
 static uint8_t getNumTxBuffersInUse(void);
 static uint8_t getNumRxBuffersInUse(void);
