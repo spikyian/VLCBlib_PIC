@@ -529,7 +529,7 @@ static Processed mnsProcessMessage(Message * m) {
                 // start with the number of services
                 sendMessage5(OPC_SD, nn.bytes.hi, nn.bytes.lo, 0, 0, NUM_SERVICES);
                 // now a SD response for all of the services
-                startTimedResponse(TIMED_RESPONSE_RQSD, SERVICE_ID_MNS, mnsTRserviceDiscoveryCallback);
+                startTimedResponse(TIMED_RESPONSE_RQSD, findServiceIndex(SERVICE_ID_MNS), mnsTRserviceDiscoveryCallback);
             } else if (m->bytes[2] > NUM_SERVICES) {
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_RQSD, SERVICE_ID_MNS, GRSP_INVALID_SERVICE);
                 return PROCESSED;
@@ -894,7 +894,7 @@ static uint8_t getParameter(uint8_t idx) {
 /**
  * This is the callback used by the service discovery responses.
  * @param type always set to TIMED_RESPONSE_RQSD
- * @param serviceIndex indicates the service requesting the responses
+ * @param serviceIndex indicates the service requesting the responses, 0..NUM_SERVICES-1
  * @param step loops through each service to be discovered
  * @return whether all of the responses have been sent yet.
  */
@@ -913,7 +913,7 @@ TimedResponseResult mnsTRserviceDiscoveryCallback(uint8_t type, uint8_t serviceI
 /**
  * This is the callback used by the diagnostic responses. 
  * @param type always set to TIMED_RESPONSE_RDNG
- * @param serviceIndex indicates the service requesting the responses
+ * @param serviceIndex indicates the service requesting the responses. Starts at 0
  * @param step loops through each of the diagnostics
  * @return whether all of the responses have been sent yet.
  */
@@ -936,7 +936,7 @@ TimedResponseResult mnsTRallDiagnosticsCallback(uint8_t type, uint8_t serviceInd
 /**
  * This is the callback used by the RQNPN Parameter responses. 
  * @param type always set to TIMED_RESPONSE_RQNPN
- * @param serviceIndex indicates the service requesting the responses
+ * @param serviceIndex indicates the service requesting the responses, 0..NUM_SERVICES-1
  * @param step loops through each of the parameters
  * @return whether all of the responses have been sent yet.
  */
