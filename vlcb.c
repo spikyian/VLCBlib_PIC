@@ -485,8 +485,11 @@ const Priority priorities[256] = {
     pABOVE,   // OPC_RTOF=0x08,
     pABOVE,   // OPC_RTON=0x09,
     pHIGH,   // OPC_RESTP=0x0A,
+            pNORMAL,    // 0x0B
     pNORMAL,   // OPC_RSTAT=0x0C,
     pLOW,   // OPC_QNN=0x0D,
+            pNORMAL,    // 0x0E
+            pNORMAL,    // 0x0F
     pLOW,   // OPC_RQNP=0x10,
     pNORMAL,   // OPC_RQMN=0x11,
             pNORMAL,    // 0x12
@@ -569,6 +572,7 @@ const Priority priorities[256] = {
     pLOW,   // OPC_EXTC1=0x5F,
     pNORMAL,   // OPC_DFUN=0x60,
     pNORMAL,   // OPC_GLOC=0x61,
+            pNORMAL,    // 0x62
     pNORMAL,   // OPC_ERR=0x63,
             pNORMAL,    // 0x64
             pNORMAL,    // 0x65
@@ -796,7 +800,7 @@ void setup(void);
 void loop(void);
 
 /*
- * Code to ensure that it EEPROM flag is checked then a factoryReset will take 
+ * Code to ensure that after bootloading the version is invalid so that a factoryReset will take 
  * place. Sets the data version to 0xFF
  */
 /** @private */
@@ -987,8 +991,16 @@ static void checkPowerOnPb(void) {
             i = pbDownTimer(5);
             if ((i>=2) && (i < 4)) {
                 factoryReset();
+                RESET();    // KeithB b35: restart so NV cache and service state reload the defaults
             }
         }
+        // KeithB b36: wait for the button to be released and restart the MNS button timer,
+        // otherwise a press that outlived the timeout was seen by mnsPoll() as a >4s press
+        // and dropped the module to Uninitialised.
+        while (APP_pbPressed()) {
+            leds_poll();
+        }
+        pbTimer.val = tickGet();
     }
 }
 

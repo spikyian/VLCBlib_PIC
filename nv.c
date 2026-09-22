@@ -218,7 +218,7 @@ void saveNV(uint8_t index, uint8_t value) {
 uint8_t setNV(uint8_t index, uint8_t value) {
     uint8_t oldValue;
     
-    if (index > NV_NUM) return CMDERR_INV_NV_IDX;
+    if ((index == 0) || (index > NV_NUM)) return CMDERR_INV_NV_IDX;   // KeithB b35: NV#0 is read-only
     if (APP_nvValidate(index, value) == INVALID) return CMDERR_INV_NV_VALUE;
 #ifdef NV_CACHE
     oldValue = nvCache[index];

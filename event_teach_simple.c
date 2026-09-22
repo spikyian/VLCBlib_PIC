@@ -113,6 +113,7 @@ static uint8_t tableIndexToEvtIdx(uint8_t tableIndex);
 uint8_t findEvent(uint16_t nodeNumber, uint16_t eventNumber);
 static uint8_t removeTableEntry(uint8_t tableIndex);
 uint8_t removeEvent(uint16_t nodeNumber, uint16_t eventNumber);
+static void clearTableEntry(uint8_t tableIndex);   // KeithB b36
 static void doNnclr(void);
 static void doNerd(void);
 static void doNnevn(void);
@@ -163,7 +164,7 @@ static uint8_t timedResponseOpcode; // used to differentiate a timed response fo
  */
 const Service eventTeachService = {
     SERVICE_ID_OLD_TEACH,      // id
-    1,                  // version
+    3,                  // version
     teachFactoryReset,  // factoryReset
     teachPowerUp,       // powerUp
     teachProcessMessage,// processMessage
@@ -388,9 +389,11 @@ static DiagnosticVal * teachGetDiagnostic(uint8_t index) {
 void clearAllEvents(void) {
     uint8_t tableIndex;
 
+    // KeithB b36: clear every row, then flush and rebuild once (was per row: O(n^2), seconds)
     for (tableIndex=0; tableIndex<NUM_EVENTS; tableIndex++) {
-        removeTableEntry(tableIndex);
+        clearTableEntry(tableIndex);
     }
+    flushFlashBlock();
 #ifdef EVENT_HASH_TABLE
     rebuildHashtable();
 #endif
@@ -467,7 +470,7 @@ static void doNenrd(uint8_t index) {
     }
     nodeNumber = getNN(tableIndex);
     eventNumber = getEN(tableIndex);
-    sendMessage7(OPC_ENRSP, nn.bytes.hi, nn.bytes.lo, nodeNumber>>8, nodeNumber&0xFF, eventNumber>>8, eventNumber&0xFF, tableIndex);
+    sendMessage7(OPC_ENRSP, nn.bytes.hi, nn.bytes.lo, nodeNumber>>8, nodeNumber&0xFF, eventNumber>>8, eventNumber&0xFF, index);   // KeithB b35: was tableIndex
 
 } // doNenrd
 
@@ -679,7 +682,7 @@ TimedResponseResult reqevCallback(uint8_t tableIndex, uint8_t serviceIndex, uint
         if (timedResponseOpcode == OPC_EVANS) {
             sendMessage6(OPC_EVANS, nodeNumber.bytes.hi, nodeNumber.bytes.lo, eventNumber.bytes.hi, eventNumber.bytes.lo, step+1, (uint8_t)ev);
         } else {
-            sendMessage5(OPC_NEVAL, nodeNumber.bytes.hi, nodeNumber.bytes.lo, tableIndexToEvtIdx(tableIndex), step+1, (uint8_t)ev);
+            sendMessage5(OPC_NEVAL, nn.bytes.hi, nn.bytes.lo, tableIndexToEvtIdx(tableIndex), step+1, (uint8_t)ev);   // KeithB b36: module NN, not the event's
         }
     }
     return TIMED_RESPONSE_RESULT_NEXT;
@@ -706,11 +709,9 @@ uint8_t removeEvent(uint16_t nodeNumber, uint16_t eventNumber) {
  * @param tableIndex which event to be cleared
  * @return error or 0 for success
  */
-static uint8_t removeTableEntry(uint8_t tableIndex) {
+// KeithB b36: split out of removeTableEntry() so clearAllEvents() can flush once
+static void clearTableEntry(uint8_t tableIndex) {
     uint8_t i;
-#ifdef SAFETY
-    if (tableIndex >= NUM_EVENTS) return CMDERR_INV_EV_IDX;
-#endif
     // set the NN and EN to zero
     writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex + EVENTTABLE_OFFSET_NNH, 0x00);
     writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex + EVENTTABLE_OFFSET_NNL, 0x00);
@@ -721,6 +722,13 @@ static uint8_t removeTableEntry(uint8_t tableIndex) {
     for (i=0; i<PARAM_NUM_EV_EVENT; i++) {
         writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex + (EVENTTABLE_OFFSET_EVS + i), 0x00);
     }
+}
+
+static uint8_t removeTableEntry(uint8_t tableIndex) {
+#ifdef SAFETY
+    if (tableIndex >= NUM_EVENTS) return CMDERR_INV_EV_IDX;
+#endif
+    clearTableEntry(tableIndex);
     flushFlashBlock();
 #ifdef EVENT_HASH_TABLE
     rebuildHashtable();
@@ -744,10 +752,19 @@ static uint8_t removeTableEntry(uint8_t tableIndex) {
  */
 uint8_t addEvent(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8_t evVal, Boolean forceOwnNN) {
     uint8_t tableIndex;
-    
+
+    errno = 0;  // KeithB b36: was left stale from an earlier failure
     // do we currently have an event
     tableIndex = findEvent(nodeNumber, eventNumber);
     if (tableIndex == NO_INDEX) {
+#ifdef EVENT_HASH_TABLE
+        // KeithB b36: refuse if the hash chain for this event is full, otherwise the
+        // event would be stored but never found (and re-teaching would duplicate it)
+        if (eventChains[getHash(nodeNumber, eventNumber)][EVENT_CHAIN_LENGTH-1] != NO_INDEX) {
+            errno = CMDERR_TOO_MANY_EVENTS;
+            return NO_INDEX;
+        }
+#endif
         errno = CMDERR_TOO_MANY_EVENTS;
         // didn't find the event so find an empty slot and create one
         for (tableIndex=0; tableIndex<NUM_EVENTS; tableIndex++) {
@@ -855,7 +872,7 @@ uint8_t writeEv(uint8_t tableIndex, uint8_t evNum, uint8_t evVal) {
  */
 int16_t getEv(uint8_t tableIndex, uint8_t evNum) {
     if (tableIndex >= NUM_EVENTS) {
-        return CMDERR_INV_EN_IDX;
+        return -CMDERR_INV_EN_IDX;   // KeithB b36: errors are negative
     }
     if (evNum >= PARAM_NUM_EV_EVENT) {
         return -CMDERR_INV_EV_IDX;
@@ -1000,7 +1017,6 @@ void rebuildHashtable(void) {
     uint8_t hash;
     uint8_t chainIdx;
     uint8_t tableIndex;
-    int a;
 
     for (hash=0; hash<EVENT_HASH_LENGTH; hash++) {
         for (chainIdx=0; chainIdx < EVENT_CHAIN_LENGTH; chainIdx++) {
@@ -1009,11 +1025,10 @@ void rebuildHashtable(void) {
     }
     // now scan the event2Action table and populate the hash and lookup tables
     for (tableIndex=0; tableIndex<NUM_EVENTS; tableIndex++) {
-        if (getEN(tableIndex) != 0) {
-            int16_t ev;
-    
+        uint16_t en = getEN(tableIndex);   // KeithB b36: read once
+        if (en != 0) {
             // found the start of an event definition
-            hash = getHash(getNN(tableIndex), getEN(tableIndex));            
+            hash = getHash(getNN(tableIndex), en);
             for (chainIdx=0; chainIdx<EVENT_CHAIN_LENGTH; chainIdx++) {
                 if (eventChains[hash][chainIdx] == NO_INDEX) {
                     // available

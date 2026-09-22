@@ -131,7 +131,7 @@ static Processed consumerProcessMessage(Message *m) {
 #endif
     
     if (m->len < 5) return NOT_PROCESSED;
-
+    enn = 1;    // KeithB b35: marker, replaced by the sender NN for long events
     switch (m->opc) {
         case OPC_ASON:
 #ifdef HANDLE_DATA_EVENTS
@@ -190,7 +190,10 @@ static Processed consumerProcessMessage(Message *m) {
         }
     }
 #else
-    enn = ((uint16_t)m->bytes[0])*256+m->bytes[1];
+    // KeithB b35: enn is 0 for short events (set above); only long events use the sender NN
+    if (enn != 0) {
+        enn = ((uint16_t)m->bytes[0])*256+m->bytes[1];
+    }
     tableIndex = findEvent(enn, ((uint16_t)m->bytes[2])*256+m->bytes[3]);
     if (tableIndex == NO_INDEX) return NOT_PROCESSED;
 

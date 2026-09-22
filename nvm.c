@@ -135,6 +135,7 @@ static union
     struct  {
         uint8_t writeNeeded:1; //flag if buffer is modified
         uint8_t eraseNeeded:1;  //flag if long write with block erase
+        uint8_t loaded:1;       // KeithB b36: flashBuffer holds valid flashBlock
     };
 } flashFlags;
 
@@ -156,9 +157,10 @@ static flash_address_t    flashBlock;     //address of current flash block
  *  Initialise variables for Flash program tracking.
  */
 void initRomOps(void) {
-    flashFlags.asByte = 0;  // no write and no erase
-    flashBlock = 0x0800; // invalid but as long a write isn't needed it will be 
-                         // ok. Next write will always be to a different block.
+    flashFlags.asByte = 0;  // no write, no erase, nothing loaded
+    // KeithB b36: was flashBlock = 0x0800, a real page (the parameter block), so reads of
+    // 0x800-0x8FF returned the uninitialised buffer until the first flash write.
+    flashBlock = 0;
     TBLPTRU = 0;
 #if defined(_18FXXQ83_FAMILY_)
     NVMCON1bits.WRERR = 0;
@@ -218,8 +220,7 @@ eeprom_data_t EEPROM_Read(eeprom_address_t index) {
  * @return 0 for success or error otherwise
  */
 uint8_t EEPROM_Write(eeprom_address_t index, eeprom_data_t value) {
-    uint8_t interruptEnabled;
-    interruptEnabled = geti(); // store current global interrupt state
+    uint8_t attempts = 3;   // KeithB b36: was an endless retry, a worn cell hung the module
 
     do {
         EEPROM_WriteNoVerify(index, value);
@@ -232,6 +233,9 @@ uint8_t EEPROM_Write(eeprom_address_t index, eeprom_data_t value) {
         mnsDiagnostics[MNS_DIAGNOSTICS_MEMERRS].asUint++;
         updateModuleErrorStatus();
 #endif
+        if (--attempts == 0) {
+            return GRSP_INVALID_COMMAND_PARAMETER;   // KeithB b36: give up
+        }
     } while (1);
 #if defined(_18FXXQ83_FAMILY_)
     //Clear the NVM Command
@@ -316,7 +320,7 @@ uint8_t EEPROM_WriteNoVerify(eeprom_address_t index, eeprom_data_t value) {
  */
 static flash_data_t FLASH_Read(flash_address_t address) {
     // do read of Flash
-    if (BLOCK(address) == flashBlock) {
+    if (flashFlags.loaded && (BLOCK(address) == flashBlock)) {   // KeithB b36
         // if the block is the current one then get it directly
         return flashBuffer[OFFSET(address)];
     } else {
@@ -462,7 +466,8 @@ void flushFlashBlock(void) {
     if (interruptEnabled) {     // Only enable interrupts if they were enabled at function entry
         bothEi();                   /* Enable Interrupts */
     }
-    flashFlags.asByte = 0;  // no erase, no write
+    flashFlags.writeNeeded = 0;  // KeithB b36: keep 'loaded' unchanged
+    flashFlags.eraseNeeded = 0;
 }
 
 /**
@@ -496,6 +501,7 @@ void loadFlashBlock(void) {
     NVMCON1bits.NVMCMD = NVMCMD_NOP;      //Clear the NVM Command
 #endif
     flashFlags.asByte = 0; // no erase, no write needed
+    flashFlags.loaded = 1;  // KeithB b36
 }
    
 /**
@@ -522,14 +528,10 @@ uint8_t FLASH_Write(flash_address_t index, flash_data_t value) {
      * to be erased before writing.
      *
      */
-    if (BLOCK(index) != flashBlock) {
-        if (flashBlock != 0) {
-            // ok we want to write a different block so flush the current block 
-            if (flashFlags.eraseNeeded) {
-                eraseFlashBlock();
-                flashFlags.eraseNeeded = 0;
-            }
-
+    if ((BLOCK(index) != flashBlock) || !flashFlags.loaded) {   // KeithB b36
+        if (flashFlags.loaded) {
+            // ok we want to write a different block so flush the current block
+            // (flushFlashBlock erases first if needed)
             flushFlashBlock();
         }
         

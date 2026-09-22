@@ -127,6 +127,9 @@ static Processed producerProcessMessage(Message *m) {
                 index = findEvent(0, (uint16_t)((m->bytes[2]<<8)|(m->bytes[3])));
             }
             if (index == NO_INDEX) return PROCESSED;
+            // KeithB b36: only answer for events this module produces; a response for a consume-only
+            // would contradict the real producer
+            if (APP_isProducedEvent(index)) return PROCESSED;
 
             if (m->opc == OPC_AREQ) {
                 if (APP_GetEventIndexState(index) == EVENT_ON) {

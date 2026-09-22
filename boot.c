@@ -239,6 +239,7 @@ void bootPowerUp(void) {
  * @return PROCESSED to indicate that the message has been processed, NOT_PROCESSED otherwise
  */
 static Processed bootProcessMessage(Message * m) {
+    if (m->len < 3) return NOT_PROCESSED;   // KeithB b35: short frame could match stale NN bytes
     // check NN matches us
     if (m->bytes[0] != nn.bytes.hi) return NOT_PROCESSED;
     if (m->bytes[1] != nn.bytes.lo) return NOT_PROCESSED;

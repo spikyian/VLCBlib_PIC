@@ -325,6 +325,7 @@ static void mnsPowerUp(void) {
     } else {
         mode_flags = (uint8_t)temp;
     }
+    last_mode_state = mode_state;       // KeithB b36: was 0, so the mode was rewritten to NVM on every boot
     mode_flags &= ~FLAG_MODE_FCUCOMPAT; // force FCU compat off
 #ifdef FCU_COMPAT
     mode_flags |= FLAG_MODE_FCUCOMPAT;  // force FCU compat on if defined
@@ -500,8 +501,10 @@ static Processed mnsProcessMessage(Message * m) {
                 }
                 if (services[m->bytes[2]-1]->getDiagnostic == NULL) {
                     // the service doesn't support diagnostics
-                    sendMessage5(OPC_DGN, nn.bytes.hi, nn.bytes.lo, OPC_RDGN, m->bytes[2], 0);
-                } 
+                    // KeithB b35: reply and stop; fell through to a NULL call (module reset)
+                    sendMessage6(OPC_DGN, nn.bytes.hi, nn.bytes.lo, m->bytes[2], 0, 0, 0);
+                    return PROCESSED;
+                }
                 if (m->bytes[3] == 0) {
                     // a DGN for all diagnostics for a particular service
                     startTimedResponse(TIMED_RESPONSE_RDGN, m->bytes[2], mnsTRallDiagnosticsCallback);
@@ -671,7 +674,7 @@ static void mnsPoll(void) {
     if (mode_state != last_mode_state) {
         // don't persist setup mode
         if ((mode_state == MODE_UNINITIALISED) || (mode_state == MODE_NORMAL)) {
-            writeNVM(MODE_FLAGS_NVM_TYPE, MODE_ADDRESS, mode_state);
+            writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode_state);   // KeithB b36: was MODE_FLAGS_NVM_TYPE
         }
         last_mode_state = mode_state;
     }
@@ -721,7 +724,7 @@ static void mnsPoll(void) {
             if (APP_pbPressed() == 0) {
                 // PB has been released
 
-                if ((tickTimeSince(pbTimer) > HUNDRED_MILI_SECOND) && (tickTimeSince(pbTimer) < 2*ONE_SECOND)) {
+                if (pbWasPushed && (tickTimeSince(pbTimer) > HUNDRED_MILI_SECOND) && (tickTimeSince(pbTimer) < 2*ONE_SECOND)) {   // KeithB b36: pbWasPushed as in Normal
                     // a short press returns to previous mode
                     mode_state = setupModePreviousMode;
                     if (mode_state == MODE_NORMAL) {
@@ -734,7 +737,7 @@ static void mnsPoll(void) {
                     }
                     setLEDsByMode();
                 }
-                if (tickTimeSince(pbTimer) > 4*ONE_SECOND) {
+                if (pbWasPushed && (tickTimeSince(pbTimer) > 4*ONE_SECOND)) {   // KeithB b36
                     mode_state = MODE_UNINITIALISED;
                     setLEDsByMode();
                 }

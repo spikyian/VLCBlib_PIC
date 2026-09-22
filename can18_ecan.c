@@ -847,7 +847,6 @@ static MessageReceived handleSelfEnumeration(uint8_t * p) {
  */
 static void canFillRxFifo(void) {
     uint8_t *ptr;
-    uint8_t  hiIndex;
     Message * m;
 
     while (COMSTATbits.NOT_FIFOEMPTY) {
