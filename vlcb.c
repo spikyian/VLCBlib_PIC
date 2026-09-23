@@ -485,62 +485,62 @@ const Priority priorities[256] = {
     pABOVE,   // OPC_RTOF=0x08,
     pABOVE,   // OPC_RTON=0x09,
     pHIGH,   // OPC_RESTP=0x0A,
-            pNORMAL,    // 0x0B
+            pNORMAL,    // 0x0B,
     pNORMAL,   // OPC_RSTAT=0x0C,
     pLOW,   // OPC_QNN=0x0D,
-            pNORMAL,    // 0x0E
-            pNORMAL,    // 0x0F
+            pNORMAL,    // 0x0E,
+            pNORMAL,    // 0x0F,
     pLOW,   // OPC_RQNP=0x10,
     pNORMAL,   // OPC_RQMN=0x11,
-            pNORMAL,    // 0x12
-            pNORMAL,    // 0x13
-            pNORMAL,    // 0x14
-            pNORMAL,    // 0x15
-            pNORMAL,    // 0x16
-            pNORMAL,    // 0x17
-            pNORMAL,    // 0x18
-            pNORMAL,    // 0x19
-            pNORMAL,    // 0x1A
-            pNORMAL,    // 0x1B
-            pNORMAL,    // 0x1C
-            pNORMAL,    // 0x1D
-            pNORMAL,    // 0x1E
-            pNORMAL,    // 0x1F
-            pNORMAL,    // 0x20
+            pNORMAL,    // 0x12,
+            pNORMAL,    // 0x13,
+            pNORMAL,    // 0x14,
+            pNORMAL,    // 0x15,
+            pNORMAL,    // 0x16,
+            pNORMAL,    // 0x17,
+            pNORMAL,    // 0x18,
+            pNORMAL,    // 0x19,
+            pNORMAL,    // 0x1A,
+            pNORMAL,    // 0x1B,
+            pNORMAL,    // 0x1C,
+            pNORMAL,    // 0x1D,
+            pNORMAL,    // 0x1E,
+            pNORMAL,    // 0x1F,
+            pNORMAL,    // 0x20,
     pNORMAL,   // OPC_KLOC=0x21,
     pNORMAL,   // OPC_QLOC=0x22,
     pNORMAL,   // OPC_DKEEP=0x23,
-            pNORMAL,    // 0x24
-            pNORMAL,    // 0x25
-            pNORMAL,    // 0x26
-            pNORMAL,    // 0x27
-            pNORMAL,    // 0x28
-            pNORMAL,    // 0x29
-            pNORMAL,    // 0x2A
-            pNORMAL,    // 0x2B
-            pNORMAL,    // 0x2C
-            pNORMAL,    // 0x2D
-            pNORMAL,    // 0x2E
-            pNORMAL,    // 0x2F
+            pNORMAL,    // 0x24,
+            pNORMAL,    // 0x25,
+            pNORMAL,    // 0x26,
+            pNORMAL,    // 0x27,
+            pNORMAL,    // 0x28,
+            pNORMAL,    // 0x29,
+            pNORMAL,    // 0x2A,
+            pNORMAL,    // 0x2B,
+            pNORMAL,    // 0x2C,
+            pNORMAL,    // 0x2D,
+            pNORMAL,    // 0x2E,
+            pNORMAL,    // 0x2F,
     pNORMAL,   // OPC_DBG1=0x30,
-            pNORMAL,    // 0x31
-            pNORMAL,    // 0x32
-            pNORMAL,    // 0x33
-            pNORMAL,    // 0x34
-            pNORMAL,    // 0x35
-            pNORMAL,    // 0x36
-            pNORMAL,    // 0x37
-            pNORMAL,    // 0x38
-            pNORMAL,    // 0x39
-            pNORMAL,    // 0x3A
-            pNORMAL,    // 0x3B
-            pNORMAL,    // 0x3C
-            pNORMAL,    // 0x3D
-            pNORMAL,    // 0x3E
-    pNORMAL,    // OPC_EXTC=0x3F
+            pNORMAL,    // 0x31,
+            pNORMAL,    // 0x32,
+            pNORMAL,    // 0x33,
+            pNORMAL,    // 0x34,
+            pNORMAL,    // 0x35,
+            pNORMAL,    // 0x36,
+            pNORMAL,    // 0x37,
+            pNORMAL,    // 0x38,
+            pNORMAL,    // 0x39,
+            pNORMAL,    // 0x3A,
+            pNORMAL,    // 0x3B,
+            pNORMAL,    // 0x3C,
+            pNORMAL,    // 0x3D,
+            pNORMAL,    // 0x3E,
+    pNORMAL,    // OPC_EXTC=0x3F,
     pNORMAL,   // OPC_RLOC=0x40,
     pNORMAL,   // OPC_QCON=0x41,
-    pLOW,   // OPC_SNN=0x42,
+    pLOW,      // OPC_SNN=0x42,
     pNORMAL,   // OPC_ALOC=0x43,
     pNORMAL,   // OPC_STMOD=0x44,
     pNORMAL,   // OPC_PCON=0x45,
@@ -549,10 +549,10 @@ const Priority priorities[256] = {
     pNORMAL,   // OPC_DFLG=0x48,
     pNORMAL,   // OPC_DFNON=0x49,
     pNORMAL,   // OPC_DFNOF=0x4A,
-            pNORMAL,    // 0x4B
+            pNORMAL,    // 0x4B,
     pLOW,   // OPC_SSTAT=0x4C,
-            pNORMAL,    // 0x4D
-            pNORMAL,    // 0x4E
+            pNORMAL,    // 0x4D,
+            pNORMAL,    // 0x4E,
     pLOW,   // OPC_NNRSM=0x4F,
     pLOW,   // OPC_RQNN=0x50,
     pLOW,   // OPC_NNREL=0x51,
@@ -572,19 +572,19 @@ const Priority priorities[256] = {
     pLOW,   // OPC_EXTC1=0x5F,
     pNORMAL,   // OPC_DFUN=0x60,
     pNORMAL,   // OPC_GLOC=0x61,
-            pNORMAL,    // 0x62
+            pNORMAL,    // 0x62,
     pNORMAL,   // OPC_ERR=0x63,
-            pNORMAL,    // 0x64
-            pNORMAL,    // 0x65
+            pNORMAL,    // 0x64,
+            pNORMAL,    // 0x65,
     pHIGH,   // OPC_SQU=0x66,
-            pNORMAL,    // 0x67
-            pNORMAL,    // 0x68
-            pNORMAL,    // 0x69
-            pNORMAL,    // 0x6A
-            pNORMAL,    // 0x6B
-            pNORMAL,    // 0x6C
-            pNORMAL,    // 0x6D
-            pNORMAL,    // 0x6E
+            pNORMAL,    // 0x67,
+            pNORMAL,    // 0x68,
+            pNORMAL,    // 0x69,
+            pNORMAL,    // 0x6A,
+            pNORMAL,    // 0x6B,
+            pNORMAL,    // 0x6C,
+            pNORMAL,    // 0x6D,
+            pNORMAL,    // 0x6E,
     pLOW,   // OPC_CMDERR=0x6F,
     pLOW,   // OPC_EVNLF=0x70,
     pLOW,   // OPC_NVRD=0x71,
@@ -593,31 +593,31 @@ const Priority priorities[256] = {
     pLOW,   // OPC_NUMEV=0x74,
     pLOW,   // OPC_CANID=0x75,
     pLOW,   // OPC_MODE=0x76,
-            pNORMAL,    // 0x77
+            pNORMAL,    // 0x77,
     pLOW,   // OPC_RQSD=0x78,
-            pNORMAL,    // 0x79
-            pNORMAL,    // 0x7A
-            pNORMAL,    // 0x7B
-            pNORMAL,    // 0x7C
-            pNORMAL,    // 0x7D
-            pNORMAL,    // 0x7E
+            pNORMAL,    // 0x79,
+            pNORMAL,    // 0x7A,
+            pNORMAL,    // 0x7B,
+            pNORMAL,    // 0x7C,
+            pNORMAL,    // 0x7D,
+            pNORMAL,    // 0x7E,
     pLOW,   // OPC_EXTC2=0x7F,
     pNORMAL,   // OPC_RDCC3=0x80,
-            pNORMAL,    // 0x81
+            pNORMAL,    // 0x81,
     pNORMAL,   // OPC_WCVO=0x82,
     pNORMAL,   // OPC_WCVB=0x83,
     pNORMAL,   // OPC_QCVS=0x84,
     pNORMAL,   // OPC_PCVS=0x85,
-            pNORMAL,    // 0x86
+            pNORMAL,    // 0x86,
     pLOW,   // OPC_RDGN=0x87,
-            pNORMAL,    // 0x88
-            pNORMAL,    // 0x89
-            pNORMAL,    // 0x8A
-            pNORMAL,    // 0x8B
-            pNORMAL,    // 0x8C
-            pNORMAL,    // 0x8D
+            pNORMAL,    // 0x88,
+            pNORMAL,    // 0x89,
+            pNORMAL,    // 0x8A,
+            pNORMAL,    // 0x8B,
+            pNORMAL,    // 0x8C,
+            pNORMAL,    // 0x8D,
     pLOW,   // OPC_NVSETRD=0x8E,
-            pNORMAL,    // 0x8F
+            pNORMAL,    // 0x8F,
     pLOW,   // OPC_ACON=0x90,
     pLOW,   // OPC_ACOF=0x91,
     pLOW,   // OPC_AREQ=0x92,
@@ -633,22 +633,22 @@ const Priority priorities[256] = {
     pLOW,   // OPC_REVAL=0x9C,
     pLOW,   // OPC_ARSON=0x9D,
     pLOW,   // OPC_ARSOF=0x9E,
-    pLOW,   // OPC_EXTC3=0x9F
+    pLOW,   // OPC_EXTC3=0x9F,
     pNORMAL,   // OPC_RDCC4=0xA0,
-            pNORMAL,    // 0xA1
+            pNORMAL,    // 0xA1,
     pNORMAL,   // OPC_WCVS=0xA2,
-            pNORMAL,    // 0xA3
-            pNORMAL,    // 0xA4
-            pNORMAL,    // 0xA5
-            pNORMAL,    // 0xA6
-            pNORMAL,    // 0xA7
-            pNORMAL,    // 0xA8
-            pNORMAL,    // 0xA9
-            pNORMAL,    // 0xAA
+            pNORMAL,    // 0xA3,
+            pNORMAL,    // 0xA4,
+            pNORMAL,    // 0xA5,
+            pNORMAL,    // 0xA6,
+            pNORMAL,    // 0xA7,
+            pNORMAL,    // 0xA8,
+            pNORMAL,    // 0xA9,
+            pNORMAL,    // 0xAA,
     pLOW,   // OPC_HEARTB=0xAB,
     pLOW,   // OPC_SD=0xAC,
-            pNORMAL,    // 0xAD
-            pNORMAL,    // 0xAE
+            pNORMAL,    // 0xAD,
+            pNORMAL,    // 0xAE,
     pLOW,   // OPC_GRSP=0xAF,
     pLOW,   // OPC_ACON1=0xB0,
     pLOW,   // OPC_ACOF1=0xB1,
@@ -657,30 +657,30 @@ const Priority priorities[256] = {
     pLOW,   // OPC_AROF1=0xB4,
     pLOW,   // OPC_NEVAL=0xB5,
     pLOW,   // OPC_PNN=0xB6,
-           pNORMAL,    // 0xB7
+           pNORMAL,    // 0xB7,
     pLOW,   // OPC_ASON1=0xB8,
     pLOW,   // OPC_ASOF1=0xB9,
-           pNORMAL,    // 0xBA
-           pNORMAL,    // 0xBB
-           pNORMAL,    // 0xBC
+           pNORMAL,    // 0xBA,
+           pNORMAL,    // 0xBB,
+           pNORMAL,    // 0xBC,
     pLOW,   // OPC_ARSON1=0xBD,
     pLOW,   // OPC_ARSOF1=0xBE,
     pLOW,   // OPC_EXTC4=0xBF,
     pNORMAL,   // OPC_RDCC5=0xC0,
     pNORMAL,   // OPC_WCVOA=0xC1,
     pNORMAL,   // OPC_CABDAT=0xC2,
-           pNORMAL,    // 0xC3
-           pNORMAL,    // 0xC4
-           pNORMAL,    // 0xC5
-           pNORMAL,    // 0xC6
+           pNORMAL,    // 0xC3,
+           pNORMAL,    // 0xC4,
+           pNORMAL,    // 0xC5,
+           pNORMAL,    // 0xC6,
     pLOW,   // OPC_DGN=0xC7,
-           pNORMAL,    // 0xC8
-           pNORMAL,    // 0xC9
-           pNORMAL,    // 0xCA
-           pNORMAL,    // 0xCB
-           pNORMAL,    // 0xCC
-           pNORMAL,    // 0xCD
-           pNORMAL,    // 0xCE
+           pNORMAL,    // 0xC8,
+           pNORMAL,    // 0xC9,
+           pNORMAL,    // 0xCA,
+           pNORMAL,    // 0xCB,
+           pNORMAL,    // 0xCC,
+           pNORMAL,    // 0xCD,
+           pNORMAL,    // 0xCE,
     pNORMAL,   // OPC_FCLK=0xCF,
     pLOW,   // OPC_ACON2=0xD0,
     pLOW,   // OPC_ACOF2=0xD1,
@@ -688,13 +688,13 @@ const Priority priorities[256] = {
     pLOW,   // OPC_EVANS=0xD3,
     pLOW,   // OPC_ARON2=0xD4,
     pLOW,   // OPC_AROF2=0xD5,
-           pNORMAL,    // 0xD6
-           pNORMAL,    // 0xD7
+           pNORMAL,    // 0xD6,
+           pNORMAL,    // 0xD7,
     pLOW,   // OPC_ASON2=0xD8,
     pLOW,   // OPC_ASOF2=0xD9,
-           pNORMAL,    // 0xDA
-           pNORMAL,    // 0xDB
-           pNORMAL,    // 0xDC
+           pNORMAL,    // 0xDA,
+           pNORMAL,    // 0xDB,
+           pNORMAL,    // 0xDC,
     pLOW,   // OPC_ARSON2=0xDD,
     pLOW,   // OPC_ARSOF2=0xDE,
     pLOW,   // OPC_EXTC5=0xDF,
@@ -702,17 +702,17 @@ const Priority priorities[256] = {
     pNORMAL,   // OPC_PLOC=0xE1,
     pLOW,   // OPC_NAME=0xE2,
     pNORMAL,   // OPC_STAT=0xE3,
-           pNORMAL,    // 0xE4
-           pNORMAL,    // 0xE5
+           pNORMAL,    // 0xE4,
+           pNORMAL,    // 0xE5,
     pLOW,   // OPC_ENACK=0xE6,
     pLOW,   // OPC_ESD=0xE7,
-           pNORMAL,    // 0xE8
+           pNORMAL,    // 0xE8,
     pLOW,   // OPC_DTXC=0xE9,
-           pNORMAL,    // 0xEA
-           pNORMAL,    // 0xEB
-           pNORMAL,    // 0xEC
-           pNORMAL,    // 0xED
-           pNORMAL,    // 0xEE
+           pNORMAL,    // 0xEA,
+           pNORMAL,    // 0xEB,
+           pNORMAL,    // 0xEC,
+           pNORMAL,    // 0xED,
+           pNORMAL,    // 0xEE,
     pLOW,   // OPC_PARAMS=0xEF,
     pLOW,   // OPC_ACON3=0xF0,
     pLOW,   // OPC_ACOF3=0xF1,
@@ -726,9 +726,10 @@ const Priority priorities[256] = {
     pLOW,   // OPC_ASOF3=0xF9,
     pLOW,   // OPC_DDES=0xFA,
     pLOW,   // OPC_DDRS=0xFB,
+    pLOW,   // OPC_DDWS=0xFC,
     pLOW,   // OPC_ARSON3=0xFD,
-    pLOW,   // OPC_ARSOF3=0xFE
-           pNORMAL,    // 0xFF
+    pLOW,   // OPC_ARSOF3=0xFE,
+           pNORMAL,    // 0xFF,
 };
 
 #ifdef BOOTLOADER_PRESENT

@@ -129,7 +129,7 @@ static Processed producerProcessMessage(Message *m) {
             if (index == NO_INDEX) return PROCESSED;
             // KeithB b36: only answer for events this module produces; a response for a consume-only
             // would contradict the real producer
-            if (APP_isProducedEvent(index)) return PROCESSED;
+            if (!APP_isProducedEvent(index)) return PROCESSED;
 
             if (m->opc == OPC_AREQ) {
                 if (APP_GetEventIndexState(index) == EVENT_ON) {
