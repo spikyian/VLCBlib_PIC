@@ -80,7 +80,6 @@ typedef uint8_t Happening;
 #endif
 
 extern const Service eventProducerService;
-extern uint8_t APP_isProducedEvent(uint8_t index);
 
 #ifdef EVENT_HASH_TABLE
 #ifdef EVENT_PRODUCED_EVENT_HASH
