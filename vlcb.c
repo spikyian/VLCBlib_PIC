@@ -1324,6 +1324,19 @@ void main(void) {
     IVTLOCK = 0x55;
     IVTLOCK = 0xAA;
     IVTLOCKbits.IVTLOCKED = 0x01; // lock IVT
+    
+    /* KeithB b43 : interrupt priority levels.
+     * The library's own ISRs (CAN errors, TMR0 tick) are LOW priority - their
+     * IPR bits were already written that way for the K80 and are now matched
+     * by their declarations - so an application ISR left HIGH can preempt
+     * them (set its IPR bit explicitly: the reset values are mixed, e.g.
+     * CANIP and CLC1IP reset to low). bothDi()/bothEi() need no change: with
+     * IPEN = 1 the GIE bit is GIEH, and GIEH = 0 still disables ALL
+     * interrupts (DS40002265C INTCON0), so every critical section stays
+     * critical. GIEL is enabled once, here; GIEH stays 0 until bothEi(). */
+    INTCON0bits.IPEN = 1;
+    INTCON0bits.GIEL = 1;
+
 #endif
     
 #if defined(_18FXXQ83_FAMILY_)

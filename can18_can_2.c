@@ -367,7 +367,7 @@ static void canPowerUp(void) {
 /**
  * Handle the RX overrun and receive error interrupts.
  */
-void __interrupt(irq(IRQ_CAN), base(IVT_BASE)) receiveOverrun(void) {
+void __interrupt(irq(IRQ_CAN), base(IVT_BASE), low_priority) receiveOverrun(void) {
     if (C1FIFOSTA3Lbits.RXOVIF == 1) {
 #ifdef VLCB_DIAG
         canDiagnostics[CAN_DIAG_RX_BUFFER_OVERRUN].asUint++;
