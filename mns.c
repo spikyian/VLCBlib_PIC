@@ -676,6 +676,11 @@ static void mnsPoll(void) {
         if ((mode_state == MODE_UNINITIALISED) || (mode_state == MODE_NORMAL)) {
             writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode_state);   // KeithB b36: was MODE_FLAGS_NVM_TYPE
         }
+        // KeithB b39: leaving Normal for Uninitialised (MODE opcode or button) clears the saved NN
+        if ((mode_state == MODE_UNINITIALISED) && (setupModePreviousMode == MODE_NORMAL)) {
+            writeNVM(NN_NVM_TYPE, NN_ADDRESS+1, 0);
+            writeNVM(NN_NVM_TYPE, NN_ADDRESS, 0);
+        }
         last_mode_state = mode_state;
     }
 #ifdef VLCB_DIAG
