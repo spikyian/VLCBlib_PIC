@@ -416,13 +416,21 @@ typedef enum SendResult {
 
 /* TRANSPORT INTERFACE */
 /**
+ * Indicates the result of waiting for the transmit queue to drain.
+ */
+typedef enum TxDrainResult {
+    OK,
+    OVERALL_TIMEOUT,
+    MESSAGE_TIMEOUT
+} TxDrainResult;
+/**
  * Transport interface to provide access to a communications bus.
  * 
  */
 typedef struct Transport {
     SendResult (* sendMessage)(Message * m);   ///< function call to send a message.
     MessageReceived (* receiveMessage)(Message * m); ///< check to see if message is available and return in the structure provided.
-    void (*waitForTxQueueToDrain)(void);    /// blocks waiting for all messages to be transmitted
+    TxDrainResult (*waitForTxQueueToDrain)(void);    /// blocks waiting for all messages to be transmitted
 } Transport;
 
 /**

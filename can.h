@@ -129,6 +129,12 @@ typedef enum CanidResult {
     CANID_OK
 } CanidResult;
 
+/** Default the drain timeout to 500ms
+ */
+#ifndef TX_DRAIN_TIMEOUT_MS
+#define TX_DRAIN_TIMEOUT_MS 500
+#endif
+
 #if defined(_18F66K80_FAMILY_)
     #define TXBnIE      PIE5bits.TXBnIE
     #define TXBnIF      PIR5bits.TXBnIF

@@ -134,7 +134,7 @@ const Service canService = {
 // forward declarations
 static SendResult canSendMessage(Message * mp);
 static MessageReceived canReceiveMessage(Message * m);
-static void canWaitForTxQueueToDrain(void);
+static TxDrainResult canWaitForTxQueueToDrain(void);
 
 /**
  * The transport descriptor for the CAN service. The application must set
@@ -672,10 +672,37 @@ static SendResult canSendMessage(Message * mp) {
     return SEND_OK;
 }
 
-static void canWaitForTxQueueToDrain(void) {
-    while (C1FIFOCON2H & _C1FIFOCON2H_TXREQ_MASK) {
-        ;
+/**
+ * Wait for the transmit queue to be drained. 
+ * Queue processing must be done with an interrupt since this is effectively a 
+ * tight loop. An overall timeout value may be set with TX_DRAIN_TIMEOUT_MS
+ * although this defaults to 500ms if not set in module.h. 
+ * @return result of waiting indicating if the queue drained or whether we reached a timeout
+ */
+static TxDrainResult canWaitForTxQueueToDrain(void) {
+    TickValue start;
+#ifdef STRINGENT_TX_QUEUE_DRAIN
+    TickValue lastProgress;
+    uint8_t lastCi = C1FIFOSTA2Hbits.FIFOCI;       // index of next frame to transmit
+#endif
+    start.val = tickGet();
+#ifdef STRINGENT_TX_QUEUE_DRAIN
+    lastProgress.val = start.val;
+#endif
+    while (C1FIFOCON2Hbits.TXREQ) {
+#ifdef STRINGENT_TX_QUEUE_DRAIN
+        if (C1FIFOSTA2Hbits.FIFOCI != lastCi) {     // a frame went out
+            lastCi = C1FIFOSTA2Hbits.FIFOCI;
+            lastProgress.val = tickGet();
+        }
+        if (C1TRECUbits.TXBO) return BUS_OFF_ERROR;                // bus-off: nothing will be sent
+        if (C1TRECUbits.TXBP && (tickTimeSince(lastProgress) > 2 * ONE_MILI_SECOND)) {
+            return MESSAGE_TIMEOUT;                                  // error-passive and stalled: no ACK
+        }
+#endif
+        if (tickTimeSince(start) > TX_DRAIN_TIMEOUT_MS * ONE_MILI_SECOND) return OVERALL_TIMEOUT;   // busy or stuck bus
     }
+    return OK;
 }
 
 /** 

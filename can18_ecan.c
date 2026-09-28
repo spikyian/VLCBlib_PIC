@@ -136,7 +136,8 @@ static MessageReceived canReceiveMessage(Message * m);
  */
 const Transport canTransport = {
     canSendMessage,
-    canReceiveMessage
+    canReceiveMessage,
+    canWaitForTxQueueToDrain
 };
 
 /**
@@ -575,6 +576,23 @@ static SendResult canSendMessage(Message * mp) {
 #endif
     TXBnIE = 1;      // re-enable interrupt
     return SEND_OK;
+}
+
+/**
+ * Wait for the transmit queue to be drained. 
+ * Queue processing must be done with an interrupt since this is effectively a 
+ * tight loop. An overall timeout value may be set with TX_DRAIN_TIMEOUT_MS
+ * although this defaults to 500ms if not set in module.h. 
+ * @return result of waiting indicating if the queue drained or whether we reached a timeout
+ */
+static TxDrainResult canWaitForTxQueueToDrain(void) {
+    TickValue start;
+    start.val = tickGet();
+    
+    while ((TXB0CONbits.TXREQ != 0) || (quantity(&txQueue) > 0)) {
+        if (tickTimeSince(start) > TX_DRAIN_TIMEOUT_MS * ONE_MILI_SECOND) return OVERALL_TIMEOUT;   // busy or stuck bus
+    }
+    return OK;
 }
 
 /**
