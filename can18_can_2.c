@@ -90,14 +90,6 @@
 #define CAN1_FIFO3_PAYLOAD_SIZE     8
 #define CAN1_FIFO3_SIZE             32
 
-// Total message RAM used by the TXQ and the three FIFOs
-#define CAN1_BUFFERS_SIZE   (((CAN1_TXQ_PAYLOAD_SIZE+8)*CAN1_TXQ_SIZE) + ((CAN1_FIFO1_PAYLOAD_SIZE+8)*CAN1_FIFO1_SIZE) \
-                           + ((CAN1_FIFO2_PAYLOAD_SIZE+8)*CAN1_FIFO2_SIZE) + ((CAN1_FIFO3_PAYLOAD_SIZE+8)*CAN1_FIFO3_SIZE))
-
-// KeithB b39: declare the CAN message RAM to the linker so it can never hand the same
-// addresses to anything else. Placed exactly where the peripheral is told to use it.
-static volatile uint8_t canMsgRam[CAN1_BUFFERS_SIZE] __at(CAN1_BUFFERS_BASE_ADDRESS);
-
 // Forward declarations
 static void canFactoryReset(void);
 static void canPowerUp(void);
@@ -303,7 +295,7 @@ static void canPowerUp(void) {
         
         
         /* Initialise the C1FIFOBA with the start address of the CAN FIFO message object area. */
-        C1FIFOBA = (uint16_t)canMsgRam;     // KeithB b39: same address, but via the reserved array
+        C1FIFOBA = CAN1_BUFFERS_BASE_ADDRESS;
 
         C1CONL = 0x00;      // CLKSEL0 disabled; DeviceNet filter disabled
         C1CONH = 0x87;      // ON enabled; SIDL disabled; BUSY disabled; WFT T11 Filter; WAKFIL enabled;
