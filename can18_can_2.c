@@ -173,6 +173,15 @@ enum EnumerationState {
 } EnumerationState;
 static TickValue  enumerationStartTime;
 static enum EnumerationState enumerationState; 
+#ifdef CAN_ADDITIONAL_CANID_CHECKS
+// KeithB b53 (CAN_ADDITIONAL_CANID_CHECKS): the last enumeration found no free CANID, so the
+// next one waits ENUMERATION_RETRY and a new frame does not start one early. Always FALSE
+// without CAN_ADDITIONAL_CANID_CHECKS.
+static Boolean enumerationBackoff;
+#ifndef ENUMERATION_RETRY
+#define ENUMERATION_RETRY   FIVE_SECOND
+#endif
+#endif
 static uint8_t    enumerationResults[ENUM_ARRAY_SIZE];
 #define arraySetBit( array, index ) ( array[index>>3] |= ( 1<<(index & 0x07) ) )
 
@@ -628,12 +637,14 @@ static SendResult canSendMessage(Message * mp) {
         canDiagnostics[CAN_DIAG_LOST_ARBITRATION].asUint++;
     }
 #endif
-    
+
+#ifndef CAN_ADDITIONAL_CANID_CHECKS
     // start an enumeration on first transmit if we are still using canId=0
     if ((canId == 0) && (enumerationState == NO_ENUMERATION)) {
         enumerationState = ENUMERATION_REQUIRED;
         canId = 1;
     }
+#endif
     
     // Pointer to FIFO entry
     txFifoObj = (uint8_t*) C1FIFOUA2;
@@ -665,6 +676,19 @@ static SendResult canSendMessage(Message * mp) {
     if (canId == 0) {
         // Not ready to send as we don't yet have a CANID so start the self enumeration
         startEnumeration(1);
+#ifdef CAN_ADDITIONAL_CANID_CHECKS
+        // Not ready to send as we don't yet have a CANID so start the self enumeration.
+        // KeithB b38 (CAN_ENUM_BEFORE_FIRST_TX): the frame stays queued with TXREQ clear;
+        // processEnumeration() re-stamps the queue with the new CANID and releases it.
+        // Upstream forced canId=1 above and sent immediately, so this was unreachable.
+        if ((enumerationState == NO_ENUMERATION) || ((enumerationState == ENUMERATION_REQUIRED) && !enumerationBackoff)) {
+            startEnumeration(1);    // KeithB b42: also when a hold-off is pending, or the frame was never released
+                                    // KeithB b53: but not while backing off after a failed enumeration: the
+                                    // frame is held and goes out after the retry
+        } else if (enumerationState == ENUMERATION_IN_PROGRESS) {
+            enumerationState = ENUMERATION_IN_PROGRESS_TX_WAITING;
+        }
+#endif
     } else {
         // ready to send as we have a CANID
         C1FIFOCON2H |= _C1FIFOCON2H_TXREQ_MASK; // transmit
@@ -857,6 +881,8 @@ static void handleSelfEnumeration(uint8_t receivedCanId) {
 /**
  * Check if enumeration pending, if so kick it off providing hold off time has expired.
  * If enumeration complete, find and set new can id.
+ * define CAN_ADDITIONAL_CANID_CHECKS to include additional code to retry getting a CANID
+ * if a spare one cannot be found.
  */
 static void processEnumeration(void) {
     uint8_t i, newCanId, enumResult;
@@ -864,11 +890,22 @@ static void processEnumeration(void) {
     switch (enumerationState) {
         case ENUMERATION_REQUIRED:
             // start after a 200ms delay
+#ifdef CAN_ADDITIONAL_CANID_CHECKS
+            // KeithB b53: after an enumeration that found no free CANID, wait ENUMERATION_RETRY
+            if (tickTimeSince(enumerationStartTime) > (enumerationBackoff ? ENUMERATION_RETRY : ENUMERATION_HOLDOFF)) {
+#else
             if (tickTimeSince(enumerationStartTime) > ENUMERATION_HOLDOFF ) {
+#endif
                 /*
                  * Start a Self Enumeration
                  */
+#ifdef CAN_ADDITIONAL_CANID_CHECKS
+                // KeithB b52: with CANID 0, frames may be held in the TX FIFO (not empty)
+                enumerationBackoff = FALSE;
+                startEnumeration((canId == 0) && !C1FIFOSTA2Lbits.TFERFFIF);
+#else
                 startEnumeration(0);
+#endif
             }
             break;
         case ENUMERATION_IN_PROGRESS:
@@ -881,10 +918,10 @@ static void processEnumeration(void) {
                  * Enumeration complete, find first free canid
                  */
                 // Find byte in array with first free flag. Skip over 0xFF bytes
-                for (i=0; (enumerationResults[i] == 0xFF) && (i < ENUM_ARRAY_SIZE); i++) {
+                for (i=0; (i < ENUM_ARRAY_SIZE) && (enumerationResults[i] == 0xFF); i++) {   // KeithB b37: test the bound first
                     ;
-                } 
-                if ((enumResult = enumerationResults[i]) != 0xFF) {
+                }
+                if ((i < ENUM_ARRAY_SIZE) && ((enumResult = enumerationResults[i]) != 0xFF)) {   // KeithB b37
                     for (newCanId = i*8; (enumResult & 0x01); newCanId++) {
                         enumResult >>= 1;
                     }
@@ -906,9 +943,20 @@ static void processEnumeration(void) {
                 }
                 // If there are TX messages waiting then enable them now
                 if (enumerationState == ENUMERATION_IN_PROGRESS_TX_WAITING) {
+#ifdef CAN_ADDITIONAL_CANID_CHECKS
+                    if (canId == 0) {
+                        // KeithB b52: no free CANID found - keep the frames held (never send as
+                        // CANID 0) and enumerate again after ENUMERATION_RETRY (b53: not at once)
+                        enumerationState = ENUMERATION_REQUIRED;
+                        enumerationStartTime.val = tickGet();
+                        enumerationBackoff = TRUE;
+                        break;
+                    }
+#endif
                     // put our new CANID into all the transmit buffers
                     for (i=0; i< CAN1_FIFO2_SIZE; i++) {
-                        *((uint8_t*)(CAN1_FIFO2_BUFFERS_BASE_ADDRESS + (i* (8 + CAN1_FIFO2_PAYLOAD_SIZE)))) = canId & 0x7f;
+                        uint8_t * p = (uint8_t*)(CAN1_FIFO2_BUFFERS_BASE_ADDRESS + (i* (8 + CAN1_FIFO2_PAYLOAD_SIZE)));
+                        *p = (uint8_t)((*p & 0x80) | (canId & 0x7f));   // KeithB b37: keep the priority bit
                     }
                     // now send them all
                     C1FIFOCON2H |= _C1FIFOCON2H_TXREQ_MASK; // transmit
@@ -930,7 +978,11 @@ static CanidResult setNewCanId(uint8_t newCanId) {
     if ((newCanId >= 1) && (newCanId <= 99)) {
         canId = newCanId;
         // Update CANID in FIFO1 waiting message
-        prepareSelfEnumResponse();
+        // KeithB b38: FIFO1 holds one preloaded frame so it is always full here and
+        // prepareSelfEnumResponse() could never refill it; the reply kept the old CANID.
+        // Patch the queued frame's ID byte directly (FIFO1 has exactly one slot).
+        *((uint8_t*)CAN1_FIFO1_BUFFERS_BASE_ADDRESS) = (uint8_t)(canId & 0x7F);
+        //prepareSelfEnumResponse();
         writeNVM(CANID_NVM_TYPE, CANID_ADDRESS, newCanId );       // Update saved value
 #ifdef VLCB_DIAG
         canDiagnostics[CAN_DIAG_CANID_CHANGES].asUint++;
