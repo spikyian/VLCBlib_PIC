@@ -312,7 +312,7 @@ static void canPowerUp(void) {
         C1NBTCFGL = 0x00;   // SJW 1;
         C1NBTCFGH = 0x03;   // TSEG2 4;
         C1NBTCFGU = 0x02;   // TSEG1 3;
-        C1NBTCFGT = 0x3F;   // BRP 15;
+        C1NBTCFGT = (uint8_t)(CAN_CLOCK_MHz - 1);   // BRP: 1 us Tq, 8 Tq = 125 kbit/s (0x3F at 64 MHz)
         // Used to transmit the RTR self enum request
         C1TXQCONL = 0x10;   // TXATIE enabled; TXQEIE disabled; TXQNIE disabled;
         C1TXQCONH = 0x04;   // FRESET enabled; UINC disabled;
