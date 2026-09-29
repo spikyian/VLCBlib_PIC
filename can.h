@@ -131,6 +131,11 @@ typedef enum CanidResult {
 
 /** 
  * Default the drain timeout to 500ms.
+ * canWaitForTxQueueToDrain() busy-waits for up to TX_DRAIN_TIMEOUT_MS without clearing
+ * the watchdog. An application that enables the WDT should define TX_DRAIN_TIMEOUT_MS
+ * in module.h well below the WDT period, allowing for time already elapsed since its
+ * last clear (the Q83 period is only typical). NNRSM and BOOTM write their state before
+ * the drain and reset after it, so a WDT reset during the wait only loses frames still queued.
  */
 #ifndef TX_DRAIN_TIMEOUT_MS
 #define TX_DRAIN_TIMEOUT_MS 500

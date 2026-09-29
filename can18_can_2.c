@@ -154,8 +154,6 @@ const Transport canTransport = {
 static uint8_t canId;
 
 
-static uint8_t  canTransmitFailed;
-
 /**
  *  Rx buffers used to store self consumed events
  */
@@ -170,7 +168,7 @@ enum EnumerationState {
     ENUMERATION_REQUIRED,
     ENUMERATION_IN_PROGRESS,
     ENUMERATION_IN_PROGRESS_TX_WAITING
-} EnumerationState;
+};
 static TickValue  enumerationStartTime;
 static enum EnumerationState enumerationState; 
 #ifdef CAN_ADDITIONAL_CANID_CHECKS
@@ -262,7 +260,6 @@ static void canFactoryReset(void) {
  */
 static void canPowerUp(void) {
     int temp;
-    uint8_t* txFifoObj;
     
     // initialise the RX buffers
     rxQueue.readIndex = 0;
@@ -284,8 +281,6 @@ static void canPowerUp(void) {
     }
     canDiagnostics[CAN_DIAG_COUNT].asUint = NUM_CAN_DIAGNOSTICS;
 #endif
-    
-    canTransmitFailed=0;
         
     // initialise the CAN peripheral
     RB2PPS = 0x46;      // CANTX
@@ -306,7 +301,7 @@ static void canPowerUp(void) {
         C1CONL = 0x00;      // CLKSEL0 disabled; DeviceNet filter disabled
         C1CONH = 0x87;      // ON enabled; SIDL disabled; BUSY disabled; WFT T11 Filter; WAKFIL enabled;
         C1CONU = 0x10;      // TXQEN enabled; STEF disabled; SERR2LOM disabled; ESIGM disabled; RTXAT disabled;
-        C1CONT = 0x50;      // TXBWS=5; ABAT=0; REQOP=0
+        C1CONT = 0x54;      // TXBWS=5; ABAT=0; REQOP=4 (stay in Configuration mode)   KeithB b38: was REQOP=0, which requested Normal FD mode while the FIFOs and bit timing were still being written
         C1NBTCFGL = 0x00;   // SJW 1;
         C1NBTCFGH = 0x03;   // TSEG2 4;
         C1NBTCFGU = 0x02;   // TSEG1 3;
@@ -366,7 +361,7 @@ static void canPowerUp(void) {
     
     IPR0bits.CANIP = 0;
     PIR0bits.CANIF = 0;
-    C1INTUbits.TXIE = 1;          // enable main interrupt
+    //C1INTUbits.TXIE = 1;          // enable main interrupt // KeithB b38: TXIE removed - no TX FIFO interrupt sources are enabled and nothing clears TXIF
     C1INTTbits.RXOVIE = 1;        // enable receive overrun interrupt
     C1INTTbits.IVMIE = 1;         // Enable interrupts for invalid message
 
@@ -450,8 +445,6 @@ static Processed canProcessMessage(Message * m) {
  * CPU time.
  */
 void canPoll() {
-    uint8_t t8;
-    
     processEnumeration();   // Continue or finish CANID enumeration if required
 /*    
     // copy the counts to diagnostic data and extend to 16bits
@@ -507,8 +500,6 @@ uint8_t canEsdData(uint8_t id) {
  * @return a pointer to the diagnostic data or NULL if the data isn't available
  */
 static DiagnosticVal * canGetDiagnostic(uint8_t index) {
-    int16_t i16;
-    
     if (index > NUM_CAN_DIAGNOSTICS) {
         return NULL;
     }
@@ -675,10 +666,9 @@ static SendResult canSendMessage(Message * mp) {
 #endif
     if (canId == 0) {
         // Not ready to send as we don't yet have a CANID so start the self enumeration
-        startEnumeration(1);
 #ifdef CAN_ADDITIONAL_CANID_CHECKS
         // Not ready to send as we don't yet have a CANID so start the self enumeration.
-        // KeithB b38 (CAN_ENUM_BEFORE_FIRST_TX): the frame stays queued with TXREQ clear;
+        // KeithB b38 (CAN_ADDITIONAL_CANID_CHECKS): the frame stays queued with TXREQ clear;
         // processEnumeration() re-stamps the queue with the new CANID and releases it.
         // Upstream forced canId=1 above and sent immediately, so this was unreachable.
         if ((enumerationState == NO_ENUMERATION) || ((enumerationState == ENUMERATION_REQUIRED) && !enumerationBackoff)) {
@@ -688,6 +678,8 @@ static SendResult canSendMessage(Message * mp) {
         } else if (enumerationState == ENUMERATION_IN_PROGRESS) {
             enumerationState = ENUMERATION_IN_PROGRESS_TX_WAITING;
         }
+#else
+        startEnumeration(1);
 #endif
     } else {
         // ready to send as we have a CANID
@@ -725,7 +717,6 @@ static TxDrainResult canWaitForTxQueueToDrain(void) {
             return MESSAGE_TIMEOUT;                                  // error-passive and stalled: no ACK
         }
 #endif
-        CLRWDT();
         if (tickTimeSince(start) > TX_DRAIN_TIMEOUT_MS * ONE_MILI_SECOND) return OVERALL_TIMEOUT;   // busy or stuck bus
     }
     return DRAIN_OK;
@@ -976,13 +967,12 @@ static void processEnumeration(void) {
  */
 static CanidResult setNewCanId(uint8_t newCanId) {
     if ((newCanId >= 1) && (newCanId <= 99)) {
-        canId = newCanId;
-        // Update CANID in FIFO1 waiting message
-        // KeithB b38: FIFO1 holds one preloaded frame so it is always full here and
-        // prepareSelfEnumResponse() could never refill it; the reply kept the old CANID.
-        // Patch the queued frame's ID byte directly (FIFO1 has exactly one slot).
+        canId = newCanId;       
+        // KeithB b38: FIFO1 has one slot, so the self-enumeration reply is always at its base
+        // address. Until the first RTR reply goes out FIFO1 is full, so prepareSelfEnumResponse()
+        // could not refill it and the reply kept the old CANID. Patch the CANID in place; the RTR
+        // reply path (TXREQ | UINC) sends the slot as it stands.
         *((uint8_t*)CAN1_FIFO1_BUFFERS_BASE_ADDRESS) = (uint8_t)(canId & 0x7F);
-        //prepareSelfEnumResponse();
         writeNVM(CANID_NVM_TYPE, CANID_ADDRESS, newCanId );       // Update saved value
 #ifdef VLCB_DIAG
         canDiagnostics[CAN_DIAG_CANID_CHANGES].asUint++;
