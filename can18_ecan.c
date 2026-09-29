@@ -583,6 +583,7 @@ static SendResult canSendMessage(Message * mp) {
  * Queue processing must be done with an interrupt since this is effectively a 
  * tight loop. An overall timeout value may be set with TX_DRAIN_TIMEOUT_MS
  * although this defaults to 500ms if not set in module.h. 
+ * Beware the loop clears WDT during wait.
  * @return result of waiting indicating if the queue drained or whether we reached a timeout
  */
 static TxDrainResult canWaitForTxQueueToDrain(void) {
@@ -590,9 +591,10 @@ static TxDrainResult canWaitForTxQueueToDrain(void) {
     start.val = tickGet();
     
     while ((TXB0CONbits.TXREQ != 0) || (quantity(&txQueue) > 0)) {
+        CLRWDT();
         if (tickTimeSince(start) > TX_DRAIN_TIMEOUT_MS * ONE_MILI_SECOND) return OVERALL_TIMEOUT;   // busy or stuck bus
     }
-    return OK;
+    return DRAIN_OK;
 }
 
 /**

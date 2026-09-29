@@ -129,7 +129,8 @@ typedef enum CanidResult {
     CANID_OK
 } CanidResult;
 
-/** Default the drain timeout to 500ms
+/** 
+ * Default the drain timeout to 500ms.
  */
 #ifndef TX_DRAIN_TIMEOUT_MS
 #define TX_DRAIN_TIMEOUT_MS 500

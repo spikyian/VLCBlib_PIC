@@ -419,9 +419,10 @@ typedef enum SendResult {
  * Indicates the result of waiting for the transmit queue to drain.
  */
 typedef enum TxDrainResult {
-    OK,
+    DRAIN_OK,
     OVERALL_TIMEOUT,
-    MESSAGE_TIMEOUT
+    MESSAGE_TIMEOUT,
+    BUS_OFF_ERROR
 } TxDrainResult;
 /**
  * Transport interface to provide access to a communications bus.
