@@ -104,20 +104,20 @@ void leds_poll(void) {
             break;
         case LED_FLASH_50_2HZ:
             // 1Hz (500ms per on or off is a count of 25 
-            APP_writeLED2(flashCounter[YELLOW_LED]/25); 
+            APP_writeLED2(flashCounter[YELLOW_LED] >= 25);   // KeithB b40: was /25; only the truth value is used, avoids the division library
             if (flashCounter[YELLOW_LED] >= 50) {
                 flashCounter[YELLOW_LED] = 0;
             }
             break;
         case LED_FLASH_50_1HZ:
             // 1Hz (500ms per on or off is a count of 50 
-            APP_writeLED2(flashCounter[YELLOW_LED]/50); 
+            APP_writeLED2(flashCounter[YELLOW_LED] >= 50);   // KeithB b40: was /25; only the truth value is used, avoids the division library
             if (flashCounter[YELLOW_LED] >= 100) {
                 flashCounter[YELLOW_LED] = 0;
             }
             break;
         case LED_FLASH_50_HALF_HZ:
-            APP_writeLED2(flashCounter[YELLOW_LED]/100);
+            APP_writeLED2(flashCounter[YELLOW_LED] >= 100);   // KeithB b40: was /25; only the truth value is used, avoids the division library
             if (flashCounter[YELLOW_LED] >= 200) {
                 flashCounter[YELLOW_LED] = 0;
             }
@@ -170,20 +170,20 @@ void leds_poll(void) {
             break;
         case LED_FLASH_50_2HZ:
             // 1Hz (500ms per cycle is a count of 25 
-            APP_writeLED1(flashCounter[GREEN_LED]/25); 
+            APP_writeLED1(flashCounter[GREEN_LED] >= 25);   // KeithB b40: was /25; only the truth value is used, avoids the division library
             if (flashCounter[GREEN_LED] >= 50) {
                 flashCounter[GREEN_LED] = 0;
             }
             break;
         case LED_FLASH_50_1HZ:
             // 1Hz (500ms per cycle is a count of 50 
-            APP_writeLED1(flashCounter[GREEN_LED]/50); 
+            APP_writeLED1(flashCounter[GREEN_LED] >= 50);   // KeithB b40: was /25; only the truth value is used, avoids the division library 
             if (flashCounter[GREEN_LED] >= 100) {
                 flashCounter[GREEN_LED] = 0;
             }
             break;
         case LED_FLASH_50_HALF_HZ:
-            APP_writeLED1(flashCounter[GREEN_LED]/100);
+            APP_writeLED1(flashCounter[GREEN_LED] >= 100);   // KeithB b40: was /25; only the truth value is used, avoids the division library
             if (flashCounter[GREEN_LED] >= 200) {
                 flashCounter[GREEN_LED] = 0;
             }

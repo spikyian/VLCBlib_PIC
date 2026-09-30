@@ -571,8 +571,9 @@ static uint8_t getNumRxBuffersInUse(void) {
  * @return SEND_OK if a message was sent, SEND_FAIL if FIFO was full
  */
 static SendResult canSendMessage(Message * mp) {
-    uint8_t i;
     uint8_t* txFifoObj;
+    uint8_t pri;
+    
 #ifdef VLCB_DIAG
     uint16_t temp;
 #endif
@@ -638,8 +639,9 @@ static SendResult canSendMessage(Message * mp) {
     
     // Pointer to FIFO entry
     txFifoObj = (uint8_t*) C1FIFOUA2;
-    txFifoObj[0] = (uint8_t)((canPri[priorities[mp->opc]] & 1) << 7) | (canId & 0x7F);      // Put ID
-    txFifoObj[1] = canPri[priorities[mp->opc]] >> 1;
+    pri = canPri[priorities[mp->opc]];   // KeithB b40: two table lookups once instead of twice per frame
+    txFifoObj[0] = (uint8_t)((pri & 1) << 7) | (canId & 0x7F);      // Put ID
+    txFifoObj[1] = pri >> 1;
     txFifoObj[4] = (mp->len&0xF);       // Standard frame, length in DLC
     txFifoObj[5] = 0;       // No sequence number
     txFifoObj[6] = 0;       // No sequence number

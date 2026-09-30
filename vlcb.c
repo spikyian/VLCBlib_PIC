@@ -750,6 +750,7 @@ static Message tmpMessage;
  */
 static TickValue timedResponseTime;
 static uint8_t timedResponseDelay;
+static uint32_t timedResponseTicks;   // KeithB b40: delay in ticks, computed once instead of a widening multiply every poll()
 
 /**
  * Timer value set at the start of each loop.
@@ -902,6 +903,7 @@ static void powerUp(void) {
     initTimedResponse();
     leds_powerUp();
     timedResponseDelay = 5;
+    timedResponseTicks = (uint32_t)timedResponseDelay*ONE_MILI_SECOND;   // KeithB b40
     
     for (i=0; i<NUM_SERVICES; i++) {
         if ((services[i] != NULL) && (services[i]->powerUp != NULL)) {
@@ -920,6 +922,7 @@ static void powerUp(void) {
  */
 void setTimedResponseDelay(uint8_t delay) {
     timedResponseDelay = delay;
+    timedResponseTicks = (uint32_t)delay*ONE_MILI_SECOND;   // KeithB b40
 }
 
 
@@ -1030,7 +1033,8 @@ static void poll(void) {
     
     /* handle any timed responses */
     // KeithB b40: tick read once per pass (tickNowGet)
-    if (tickTimeSinceNow(timedResponseTime) > (long)timedResponseDelay*ONE_MILI_SECOND) {
+    // KeithB b40: tick read once per pass (tickNowGet), precomputed timed-response period
+    if (tickTimeSinceNow(timedResponseTime) > timedResponseTicks) {
         pollTimedResponse();
         timedResponseTime.val = tickNowGet();
     }
