@@ -496,7 +496,7 @@ static Processed mnsProcessMessage(Message * m) {
             } else {
                 // bytes[2] is a serviceIndex
                 if (m->bytes[2] > NUM_SERVICES) {
-                    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_RDGN, 1, GRSP_INVALID_SERVICE);
+                    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_RDGN, SERVICE_ID_MNS, GRSP_INVALID_SERVICE);   // KeithB b4
                     return PROCESSED;
                 }
                 if (services[m->bytes[2]-1]->getDiagnostic == NULL) {
@@ -513,7 +513,7 @@ static Processed mnsProcessMessage(Message * m) {
                     DiagnosticVal * d = services[m->bytes[2]-1]->getDiagnostic(m->bytes[3]);
                     if (d == NULL) {
                         // the requested diagnostic doesn't exist
-                        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_RDGN, 1, GRSP_INVALID_DIAGNOSTIC);
+                        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_RDGN, SERVICE_ID_MNS, GRSP_INVALID_DIAGNOSTIC);   // KeithB b4
                     } else {
                         // it was a request for a single diagnostic from a single service
                         sendMessage6(OPC_DGN, nn.bytes.hi, nn.bytes.lo, m->bytes[2], m->bytes[3],d->asBytes.hi, d->asBytes.lo);

@@ -119,10 +119,12 @@ static Processed consumerProcessMessage(Message *m) {
             if (m->bytes[2] == MODE_EVENT_ACK_ON) {
                 // Enable event ack mode
                 mode_flags |= FLAG_MODE_EVENTACK;
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_CONSUMER, GRSP_OK);   // KeithB b40
                 return PROCESSED;
             } else if (m->bytes[2] == MODE_EVENT_ACK_OFF) {
                 // Stop event ack
                 mode_flags &= ~FLAG_MODE_EVENTACK;
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_CONSUMER, GRSP_OK);   // KeithB b40
                 return PROCESSED;
             }
         } 

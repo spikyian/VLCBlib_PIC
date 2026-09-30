@@ -556,7 +556,7 @@ static void doReval(uint8_t enNum, uint8_t evNum) {
     int evVal;
     
     if (tableIndex >= NUM_EVENTS) {
-        sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_EV_IDX);
+        sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_EN_IDX);   // KeithB b40: it is the event index that is bad
         return;
     }
 
