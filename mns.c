@@ -735,6 +735,10 @@ static void mnsPoll(void) {
                     if (mode_state == MODE_NORMAL) {
                         // restore the NN
                         nn.word = previousNN.word;
+                        // KeithB b36: save it too. MODE SETUP (from Normal) writes NN 0 to NVM,
+                        // so after a cancel the module rebooted as Normal with NN 0
+                        writeNVM(NN_NVM_TYPE, NN_ADDRESS+1, nn.bytes.hi);
+                        writeNVM(NN_NVM_TYPE, NN_ADDRESS, nn.bytes.lo);
                         sendMessage2(OPC_NNACK, nn.bytes.hi, nn.bytes.lo);
 #ifdef VLCB_DIAG
                         mnsDiagnostics[MNS_DIAGNOSTICS_NNCHANGE].asUint++;
