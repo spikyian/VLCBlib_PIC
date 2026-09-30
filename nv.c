@@ -353,8 +353,10 @@ static Processed nvProcessMessage(Message * m) {
  */
 static uint8_t nvGetESDdata(uint8_t id) {
     switch (id) {
-        case 1: return NV_NUM;
-        default: return 0;
+        case 1: 
+            return NV_NUM;
+        default: 
+            return 0;
     }
 }
 #endif

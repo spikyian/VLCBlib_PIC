@@ -252,11 +252,11 @@ static DiagnosticVal * consumerGetDiagnostic(uint8_t index) {
  * @return the ESD data
  */
 static uint8_t consumerEsdData(uint8_t index) {
-    switch (index){
-        case 0:
-            return CONSUMER_EV_NOT_SPECIFIED;
-        default:
-            return 0;
+    switch (index) {
+        case 1:     // KeithB b38: ESD data is requested with index 1..3, not 0
+             return CONSUMER_EV_NOT_SPECIFIED;
+         default:
+             return 0;
     }
 }
 #endif

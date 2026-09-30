@@ -180,10 +180,8 @@ void incrementProducerCounter() {
  */
 static uint8_t producerEsdData(uint8_t index) {
     switch (index){
-        case 0:
-            return PRODUCER_EV_HAPPENING;
         case 1:
-            return HAPPENING_SIZE;
+            return PRODUCER_EV_NOT_SPECIFIED;
         default:
             return 0;
     }

@@ -193,9 +193,9 @@ static DiagnosticVal * producerGetDiagnostic(uint8_t index) {
  */
 static uint8_t producerEsdData(uint8_t index) {
     switch (index){
-        case 0:
-            return PRODUCER_EV_HAPPENING;
         case 1:
+            return PRODUCER_EV_HAPPENING;
+        case 2:
             return HAPPENING_SIZE;
         default:
             return 0;
