@@ -204,7 +204,7 @@ static Processed consumerProcessMessage(Message *m) {
     }
     // we have the event in the event table
     // check that we have a consumed Action
-    if ((mode_flags & FLAG_MODE_EVENTACK) && (isConsumedEvent(tableIndex))) {
+    if (mode_flags & FLAG_MODE_EVENTACK) {
         // sent the ack
         sendMessage7(OPC_ENACK, nn.bytes.hi, nn.bytes.lo, (uint8_t)(m->opc), m->bytes[0], m->bytes[1], m->bytes[2], m->bytes[3]);
 #ifdef VLCB_DIAG
