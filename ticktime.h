@@ -229,6 +229,14 @@ typedef union _TickValue {
 } TickValue;
 
 
+// KeithB b40: one tickGet() per main-loop pass. With TICK_ONCE_PER_PASS defined in module.h
+// the main loop refreshes tickNow once and the poll paths compare against it instead of each
+// calling tickGet() (35 instructions plus a TMR0 interrupt disable/enable) - about seven times
+// per pass before this. Busy-wait loops that call leds_poll() must call tickRefresh() themselves.
+extern TickValue tickNow;
+#define tickRefresh()           (tickNow.val = tickGet())
+#define tickNowGet()            (tickNow.val)
+#define tickTimeSinceNow(t)     (tickNowGet() - (t).val)
 // Global routine definitions
 
 /**

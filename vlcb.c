@@ -751,6 +751,10 @@ static Message tmpMessage;
 static TickValue timedResponseTime;
 static uint8_t timedResponseDelay;
 
+/**
+ * Timer value set at the start of each loop.
+ */
+TickValue tickNow;   // KeithB b40: tick value read once per main-loop pass
 
 /**
  * Used to control how often it is checked whether any of the flash buffer
@@ -929,6 +933,7 @@ uint8_t pbDownTimer(uint8_t timeout) {
     // determine how long the button is held for
     pbTimer.val = tickGet();
     while (APP_pbPressed()) {
+        tickRefresh();      // KeithB b40: leds_poll() reads tickNow
         leds_poll();
         if (tickTimeSince(pbTimer) > timeout*ONE_SECOND) {
             return 0;   // timeout
@@ -948,6 +953,7 @@ uint8_t pbUpTimer(uint8_t timeout) {
     // determine how long the button is released for
     pbTimer.val = tickGet();
     while (! (APP_pbPressed())) {
+        tickRefresh();      // KeithB b40
         leds_poll();
         if (tickTimeSince(pbTimer) > timeout*ONE_SECOND) {
             return 0;   // timeout
@@ -999,6 +1005,7 @@ static void checkPowerOnPb(void) {
         // otherwise a press that outlived the timeout was seen by mnsPoll() as a >4s press
         // and dropped the module to Uninitialised.
         while (APP_pbPressed()) {
+            tickRefresh();      // KeithB b40
             leds_poll();
         }
         pbTimer.val = tickGet();
@@ -1022,13 +1029,14 @@ static void poll(void) {
     Processed handled;
     
     /* handle any timed responses */
-    if (tickTimeSince(timedResponseTime) > (long)timedResponseDelay*ONE_MILI_SECOND) {
+    // KeithB b40: tick read once per pass (tickNowGet)
+    if (tickTimeSinceNow(timedResponseTime) > (long)timedResponseDelay*ONE_MILI_SECOND) {
         pollTimedResponse();
-        timedResponseTime.val = tickGet();
+        timedResponseTime.val = tickNowGet();
     }
-    if (tickTimeSince(flashFlushTime) > ONE_SECOND) {
+    if (tickTimeSinceNow(flashFlushTime) > ONE_SECOND) {
         flushFlashBlock();
-        flashFlushTime.val = tickGet();
+        flashFlushTime.val = tickNowGet();
     }
     /* call any service polls */
     for (i=0; i<NUM_SERVICES; i++) {
@@ -1370,6 +1378,7 @@ void main(void) {
     while(1) {
         // poll the services as quickly as possible.
         // up to service to ignore the polls it doesn't need.
+        tickNow.val = tickGet();    // KeithB b40: one tickGet() per pass (b42: written out so it cannot silently compile to nothing)
         poll();
         loop();
     }

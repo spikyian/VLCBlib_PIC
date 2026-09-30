@@ -654,11 +654,11 @@ static void mnsPoll(void) {
 #ifdef VLCB_DIAG
     // Heartbeat message
     if (mode_state == MODE_NORMAL) {
-        if (tickTimeSince(heartbeatTimer) > 5*ONE_SECOND) {
+        if (tickTimeSinceNow(heartbeatTimer) > 5*ONE_SECOND) { // KeithB b40: tick value read once per pass (tickNowGet / tickTimeSinceNow)
             if (mode_flags & FLAG_MODE_HEARTBEAT) {
                 sendMessage5(OPC_HEARTB, nn.bytes.hi,nn.bytes.lo,heartbeatSequence++,mnsDiagnostics[MNS_DIAGNOSTICS_STATUS].asBytes.lo,0);
             }
-            heartbeatTimer.val = tickGet();
+            heartbeatTimer.val = tickNowGet();
             if (mnsDiagnostics[MNS_DIAGNOSTICS_STATUS].asBytes.lo > 0) {
                 mnsDiagnostics[MNS_DIAGNOSTICS_STATUS].asBytes.lo--;
             }
@@ -685,8 +685,8 @@ static void mnsPoll(void) {
     }
 #ifdef VLCB_DIAG
     // Module uptime
-    if (tickTimeSince(uptimeTimer) > ONE_SECOND) {
-        uptimeTimer.val = tickGet();
+    if (tickTimeSinceNow(uptimeTimer) > ONE_SECOND) {// KeithB b40: tick value read once per pass (tickNowGet / tickTimeSinceNow)
+        uptimeTimer.val = tickNowGet();
         mnsDiagnostics[MNS_DIAGNOSTICS_UPTIMEL].asUint++;
         if (mnsDiagnostics[MNS_DIAGNOSTICS_UPTIMEL].asUint == 0) {
             mnsDiagnostics[MNS_DIAGNOSTICS_UPTIMEH].asUint++;
@@ -700,10 +700,10 @@ static void mnsPoll(void) {
             // check the PB status
             if (APP_pbPressed() == 0) {
                 // pb has been released
-                pbTimer.val = tickGet();
+                pbTimer.val = tickNowGet();// KeithB b40: tick value read once per pass (tickNowGet / tickTimeSinceNow)
             } else {
                 // No need to release the PB
-                if (tickTimeSince(pbTimer) > 4*ONE_SECOND) {
+                if (tickTimeSinceNow(pbTimer) > 4*ONE_SECOND) { // KeithB b40: tick value read once per pass (tickNowGet / tickTimeSinceNow)
                     // Do state transition from Uninitialised to Setup
                     mode_state = MODE_PRESETUP;
                     setupModePreviousMode = MODE_UNINITIALISED;
@@ -718,7 +718,7 @@ static void mnsPoll(void) {
                 // Do state transition from Uninitialised to Setup
                 mode_state = MODE_SETUP;
                 setupModePreviousMode = MODE_UNINITIALISED;
-                pbTimer.val = tickGet();    // reset the timer ready for Setup mode
+                pbTimer.val = tickNowGet();    // reset the timer ready for Setup mode // KeithB b40: tick value read once per pass (tickNowGet / tickTimeSinceNow)
                 //start the request for NN
                 sendMessage2(OPC_RQNN, nn.bytes.hi, nn.bytes.lo);
                 setLEDsByMode();
@@ -729,7 +729,7 @@ static void mnsPoll(void) {
             if (APP_pbPressed() == 0) {
                 // PB has been released
 
-                if (pbWasPushed && (tickTimeSince(pbTimer) > HUNDRED_MILI_SECOND) && (tickTimeSince(pbTimer) < 2*ONE_SECOND)) {   // KeithB b36: pbWasPushed as in Normal
+                if (pbWasPushed && (tickTimeSinceNow(pbTimer) > HUNDRED_MILI_SECOND) && (tickTimeSinceNow(pbTimer) < 2*ONE_SECOND)) {   // KeithB b36: pbWasPushed as in Normal
                     // a short press returns to previous mode
                     mode_state = setupModePreviousMode;
                     if (mode_state == MODE_NORMAL) {
@@ -746,11 +746,11 @@ static void mnsPoll(void) {
                     }
                     setLEDsByMode();
                 }
-                if (pbWasPushed && (tickTimeSince(pbTimer) > 4*ONE_SECOND)) {   // KeithB b36
+                if (pbWasPushed && (tickTimeSinceNow(pbTimer) > 4*ONE_SECOND)) {   // KeithB b36
                     mode_state = MODE_UNINITIALISED;
                     setLEDsByMode();
                 }
-                pbTimer.val = tickGet();
+                pbTimer.val = tickNowGet();
                 pbWasPushed = FALSE;
             } else {
                 pbWasPushed = TRUE;
@@ -760,7 +760,7 @@ static void mnsPoll(void) {
             // check the PB status
             if (APP_pbPressed() == 0) {
                 // PB has been released
-                if (pbWasPushed && (tickTimeSince(pbTimer) > HUNDRED_MILI_SECOND) && (tickTimeSince(pbTimer) < 2*ONE_SECOND)) {
+                if (pbWasPushed && (tickTimeSinceNow(pbTimer) > HUNDRED_MILI_SECOND) && (tickTimeSinceNow(pbTimer) < 2*ONE_SECOND)) {
                     // Do State transition from Normal to Setup
                     previousNN.word = nn.word;  // save the old NN
                     nn.bytes.lo = nn.bytes.hi = 0;
@@ -771,7 +771,7 @@ static void mnsPoll(void) {
                     sendMessage2(OPC_RQNN, previousNN.bytes.hi, previousNN.bytes.lo);
                     setLEDsByMode();
                 }
-                if (pbWasPushed &&(tickTimeSince(pbTimer) >= 4*ONE_SECOND)) {
+                if (pbWasPushed &&(tickTimeSinceNow(pbTimer) >= 4*ONE_SECOND)) {
                     // was down for more than 4 sec, Move to Uninitialised
                     previousNN.word = nn.word;  // save the old NN
                     nn.bytes.lo = nn.bytes.hi = 0;
@@ -782,7 +782,7 @@ static void mnsPoll(void) {
                     sendMessage2(OPC_NNREL, previousNN.bytes.hi, previousNN.bytes.lo);
                     setLEDsByMode();
                 }
-                pbTimer.val = tickGet();
+                pbTimer.val = tickNowGet();
                 pbWasPushed = FALSE;
             } else {
                 pbWasPushed = TRUE;

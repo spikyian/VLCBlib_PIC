@@ -87,10 +87,10 @@ void leds_powerUp(void) {
  * Controls the flashing and flicker of the LEDs.
  */
 void leds_poll(void) {
-    if (tickTimeSince(ledTimer) > TEN_MILI_SECOND) {
+    if (tickTimeSinceNow(ledTimer) > TEN_MILI_SECOND) {
         flashCounter[GREEN_LED]++;
         flashCounter[YELLOW_LED]++;
-        ledTimer.val = tickGet();
+        ledTimer.val = tickNowGet();
     }
     // update the actual LEDs based upon their state
     switch (ledState[YELLOW_LED]) {
