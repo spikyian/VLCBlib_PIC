@@ -804,7 +804,10 @@ void setup(void);
  * processing during normal operation.
  */
 void loop(void);
-
+/**
+ * PB_TIMEOUT (0xFF) distinguishes a timeout from a press shorter than one second.
+ */
+#define PB_TIMEOUT 0xFF // KeithB b40: PB_TIMEOUT (0xFF) distinguishes a timeout from a press shorter than one second
 /*
  * Code to ensure that after bootloading the version is invalid so that a factoryReset will take 
  * place. Sets the data version to 0xFF
@@ -930,16 +933,16 @@ void setTimedResponseDelay(uint8_t delay) {
  * Time how long the pb is held down for, with a timeout.
  * 
  * @param timeout number of seconds to wait
- * @return seconds pb held down or 0 for a timeout
+ * @return seconds pb held down or PB_TIMEOUT for a timeout
  */
-uint8_t pbDownTimer(uint8_t timeout) {
+static uint8_t pbDownTimer(uint8_t timeout) {
     // determine how long the button is held for
     pbTimer.val = tickGet();
     while (APP_pbPressed()) {
         tickRefresh();      // KeithB b40: leds_poll() reads tickNow
         leds_poll();
         if (tickTimeSince(pbTimer) > timeout*ONE_SECOND) {
-            return 0;   // timeout
+            return PB_TIMEOUT;   // timeout
         }
     }
     // no longer pressed
@@ -950,16 +953,16 @@ uint8_t pbDownTimer(uint8_t timeout) {
  * Time how long the pb is released down for, with a timeout.
  * 
  * @param timeout number of seconds to wait
- * @return seconds pb released or 0 for a timeout
+ * @return seconds pb released or PB_TIMEOUT for a timeout
  */
-uint8_t pbUpTimer(uint8_t timeout) {
+static uint8_t pbUpTimer(uint8_t timeout) {
     // determine how long the button is released for
     pbTimer.val = tickGet();
     while (! (APP_pbPressed())) {
         tickRefresh();      // KeithB b40
         leds_poll();
         if (tickTimeSince(pbTimer) > timeout*ONE_SECOND) {
-            return 0;   // timeout
+            return PB_TIMEOUT;   // timeout
         }
     }
     // now pressed
@@ -986,16 +989,19 @@ static void checkPowerOnPb(void) {
         // determine how long the button is held for
         i = pbDownTimer(28);
         if (i == 0) {
-            //Timeout
+            // A press shorter than one second: do nothing   KeithB b40
             return;
+        } else if (i == PB_TIMEOUT) {
+            // KeithB b42: held past 28 s - do nothing, but fall through to the release wait
+            // below so mnsPoll() does not see the press (b40 returned here and re-opened the b36 bug)
         } else if (i < 4) {
             APP_testMode();
         } else if (i >= 8) {
             showStatus(STATUS_RESET_WARNING);
             // wait for pb down max 5 seconds
             i = pbUpTimer(5);
-            if (i == 0) {
-                // Timeout
+             if (i == PB_TIMEOUT) {
+                // Timeout   KeithB b40: a release shorter than one second no longer aborts the sequence
                 return;
             }
             i = pbDownTimer(5);
