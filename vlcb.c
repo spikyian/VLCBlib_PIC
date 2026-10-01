@@ -1294,6 +1294,11 @@ void main(void) {
     uint8_t i;
     uint8_t t1,t2;
     
+    /* KeithB b46: the application's safe pin state, before anything that takes
+     * time (vlcb.h VLCB_EARLY_INIT). Nothing precedes this. 
+     */
+    APP_earlyInit();
+
     /*
      * Set up the processor clock
      */
