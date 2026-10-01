@@ -248,6 +248,9 @@ static Processed bootProcessMessage(Message * m) {
         case OPC_BOOT:
             // Set the bootloader flag to be picked up by the bootloader
             writeNVM(BOOT_FLAG_NVM_TYPE, BOOT_FLAG_ADDRESS, 0xFF); 
+#ifdef VLCB_EEPROM_ASYNC
+            flushNVM();  // KeithB b47, LCR-005: the boot flag must be on EEPROM before the reset
+#endif
             RESET();     // will enter the bootloader
             return PROCESSED;
         default:

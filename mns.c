@@ -483,6 +483,9 @@ static Processed mnsProcessMessage(Message * m) {
                 sendMessage2(OPC_NNREL, previousNN.bytes.hi, previousNN.bytes.lo);
                 transport->waitForTxQueueToDrain();
             }
+#ifdef VLCB_EEPROM_ASYNC
+            flushNVM();     // KeithB b47, LCR-005: queued NVM writes must land before the reset
+#endif
             RESET();
 #ifdef VLCB_DIAG
         case OPC_RDGN:  // diagnostics
@@ -597,6 +600,9 @@ static Processed mnsProcessMessage(Message * m) {
             return NOT_PROCESSED;
 #endif
         case OPC_NNRST: // reset CPU
+#ifdef VLCB_EEPROM_ASYNC
+            flushNVM();     // KeithB b47, LCR-005: queued NVM writes must land before the reset
+#endif
             RESET();
             return PROCESSED;   // should never get here
         default:

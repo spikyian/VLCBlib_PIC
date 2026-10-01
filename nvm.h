@@ -191,4 +191,28 @@ extern ValidTime APP_isSuitableTimeToWriteFlash(void);
  * @return the value
  */
 eeprom_data_t EEPROM_Read(eeprom_address_t index);   // KeithB b14-25: used by CANPAN3 EEPROMbuffer.c to verify writes
+
+#ifdef VLCB_EEPROM_ASYNC
+/*
+ * KeithB b47, LCR-004 VLCB_EEPROM_ASYNC n (opt-in, Q83): EEPROM writes made
+ * through writeNVM() are queued (depth n) and written in the background, one
+ * step per nvmPoll() (called from vlcb.c poll()), so no write stalls the main
+ * loop for the ~11 ms byte-write time (MEM24). A second write to a queued cell
+ * replaces the queued value; readNVM() returns a queued value before it reaches
+ * EEPROM; each byte is verified and retried up to 3 times; with VLCB_VDD_GUARD a
+ * low rail holds the head entry (dropped as refused after 1 s). A full queue is
+ * drained and the write made in line - counted, never lost.
+ * flushNVM() drains the queue, blocking. The library calls it before every
+ * RESET() (LCR-005); an application must call it before any reset of its own.
+ * Counters (saturating at 65535) for an application's diagnostics.
+ */
+extern void nvmPoll(void);
+extern void flushNVM(void);
+extern uint16_t nvmAsyncWrites;       // bytes written and verified
+extern uint16_t nvmAsyncFailures;     // bytes abandoned after 3 failed attempts
+extern uint16_t nvmAsyncRefused;      // bytes dropped after 1 s of low-rail refusal
+extern uint16_t nvmAsyncFallbacks;    // writes made in line because the queue was full
+extern uint8_t  nvmAsyncHighWater;    // most entries ever queued
+extern uint8_t  nvmAsyncPending(void);  // entries queued now, including one in flight
+#endif
 #endif

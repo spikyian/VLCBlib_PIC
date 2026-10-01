@@ -207,6 +207,28 @@ static void teachFactoryReset(void) {
 static void teachPowerUp(void) {
     uint8_t i;
 
+#ifdef EVENT_TABLE_HEAL_ERASED
+    // KeithB b54: a power cut between a flash page erase and its write leaves that page
+    // erased (0xFF). Its rows would read as events with EN 0xFFFF (only EN 0 marks a free
+    // row) and could never be taught over. Flags 0xFF is never written by the library
+    // (it writes 0 or EVENT_FLAG_DEFAULT), so flags 0xFF with EN 0xFFFF is an erased row:
+    // clear it. Nothing is written unless such a row exists.
+    {
+        uint8_t healed = 0;
+        for (i=0; i<NUM_EVENTS; i++) {
+            uint24_t row = EVENT_TABLE_ADDRESS + (uint24_t)EVENTTABLE_WIDTH * i;
+            if (((uint8_t)readNVM(EVENT_TABLE_NVM_TYPE, row + EVENTTABLE_OFFSET_FLAGS) == 0xFF)
+                    && ((uint8_t)readNVM(EVENT_TABLE_NVM_TYPE, row + EVENTTABLE_OFFSET_ENH) == 0xFF)
+                    && ((uint8_t)readNVM(EVENT_TABLE_NVM_TYPE, row + EVENTTABLE_OFFSET_ENL) == 0xFF)) {
+                clearTableEntry(i);
+                healed = 1;
+            }
+        }
+        if (healed) {
+            flushFlashBlock();
+        }
+    }
+#endif
 #ifdef EVENT_HASH_TABLE
     rebuildHashtable();
 #endif

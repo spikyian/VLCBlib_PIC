@@ -180,6 +180,15 @@ static Boolean enumerationBackoff;
 #endif
 #endif
 static uint8_t    enumerationResults[ENUM_ARRAY_SIZE];
+#ifdef CANID_PREFERRED
+/* KeithB b44 (additive, only with CANID_PREFERRED in module.h): a module that
+ * has a preferred CANID takes it at its FIRST acquisition - blank/cleared
+ * EEPROM, a factory reset, or (CANID_MIGRATE_ADDRESS) the first boot after
+ * the preferred value was introduced or changed - if the self-enumeration
+ * finds it free; otherwise it takes the lowest free 1-99 as before. Once
+ * stored, a CANID is kept (normal conflict handling still applies). */
+static Boolean canIdFirstAcquire;
+#endif
 #define arraySetBit( array, index ) ( array[index>>3] |= ( 1<<(index & 0x07) ) )
 
 // forward declarations
@@ -273,6 +282,15 @@ static void canPowerUp(void) {
     } else {
         canId = (uint8_t)temp;
     }
+#ifdef CANID_PREFERRED
+    if ((temp <= 0) || (temp > MAX_CANID)) canId = 0;     // blank (0xFF) or cleared: none yet
+#ifdef CANID_MIGRATE_ADDRESS
+    if (readNVM(CANID_NVM_TYPE, CANID_MIGRATE_ADDRESS) != CANID_PREFERRED) {
+        canId = 0;              // once per preferred value: marked when the enumeration has decided
+    }
+#endif
+    canIdFirstAcquire = (canId == 0);
+#endif
 #ifdef VLCB_DIAG
     // clear the diagnostic stats
     for (temp=1; temp<NUM_CAN_DIAGNOSTICS; temp++) {
@@ -551,16 +569,19 @@ static uint8_t getNumTxBuffersInUse(void) {
  * @return number of RX buffers in use
  */
 static uint8_t getNumRxBuffersInUse(void) {
+    // KeithB b37: for a receive FIFO both C1FIFOUA3 and FIFOCI describe the read
+    // side, so the previous arithmetic always gave 0. The peripheral does not
+    // expose the write pointer; estimate from the status flags instead.
     if (C1FIFOSTA3Lbits.TFERFFIF) {   // FIFO full
         return CAN1_FIFO3_SIZE;
-    } else {
-        int16_t i16;
-        
-        i16 = (int16_t)((CAN1_FIFO3_BUFFERS_BASE_ADDRESS - C1FIFOUA3)/(8+CAN1_FIFO3_PAYLOAD_SIZE)); // write index
-        i16 += C1FIFOSTA3Hbits.FIFOCI; // read index
-        if (i16 < 0) i16 += CAN1_FIFO3_SIZE;
-        return (uint8_t) i16;
     }
+    if (C1FIFOSTA3Lbits.TFHRFHIF) {   // FIFO at least half full
+        return CAN1_FIFO3_SIZE/2;
+    }
+    if (C1FIFOSTA3Lbits.TFNRFNIF) {   // FIFO not empty
+        return 1;
+    }
+    return 0;
 }
 #endif
 
@@ -579,6 +600,17 @@ static SendResult canSendMessage(Message * mp) {
 #endif
 #ifdef CONSUMED_EVENTS
     Message * m;
+#endif
+    // Done if FIFO full
+    if (!C1FIFOSTA2Lbits.TFNRFNIF) {
+#ifdef VLCB_DIAG
+        canDiagnostics[CAN_DIAG_TX_BUFFER_OVERRUN].asUint++;
+        updateModuleErrorStatus();
+#endif
+        return SEND_FAILED;
+    }
+#ifdef CONSUMED_EVENTS
+    // KeithB b37: only queue for self-consumption once we know the frame will be sent
 
     // If this is an event we are sending then put it onto the rx queue so
     // we can consume our own events.
@@ -612,14 +644,6 @@ static SendResult canSendMessage(Message * mp) {
         }
     }
 #endif
-    // Done if FIFO full
-    if (!C1FIFOSTA2Lbits.TFNRFNIF) {
-#ifdef VLCB_DIAG
-        canDiagnostics[CAN_DIAG_TX_BUFFER_OVERRUN].asUint++;
-        updateModuleErrorStatus();
-#endif
-        return SEND_FAILED;
-    }
 #ifdef VLCB_DIAG
     // Did previous TX fail arbitration?
     // This is really not the best place to detect arbitration failure but
@@ -633,7 +657,11 @@ static SendResult canSendMessage(Message * mp) {
     // start an enumeration on first transmit if we are still using canId=0
     if ((canId == 0) && (enumerationState == NO_ENUMERATION)) {
         enumerationState = ENUMERATION_REQUIRED;
+#ifdef CANID_PREFERRED
+        canId = CANID_PREFERRED;    // b44: use it meanwhile; the enumeration confirms or moves it
+#else
         canId = 1;
+#endif
     }
 #endif
     
@@ -878,6 +906,9 @@ static void handleSelfEnumeration(uint8_t receivedCanId) {
  */
 static void processEnumeration(void) {
     uint8_t i, newCanId, enumResult;
+#ifdef CANID_PREFERRED
+    Boolean keptPreferred = FALSE;   // KeithB b44: the preferred CANID was free and has been taken
+#endif
 
     switch (enumerationState) {
         case ENUMERATION_REQUIRED:
@@ -906,6 +937,19 @@ static void processEnumeration(void) {
              * Continue Self Enumeration
              */
             if (tickTimeSince(enumerationStartTime) > ENUMERATION_TIMEOUT ) {
+#ifdef CANID_PREFERRED
+                if (canIdFirstAcquire) {
+                    canIdFirstAcquire = FALSE;
+#ifdef CANID_MIGRATE_ADDRESS
+                    writeNVM(CANID_NVM_TYPE, CANID_MIGRATE_ADDRESS, CANID_PREFERRED);
+#endif
+                    if (!(enumerationResults[CANID_PREFERRED >> 3] & (1 << (CANID_PREFERRED & 0x07)))) {
+                        setNewCanId(CANID_PREFERRED);       // free: keep the preferred CANID
+                        keptPreferred = TRUE;
+                    }
+                }
+                if (!keptPreferred) {   // KeithB b44: otherwise the lowest free CANID as before
+#endif
                 /*
                  * Enumeration complete, find first free canid
                  */
@@ -933,6 +977,9 @@ static void processEnumeration(void) {
                     updateModuleErrorStatus();
 #endif
                 }
+#ifdef CANID_PREFERRED
+                }
+#endif
                 // If there are TX messages waiting then enable them now
                 if (enumerationState == ENUMERATION_IN_PROGRESS_TX_WAITING) {
 #ifdef CAN_ADDITIONAL_CANID_CHECKS
@@ -967,7 +1014,11 @@ static void processEnumeration(void) {
  * @return CANID_OK upon success CANID_FAIL otherwise
  */
 static CanidResult setNewCanId(uint8_t newCanId) {
+#ifdef CANID_PREFERRED
+    if (((newCanId >= 1) && (newCanId <= 99)) || (newCanId == CANID_PREFERRED)) {
+#else
     if ((newCanId >= 1) && (newCanId <= 99)) {
+#endif
         canId = newCanId;       
         // KeithB b38: FIFO1 has one slot, so the self-enumeration reply is always at its base
         // address. Until the first RTR reply goes out FIFO1 is full, so prepareSelfEnumResponse()
