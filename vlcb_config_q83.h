@@ -3,24 +3,25 @@
  * @brief
  * Template configuration words for a VLCB module on a PIC18F27/47/57Q83.
  * @details
- * The library does not set any configuration words. An application that needs them in its
- * hex (a stand-alone PICkit build, or a combined bootloader + application image) includes
- * this file from exactly ONE of its source files, e.g. main.c:
+ * The library does not set any configuration words. Every application includes this file
+ * from exactly ONE of its source files, e.g. main.c:
  *
  *     #include "vlcb_config_q83.h"
  *
- * or copies it into its own source and changes what it needs.
+ * or an identical copy of it. Without it, an application built with "Program the device with
+ * default config words" (-mdefault-config-bits) puts the device defaults in its hex, and an
+ * application-only PICkit image leaves the chip with its erased defaults.
  *
- * - The values here are those of CBUS_PIC_Bootloader hwsettings.c, except WRTB and WRTC,
- *   which are left clear (see CONFIG8 below). The bootloader owns the words: keep the
- *   application's copy identical to it, except for bits the bootloader does not care about
- *   (e.g. CLKOUTEN, ZCD). In a combined image both sets land at 0x300000 and any difference
- *   means one silently wins.
+ * - The values here are those of CBUS_PIC_Bootloader hwsettings.c. In a combined bootloader +
+ *   application image both sets land at 0x300000, and hexmate (which merges loadables) stops
+ *   with an error if they differ in any bit. So keep this file identical to hwsettings.c, and
+ *   change the two together. Bits the bootloader does not care about (e.g. CLKOUTEN, ZCD) may
+ *   be changed only in an application that is never combined with the bootloader.
  * - XINST must stay OFF: XC8 C code (application and bootloader) needs it off.
  * - Give complete configuration words: XC8 fills any bit of a word that is not specified
  *   with the device default.
  * - FCU and MMC write configuration words to a module only when the user ticks the CONFIG
- *   box; the Q83 bootloader does not write them.
+ *   box; with WRTC = ON (below) the bootloader cannot write them anyway.
  */
 #ifndef VLCB_CONFIG_Q83_H
 #define VLCB_CONFIG_Q83_H
@@ -73,12 +74,8 @@
 #pragma config SAFEN =   OFF     // Storage Area Flash enable bit->SAF disabled
 
 //CONFIG8
-    // KeithB: WRTB and WRTC are left clear. Once set they can only be cleared by a PICkit bulk
-    // erase, so a bootloader could never be updated in place. Today's hwsettings.c sets both;
-    // until it is changed to match, a combined image built with this template differs from
-    // the bootloader in these two bits only, and whichever set wins, the chip works.
-#pragma config WRTB =    OFF     // Boot Block Write Protection bit->Boot Block not write protected
-#pragma config WRTC =    OFF     // Configuration Register Write Protection bit->Configuration registers not write protected
+#pragma config WRTB =    ON     // Boot Block Write Protection bit->Boot Block Write protected
+#pragma config WRTC =    ON     // Configuration Register Write Protection bit->Configuration registers Write protected
 #pragma config WRTD =    OFF     // Data EEPROM Write Protection bit->Data EEPROM not Write protected
 #pragma config WRTSAF =  OFF     // SAF Write protection bit->SAF not Write Protected
 #pragma config WRTAPP =  OFF     // Application Block write protection bit->Application Block not write protected

@@ -3,15 +3,19 @@
  * @brief
  * Template configuration words for a VLCB module on a PIC18F25K80/26K80 (K80 family).
  * @details
- * The library does not set any configuration words. An application that needs them in its
- * hex includes this file from exactly ONE of its source files, e.g. main.c:
+ * The library does not set any configuration words. Every application includes this file
+ * from exactly ONE of its source files, e.g. main.c:
  *
  *     #include "vlcb_config_k80.h"
  *
- * or copies it into its own source and changes what it needs.
+ * or an identical copy of it. Without it, an application built with "Program the device with
+ * default config words" (-mdefault-config-bits) puts the device defaults in its hex.
  *
- * - The values here are those of CBUS_PIC_Bootloader hwsettings.c. Keep the application's copy
- *   identical to it, except for bits the bootloader does not care about (e.g. MSSPMSK).
+ * - The values here are those of CBUS_PIC_Bootloader hwsettings.c. In a combined bootloader +
+ *   application image both sets land at 0x300000, and hexmate (which merges loadables) stops
+ *   with an error if they differ in any bit. So keep this file identical to hwsettings.c, and
+ *   change the two together. Bits the bootloader does not care about (e.g. MSSPMSK) may be
+ *   changed only in an application that is never combined with the bootloader.
  * - XINST must stay OFF: XC8 C code (application and bootloader) needs it off.
  * - Give complete configuration words: XC8 fills any bit of a word that is not specified
  *   with the device default.
