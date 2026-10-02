@@ -945,10 +945,10 @@ static void processEnumeration(void) {
                 // Enumeration complete, find first free canid
 
                 // Find byte in array with first free flag. Skip over 0xFF bytes
-                for (i=0; (enumerationResults[i] == 0xFF) && (i < ENUM_ARRAY_SIZE); i++) {
+                for (i=0; (i < ENUM_ARRAY_SIZE) && (enumerationResults[i] == 0xFF); i++) {
                     ;
                 } 
-                if ((enumResult = enumerationResults[i]) != 0xFF) {
+                if ((i < ENUM_ARRAY_SIZE) && (enumResult = enumerationResults[i]) != 0xFF) {
                     for (newCanId = i*8; (enumResult & 0x01); newCanId++) {
                         enumResult >>= 1;
                     }
