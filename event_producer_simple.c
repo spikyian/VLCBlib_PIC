@@ -57,7 +57,7 @@
 extern Boolean validStart(uint8_t tableIndex);
 
 // Forward function declarations
-static Processed producerProcessMessage(Message *m);
+static Processed producerProcessMessage(Message *m) __reentrant;   /* KeithB: off the compiled stack - XC8 case 01901775 */
 #ifdef VLCB_DIAG
 static void producerPowerUp(void);
 static DiagnosticVal * producerGetDiagnostic(uint8_t index);

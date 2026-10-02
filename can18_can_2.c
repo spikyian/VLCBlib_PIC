@@ -94,7 +94,7 @@
 static void canFactoryReset(void);
 static void canPowerUp(void);
 static void canPoll(void);
-static Processed canProcessMessage(Message * m);
+static Processed canProcessMessage(Message * m) __reentrant;   /* KeithB: off the compiled stack - XC8 case 01901775 */
 static void canIsr(void);
 static uint8_t canEsdData(uint8_t id);
 static void prepareSelfEnumResponse(void);

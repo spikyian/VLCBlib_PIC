@@ -64,7 +64,7 @@
 
 // forward declarations
 static void bootPowerUp(void);
-static Processed bootProcessMessage(Message * m);
+static Processed bootProcessMessage(Message * m) __reentrant;   /* KeithB: off the compiled stack - XC8 case 01901775 */
 static uint8_t bootEsdData(uint8_t id);
 
 /**
