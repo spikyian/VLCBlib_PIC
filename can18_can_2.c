@@ -72,6 +72,11 @@
 #include "ticktime.h"
 #include "messageQueue.h"
 
+// Check that CAN_CLOCK_MHz has been set to a valid value
+#if !defined(CAN_CLOCK_MHz) || ((CAN_CLOCK_MHz != 16) && (CAN_CLOCK_MHz != 32) && (CAN_CLOCK_MHz != 64))
+#error "CAN_CLOCK_MHz must be 16, 32 or 64"
+#endif
+
 #define CAN1_BUFFERS_BASE_ADDRESS           0x3BB0  // Allows for 0x450 of CAN buffers (4+1+32+32)*(16) = 69*16 = 0x450
 // High priority transmit queue
 #define CAN1_TXQ_BUFFERS_BASE_ADDRESS       CAN1_BUFFERS_BASE_ADDRESS

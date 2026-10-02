@@ -840,7 +840,6 @@ static void poll(void) {
     Processed handled;
     
     /* handle any timed responses */
-    // KeithB b40: tick read once per pass (tickNowGet)
     // KeithB b40: tick read once per pass (tickNowGet), precomputed timed-response period
     if (tickTimeSinceNow(timedResponseTime) > timedResponseTicks) {
         pollTimedResponse();

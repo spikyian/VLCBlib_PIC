@@ -63,6 +63,11 @@
 #include "ticktime.h"
 #include "messageQueue.h"
 
+// Check that CAN_CLOCK_MHz has been set to a valid value
+#if !defined(CAN_CLOCK_MHz) || ((CAN_CLOCK_MHz != 16) && (CAN_CLOCK_MHz != 32) && (CAN_CLOCK_MHz != 64))
+#error "CAN_CLOCK_MHz must be 16, 32 or 64"
+#endif
+
 //
 // ECAN registers
 //
@@ -744,24 +749,26 @@ static void checkTxFifo( void ) {
 #ifdef CONSUMED_EVENTS
                 // If this is an event we are sending then put it onto the rx queue so
             if (isEvent(mp->opc)) {
-                // we can consume our own events.
-                m = getNextWriteMessage(&rxQueue);
-                if (m == NULL) {
+                if (have(SERVICE_ID_CONSUME_OWN_EVENTS)) {
+                    // we can consume our own events.
+                    m = getNextWriteMessage(&rxQueue);
+                    if (m == NULL) {
 #ifdef VLCB_DIAG
-                    canDiagnostics[CAN_DIAG_RX_BUFFER_OVERRUN].asUint++;
-                    updateModuleErrorStatus();
+                        canDiagnostics[CAN_DIAG_RX_BUFFER_OVERRUN].asUint++;
+                        updateModuleErrorStatus();
 #endif
-                } else {
-                    // copy ECAN buffer to message
-                    m->opc = mp->opc;
-                    m->len = mp->len;
-                    m->bytes[0] = mp->bytes[0];
-                    m->bytes[1] = mp->bytes[1];
-                    m->bytes[2] = mp->bytes[2];
-                    m->bytes[3] = mp->bytes[3];
-                    m->bytes[4] = mp->bytes[4];
-                    m->bytes[5] = mp->bytes[5];
-                    m->bytes[6] = mp->bytes[6];
+                    } else {
+                        // copy ECAN buffer to message
+                        m->opc = mp->opc;
+                        m->len = mp->len;
+                        m->bytes[0] = mp->bytes[0];
+                        m->bytes[1] = mp->bytes[1];
+                        m->bytes[2] = mp->bytes[2];
+                        m->bytes[3] = mp->bytes[3];
+                        m->bytes[4] = mp->bytes[4];
+                        m->bytes[5] = mp->bytes[5];
+                        m->bytes[6] = mp->bytes[6];
+                    }
                 }
             }
 #endif
