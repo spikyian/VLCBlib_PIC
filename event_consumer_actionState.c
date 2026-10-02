@@ -57,7 +57,7 @@
 
 static DiagnosticVal consumerDiagnostics[NUM_CONSUMER_DIAGNOSTICS+1];
 static void consumerPowerUp(void);
-static Processed consumerProcessMessage(Message * m);
+static Processed consumerProcessMessage(Message * m) __reentrant;   /* KeithB: off the compiled stack - XC8 case 01901775 */
 static DiagnosticVal * consumerGetDiagnostic(uint8_t index); 
         
 /**

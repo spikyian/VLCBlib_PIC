@@ -123,7 +123,7 @@
 static void mnsFactoryReset(void) __reentrant;
 static void mnsPowerUp(void) __reentrant;
 static void mnsPoll(void) __reentrant;
-static Processed mnsProcessMessage(Message * m);
+static Processed mnsProcessMessage(Message * m) __reentrant;   /* KeithB: off the compiled stack - XC8 case 01901775 */
 static void mnsLowIsr(void) __reentrant;
 static uint8_t getParameter(uint8_t);
 #ifdef VLCB_DIAG
