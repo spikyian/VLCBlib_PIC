@@ -1220,6 +1220,18 @@ void __interrupt(low_priority) __section("mainSec") isrLow() {
 #if defined(_18FXXQ83_FAMILY_)
 void __interrupt(irq(default), base(IVT_BASE)) DEFAULT_ISR(void)
 {
-// Unhandled interrupts go here
+/* Unhandled interrupts go here.
+ * It is likely that an unhandled interrupt will cause the CPU to spin as the
+ * interrupt flag will not be cleared and this ISR will be immediately re-entered
+ * after exit from this ISR.
+ * 
+ * For Q83 the VLCB framework uses the IVT so that if the application requires an
+ * interrupt then it should also define and hook in its own ISR.
+ * For K80 an application's ISR needs to be explicitly called and probably best done
+ * using an application specific service and using the Service ISR function. 
+ * 
+ * This default handler could call RESET() but that isn't any better to debug.
+ */
+    
 }
 #endif
