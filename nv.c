@@ -104,7 +104,7 @@ const Service nvService = {
  *  nv cache
  */
 #ifdef NV_CACHE
-static uint8_t nvCache[NV_NUM+1];
+static uint8_t nvCache[PARAM_NUM_NV+1];
 #endif
 
 /**
@@ -125,7 +125,7 @@ extern uint8_t APP_nvDefault(uint8_t index);
  */
 static void nvFactoryReset(void) {
     uint8_t i;
-    for (i=1; i<= NV_NUM; i++) {
+    for (i=1; i<= PARAM_NUM_NV; i++) {
         writeNVM(NV_NVM_TYPE, NV_ADDRESS+i, APP_nvDefault(i));
     }
 }
@@ -163,7 +163,7 @@ void loadNvCache(void) {
     uint8_t i;
     int16_t temp;
     
-    for (i=1; i<= NV_NUM; i++) {
+    for (i=1; i<= PARAM_NUM_NV; i++) {
         temp = readNVM(NV_NVM_TYPE, NV_ADDRESS+i);
         if (temp < 0) {
             // unsure how to handle an error here
@@ -180,8 +180,8 @@ void loadNvCache(void) {
  * @return the NV value
  */
 int16_t getNV(uint8_t index) {
-    if (index == 0) return NV_NUM;
-    if (index > NV_NUM) return -CMDERR_INV_NV_IDX;
+    if (index == 0) return PARAM_NUM_NV;
+    if (index > PARAM_NUM_NV) return -CMDERR_INV_NV_IDX;
 #ifdef NV_CACHE
     return nvCache[index];
 #else
@@ -218,7 +218,7 @@ void saveNV(uint8_t index, uint8_t value) {
 uint8_t setNV(uint8_t index, uint8_t value) {
     uint8_t oldValue;
     
-    if ((index == 0) || (index > NV_NUM)) return CMDERR_INV_NV_IDX;   // KeithB b35: NV#0 is read-only
+    if ((index == 0) || (index > PARAM_NUM_NV)) return CMDERR_INV_NV_IDX;   // KeithB b35: NV#0 is read-only
     if (APP_nvValidate(index, value) == INVALID) return CMDERR_INV_NV_VALUE;
 #ifdef NV_CACHE
     oldValue = nvCache[index];
@@ -354,7 +354,7 @@ static Processed nvProcessMessage(Message * m) {
 static uint8_t nvGetESDdata(uint8_t id) {
     switch (id) {
         case 1: 
-            return NV_NUM;
+            return PARAM_NUM_NV;
         default: 
             return 0;
     }
@@ -370,7 +370,7 @@ static uint8_t nvGetESDdata(uint8_t id) {
  */
 TimedResponseResult nvTRnvrdCallback(uint8_t type, uint8_t serviceIndex, uint8_t step) {
     int16_t valueOrError;
-    if (step > NV_NUM) {
+    if (step > PARAM_NUM_NV) {
         return TIMED_RESPONSE_RESULT_FINISHED;
     }
     valueOrError = getNV(step+1);

@@ -518,7 +518,7 @@ static Processed teachCheckLen(Message * m, uint8_t needed, uint8_t learn) {
  */
 static uint8_t teachGetESDdata(uint8_t id) {
     switch (id) {
-        case 1: return NUM_EVENTS;
+        case 1: return PARAM_NUM_EVENTS;
         case 2: return PARAM_NUM_EV_EVENT;
         default: return 0;
     }
@@ -548,7 +548,7 @@ static DiagnosticVal * teachGetDiagnostic(uint8_t index) {
  */
 static void clearAllEvents(void) {
     uint8_t tableIndex;
-    for (tableIndex=0; tableIndex<NUM_EVENTS; tableIndex++) {
+    for (tableIndex=0; tableIndex<PARAM_NUM_EVENTS; tableIndex++) {
         // set the free flag
         writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_ROW_WIDTH*tableIndex + EVENTTABLE_OFFSET_FLAGS, 0xff);
     }
@@ -566,7 +566,7 @@ static void doNnevn(void) {
     // count the number of unused slots.
     uint8_t count = 0;
     uint8_t i;
-    for (i=0; i<NUM_EVENTS; i++) {
+    for (i=0; i<PARAM_NUM_EVENTS; i++) {
         EventTableFlags f;
         f.asByte = (uint8_t)readNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_ROW_WIDTH*i+EVENTTABLE_OFFSET_FLAGS);
         if (f.freeEntry) {
@@ -595,7 +595,7 @@ static void doNerd(void) {
 TimedResponseResult nerdCallback(uint8_t type, uint8_t serviceIndex, uint8_t step){
     Word nodeNumber, eventNumber;
     // The step is used to index through the event table
-    if (step >= NUM_EVENTS) {  // finished?
+    if (step >= PARAM_NUM_EVENTS) {  // finished?
         return TIMED_RESPONSE_RESULT_FINISHED;
     }
     // if its not free and not a continuation then it is start of an event
@@ -641,7 +641,7 @@ static void doRqevn(void) {
     // Count the number of used slots.
     uint8_t count = 0;
     uint8_t i;
-    for (i=0; i<NUM_EVENTS; i++) {
+    for (i=0; i<PARAM_NUM_EVENTS; i++) {
         if (validStart(i)) {
             count++;    
         }
@@ -721,7 +721,7 @@ static void doReval(uint8_t enNum, uint8_t evNum) {
     evIndex = evNum-1U;    // Convert from CBUS numbering (starts at 1 for produced action))
     
     // check it is a valid index
-    if (tableIndex < NUM_EVENTS) {
+    if (tableIndex < PARAM_NUM_EVENTS) {
         if (validStart(tableIndex)) {
             int evVal;
             
@@ -888,7 +888,7 @@ static uint8_t removeTableEntry(uint8_t tableIndex) {
             tableIndex = (uint8_t)readNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_ROW_WIDTH*tableIndex+EVENTTABLE_OFFSET_NEXT);
             f.asByte = (uint8_t)readNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_ROW_WIDTH*tableIndex+EVENTTABLE_OFFSET_FLAGS);
         
-            if (tableIndex >= NUM_EVENTS) return CMDERR_INV_EV_IDX; // shouldn't be necessary
+            if (tableIndex >= PARAM_NUM_EVENTS) return CMDERR_INV_EV_IDX; // shouldn't be necessary
                     
             // set the free flag
             writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_ROW_WIDTH*tableIndex+EVENTTABLE_OFFSET_FLAGS, 0xff);
@@ -916,7 +916,7 @@ void checkRemoveTableEntry(uint8_t tableIndex) {
         if (getEVs(tableIndex)) {
             return;
         }
-        for (e=0; e<EVperEVT; e++) {
+        for (e=0; e<PARAM_NUM_EV_EVENT; e++) {
             if (evs[e] != EV_FILL) {
                 return;
             }
@@ -955,7 +955,7 @@ uint8_t addEvent(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8
         }
         error = 1;
         // didn't find the event so find an empty slot and create one
-        for (tableIndex=0; tableIndex<NUM_EVENTS; tableIndex++) {
+        for (tableIndex=0; tableIndex<PARAM_NUM_EVENTS; tableIndex++) {
             EventTableFlags f;
             f.asByte = (uint8_t)readNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_ROW_WIDTH*tableIndex+EVENTTABLE_OFFSET_FLAGS);
             if (f.freeEntry) {
@@ -1069,7 +1069,7 @@ uint8_t writeEv(uint8_t tableIndex, uint8_t evNum, uint8_t evVal) {
                 return 0;
             }
             // find the next free entry
-            for (nextIdx = tableIndex+1 ; nextIdx < NUM_EVENTS; nextIdx++) {
+            for (nextIdx = tableIndex+1 ; nextIdx < PARAM_NUM_EVENTS; nextIdx++) {
                 EventTableFlags nextF;
                 nextF.asByte = (uint8_t)readNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_ROW_WIDTH*nextIdx+EVENTTABLE_OFFSET_FLAGS);
                 if (nextF.freeEntry) {
@@ -1092,7 +1092,7 @@ uint8_t writeEv(uint8_t tableIndex, uint8_t evNum, uint8_t evVal) {
                     break;
                 }
             }
-            if (nextIdx >= NUM_EVENTS) {
+            if (nextIdx >= PARAM_NUM_EVENTS) {
                 // ran out of table entries
                 return CMDERR_TOO_MANY_EVENTS;
             }
@@ -1352,7 +1352,7 @@ void rebuildHashtable(void) {
     }
     // now scan the event2Action table and populate the hash and lookup tables
     
-    for (tableIndex=0; tableIndex<NUM_EVENTS; tableIndex++) {
+    for (tableIndex=0; tableIndex<PARAM_NUM_EVENTS; tableIndex++) {
         if (validStart(tableIndex)) {
             int16_t ev;
     

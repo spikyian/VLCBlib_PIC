@@ -286,7 +286,7 @@ Boolean sendProducedEvent(Happening happening, EventState onOff) {
  */
 void deleteHappeningRange(Happening happening, uint8_t number) {
     uint8_t tableIndex;
-    for (tableIndex=0; tableIndex < NUM_EVENTS; tableIndex++) {
+    for (tableIndex=0; tableIndex < PARAM_NUM_EVENTS; tableIndex++) {
         if ( validStart(tableIndex)) {
             EventTableFlags f;
             Happening h;

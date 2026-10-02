@@ -367,7 +367,7 @@ static Processed teachCheckLen(Message * m, uint8_t needed, uint8_t learn) {
  */
 static uint8_t teachGetESDdata(uint8_t id) {
     switch (id) {
-        case 1: return NUM_EVENTS;
+        case 1: return PARAM_NUM_EVENTS;
         case 2: return PARAM_NUM_EV_EVENT;
         default: return 0;
     }
@@ -399,7 +399,7 @@ void clearAllEvents(void) {
     uint8_t tableIndex;
 
     // KeithB b36: clear every row, then flush and rebuild once (was per row: O(n^2), seconds)
-    for (tableIndex=0; tableIndex<NUM_EVENTS; tableIndex++) {
+    for (tableIndex=0; tableIndex<PARAM_NUM_EVENTS; tableIndex++) {
         clearTableEntry(tableIndex);
     }
     flushFlashBlock();
@@ -416,7 +416,7 @@ static void doNnevn(void) {
     // count the number of unused slots.
     uint8_t count = 0;
     uint8_t i;
-    for (i=0; i<NUM_EVENTS; i++) {
+    for (i=0; i<PARAM_NUM_EVENTS; i++) {
         uint16_t eventNumber;
         eventNumber = getEN(i);
         if (eventNumber == 0) {
@@ -445,7 +445,7 @@ static void doNerd(void) {
 TimedResponseResult nerdCallback(uint8_t type, uint8_t serviceIndex, uint8_t step){
     Word nodeNumber, eventNumber;
     // The step is used to index through the event table
-    if (step >= NUM_EVENTS) {  // finished?
+    if (step >= PARAM_NUM_EVENTS) {  // finished?
         return TIMED_RESPONSE_RESULT_FINISHED;
     }
 
@@ -470,7 +470,7 @@ static void doNenrd(uint8_t index) {
     
     tableIndex = evtIdxToTableIndex(index);
     // check this is a valid index
-    if (tableIndex >= NUM_EVENTS) {
+    if (tableIndex >= PARAM_NUM_EVENTS) {
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_EN_IDX);
 #ifdef VLCB_GRSP
                 sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NENRD, SERVICE_ID_OLD_TEACH, CMDERR_INV_EN_IDX);
@@ -492,7 +492,7 @@ static void doRqevn(void) {
     // Count the number of used slots.
     uint8_t count = 0;
     uint8_t i;
-    for (i=0; i<NUM_EVENTS; i++) {
+    for (i=0; i<PARAM_NUM_EVENTS; i++) {
         uint16_t eventNumber;
         eventNumber = getEN(i);
         if (eventNumber != 0) {
@@ -564,7 +564,7 @@ static void doReval(uint8_t enNum, uint8_t evNum) {
     uint8_t tableIndex = evtIdxToTableIndex(enNum);
     int evVal;
     
-    if (tableIndex >= NUM_EVENTS) {
+    if (tableIndex >= PARAM_NUM_EVENTS) {
         sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_EN_IDX);   // KeithB b40: it is the event index that is bad
         return;
     }
@@ -572,7 +572,7 @@ static void doReval(uint8_t enNum, uint8_t evNum) {
     evIndex = evNum-1U;    // Convert from CBUS numbering (starts at 1 for produced action))
     
     if (evNum == 0) {
-        evVal = EVperEVT;
+        evVal = PARAM_NUM_EV_EVENT;
         if ((mode_flags & FLAG_MODE_FCUCOMPAT) == 0) {
             // send all of the EVs
             // Note this somewhat abuses the type parameter
@@ -642,7 +642,7 @@ static void doReqev(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum) {
     }
     
     if (evNum == 0) {
-        evVal = EVperEVT;
+        evVal = PARAM_NUM_EV_EVENT;
         if ((mode_flags & FLAG_MODE_FCUCOMPAT) == 0) {
             sendMessage6(OPC_EVANS, nodeNumber>>8, nodeNumber&0xFF, eventNumber>>8, eventNumber&0xFF, 0, numEv(tableIndex));
             // send all of the EVs
@@ -773,7 +773,7 @@ uint8_t addEvent(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8
 #endif
         errno = CMDERR_TOO_MANY_EVENTS;
         // didn't find the event so find an empty slot and create one
-        for (tableIndex=0; tableIndex<NUM_EVENTS; tableIndex++) {
+        for (tableIndex=0; tableIndex<PARAM_NUM_EVENTS; tableIndex++) {
             uint16_t en = getEN(tableIndex);
             if (en == 0) {
                 uint8_t e;
@@ -787,7 +787,7 @@ uint8_t addEvent(uint16_t nodeNumber, uint16_t eventNumber, uint8_t evNum, uint8
                 } else {
                     writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_FLAGS, 0);
                 }
-                for (e = 0; e < EVENT_TABLE_WIDTH; e++) {   // in this case EVENT_TABLE_WIDTH == EVperEvt
+                for (e = 0; e < PARAM_NUM_EV_EVENT; e++) { 
                     writeNVM(EVENT_TABLE_NVM_TYPE, EVENT_TABLE_ADDRESS + EVENTTABLE_WIDTH*tableIndex+EVENTTABLE_OFFSET_EVS+e, EV_FILL);
                 }
                 errno = 0;
@@ -875,7 +875,7 @@ uint8_t writeEv(uint8_t tableIndex, uint8_t evNum, uint8_t evVal) {
     if (evNum >= PARAM_NUM_EV_EVENT) {
         return CMDERR_INV_EV_IDX;
     }
-    if (tableIndex >= NUM_EVENTS) {
+    if (tableIndex >= PARAM_NUM_EVENTS) {
         return CMDERR_INV_EN_IDX;
     }
     
@@ -892,7 +892,7 @@ uint8_t writeEv(uint8_t tableIndex, uint8_t evNum, uint8_t evVal) {
  * @return the ev value or -error code if error
  */
 int16_t getEv(uint8_t tableIndex, uint8_t evNum) {
-    if (tableIndex >= NUM_EVENTS) {
+    if (tableIndex >= PARAM_NUM_EVENTS) {
         return -CMDERR_INV_EN_IDX;   // KeithB b36: errors are negative
     }
     if (evNum >= PARAM_NUM_EV_EVENT) {
@@ -924,7 +924,7 @@ uint8_t evs[PARAM_NUM_EV_EVENT];
 uint8_t getEVs(uint8_t tableIndex) {
     uint24_t addr = EVENT_ROW_ADDRESS(tableIndex) + EVENTTABLE_OFFSET_EVS;   // KeithB b40: hoisted out of the loop
     uint8_t evIdx;
-    if (tableIndex >= NUM_EVENTS) {
+    if (tableIndex >= PARAM_NUM_EVENTS) {
         return CMDERR_INV_EN_IDX;
     }
 
@@ -946,7 +946,7 @@ uint16_t getNN(uint8_t tableIndex) {
     uint16_t lo;
     uint8_t flags;
     uint24_t row = EVENT_ROW_ADDRESS(tableIndex);   // KeithB b40: row address once
-    if (tableIndex >= NUM_EVENTS) {
+    if (tableIndex >= PARAM_NUM_EVENTS) {
         return CMDERR_INV_EN_IDX;
     }
     
@@ -1049,7 +1049,7 @@ void rebuildHashtable(void) {
         }
     }
     // now scan the event2Action table and populate the hash and lookup tables
-    for (tableIndex=0; tableIndex<NUM_EVENTS; tableIndex++) {
+    for (tableIndex=0; tableIndex<PARAM_NUM_EVENTS; tableIndex++) {
         uint16_t en = getEN(tableIndex);   // KeithB b36: read once
         if (en != 0) {
             // found the start of an event definition
