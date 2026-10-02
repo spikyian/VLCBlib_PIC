@@ -68,9 +68,9 @@
 
 // CONFIG2L
 #pragma config PWRTEN =    ON      // Power Up Timer (Enabled)
-#pragma config BOREN =     SBORDIS      // Brown Out Detect (Disabled in hardware, SBOREN disabled)
+#pragma config BOREN =     SBORDIS      // Brown Out Detect (Enabled in hardware, SBOREN disabled)
 #pragma config BORV =      0         // Brown-out Reset Voltage bits (3.0V)
-#pragma config BORPWR =    ZPBORMV // BORMV Power level (ZPBORMV instead of BORMV is selected)
+#pragma config BORPWR =    MEDIUM // BORMV set to MEDIUM power level 
 
 // CONFIG2H
 #pragma config WDTEN =     OFF      // Watchdog Timer (WDT disabled in hardware; SWDTEN bit disabled)
