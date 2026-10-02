@@ -456,6 +456,14 @@ extern const Transport * transport;
  */
 extern ValidTime APP_isSuitableTimeToWriteFlash(void);
 
+/**
+ * Application function called before any other VLCB set up is done. You cannot rely
+ * on any VLCB functionality being initialised. You may provide an implementation
+ * of this function to set up application specific hardware as early as possible to 
+ * prevent glitches or hardware issues.
+ */
+extern void APP_earlyInit(void);
+
 /*
  * The default value for the node number.
  */

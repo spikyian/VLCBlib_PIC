@@ -127,6 +127,7 @@ const Service canService = {
 // forward declarations
 static SendResult canSendMessage(Message * mp);
 static MessageReceived canReceiveMessage(Message * m);
+static TxDrainResult canWaitForTxQueueToDrain(void);
 
 /**
  * The transport descriptor for the CAN service. The application must set
