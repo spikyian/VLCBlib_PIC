@@ -83,7 +83,7 @@
 
 // CONFIG4L
 #pragma config STVREN =    ON      // Stack Overflow Reset (Enabled)
-#pragma config BBSIZ =     BB1K     // Boot Block Size (1K word Boot Block size)
+#pragma config BBSIZ =     BB2K     // Boot Block Size (2K word Boot Block size)
 
 // CONFIG5L
 #pragma config CP0 =       OFF        // Code Protect 00800-01FFF (Disabled)
