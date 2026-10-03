@@ -552,6 +552,36 @@ uint8_t eeBootFlag = 0;
 #define VLCB_MESSAGES_PER_POLL  1
 #endif
 
+/* Startup delay control 
+ * VLCB_VDD_GUARD  (Q83 and K80 families)
+ *   Defined to the family's own HLVD level code - Q83: HLVDCON1 SEL (DS40002265C
+ *   50.4.6; 0x0B = 3.64/4.00/4.36 V min/typ/max); K80: HLVDL<3:0> (DS30009977G
+ *   D420; 0x0B = 3.82/3.91/4.10 V, the nearest to the Q83's 0x0B). Replaces the
+ *   fixed ~1 s start-up delay with a wait for the supply, and guards every NVM
+ *   write:
+ *   - main() enables HLVD at that level and waits until Vdd has been above it
+ *     for VLCB_VDD_STABLE_MS (default 50) continuously, giving up and going on
+ *     after VLCB_VDD_STARTUP_MAX_MS (default 2000) so a marginal supply still
+ *     boots. A supply that is already up boots in ~50 ms instead of ~1 s.
+ *   
+ *   The module must leave the HLVD enabled (PMD on the Q83; it is at reset) and
+ *   may re-programme it to the same level for its own use. K80: HLVDIF is
+ *   level-sensitive (cleared while Vdd is still below, it sets again), which is
+ *   how the K80 branch reads "Vdd above".
+ */
+#if defined(VLCB_VDD_GUARD)
+#ifndef VLCB_VDD_STABLE_MS
+#define VLCB_VDD_STABLE_MS  50
+#endif
+#ifndef VLCB_VDD_STARTUP_MAX_MS
+#define VLCB_VDD_STARTUP_MAX_MS  2000
+#endif
+#endif
+#ifndef _XTAL_FREQ
+#define _XTAL_FREQ  ((unsigned long)clkMHz * 1000000UL)   /* for __delay_ms(): Fosc, as ticktime.c */
+#endif
+
+
 
 /**
  * The module's transport interface.
@@ -1151,6 +1181,40 @@ void main(void) {
     }
 #endif
     
+#if defined(VLCB_VDD_GUARD)
+    /* KeithB b46, VLCB_VDD_GUARD (vlcb.h): wait for the supply itself rather
+     * than a fixed second - HLVD at the module's level, Vdd above it for
+     * VLCB_VDD_STABLE_MS continuously, bounded by VLCB_VDD_STARTUP_MAX_MS.
+     * The MCP111-450 dongle this replaces did the same thing at 4.5 V. */
+    {
+        uint16_t waited = 0, stable = 0;
+        uint8_t above;
+#if defined(_18FXXQ83_FAMILY_)
+        HLVDCON1 = (uint8_t)(VLCB_VDD_GUARD);
+        HLVDCON0 = 0x80;                             /* EN; OUT = 1 while Vdd is below the level */
+#endif
+#if defined(_18F66K80_FAMILY_)
+        HLVDCON = (uint8_t)(0x10u | ((VLCB_VDD_GUARD) & 0x0Fu));   /* HLVDEN, VDIRMAG 0: flags Vdd at or below the level */
+#endif
+        while (waited < (uint16_t)VLCB_VDD_STARTUP_MAX_MS) {
+            __delay_ms(1);
+            waited++;
+#if defined(_18FXXQ83_FAMILY_)
+            above = HLVDCON0bits.RDY && !HLVDCON0bits.OUT;
+#endif
+#if defined(_18F66K80_FAMILY_)
+            PIR2bits.HLVDIF = 0;                     /* level-sensitive: sets again at once if still below */
+            __delay_us(5);
+            above = HLVDCONbits.IRVST && HLVDCONbits.BGVST && !PIR2bits.HLVDIF;
+#endif
+            if (above) {
+                if (++stable >= (uint16_t)VLCB_VDD_STABLE_MS) break;
+            } else {
+                stable = 0;
+            }
+        }
+    }
+#else
     /* Introduce a startup delay so that the power supply can stabilise */
     /* Without this EEPROM can get corrupted during power up. A  MCP111-450 
      * dongle does resolve this but is unnecessary with this software fix. 
@@ -1163,6 +1227,7 @@ void main(void) {
             }
         }
     }
+#endif
     
     /*
      * Set up the interrupts
