@@ -259,216 +259,13 @@
  * @details
  * Provides the functionality for main() and interrupt processing. 
  * Also contains the functionality to handle the list of services.
- * Contains the PIC CONFIG settings.
+ * The PIC configuration words are not set here: see vlcb_config_q83.h / vlcb_config_k80.h.
  */
 
-#if defined(_18F66K80_FAMILY_) 
-// CONFIG1L
-#pragma config RETEN =     OFF      // VREG Sleep Enable bit (Ultra low-power regulator is Disabled (Controlled by REGSLP bit))
-#pragma config INTOSCSEL = HIGH // LF-INTOSC Low-power Enable bit (LF-INTOSC in High-power mode during Sleep)
-#pragma config SOSCSEL =   DIG    // SOSC Power Selection and mode Configuration bits (Digital (SCLKI) mode)
-#pragma config XINST =     OFF      // Extended Instruction Set (Disabled)
-
-// CONFIG1H
-#pragma config FOSC =      HS1       // Oscillator (HS oscillator (Medium power, 4 MHz - 16 MHz))
-#pragma config PLLCFG =    OFF      // PLL x4 Enable bit (Disabled)
-#pragma config FCMEN =     OFF      // Fail-Safe Clock Monitor (Disabled)
-#pragma config IESO =      OFF       // Internal External Oscillator Switch Over Mode (Disabled)
-
-// CONFIG2L
-#pragma config PWRTEN =    ON      // Power Up Timer (Enabled)
-#pragma config BOREN =     SBORDIS      // Brown Out Detect (Disabled in hardware, SBOREN disabled)
-#pragma config BORV =      0         // Brown-out Reset Voltage bits (3.0V)
-#pragma config BORPWR =    ZPBORMV // BORMV Power level (ZPBORMV instead of BORMV is selected)
-
-// CONFIG2H
-#pragma config WDTEN =     OFF      // Watchdog Timer (WDT disabled in hardware; SWDTEN bit disabled)
-#pragma config WDTPS =     1048576      // Watchdog Postscaler (1:1048576)
-
-// CONFIG3H
-#pragma config CANMX =     PORTB    // ECAN Mux bit (ECAN TX and RX pins are located on RB2 and RB3, respectively)
-#pragma config MSSPMSK =   MSK7   // MSSP address masking (7 Bit address masking mode)
-#pragma config MCLRE =     ON       // Master Clear Enable (MCLR Enabled, RE3 Disabled)
-
-// CONFIG4L
-#pragma config STVREN =    ON      // Stack Overflow Reset (Enabled)
-#pragma config BBSIZ =     BB1K     // Boot Block Size (1K word Boot Block size)
-
-// CONFIG5L
-#pragma config CP0 =       OFF        // Code Protect 00800-01FFF (Disabled)
-#pragma config CP1 =       OFF        // Code Protect 02000-03FFF (Disabled)
-#pragma config CP2 =       OFF        // Code Protect 04000-05FFF (Disabled)
-#pragma config CP3 =       OFF        // Code Protect 06000-07FFF (Disabled)
-
-// CONFIG5H
-#pragma config CPB =       OFF        // Code Protect Boot (Disabled)
-#pragma config CPD =       OFF        // Data EE Read Protect (Disabled)
-
-// CONFIG6L
-#pragma config WRT0 =      OFF       // Table Write Protect 00800-01FFF (Disabled)
-#pragma config WRT1 =      OFF       // Table Write Protect 02000-03FFF (Disabled)
-#pragma config WRT2 =      OFF       // Table Write Protect 04000-05FFF (Disabled)
-#pragma config WRT3 =      OFF       // Table Write Protect 06000-07FFF (Disabled)
-
-// CONFIG6H
-#pragma config WRTC =      OFF       // Config. Write Protect (Disabled)
-#pragma config WRTB =      OFF       // Table Write Protect Boot (Disabled)
-#pragma config WRTD =      OFF       // Data EE Write Protect (Disabled)
-
-// CONFIG7L
-#pragma config EBTR0 =     OFF      // Table Read Protect 00800-01FFF (Disabled)
-#pragma config EBTR1 =     OFF      // Table Read Protect 02000-03FFF (Disabled)
-#pragma config EBTR2 =     OFF      // Table Read Protect 04000-05FFF (Disabled)
-#pragma config EBTR3 =     OFF      // Table Read Protect 06000-07FFF (Disabled)
-
-// CONFIG7H
-#pragma config EBTRB =     OFF      // Table Read Protect Boot (Disabled)
-
-#endif
-#if defined(_18FXXQ83_FAMILY_)
-// Configuration bits: selected in the GUI
-
-//CONFIG1
-#pragma config FEXTOSC = HS     // External Oscillator Selection->HS (crystal oscillator) above 8 MHz
-//#pragma config RSTOSC = HFINTOSC_64MHZ     // Reset Oscillator Selection->HFINTOSC with HFFRQ = 64 MHz and CDIV = 1:1
-#pragma config RSTOSC = EXTOSC     // External oscillator as per FEXTOSC
-
-//CONFIG2
-#pragma config CLKOUTEN = OFF     // Clock out Enable bit->CLKOUT function is disabled
-#pragma config PR1WAY =  ON     // PRLOCKED One-Way Set Enable bit->PRLOCKED bit can be cleared and set only once
-#pragma config CSWEN =   ON     // Clock Switch Enable bit->Writing to NOSC and NDIV is allowed
-#pragma config JTAGEN =  OFF     // JTAG Enable bit->Disable JTAG Boundary Scan mode, JTAG pins revert to user functions
-#pragma config FCMEN =   ON     // Fail-Safe Clock Monitor Enable bit->Fail-Safe Clock Monitor enabled
-#pragma config FCMENP =  ON     // Fail-Safe Clock Monitor -Primary XTAL Enable bit->FSCM timer will set FSCMP bit and OSFIF interrupt on Primary XTAL failure
-#pragma config FCMENS =  ON     // Fail-Safe Clock Monitor -Secondary XTAL Enable bit->FSCM timer will set FSCMS bit and OSFIF interrupt on Secondary XTAL failure
-
-//CONFIG3
-#pragma config MCLRE =   EXTMCLR     // MCLR Enable bit->If LVP = 0, MCLR pin is MCLR; If LVP = 1, RE3 pin function is MCLR 
-#pragma config PWRTS =   PWRT_64     // Power-up timer selection bits->PWRT is disabled
-#pragma config MVECEN =  ON     // Multi-vector enable bit->Interrupt contoller uses vector table to prioritze interrupts
-#pragma config IVT1WAY = ON     // IVTLOCK bit One-way set enable bit->IVTLOCKED bit can be cleared and set only once
-#pragma config LPBOREN = OFF     // Low Power BOR Enable bit->Low-Power BOR disabled
-#pragma config BOREN =   SBORDIS     // Brown-out Reset Enable bits->Brown-out Reset enabled , SBOREN bit is ignored
-
-//CONFIG4
-#pragma config BORV =    VBOR_2P7     // Brown-out Reset Voltage Selection bits->Brown-out Reset Voltage (VBOR) set to 2.7V
-#pragma config ZCD =     OFF     // ZCD Disable bit->ZCD module is disabled. ZCD can be enabled by setting the ZCDSEN bit of ZCDCON
-#pragma config PPS1WAY = ON     // PPSLOCK bit One-Way Set Enable bit->PPSLOCKED bit can be cleared and set only once; PPS registers remain locked after one clear/set cycle
-#pragma config STVREN =  ON     // Stack Full/Underflow Reset Enable bit->Stack full/underflow will cause Reset
-#pragma config LVP =     ON     // Low Voltage Programming Enable bit->Low voltage programming enabled. MCLR/VPP pin function is MCLR. MCLRE configuration bit is ignored
-#pragma config XINST =   OFF     // Extended Instruction Set Enable bit->Extended Instruction Set and Indexed Addressing Mode disabled
-
-//CONFIG5
-#pragma config WDTCPS =  WDTCPS_31     // WDT Period selection bits->Divider ratio 1:65536; software control of WDTPS
-#pragma config WDTE =    OFF     // WDT operating mode->WDT Disabled; SWDTEN is ignored
-
-//CONFIG6
-#pragma config WDTCWS =  WDTCWS_7     // WDT Window Select bits->window always open (100%); software control; keyed access not required
-#pragma config WDTCCS =  SC     // WDT input clock selector->Software Control
-
-//CONFIG7
-#pragma config BBSIZE =  BBSIZE_512     // Boot Block Size selection bits->Boot Block size is 512 words
-#pragma config BBEN =    ON     // Boot Block enable bit->Boot block enabled
-#pragma config SAFEN =   OFF     // Storage Area Flash enable bit->SAF disabled
-
-//CONFIG8
-#pragma config WRTB =    ON     // Boot Block Write Protection bit->Boot Block Write protected
-#pragma config WRTC =    ON     // Configuration Register Write Protection bit->Configuration registers Write protected
-#pragma config WRTD =    OFF     // Data EEPROM Write Protection bit->Data EEPROM not Write protected
-#pragma config WRTSAF =  OFF     // SAF Write protection bit->SAF not Write Protected
-#pragma config WRTAPP =  OFF     // Application Block write protection bit->Application Block not write protected
-
-//CONFIG9
-#pragma config BOOTPINSEL = RC5     // CRC on boot output pin selection->CRC on boot output pin is RC5
-#pragma config BPEN =    OFF     // CRC on boot output pin enable bit->CRC on boot output pin disabled
-#pragma config ODCON =   OFF     // CRC on boot output pin open drain bit->Pin drives both high-going and low-going signals
-
-//CONFIG10
-#pragma config CP =      OFF     // PFM and Data EEPROM Code Protection bit->PFM and Data EEPROM code protection disabled
-
-//CONFIG11
-#pragma config BOOTSCEN = OFF     // CRC on boot scan enable for boot area->CRC on boot will not include the boot area of program memory in its calculation
-#pragma config BOOTCOE = HALT     // CRC on boot Continue on Error for boot areas bit->CRC on boot will stop device if error is detected in boot areas
-#pragma config APPSCEN = OFF     // CRC on boot application code scan enable->CRC on boot will not include the application area of program memory in its calculation
-#pragma config SAFSCEN = OFF     // CRC on boot SAF area scan enable->CRC on boot will not include the SAF area of program memory in its calculation
-#pragma config DATASCEN = OFF     // CRC on boot Data EEPROM scan enable->CRC on boot will not include data EEPROM in its calculation
-#pragma config CFGSCEN = OFF     // CRC on boot Config fuses scan enable->CRC on boot will not include the configuration fuses in its calculation
-#pragma config COE = HALT     // CRC on boot Continue on Error for non-boot areas bit->CRC on boot will stop device if error is detected in non-boot areas
-#pragma config BOOTPOR = OFF     // Boot on CRC Enable bit->CRC on boot will not run
-
-//CONFIG12
-#pragma config BCRCPOLT = hFF     // Boot Sector Polynomial for CRC on boot bits 31-24->Bits 31:24 of BCRCPOL are 0xFF
-
-//CONFIG13
-#pragma config BCRCPOLU = hFF     // Boot Sector Polynomial for CRC on boot bits 23-16->Bits 23:16 of BCRCPOL are 0xFF
-
-//CONFIG14
-#pragma config BCRCPOLH = hFF     // Boot Sector Polynomial for CRC on boot bits 15-8->Bits 15:8 of BCRCPOL are 0xFF
-
-//CONFIG15
-#pragma config BCRCPOLL = hFF     // Boot Sector Polynomial for CRC on boot bits 7-0->Bits 7:0 of BCRCPOL are 0xFF
-
-//CONFIG16
-#pragma config BCRCSEEDT = hFF     // Boot Sector Seed for CRC on boot bits 31-24->Bits 31:24 of BCRCSEED are 0xFF
-
-//CONFIG17
-#pragma config BCRCSEEDU = hFF     // Boot Sector Seed for CRC on boot bits 23-16->Bits 23:16 of BCRCSEED are 0xFF
-
-//CONFIG18
-#pragma config BCRCSEEDH = hFF     // Boot Sector Seed for CRC on boot bits 15-8->Bits 15:8 of BCRCSEED are 0xFF
-
-//CONFIG19
-#pragma config BCRCSEEDL = hFF     // Boot Sector Seed for CRC on boot bits 7-0->Bits 7:0 of BCRCSEED are 0xFF
-
-//CONFIG20
-#pragma config BCRCEREST = hFF     // Boot Sector Expected Result for CRC on boot bits 31-24->Bits 31:24 of BCRCERES are 0xFF
-
-//CONFIG21
-#pragma config BCRCERESU = hFF     // Boot Sector Expected Result for CRC on boot bits 23-16->Bits 23:16 of BCRCERES are 0xFF
-
-//CONFIG22
-#pragma config BCRCERESH = hFF     // Boot Sector Expected Result for CRC on boot bits 15-8->Bits 15:8 of BCRCERES are 0xFF
-
-//CONFIG23
-#pragma config BCRCERESL = hFF     // Boot Sector Expected Result for CRC on boot bits 7-0->Bits 7:0 of BCRCERES are 0xFF
-
-//CONFIG24
-#pragma config CRCPOLT = hFF     // Non-Boot Sector Polynomial for CRC on boot bits 31-24->Bits 31:24 of CRCPOL are 0xFF
-
-//CONFIG25
-#pragma config CRCPOLU = hFF     // Non-Boot Sector Polynomial for CRC on boot bits 23-16->Bits 23:16 of CRCPOL are 0xFF
-
-//CONFIG26
-#pragma config CRCPOLH = hFF     // Non-Boot Sector Polynomial for CRC on boot bits 15-8->Bits 15:8 of CRCPOL are 0xFF
-
-//CONFIG27
-#pragma config CRCPOLL = hFF     // Non-Boot Sector Polynomial for CRC on boot bits 7-0->Bits 7:0 of CRCPOL are 0xFF
-
-//CONFIG28
-#pragma config CRCSEEDT = hFF     // Non-Boot Sector Seed for CRC on boot bits 31-24->Bits 31:24 of CRCSEED are 0xFF
-
-//CONFIG29
-#pragma config CRCSEEDU = hFF     // Non-Boot Sector Seed for CRC on boot bits 23-16->Bits 23:16 of CRCSEED are 0xFF
-
-//CONFIG30
-#pragma config CRCSEEDH = hFF     // Non-Boot Sector Seed for CRC on boot bits 15-8->Bits 15:8 of CRCSEED are 0xFF
-
-//CONFIG31
-#pragma config CRCSEEDL = hFF     // Non-Boot Sector Seed for CRC on boot bits 7-0->Bits 7:0 of CRCSEED are 0xFF
-
-//CONFIG32
-#pragma config CRCEREST = hFF     // Non-Boot Sector Expected Result for CRC on boot bits 31-24->Bits 31:24 of CRCERES are 0xFF
-
-//CONFIG33
-#pragma config CRCERESU = hFF     // Non-Boot Sector Expected Result for CRC on boot bits 23-16->Bits 23:16 of CRCERES are 0xFF
-
-//CONFIG34
-#pragma config CRCERESH = hFF     // Non-Boot Sector Expected Result for CRC on boot bits 15-8->Bits 15:8 of CRCERES are 0xFF
-
-//CONFIG35
-#pragma config CRCERESL = hFF     // Non-Boot Sector Expected Result for CRC on boot bits 7-0->Bits 7:0 of CRCERES are 0xFF
-
-#endif
+/* KeithB b55: the configuration words are no longer set by the library. The bootloader owns
+ * them; an application that needs them in its hex includes vlcb_config_q83.h or
+ * vlcb_config_k80.h (templates matching CBUS_PIC_Bootloader hwsettings.c) from exactly one
+ * of its own source files. */
 
 /**
  * The list of the priorities for each opcode.
@@ -485,59 +282,62 @@ const Priority priorities[256] = {
     pABOVE,   // OPC_RTOF=0x08,
     pABOVE,   // OPC_RTON=0x09,
     pHIGH,   // OPC_RESTP=0x0A,
+            pNORMAL,    // 0x0B,
     pNORMAL,   // OPC_RSTAT=0x0C,
     pLOW,   // OPC_QNN=0x0D,
+            pNORMAL,    // 0x0E,
+            pNORMAL,    // 0x0F,
     pLOW,   // OPC_RQNP=0x10,
     pNORMAL,   // OPC_RQMN=0x11,
-            pNORMAL,    // 0x12
-            pNORMAL,    // 0x13
-            pNORMAL,    // 0x14
-            pNORMAL,    // 0x15
-            pNORMAL,    // 0x16
-            pNORMAL,    // 0x17
-            pNORMAL,    // 0x18
-            pNORMAL,    // 0x19
-            pNORMAL,    // 0x1A
-            pNORMAL,    // 0x1B
-            pNORMAL,    // 0x1C
-            pNORMAL,    // 0x1D
-            pNORMAL,    // 0x1E
-            pNORMAL,    // 0x1F
-            pNORMAL,    // 0x20
+            pNORMAL,    // 0x12,
+            pNORMAL,    // 0x13,
+            pNORMAL,    // 0x14,
+            pNORMAL,    // 0x15,
+            pNORMAL,    // 0x16,
+            pNORMAL,    // 0x17,
+            pNORMAL,    // 0x18,
+            pNORMAL,    // 0x19,
+            pNORMAL,    // 0x1A,
+            pNORMAL,    // 0x1B,
+            pNORMAL,    // 0x1C,
+            pNORMAL,    // 0x1D,
+            pNORMAL,    // 0x1E,
+            pNORMAL,    // 0x1F,
+            pNORMAL,    // 0x20,
     pNORMAL,   // OPC_KLOC=0x21,
     pNORMAL,   // OPC_QLOC=0x22,
     pNORMAL,   // OPC_DKEEP=0x23,
-            pNORMAL,    // 0x24
-            pNORMAL,    // 0x25
-            pNORMAL,    // 0x26
-            pNORMAL,    // 0x27
-            pNORMAL,    // 0x28
-            pNORMAL,    // 0x29
-            pNORMAL,    // 0x2A
-            pNORMAL,    // 0x2B
-            pNORMAL,    // 0x2C
-            pNORMAL,    // 0x2D
-            pNORMAL,    // 0x2E
-            pNORMAL,    // 0x2F
+            pNORMAL,    // 0x24,
+            pNORMAL,    // 0x25,
+            pNORMAL,    // 0x26,
+            pNORMAL,    // 0x27,
+            pNORMAL,    // 0x28,
+            pNORMAL,    // 0x29,
+            pNORMAL,    // 0x2A,
+            pNORMAL,    // 0x2B,
+            pNORMAL,    // 0x2C,
+            pNORMAL,    // 0x2D,
+            pNORMAL,    // 0x2E,
+            pNORMAL,    // 0x2F,
     pNORMAL,   // OPC_DBG1=0x30,
-            pNORMAL,    // 0x31
-            pNORMAL,    // 0x32
-            pNORMAL,    // 0x33
-            pNORMAL,    // 0x34
-            pNORMAL,    // 0x35
-            pNORMAL,    // 0x36
-            pNORMAL,    // 0x37
-            pNORMAL,    // 0x38
-            pNORMAL,    // 0x39
-            pNORMAL,    // 0x3A
-            pNORMAL,    // 0x3B
-            pNORMAL,    // 0x3C
-            pNORMAL,    // 0x3D
-            pNORMAL,    // 0x3E
-    pNORMAL,    // OPC_EXTC=0x3F
+            pNORMAL,    // 0x31,
+            pNORMAL,    // 0x32,
+            pNORMAL,    // 0x33,
+            pNORMAL,    // 0x34,
+            pNORMAL,    // 0x35,
+            pNORMAL,    // 0x36,
+            pNORMAL,    // 0x37,
+            pNORMAL,    // 0x38,
+            pNORMAL,    // 0x39,
+            pNORMAL,    // 0x3A,
+            pNORMAL,    // 0x3B,
+            pNORMAL,    // 0x3C,
+            pNORMAL,    // 0x3D,
+            pNORMAL,    // 0x3E,
+    pNORMAL,    // OPC_EXTC=0x3F,
     pNORMAL,   // OPC_RLOC=0x40,
     pNORMAL,   // OPC_QCON=0x41,
-    pLOW,   // OPC_SNN=0x42,
+    pLOW,      // OPC_SNN=0x42,
     pNORMAL,   // OPC_ALOC=0x43,
     pNORMAL,   // OPC_STMOD=0x44,
     pNORMAL,   // OPC_PCON=0x45,
@@ -546,10 +346,10 @@ const Priority priorities[256] = {
     pNORMAL,   // OPC_DFLG=0x48,
     pNORMAL,   // OPC_DFNON=0x49,
     pNORMAL,   // OPC_DFNOF=0x4A,
-            pNORMAL,    // 0x4B
+            pNORMAL,    // 0x4B,
     pLOW,   // OPC_SSTAT=0x4C,
-            pNORMAL,    // 0x4D
-            pNORMAL,    // 0x4E
+            pNORMAL,    // 0x4D,
+            pNORMAL,    // 0x4E,
     pLOW,   // OPC_NNRSM=0x4F,
     pLOW,   // OPC_RQNN=0x50,
     pLOW,   // OPC_NNREL=0x51,
@@ -569,18 +369,19 @@ const Priority priorities[256] = {
     pLOW,   // OPC_EXTC1=0x5F,
     pNORMAL,   // OPC_DFUN=0x60,
     pNORMAL,   // OPC_GLOC=0x61,
+            pNORMAL,    // 0x62,
     pNORMAL,   // OPC_ERR=0x63,
-            pNORMAL,    // 0x64
-            pNORMAL,    // 0x65
+            pNORMAL,    // 0x64,
+            pNORMAL,    // 0x65,
     pHIGH,   // OPC_SQU=0x66,
-            pNORMAL,    // 0x67
-            pNORMAL,    // 0x68
-            pNORMAL,    // 0x69
-            pNORMAL,    // 0x6A
-            pNORMAL,    // 0x6B
-            pNORMAL,    // 0x6C
-            pNORMAL,    // 0x6D
-            pNORMAL,    // 0x6E
+            pNORMAL,    // 0x67,
+            pNORMAL,    // 0x68,
+            pNORMAL,    // 0x69,
+            pNORMAL,    // 0x6A,
+            pNORMAL,    // 0x6B,
+            pNORMAL,    // 0x6C,
+            pNORMAL,    // 0x6D,
+            pNORMAL,    // 0x6E,
     pLOW,   // OPC_CMDERR=0x6F,
     pLOW,   // OPC_EVNLF=0x70,
     pLOW,   // OPC_NVRD=0x71,
@@ -589,31 +390,31 @@ const Priority priorities[256] = {
     pLOW,   // OPC_NUMEV=0x74,
     pLOW,   // OPC_CANID=0x75,
     pLOW,   // OPC_MODE=0x76,
-            pNORMAL,    // 0x77
+            pNORMAL,    // 0x77,
     pLOW,   // OPC_RQSD=0x78,
-            pNORMAL,    // 0x79
-            pNORMAL,    // 0x7A
-            pNORMAL,    // 0x7B
-            pNORMAL,    // 0x7C
-            pNORMAL,    // 0x7D
-            pNORMAL,    // 0x7E
+            pNORMAL,    // 0x79,
+            pNORMAL,    // 0x7A,
+            pNORMAL,    // 0x7B,
+            pNORMAL,    // 0x7C,
+            pNORMAL,    // 0x7D,
+            pNORMAL,    // 0x7E,
     pLOW,   // OPC_EXTC2=0x7F,
     pNORMAL,   // OPC_RDCC3=0x80,
-            pNORMAL,    // 0x81
+            pNORMAL,    // 0x81,
     pNORMAL,   // OPC_WCVO=0x82,
     pNORMAL,   // OPC_WCVB=0x83,
     pNORMAL,   // OPC_QCVS=0x84,
     pNORMAL,   // OPC_PCVS=0x85,
-            pNORMAL,    // 0x86
+            pNORMAL,    // 0x86,
     pLOW,   // OPC_RDGN=0x87,
-            pNORMAL,    // 0x88
-            pNORMAL,    // 0x89
-            pNORMAL,    // 0x8A
-            pNORMAL,    // 0x8B
-            pNORMAL,    // 0x8C
-            pNORMAL,    // 0x8D
+            pNORMAL,    // 0x88,
+            pNORMAL,    // 0x89,
+            pNORMAL,    // 0x8A,
+            pNORMAL,    // 0x8B,
+            pNORMAL,    // 0x8C,
+            pNORMAL,    // 0x8D,
     pLOW,   // OPC_NVSETRD=0x8E,
-            pNORMAL,    // 0x8F
+            pNORMAL,    // 0x8F,
     pLOW,   // OPC_ACON=0x90,
     pLOW,   // OPC_ACOF=0x91,
     pLOW,   // OPC_AREQ=0x92,
@@ -629,22 +430,22 @@ const Priority priorities[256] = {
     pLOW,   // OPC_REVAL=0x9C,
     pLOW,   // OPC_ARSON=0x9D,
     pLOW,   // OPC_ARSOF=0x9E,
-    pLOW,   // OPC_EXTC3=0x9F
+    pLOW,   // OPC_EXTC3=0x9F,
     pNORMAL,   // OPC_RDCC4=0xA0,
-            pNORMAL,    // 0xA1
+            pNORMAL,    // 0xA1,
     pNORMAL,   // OPC_WCVS=0xA2,
-            pNORMAL,    // 0xA3
-            pNORMAL,    // 0xA4
-            pNORMAL,    // 0xA5
-            pNORMAL,    // 0xA6
-            pNORMAL,    // 0xA7
-            pNORMAL,    // 0xA8
-            pNORMAL,    // 0xA9
-            pNORMAL,    // 0xAA
+            pNORMAL,    // 0xA3,
+            pNORMAL,    // 0xA4,
+            pNORMAL,    // 0xA5,
+            pNORMAL,    // 0xA6,
+            pNORMAL,    // 0xA7,
+            pNORMAL,    // 0xA8,
+            pNORMAL,    // 0xA9,
+            pNORMAL,    // 0xAA,
     pLOW,   // OPC_HEARTB=0xAB,
     pLOW,   // OPC_SD=0xAC,
-            pNORMAL,    // 0xAD
-            pNORMAL,    // 0xAE
+            pNORMAL,    // 0xAD,
+            pNORMAL,    // 0xAE,
     pLOW,   // OPC_GRSP=0xAF,
     pLOW,   // OPC_ACON1=0xB0,
     pLOW,   // OPC_ACOF1=0xB1,
@@ -653,30 +454,30 @@ const Priority priorities[256] = {
     pLOW,   // OPC_AROF1=0xB4,
     pLOW,   // OPC_NEVAL=0xB5,
     pLOW,   // OPC_PNN=0xB6,
-           pNORMAL,    // 0xB7
+           pNORMAL,    // 0xB7,
     pLOW,   // OPC_ASON1=0xB8,
     pLOW,   // OPC_ASOF1=0xB9,
-           pNORMAL,    // 0xBA
-           pNORMAL,    // 0xBB
-           pNORMAL,    // 0xBC
+           pNORMAL,    // 0xBA,
+           pNORMAL,    // 0xBB,
+           pNORMAL,    // 0xBC,
     pLOW,   // OPC_ARSON1=0xBD,
     pLOW,   // OPC_ARSOF1=0xBE,
     pLOW,   // OPC_EXTC4=0xBF,
     pNORMAL,   // OPC_RDCC5=0xC0,
     pNORMAL,   // OPC_WCVOA=0xC1,
     pNORMAL,   // OPC_CABDAT=0xC2,
-           pNORMAL,    // 0xC3
-           pNORMAL,    // 0xC4
-           pNORMAL,    // 0xC5
-           pNORMAL,    // 0xC6
+           pNORMAL,    // 0xC3,
+           pNORMAL,    // 0xC4,
+           pNORMAL,    // 0xC5,
+           pNORMAL,    // 0xC6,
     pLOW,   // OPC_DGN=0xC7,
-           pNORMAL,    // 0xC8
-           pNORMAL,    // 0xC9
-           pNORMAL,    // 0xCA
-           pNORMAL,    // 0xCB
-           pNORMAL,    // 0xCC
-           pNORMAL,    // 0xCD
-           pNORMAL,    // 0xCE
+           pNORMAL,    // 0xC8,
+           pNORMAL,    // 0xC9,
+           pNORMAL,    // 0xCA,
+           pNORMAL,    // 0xCB,
+           pNORMAL,    // 0xCC,
+           pNORMAL,    // 0xCD,
+           pNORMAL,    // 0xCE,
     pNORMAL,   // OPC_FCLK=0xCF,
     pLOW,   // OPC_ACON2=0xD0,
     pLOW,   // OPC_ACOF2=0xD1,
@@ -684,13 +485,13 @@ const Priority priorities[256] = {
     pLOW,   // OPC_EVANS=0xD3,
     pLOW,   // OPC_ARON2=0xD4,
     pLOW,   // OPC_AROF2=0xD5,
-           pNORMAL,    // 0xD6
-           pNORMAL,    // 0xD7
+           pNORMAL,    // 0xD6,
+           pNORMAL,    // 0xD7,
     pLOW,   // OPC_ASON2=0xD8,
     pLOW,   // OPC_ASOF2=0xD9,
-           pNORMAL,    // 0xDA
-           pNORMAL,    // 0xDB
-           pNORMAL,    // 0xDC
+           pNORMAL,    // 0xDA,
+           pNORMAL,    // 0xDB,
+           pNORMAL,    // 0xDC,
     pLOW,   // OPC_ARSON2=0xDD,
     pLOW,   // OPC_ARSOF2=0xDE,
     pLOW,   // OPC_EXTC5=0xDF,
@@ -698,17 +499,17 @@ const Priority priorities[256] = {
     pNORMAL,   // OPC_PLOC=0xE1,
     pLOW,   // OPC_NAME=0xE2,
     pNORMAL,   // OPC_STAT=0xE3,
-           pNORMAL,    // 0xE4
-           pNORMAL,    // 0xE5
+           pNORMAL,    // 0xE4,
+           pNORMAL,    // 0xE5,
     pLOW,   // OPC_ENACK=0xE6,
     pLOW,   // OPC_ESD=0xE7,
-           pNORMAL,    // 0xE8
+           pNORMAL,    // 0xE8,
     pLOW,   // OPC_DTXC=0xE9,
-           pNORMAL,    // 0xEA
-           pNORMAL,    // 0xEB
-           pNORMAL,    // 0xEC
-           pNORMAL,    // 0xED
-           pNORMAL,    // 0xEE
+           pNORMAL,    // 0xEA,
+           pNORMAL,    // 0xEB,
+           pNORMAL,    // 0xEC,
+           pNORMAL,    // 0xED,
+           pNORMAL,    // 0xEE,
     pLOW,   // OPC_PARAMS=0xEF,
     pLOW,   // OPC_ACON3=0xF0,
     pLOW,   // OPC_ACOF3=0xF1,
@@ -722,9 +523,10 @@ const Priority priorities[256] = {
     pLOW,   // OPC_ASOF3=0xF9,
     pLOW,   // OPC_DDES=0xFA,
     pLOW,   // OPC_DDRS=0xFB,
+    pLOW,   // OPC_DDWS=0xFC,
     pLOW,   // OPC_ARSON3=0xFD,
-    pLOW,   // OPC_ARSOF3=0xFE
-           pNORMAL,    // 0xFF
+    pLOW,   // OPC_ARSOF3=0xFE,
+           pNORMAL,    // 0xFF,
 };
 
 #ifdef BOOTLOADER_PRESENT
@@ -745,7 +547,12 @@ static Message tmpMessage;
  */
 static TickValue timedResponseTime;
 static uint8_t timedResponseDelay;
+static uint32_t timedResponseTicks;   // KeithB b40: delay in ticks, computed once instead of a widening multiply every poll()
 
+/**
+ * Timer value set at the start of each loop.
+ */
+TickValue tickNow;   // KeithB b40: tick value read once per main-loop pass
 
 /**
  * Used to control how often it is checked whether any of the flash buffer
@@ -796,7 +603,7 @@ void setup(void);
 void loop(void);
 
 /*
- * Code to ensure that it EEPROM flag is checked then a factoryReset will take 
+ * Code to ensure that after bootloading the version is invalid so that a factoryReset will take 
  * place. Sets the data version to 0xFF
  */
 /** @private */
@@ -893,6 +700,7 @@ static void powerUp(void) {
     initTimedResponse();
     leds_powerUp();
     timedResponseDelay = 5;
+    timedResponseTicks = (uint32_t)timedResponseDelay*ONE_MILI_SECOND;   // KeithB b40
     
     for (i=0; i<NUM_SERVICES; i++) {
         if ((services[i] != NULL) && (services[i]->powerUp != NULL)) {
@@ -911,6 +719,7 @@ static void powerUp(void) {
  */
 void setTimedResponseDelay(uint8_t delay) {
     timedResponseDelay = delay;
+    timedResponseTicks = (uint32_t)delay*ONE_MILI_SECOND;   // KeithB b40
 }
 
 
@@ -918,15 +727,18 @@ void setTimedResponseDelay(uint8_t delay) {
  * Time how long the pb is held down for, with a timeout.
  * 
  * @param timeout number of seconds to wait
- * @return seconds pb held down or 0 for a timeout
+ * @return seconds pb held down or PB_TIMEOUT for a timeout
  */
+// KeithB b40: PB_TIMEOUT (0xFF) distinguishes a timeout from a press shorter than one second
+#define PB_TIMEOUT 0xFF
 uint8_t pbDownTimer(uint8_t timeout) {
     // determine how long the button is held for
     pbTimer.val = tickGet();
     while (APP_pbPressed()) {
+        tickRefresh();      // KeithB b40: leds_poll() reads tickNow
         leds_poll();
         if (tickTimeSince(pbTimer) > timeout*ONE_SECOND) {
-            return 0;   // timeout
+            return PB_TIMEOUT;   // timeout
         }
     }
     // no longer pressed
@@ -937,15 +749,16 @@ uint8_t pbDownTimer(uint8_t timeout) {
  * Time how long the pb is released down for, with a timeout.
  * 
  * @param timeout number of seconds to wait
- * @return seconds pb released or 0 for a timeout
+ * @return seconds pb released or PB_TIMEOUT for a timeout
  */
 uint8_t pbUpTimer(uint8_t timeout) {
     // determine how long the button is released for
     pbTimer.val = tickGet();
     while (! (APP_pbPressed())) {
+        tickRefresh();      // KeithB b40
         leds_poll();
         if (tickTimeSince(pbTimer) > timeout*ONE_SECOND) {
-            return 0;   // timeout
+            return PB_TIMEOUT;   // timeout
         }
     }
     // now pressed
@@ -970,28 +783,93 @@ static void checkPowerOnPb(void) {
     // check for the push button being pressed at power up
     if (APP_pbPressed()) {
         // determine how long the button is held for
+#ifdef VLCB_PB_NO_BOOTLOADER_OFFSET
+        /* KeithB b47, LCR-007 (opt-in): with no bootloader in front of the
+         * application nobody has already held the button for ~2 s, so time from
+         * power-up and take the 2 s off: every band then means the same total
+         * hold as it does behind the bootloader (nothing < 3 s, test mode 3-6 s,
+         * factory reset from 10 s, ignored past 30 s). */
+        i = pbDownTimer(30);
+        if (i != PB_TIMEOUT) {
+            i = (i >= 2) ? (uint8_t)(i - 2) : 0;
+        }
+#else
         i = pbDownTimer(28);
+#endif
         if (i == 0) {
-            //Timeout
+            // A press shorter than one second: do nothing   KeithB b40
             return;
+        } else if (i == PB_TIMEOUT) {
+            // KeithB b42: held past 28 s - do nothing, but fall through to the release wait
+            // below so mnsPoll() does not see the press (b40 returned here and re-opened the b36 bug)
         } else if (i < 4) {
             APP_testMode();
         } else if (i >= 8) {
             showStatus(STATUS_RESET_WARNING);
             // wait for pb down max 5 seconds
             i = pbUpTimer(5);
-            if (i == 0) {
-                // Timeout
+            if (i == PB_TIMEOUT) {
+                // Timeout   KeithB b40: a release shorter than one second no longer aborts the sequence
                 return;
             }
             i = pbDownTimer(5);
             if ((i>=2) && (i < 4)) {
                 factoryReset();
+#ifdef VLCB_EEPROM_ASYNC
+                flushNVM();     // KeithB b47, LCR-005: the defaults must be on EEPROM before the reset
+#endif
+                RESET();    // KeithB b35: restart so NV cache and service state reload the defaults
             }
         }
+        // KeithB b36: wait for the button to be released and restart the MNS button timer,
+        // otherwise a press that outlived the timeout was seen by mnsPoll() as a >4s press
+        // and dropped the module to Uninitialised.
+        while (APP_pbPressed()) {
+            tickRefresh();      // KeithB b40
+            leds_poll();
+        }
+        pbTimer.val = tickGet();
     }
 }
 
+#if defined(VLCB_RX_PER_POLL) && (VLCB_RX_PER_POLL > 1)
+/**
+ * KeithB b45: one received frame, handled exactly as the single-frame block in
+ * poll() handles it (application pre-process, the services in order, application
+ * post-process, then the RXMESS diagnostic and the status LED).
+ * @return 1 if a frame was taken from the transport (handled or not), 0 if none waiting
+ */
+static uint8_t pollReceiveOne(void) {
+    uint8_t i;
+    Message m;
+    Processed handled = NOT_PROCESSED;
+    if ((transport == NULL) || (transport->receiveMessage == NULL)) return 0;
+    if (!transport->receiveMessage(&m)) return 0;
+    if (m.len > 0) {
+        showStatus(STATUS_MESSAGE_RECEIVED);
+        handled = APP_preProcessMessage(&m); // Call App to check for any opcodes to be handled.
+        if (handled == NOT_PROCESSED) {
+            for (i=0; i<NUM_SERVICES; i++) {
+                if ((services[i] != NULL) && (services[i]->processMessage != NULL)) {
+                    if (services[i]->processMessage(&m) == PROCESSED) {
+                        handled = PROCESSED;
+                        break;
+                    }
+                }
+            }
+            if (handled == NOT_PROCESSED) {     // Call App to check for any opcodes to be handled.
+                handled = APP_postProcessMessage(&m);
+            }
+        }
+    }
+    if (handled) {
+        mnsDiagnostics[MNS_DIAGNOSTICS_RXMESS].asUint++;
+        showStatus(STATUS_MESSAGE_ACTED);
+    }
+    return 1;
+}
+
+#endif
 /**
  * Poll each service.
  * VLCB function to perform necessary poll functionality and regularly 
@@ -1005,17 +883,24 @@ static void checkPowerOnPb(void) {
  */
 static void poll(void) {
     uint8_t i;
+#if !(defined(VLCB_RX_PER_POLL) && (VLCB_RX_PER_POLL > 1))
     Message m;
     Processed handled;
+#endif
     
+#ifdef VLCB_EEPROM_ASYNC
+    nvmPoll();      // KeithB b47, LCR-004: advance the background EEPROM writer by one step
+#endif
     /* handle any timed responses */
-    if (tickTimeSince(timedResponseTime) > (long)timedResponseDelay*ONE_MILI_SECOND) {
+    // KeithB b40: tick read once per pass (tickNowGet)
+    // KeithB b40: tick read once per pass (tickNowGet), precomputed timed-response period
+    if (tickTimeSinceNow(timedResponseTime) > timedResponseTicks) {
         pollTimedResponse();
-        timedResponseTime.val = tickGet();
+        timedResponseTime.val = tickNowGet();
     }
-    if (tickTimeSince(flashFlushTime) > ONE_SECOND) {
+    if (tickTimeSinceNow(flashFlushTime) > ONE_SECOND) {
         flushFlashBlock();
-        flashFlushTime.val = tickGet();
+        flashFlushTime.val = tickNowGet();
     }
     /* call any service polls */
     for (i=0; i<NUM_SERVICES; i++) {
@@ -1026,6 +911,20 @@ static void poll(void) {
     
     leds_poll();
     
+#if defined(VLCB_RX_PER_POLL) && (VLCB_RX_PER_POLL > 1)
+    /* KeithB b45, VLCB_RX_PER_POLL (module.h, opt-in, default off): take up to
+     * VLCB_RX_PER_POLL received frames per pass instead of one, stopping as soon as
+     * none is waiting. One frame per pass caps a module's receive rate at its loop
+     * rate (CANCMD: ~765 frames/s, bench 25 Sep 2026, receive FIFO overflowing under a
+     * ~945 frames/s flood). Each frame is handled exactly as below. Modules that do
+     * not define it compile the original block, unchanged. */
+    {
+        uint8_t n;
+        for (n = 0; n < (uint8_t)VLCB_RX_PER_POLL; n++) {
+            if (!pollReceiveOne()) break;
+        }
+    }
+#else
     // Handle any incoming messages from the transport
     handled = NOT_PROCESSED;
     if (transport != NULL) {
@@ -1055,6 +954,7 @@ static void poll(void) {
         mnsDiagnostics[MNS_DIAGNOSTICS_RXMESS].asUint++;
         showStatus(STATUS_MESSAGE_ACTED);
     }
+#endif
 }
 
 #if defined(_18F66K80_FAMILY_)
@@ -1261,7 +1161,14 @@ void sendMessage(VlcbOpCodes opc, uint8_t len, uint8_t data1, uint8_t data2, uin
  */
 void main(void) {
     uint8_t i;
+#if !(defined(VLCB_VDD_GUARD) && (defined(_18FXXQ83_FAMILY_) || defined(_18F66K80_FAMILY_)))
     uint8_t t1,t2;
+#endif
+#ifdef VLCB_EARLY_INIT
+    /* KeithB b46: the application's safe pin state, before anything that takes
+     * time (vlcb.h VLCB_EARLY_INIT). Nothing precedes this. */
+    APP_earlyInit();
+#endif
     
     /*
      * Set up the processor clock
@@ -1283,6 +1190,38 @@ void main(void) {
     }
 #endif
     
+#if defined(VLCB_VDD_GUARD) && (defined(_18FXXQ83_FAMILY_) || defined(_18F66K80_FAMILY_))
+    /* KeithB b46, VLCB_VDD_GUARD (vlcb.h): wait for the supply itself rather
+     * than a fixed second - HLVD at the module's level, Vdd above it for
+     * VLCB_VDD_STABLE_MS continuously, bounded by VLCB_VDD_STARTUP_MAX_MS.
+     * The MCP111-450 dongle this replaces did the same thing at 4.5 V. */
+    {
+        uint16_t waited = 0, stable = 0;
+        uint8_t above;
+#if defined(_18FXXQ83_FAMILY_)
+        HLVDCON1 = (uint8_t)(VLCB_VDD_GUARD);
+        HLVDCON0 = 0x80;                             /* EN; OUT = 1 while Vdd is below the level */
+#else
+        HLVDCON = (uint8_t)(0x10u | ((VLCB_VDD_GUARD) & 0x0Fu));   /* HLVDEN, VDIRMAG 0: flags Vdd at or below the level */
+#endif
+        while (waited < (uint16_t)VLCB_VDD_STARTUP_MAX_MS) {
+            __delay_ms(1);
+            waited++;
+#if defined(_18FXXQ83_FAMILY_)
+            above = HLVDCON0bits.RDY && !HLVDCON0bits.OUT;
+#else
+            PIR2bits.HLVDIF = 0;                     /* level-sensitive: sets again at once if still below */
+            __delay_us(5);
+            above = HLVDCONbits.IRVST && HLVDCONbits.BGVST && !PIR2bits.HLVDIF;
+#endif
+            if (above) {
+                if (++stable >= (uint16_t)VLCB_VDD_STABLE_MS) break;
+            } else {
+                stable = 0;
+            }
+        }
+    }
+#else
     /* Introduce a startup delay so that the power supply can stabilise */
     /* Without this EEPROM can get corrupted during power up. A  MCP111-450 
      * dongle does resolve this but is unnecessary with this software fix. 
@@ -1295,6 +1234,7 @@ void main(void) {
             }
         }
     }
+#endif
     
     /*
      * Set up the interrupts
@@ -1311,6 +1251,19 @@ void main(void) {
     IVTLOCK = 0x55;
     IVTLOCK = 0xAA;
     IVTLOCKbits.IVTLOCKED = 0x01; // lock IVT
+    
+    /* KeithB b43 : interrupt priority levels.
+     * The library's own ISRs (CAN errors, TMR0 tick) are LOW priority - their
+     * IPR bits were already written that way for the K80 and are now matched
+     * by their declarations - so an application ISR left HIGH can preempt
+     * them (set its IPR bit explicitly: the reset values are mixed, e.g.
+     * CANIP and CLC1IP reset to low). bothDi()/bothEi() need no change: with
+     * IPEN = 1 the GIE bit is GIEH, and GIEH = 0 still disables ALL
+     * interrupts (DS40002265C INTCON0), so every critical section stays
+     * critical. GIEL is enabled once, here; GIEH stays 0 until bothEi(). */
+    INTCON0bits.IPEN = 1;
+    INTCON0bits.GIEL = 1;
+
 #endif
     
 #if defined(_18FXXQ83_FAMILY_)
@@ -1344,7 +1297,21 @@ void main(void) {
     while(1) {
         // poll the services as quickly as possible.
         // up to service to ignore the polls it doesn't need.
+        tickNow.val = tickGet();    // KeithB b40: one tickGet() per pass (b42: written out so it cannot silently compile to nothing)
+#ifdef VLCB_POLL_DIVIDER
+        /* KeithB b47, LCR-003 (opt-in): poll the services every Nth pass so a
+         * fast application loop keeps its pass rate; loop() still runs every
+         * pass. tickNow above is still refreshed every pass. */
+        {
+            static uint8_t pollDivider = 0;
+            if (++pollDivider >= (uint8_t)(VLCB_POLL_DIVIDER)) {
+                pollDivider = 0;
+                poll();
+            }
+        }
+#else
         poll();
+#endif
         loop();
     }
 }
@@ -1370,5 +1337,16 @@ void __interrupt(low_priority) __section("mainSec") isrLow() {
 void __interrupt(irq(default), base(IVT_BASE)) DEFAULT_ISR(void)
 {
 // Unhandled interrupts go here
+#ifdef VLCB_DEFAULT_ISR_RESET
+    /* KeithB b47, LCR-001 (opt-in): an enabled source with no handler never has
+     * its flag cleared, so an empty body re-enters forever - a silent hang with
+     * the watchdog off. Reset instead (PCON0 RI records it). With
+     * VLCB_DEFAULT_ISR_HOOK the application may record the event first; the hook
+     * must not rely on returning to normal operation. Undefined: empty body. */
+#ifdef VLCB_DEFAULT_ISR_HOOK
+    APP_unhandledInterrupt();
+#endif
+    RESET();
+#endif
 }
 #endif

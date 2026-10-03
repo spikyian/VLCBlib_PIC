@@ -135,6 +135,7 @@ static union
     struct  {
         uint8_t writeNeeded:1; //flag if buffer is modified
         uint8_t eraseNeeded:1;  //flag if long write with block erase
+        uint8_t loaded:1;       // KeithB b36: flashBuffer holds valid flashBlock
     };
 } flashFlags;
 
@@ -156,9 +157,10 @@ static flash_address_t    flashBlock;     //address of current flash block
  *  Initialise variables for Flash program tracking.
  */
 void initRomOps(void) {
-    flashFlags.asByte = 0;  // no write and no erase
-    flashBlock = 0x0800; // invalid but as long a write isn't needed it will be 
-                         // ok. Next write will always be to a different block.
+    flashFlags.asByte = 0;  // no write, no erase, nothing loaded
+    // KeithB b36: was flashBlock = 0x0800, a real page (the parameter block), so reads of
+    // 0x800-0x8FF returned the uninitialised buffer until the first flash write.
+    flashBlock = 0;
     TBLPTRU = 0;
 #if defined(_18FXXQ83_FAMILY_)
     NVMCON1bits.WRERR = 0;
@@ -218,11 +220,16 @@ eeprom_data_t EEPROM_Read(eeprom_address_t index) {
  * @return 0 for success or error otherwise
  */
 uint8_t EEPROM_Write(eeprom_address_t index, eeprom_data_t value) {
-    uint8_t interruptEnabled;
-    interruptEnabled = geti(); // store current global interrupt state
+    uint8_t attempts = 3;   // KeithB b36: was an endless retry, a worn cell hung the module
 
     do {
-        EEPROM_WriteNoVerify(index, value);
+        if (EEPROM_WriteNoVerify(index, value) != GRSP_OK) {   // KeithB b46: refused (rail low)
+#ifdef VLCB_DIAG
+            mnsDiagnostics[MNS_DIAGNOSTICS_MEMERRS].asUint++;
+            updateModuleErrorStatus();
+#endif
+            return GRSP_INVALID_COMMAND_PARAMETER;
+        }
 
         // check that it worked
         if (EEPROM_Read(index) == value) {
@@ -232,6 +239,9 @@ uint8_t EEPROM_Write(eeprom_address_t index, eeprom_data_t value) {
         mnsDiagnostics[MNS_DIAGNOSTICS_MEMERRS].asUint++;
         updateModuleErrorStatus();
 #endif
+        if (--attempts == 0) {
+            return GRSP_INVALID_COMMAND_PARAMETER;   // KeithB b36: give up
+        }
     } while (1);
 #if defined(_18FXXQ83_FAMILY_)
     //Clear the NVM Command
@@ -247,8 +257,44 @@ uint8_t EEPROM_Write(eeprom_address_t index, eeprom_data_t value) {
  * @param value the value to be written
  * @return 0 for success or error otherwise
  */
+#if defined(VLCB_VDD_GUARD) && (defined(_18FXXQ83_FAMILY_) || defined(_18F66K80_FAMILY_))
+/* KeithB b46, VLCB_VDD_GUARD (vlcb.h): before an NVM write, wait up to
+ * VLCB_VDD_WRITE_WAIT_MS for Vdd to be above the HLVD level. Returns 1 when it
+ * is (or the HLVD is not running, so a module that disables it is never
+ * blocked), 0 when the rail is still low after the wait: the caller then
+ * REFUSES the write. A refused write is data not saved (stale, still
+ * self-consistent, retried or reported); a write made into a sagging or
+ * collapsing rail is data corrupted - and at power-down every write would
+ * otherwise go ahead into the falling rail. On the K80 the EEPROM write path
+ * waits for completion, so this covers the whole write; the Q83 path returns
+ * at once. */
+uint8_t vlcbVddWaitForWrite(void) {
+    uint8_t ms;
+#if defined(_18FXXQ83_FAMILY_)
+    if (!HLVDCON0bits.EN || !HLVDCON0bits.RDY) return 1;
+    for (ms = 0; ms < (uint8_t)VLCB_VDD_WRITE_WAIT_MS; ms++) {
+        if (!HLVDCON0bits.OUT) return 1;
+        __delay_ms(1);
+    }
+#else
+    if (!HLVDCONbits.HLVDEN || !HLVDCONbits.IRVST) return 1;
+    for (ms = 0; ms < (uint8_t)VLCB_VDD_WRITE_WAIT_MS; ms++) {
+        PIR2bits.HLVDIF = 0;                 /* level-sensitive: sets again at once if still below */
+        __delay_us(5);
+        if (!PIR2bits.HLVDIF) return 1;
+        __delay_ms(1);
+    }
+#endif
+    return 0;                                /* still low: the rail is sagging or going away - do not write */
+}
+#define VDD_GUARD_OK()  vlcbVddWaitForWrite()
+#else
+#define VDD_GUARD_OK()  (1)
+#endif
+
 uint8_t EEPROM_WriteNoVerify(eeprom_address_t index, eeprom_data_t value) {
     uint8_t interruptEnabled;
+    if (!VDD_GUARD_OK()) return GRSP_INVALID_COMMAND_PARAMETER;   // KeithB b46: rail low - refused, not written
     interruptEnabled = geti(); // store current global interrupt state
 #if defined (_18F66K80_FAMILY_)
     SET_EADDRH((index >> 8)&0xFF);      // High byte of address to write
@@ -316,7 +362,7 @@ uint8_t EEPROM_WriteNoVerify(eeprom_address_t index, eeprom_data_t value) {
  */
 static flash_data_t FLASH_Read(flash_address_t address) {
     // do read of Flash
-    if (BLOCK(address) == flashBlock) {
+    if (flashFlags.loaded && (BLOCK(address) == flashBlock)) {   // KeithB b36
         // if the block is the current one then get it directly
         return flashBuffer[OFFSET(address)];
     } else {
@@ -408,7 +454,8 @@ void flushFlashBlock(void) {
     // Wait until App tells us it is a good time
     while (APP_isSuitableTimeToWriteFlash() == BAD_TIME)  // block awaiting a good time
         ;
-        
+    if (!VDD_GUARD_OK()) return;    // KeithB b46: rail low - left pending (writeNeeded stays set), retried next flush
+
     if (flashFlags.eraseNeeded) {
         eraseFlashBlock();
     }
@@ -462,7 +509,8 @@ void flushFlashBlock(void) {
     if (interruptEnabled) {     // Only enable interrupts if they were enabled at function entry
         bothEi();                   /* Enable Interrupts */
     }
-    flashFlags.asByte = 0;  // no erase, no write
+    flashFlags.writeNeeded = 0;  // KeithB b36: keep 'loaded' unchanged
+    flashFlags.eraseNeeded = 0;
 }
 
 /**
@@ -496,6 +544,7 @@ void loadFlashBlock(void) {
     NVMCON1bits.NVMCMD = NVMCMD_NOP;      //Clear the NVM Command
 #endif
     flashFlags.asByte = 0; // no erase, no write needed
+    flashFlags.loaded = 1;  // KeithB b36
 }
    
 /**
@@ -522,15 +571,14 @@ uint8_t FLASH_Write(flash_address_t index, flash_data_t value) {
      * to be erased before writing.
      *
      */
-    if (BLOCK(index) != flashBlock) {
-        if (flashBlock != 0) {
-            // ok we want to write a different block so flush the current block 
-            if (flashFlags.eraseNeeded) {
-                eraseFlashBlock();
-                flashFlags.eraseNeeded = 0;
-            }
-
+    if ((BLOCK(index) != flashBlock) || !flashFlags.loaded) {   // KeithB b36
+        if (flashFlags.loaded) {
+            // ok we want to write a different block so flush the current block
+            // (flushFlashBlock erases first if needed)
             flushFlashBlock();
+            if (flashFlags.writeNeeded) {   // KeithB b46: the flush was refused (rail low) -
+                return GRSP_INVALID_COMMAND_PARAMETER;   // keep that block pending, do not load over it
+            }
         }
         
         // and load the new one
@@ -545,6 +593,228 @@ uint8_t FLASH_Write(flash_address_t index, flash_data_t value) {
     return GRSP_OK;
 }
 
+#ifdef VLCB_EEPROM_ASYNC
+/*
+ * KeithB b47, LCR-004: background EEPROM writer (see nvm.h). Ported from the
+ * CanCan v4.63 writer. Q83 only: the K80 write path waits for completion in
+ * hardware, so there is nothing to overlap.
+ */
+#if !defined(_18FXXQ83_FAMILY_)
+#error "VLCB_EEPROM_ASYNC is implemented for the Q83 family only (b47 LCR-004)"
+#endif
+#if ((VLCB_EEPROM_ASYNC) < 2) || ((VLCB_EEPROM_ASYNC) > 255)
+#error "VLCB_EEPROM_ASYNC (queue depth) must be 2..255 (b47 LCR-004)"
+#endif
+#include "ticktime.h"
+
+#define NVM_ASYNC_DEPTH     ((uint8_t)(VLCB_EEPROM_ASYNC))
+#define NVM_ASYNC_ATTEMPTS  3
+#define NVM_ASYNC_WRAP(i)   ((uint8_t)(((uint16_t)(i)) % NVM_ASYNC_DEPTH))
+
+uint16_t nvmAsyncWrites = 0;
+uint16_t nvmAsyncFailures = 0;
+uint16_t nvmAsyncRefused = 0;
+uint16_t nvmAsyncFallbacks = 0;
+uint8_t  nvmAsyncHighWater = 0;
+
+static eeprom_address_t nvmAsyncAddr[NVM_ASYNC_DEPTH];
+static eeprom_data_t    nvmAsyncVal[NVM_ASYNC_DEPTH];
+static uint8_t  nvmAsyncHead = 0;
+static uint8_t  nvmAsyncCount = 0;      // entries queued, including the one in flight
+static uint8_t  nvmAsyncBusy = 0;       // head write started, not yet settled
+static uint8_t  nvmAsyncAttempt = 0;    // failed attempts on the head so far
+static TickValue nvmAsyncStart;         // when the head write started
+#ifdef VLCB_VDD_GUARD
+static uint8_t  nvmAsyncRefusing = 0;   // head refused by the VDD guard, waiting for the rail
+static TickValue nvmAsyncRefusedSince;
+#endif
+
+#define NVM_SAT_INC16(c)    do { if ((c) != 0xFFFFu) (c)++; } while (0)
+
+uint8_t nvmAsyncPending(void) {
+    return nvmAsyncCount;
+}
+
+#ifdef VLCB_VDD_GUARD
+/* The non-waiting form of vlcbVddWaitForWrite(): 1 = rail above the HLVD level
+ * (or the HLVD not running), 0 = low now. The background writer never waits. */
+static uint8_t nvmVddOkNow(void) {
+    if (!HLVDCON0bits.EN || !HLVDCON0bits.RDY) return 1;
+    return HLVDCON0bits.OUT ? 0 : 1;
+}
+#endif
+
+/* Start a byte write and return at once (the Q83 write runs in hardware). */
+static void nvmStartWrite(eeprom_address_t index, eeprom_data_t value) {
+    uint8_t interruptEnabled;
+    while (NVMCON0bits.GO)
+        ;
+    NVMCON1bits.WRERR = 0;
+    NVMADRU = 0x38;
+    NVMADRH = (uint8_t) (index >> 8);
+    NVMADRL = (uint8_t) index;
+    NVMDATL = value;
+    NVMCON1bits.NVMCMD = NVMCMD_WRITE;
+    interruptEnabled = geti();
+    bothDi();
+    NVMLOCK = 0x55;
+    NVMLOCK = 0xAA;
+    NVMCON0bits.GO = 1;
+    if (interruptEnabled) {
+        bothEi();
+    }
+}
+
+/* The head write has finished (or timed out): verify it. 1 = good. */
+static uint8_t nvmFinishWrite(eeprom_address_t index, eeprom_data_t value, uint8_t timedOut) {
+    uint8_t ok;
+    if (timedOut) {
+        while (NVMCON0bits.GO)      // cannot start another NVM operation until it ends
+            ;
+    }
+    ok = (!timedOut && !NVMCON1bits.WRERR) ? 1 : 0;
+    NVMCON1bits.WRERR = 0;
+    NVMCON1bits.NVMCMD = NVMCMD_NOP;
+    if (ok && (EEPROM_Read(index) != value)) {
+        ok = 0;
+    }
+    NVMADR = 0;
+    return ok;
+}
+
+static void nvmAsyncPop(void) {
+    nvmAsyncHead = NVM_ASYNC_WRAP(nvmAsyncHead + 1u);
+    nvmAsyncCount--;
+    nvmAsyncAttempt = 0;
+    nvmAsyncBusy = 0;
+#ifdef VLCB_VDD_GUARD
+    nvmAsyncRefusing = 0;
+#endif
+}
+
+static void nvmAsyncSettle(uint8_t ok) {
+    if (ok) {
+        NVM_SAT_INC16(nvmAsyncWrites);
+        nvmAsyncPop();
+    } else {
+#ifdef VLCB_DIAG
+        mnsDiagnostics[MNS_DIAGNOSTICS_MEMERRS].asUint++;
+        updateModuleErrorStatus();
+#endif
+        if (++nvmAsyncAttempt >= NVM_ASYNC_ATTEMPTS) {
+            NVM_SAT_INC16(nvmAsyncFailures);
+            nvmAsyncPop();
+        }
+        // else: stays at the head, not busy - the next step retries it
+    }
+}
+
+/* One step of the writer: start the head write, or settle it when done. */
+void nvmPoll(void) {
+    uint8_t h;
+    if (nvmAsyncCount == 0) return;
+    h = nvmAsyncHead;
+    if (!nvmAsyncBusy) {
+        if ((nvmAsyncAttempt == 0) && (EEPROM_Read(nvmAsyncAddr[h]) == nvmAsyncVal[h])) {
+            nvmAsyncPop();          // already holds the value: no write, no wear
+            return;
+        }
+#ifdef VLCB_VDD_GUARD
+        if (!nvmVddOkNow()) {
+            if (!nvmAsyncRefusing) {
+                nvmAsyncRefusing = 1;
+                nvmAsyncRefusedSince.val = tickNowGet();   // same clock as tickTimeSinceNow (b40)
+            } else if (tickTimeSinceNow(nvmAsyncRefusedSince) > ONE_SECOND) {
+                NVM_SAT_INC16(nvmAsyncRefused);
+                nvmAsyncPop();      // a rail that stays low must not pin the queue
+            }
+            return;
+        }
+        nvmAsyncRefusing = 0;
+#endif
+        nvmStartWrite(nvmAsyncAddr[h], nvmAsyncVal[h]);
+        nvmAsyncStart.val = tickNowGet();
+        nvmAsyncBusy = 1;
+        return;
+    }
+    if (NVMCON0bits.GO) {
+        if (tickTimeSinceNow(nvmAsyncStart) < HUNDRED_MILI_SECOND) {
+            return;                 // still writing - the normal case
+        }
+        nvmAsyncBusy = 0;
+        nvmAsyncSettle(nvmFinishWrite(nvmAsyncAddr[h], nvmAsyncVal[h], 1));
+        return;
+    }
+    nvmAsyncBusy = 0;
+    nvmAsyncSettle(nvmFinishWrite(nvmAsyncAddr[h], nvmAsyncVal[h], 0));
+}
+
+/* Drain the queue, blocking. Never loops on a low rail: a refused entry is
+ * dropped as refused (the synchronous writers would refuse it too). */
+void flushNVM(void) {
+    uint8_t h;
+    while (nvmAsyncCount != 0) {
+        h = nvmAsyncHead;
+        if (nvmAsyncBusy) {
+            while (NVMCON0bits.GO)
+                ;
+            nvmAsyncBusy = 0;
+            nvmAsyncSettle(nvmFinishWrite(nvmAsyncAddr[h], nvmAsyncVal[h], 0));
+            continue;
+        }
+        if ((nvmAsyncAttempt == 0) && (EEPROM_Read(nvmAsyncAddr[h]) == nvmAsyncVal[h])) {
+            nvmAsyncPop();
+            continue;
+        }
+        if (EEPROM_WriteNoVerify(nvmAsyncAddr[h], nvmAsyncVal[h]) != GRSP_OK) {
+            NVM_SAT_INC16(nvmAsyncRefused);     // VDD guard refused (it has already waited)
+            nvmAsyncPop();
+            continue;
+        }
+        while (NVMCON0bits.GO)
+            ;
+        nvmAsyncSettle(nvmFinishWrite(nvmAsyncAddr[h], nvmAsyncVal[h], 0));
+    }
+}
+
+static uint8_t nvmAsyncQueue(eeprom_address_t index, eeprom_data_t value) {
+    uint8_t i, k;
+    /* coalesce onto a waiting entry for the same cell (not the in-flight head) */
+    for (i = (nvmAsyncBusy ? 1u : 0u); i < nvmAsyncCount; i++) {
+        k = NVM_ASYNC_WRAP(nvmAsyncHead + i);
+        if (nvmAsyncAddr[k] == index) {
+            nvmAsyncVal[k] = value;
+            return GRSP_OK;
+        }
+    }
+    if (nvmAsyncCount >= NVM_ASYNC_DEPTH) {
+        NVM_SAT_INC16(nvmAsyncFallbacks);
+        flushNVM();                             // older writes first, then this one in line
+        return EEPROM_Write(index, value);
+    }
+    k = NVM_ASYNC_WRAP(nvmAsyncHead + nvmAsyncCount);
+    nvmAsyncAddr[k] = index;
+    nvmAsyncVal[k] = value;
+    nvmAsyncCount++;
+    if (nvmAsyncCount > nvmAsyncHighWater) {
+        nvmAsyncHighWater = nvmAsyncCount;
+    }
+    return GRSP_OK;
+}
+
+/* A queued value for this cell, newest first; -1 if none is queued. */
+static int16_t nvmAsyncLookup(eeprom_address_t index) {
+    uint8_t i, k;
+    for (i = nvmAsyncCount; i > 0; i--) {
+        k = NVM_ASYNC_WRAP(nvmAsyncHead + (uint8_t)(i - 1u));
+        if (nvmAsyncAddr[k] == index) {
+            return (int16_t) nvmAsyncVal[k];
+        }
+    }
+    return -1;
+}
+#endif  /* VLCB_EEPROM_ASYNC */
+
 /**
  * Write a single byte to NVM.
  * @param type the type of memory to access
@@ -555,7 +825,11 @@ uint8_t FLASH_Write(flash_address_t index, flash_data_t value) {
 uint8_t writeNVM(NVMtype type, uint24_t index, uint8_t value) {
     switch(type) {
         case EEPROM_NVM_TYPE:
+#ifdef VLCB_EEPROM_ASYNC
+            return nvmAsyncQueue((eeprom_address_t)index, value);   // KeithB b47, LCR-004
+#else
             return EEPROM_Write((eeprom_address_t)index, value);
+#endif
         case FLASH_NVM_TYPE:
             return FLASH_Write((flash_address_t)index, value);
         default:
@@ -572,6 +846,12 @@ uint8_t writeNVM(NVMtype type, uint24_t index, uint8_t value) {
 int16_t readNVM(NVMtype type, uint24_t index) {
     switch(type) {
         case EEPROM_NVM_TYPE:
+#ifdef VLCB_EEPROM_ASYNC
+            {   // KeithB b47, LCR-004: a queued value wins over the EEPROM cell
+                int16_t queued = nvmAsyncLookup((eeprom_address_t)index);
+                if (queued >= 0) return queued;
+            }
+#endif
             return EEPROM_Read((uint16_t)index);
         case FLASH_NVM_TYPE:
 #if defined(_18F66K80_FAMILY_)

@@ -113,4 +113,11 @@ extern EventState APP_GetEventState(Happening h);   // for the action/happenings
  */
 extern EventState APP_GetEventIndexState(uint8_t tableIndex);   // for the simple model
 
+/**
+ * The application must provide a function to say whether an event is produced by
+ * this module, so the service only answers AREQ/ASRQ for its own events.
+ * @param tableIndex event table index
+ * @return non-zero if the module produces this event
+ */
+extern uint8_t APP_isProducedEvent(uint8_t tableIndex);   // for the simple model
 #endif

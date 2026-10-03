@@ -416,13 +416,22 @@ typedef enum SendResult {
 
 /* TRANSPORT INTERFACE */
 /**
+ * Indicates the result of waiting for the transmit queue to drain.
+ */
+typedef enum TxDrainResult {
+    DRAIN_OK,
+    OVERALL_TIMEOUT,
+    MESSAGE_TIMEOUT,
+    BUS_OFF_ERROR
+} TxDrainResult;
+/**
  * Transport interface to provide access to a communications bus.
  * 
  */
 typedef struct Transport {
     SendResult (* sendMessage)(Message * m);   ///< function call to send a message.
     MessageReceived (* receiveMessage)(Message * m); ///< check to see if message is available and return in the structure provided.
-    void (*waitForTxQueueToDrain)(void);    /// blocks waiting for all messages to be transmitted
+    TxDrainResult (*waitForTxQueueToDrain)(void);    /// blocks waiting for all messages to be transmitted
 } Transport;
 
 /**
@@ -446,6 +455,84 @@ extern const Transport * transport;
  * @return whether it is a valid time
  */
 extern ValidTime APP_isSuitableTimeToWriteFlash(void);
+
+/* KeithB b46: two opt-in start-up hooks, both off unless module.h defines them.
+ *
+ * VLCB_EARLY_INIT
+ *   main() calls APP_earlyInit() as its FIRST statement, before the clock is
+ *   set up and before the power-supply wait. For a module whose pins drive
+ *   something that must not float (a motor bridge, a booster, FETs): put the
+ *   latch-then-direction writes there. Port writes need no clock and are
+ *   valid at any Vdd the PIC executes at. Nothing else belongs in it.
+ *
+ * VLCB_VDD_GUARD  (Q83 and K80 families)
+ *   Defined to the family's own HLVD level code - Q83: HLVDCON1 SEL (DS40002265C
+ *   50.4.6; 0x0B = 3.64/4.00/4.36 V min/typ/max); K80: HLVDL<3:0> (DS30009977G
+ *   D420; 0x0B = 3.82/3.91/4.10 V, the nearest to the Q83's 0x0B). Replaces the
+ *   fixed ~1 s start-up delay with a wait for the supply, and guards every NVM
+ *   write:
+ *   - main() enables HLVD at that level and waits until Vdd has been above it
+ *     for VLCB_VDD_STABLE_MS (default 50) continuously, giving up and going on
+ *     after VLCB_VDD_STARTUP_MAX_MS (default 2000) so a marginal supply still
+ *     boots. A supply that is already up boots in ~50 ms instead of ~1 s.
+ *   - writeNVM() (EEPROM byte, flash page) first waits up to
+ *     VLCB_VDD_WRITE_WAIT_MS (default 5) for Vdd to be above the level. If it
+ *     still is not, the write is REFUSED: an EEPROM byte returns
+ *     GRSP_INVALID_COMMAND_PARAMETER and counts a MEMERRS diagnostic; a flash
+ *     page stays pending (writeNeeded) and is retried at the next flush. A
+ *     dip that long is not a transient - it is the rail sagging or going
+ *     away - and a write made into it is the corruption; a refused write is
+ *     only data not saved. (Blocking longer would stall the main loop: a
+ *     factory reset is hundreds of writes.) This is what a brown-out reset
+ *     cannot do: BOR acts AFTER Vdd has dropped, and a reset during a write
+ *     is itself the corruption; the guard keeps writes out of the dip - and
+ *     out of power-down - in the first place.
+ *   The module must leave the HLVD enabled (PMD on the Q83; it is at reset) and
+ *   may re-programme it to the same level for its own use. K80: HLVDIF is
+ *   level-sensitive (cleared while Vdd is still below, it sets again), which is
+ *   how the K80 branch reads "Vdd above". K80 note: as configured (BORPWR =
+ *   ZPBORMV) the K80 has NO brown-out reset - DS30009977G 5.4: "ZPBORMV does not
+ *   cause a Reset, but re-arms the POR" at about 2 V - and 64 MHz needs 3 V
+ *   (Figure 31-1). This guard is then the only supply protection a K80 module has.
+ */
+#ifdef VLCB_EARLY_INIT
+extern void APP_earlyInit(void);
+#endif
+/*
+ * KeithB b47 opt-in options (see the fork's change-request log, LCR-001..007).
+ * Every one is off unless the application defines it in module.h; with none
+ * defined the library compiles exactly as b46.
+ *   VLCB_DEFAULT_ISR_RESET        LCR-001 the Q83 default ISR resets instead of returning
+ *   VLCB_DEFAULT_ISR_HOOK         LCR-001 ... after calling APP_unhandledInterrupt()
+ *   VLCB_POLL_DIVIDER n           LCR-003 poll the services every nth main-loop pass (n >= 2)
+ *   VLCB_EEPROM_ASYNC n           LCR-004 background EEPROM writer, queue depth n (Q83; 2..255)
+ *                                 LCR-005 (no define) flushNVM() before every library RESET()
+ *   VLCB_PB_NO_BOOTLOADER_OFFSET  LCR-007 power-up button bands timed from power-up
+ */
+#ifdef VLCB_DEFAULT_ISR_HOOK
+#ifndef VLCB_DEFAULT_ISR_RESET
+#error "VLCB_DEFAULT_ISR_HOOK needs VLCB_DEFAULT_ISR_RESET (b47 LCR-001)"
+#endif
+extern void APP_unhandledInterrupt(void);
+#endif
+#if defined(VLCB_POLL_DIVIDER) && ((VLCB_POLL_DIVIDER) < 2 || (VLCB_POLL_DIVIDER) > 255)
+#error "VLCB_POLL_DIVIDER must be 2..255 (b47 LCR-003)"
+#endif
+#if defined(VLCB_VDD_GUARD) && (defined(_18FXXQ83_FAMILY_) || defined(_18F66K80_FAMILY_))
+#ifndef VLCB_VDD_STABLE_MS
+#define VLCB_VDD_STABLE_MS       50
+#endif
+#ifndef VLCB_VDD_STARTUP_MAX_MS
+#define VLCB_VDD_STARTUP_MAX_MS  2000
+#endif
+#ifndef VLCB_VDD_WRITE_WAIT_MS
+#define VLCB_VDD_WRITE_WAIT_MS   5
+#endif
+#ifndef _XTAL_FREQ
+#define _XTAL_FREQ  ((unsigned long)clkMHz * 1000000UL)   /* for __delay_ms(): Fosc, as ticktime.c */
+#endif
+extern uint8_t vlcbVddWaitForWrite(void);  /* nvm.c: the write guard, 1 = rail OK to write (also usable by an application) */
+#endif
 
 /*
  * The default value for the node number.

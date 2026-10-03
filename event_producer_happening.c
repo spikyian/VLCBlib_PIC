@@ -67,7 +67,7 @@
 extern Boolean validStart(uint8_t tableIndex);
 
 // Forward function declarations
-static Processed producerProcessMessage(Message *m);
+static Processed producerProcessMessage(Message *m) __reentrant;   /* KeithB: off the compiled stack - XC8 case 01901775 */
 #ifdef VLCB_DIAG
 static void producerPowerUp(void);
 static DiagnosticVal * producerGetDiagnostic(uint8_t index);
@@ -193,9 +193,9 @@ static DiagnosticVal * producerGetDiagnostic(uint8_t index) {
  */
 static uint8_t producerEsdData(uint8_t index) {
     switch (index){
-        case 0:
-            return PRODUCER_EV_HAPPENING;
         case 1:
+            return PRODUCER_EV_HAPPENING;
+        case 2:
             return HAPPENING_SIZE;
         default:
             return 0;

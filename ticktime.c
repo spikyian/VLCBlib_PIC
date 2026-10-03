@@ -198,7 +198,7 @@ uint32_t tickGet(void) {
  * The ticktime interrupt service routine. Handles the tickTime overflow to update
  * the extension bytes.
  */
-void __interrupt(irq(TMR0), base(IVT_BASE)) TMR0_ISR(void)
+void __interrupt(irq(TMR0), base(IVT_BASE), low_priority) TMR0_ISR(void)
 {
     // Tick Timer interrupt
     //check to see if the symbol timer overflowed

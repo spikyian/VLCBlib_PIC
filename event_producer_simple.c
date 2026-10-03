@@ -57,7 +57,7 @@
 extern Boolean validStart(uint8_t tableIndex);
 
 // Forward function declarations
-static Processed producerProcessMessage(Message *m);
+static Processed producerProcessMessage(Message *m) __reentrant;   /* KeithB: off the compiled stack - XC8 case 01901775 */
 #ifdef VLCB_DIAG
 static void producerPowerUp(void);
 static DiagnosticVal * producerGetDiagnostic(uint8_t index);
@@ -127,6 +127,9 @@ static Processed producerProcessMessage(Message *m) {
                 index = findEvent(0, (uint16_t)((m->bytes[2]<<8)|(m->bytes[3])));
             }
             if (index == NO_INDEX) return PROCESSED;
+            // KeithB b36: only answer for events this module produces; a response for a consume-only
+            // would contradict the real producer
+            if (!APP_isProducedEvent(index)) return PROCESSED;
 
             if (m->opc == OPC_AREQ) {
                 if (APP_GetEventIndexState(index) == EVENT_ON) {
@@ -177,10 +180,8 @@ void incrementProducerCounter() {
  */
 static uint8_t producerEsdData(uint8_t index) {
     switch (index){
-        case 0:
-            return PRODUCER_EV_HAPPENING;
         case 1:
-            return HAPPENING_SIZE;
+            return PRODUCER_EV_NOT_SPECIFIED;
         default:
             return 0;
     }

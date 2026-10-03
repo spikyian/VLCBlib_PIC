@@ -77,67 +77,67 @@ void leds_poll(void) {
 
     // update the actual LEDs based upon their state
     switch (ledState) {
-        case ON:
+        case LED_ON:
             APP_writeLED1(1);
             flashCounter = 0;
             break;
-        case OFF:
+        case LED_OFF:
             APP_writeLED1(0);
             flashCounter = 0;
             break;
-        case FLASH_50_2HZ:
+        case LED_FLASH_50_2HZ:
             // 1Hz (500ms per cycle is a count of 25 
             APP_writeLED1(flashCounter/25); 
             if (flashCounter >= 50) {
                 flashCounter = 0;
             }
             break;
-        case FLASH_50_1HZ:
+        case LED_FLASH_50_1HZ:
             // 1Hz (500ms per cycle is a count of 50 
             APP_writeLED1(flashCounter/50); 
             if (flashCounter >= 100) {
                 flashCounter = 0;
             }
             break;
-        case FLASH_50_HALF_HZ:
+        case LED_FLASH_50_HALF_HZ:
             APP_writeLED1(flashCounter/100);
             if (flashCounter >= 200) {
                 flashCounter = 0;
             }
             break;
-        case SINGLE_FLICKER_ON:
+        case LED_SINGLE_FLICKER_ON:
             APP_writeLED1(1);
             if (flashCounter >= 25) {     // 250ms
                 flashCounter = 0;
-                ledState = OFF;
+                ledState = LED_OFF;
             }
             break;
-        case SINGLE_FLICKER_OFF:
+        case LED_SINGLE_FLICKER_OFF:
             APP_writeLED1(0);
             if (flashCounter >= 25) {     // 250ms
                 flashCounter = 0;
-                ledState = ON;
+                ledState = LED_ON;
             }
             break;
-        case LONG_FLICKER_ON:
+        case LED_LONG_FLICKER_ON:
             APP_writeLED1(1);
             if (flashCounter >= 50) {     // 500ms
                 flashCounter = 0;
-                ledState = OFF;
+                ledState = LED_OFF;
             }
             break;
-        case LONG_FLICKER_OFF:
+        case LED_LONG_FLICKER_OFF:
             APP_writeLED1(0);
             if (flashCounter >= 50) {     // 500ms
                 flashCounter = 0;
-                ledState = ON;
+                ledState = LED_ON;
             }
             break;
-        case OFF_1S:
+        case LED_OFF_1S:
             APP_writeLED1(0);
             if (flashCounter >= 100) {     // 500ms
                 flashCounter = 0;
-                ledState = ON;
+                ledState = LED_ON;
             }
             break;
     }
@@ -146,33 +146,33 @@ void leds_poll(void) {
 void showStatus(StatusDisplay s) {
     switch (s) {
         case STATUS_OFF:
-            ledState = OFF;
+            ledState = LED_OFF;
             break;
         case STATUS_UNINITIALISED:
-            ledState = FLASH_50_HALF_HZ;
+            ledState = LED_FLASH_50_HALF_HZ;
             break;
         case STATUS_SETUP:
-            ledState = FLASH_50_1HZ;
+            ledState = LED_FLASH_50_1HZ;
             break;
         case STATUS_NORMAL:
         case STATUS_LEARN:
         case STATUS_BOOT:
-            ledState = ON;
+            ledState = LED_ON;
             break;
         case STATUS_MEMORY_FAULT:
         case STATUS_FATAL_ERROR:
         case STATUS_RESET_WARNING:
-            ledState = FLASH_50_2HZ;
+            ledState = LED_FLASH_50_2HZ;
             break;
         case STATUS_MESSAGE_RECEIVED:
-            ledState = SINGLE_FLICKER_OFF;
+            ledState = LED_SINGLE_FLICKER_OFF;
             break;
         case STATUS_MESSAGE_ACTED:
-            ledState = LONG_FLICKER_OFF;
+            ledState = LED_LONG_FLICKER_OFF;
             break;
         case STATUS_TRANSMIT_ERROR:
         case STATUS_RECEIVE_ERROR:
-            ledState = OFF_1S;
+            ledState = LED_OFF_1S;
             break;
     }
 }

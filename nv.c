@@ -65,7 +65,7 @@
 void loadNvCache(void);
 static void nvFactoryReset(void);
 static void nvPowerUp(void);
-static Processed nvProcessMessage(Message *m);
+static Processed nvProcessMessage(Message *m) __reentrant;   /* KeithB: off the compiled stack - XC8 case 01901775 */
 static uint8_t nvGetESDdata(uint8_t id);
 TimedResponseResult nvTRnvrdCallback(uint8_t type, uint8_t serviceIndex, uint8_t step);
 #ifdef VLCB_DIAG
@@ -218,7 +218,7 @@ void saveNV(uint8_t index, uint8_t value) {
 uint8_t setNV(uint8_t index, uint8_t value) {
     uint8_t oldValue;
     
-    if (index > NV_NUM) return CMDERR_INV_NV_IDX;
+    if ((index == 0) || (index > NV_NUM)) return CMDERR_INV_NV_IDX;   // KeithB b35: NV#0 is read-only
     if (APP_nvValidate(index, value) == INVALID) return CMDERR_INV_NV_VALUE;
 #ifdef NV_CACHE
     oldValue = nvCache[index];
@@ -252,7 +252,7 @@ static Processed nvProcessMessage(Message * m) {
             if (m->len < 4) {
                 sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_CMD);
 #ifdef VLCB_GRSP
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVRD, SERVICE_ID_MNS, CMDERR_INV_CMD);
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVRD, SERVICE_ID_NV, CMDERR_INV_CMD);
 #endif
 #ifdef VLCB_DIAG
                 nvDiagnostics[NV_DIAGNOSTICS_NUM_FAIL].asUint++;
@@ -263,7 +263,7 @@ static Processed nvProcessMessage(Message * m) {
             if (valueOrError < 0) {
                 sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(-valueOrError));
 #ifdef VLCB_GRSP
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVRD, SERVICE_ID_MNS, (uint8_t)(-valueOrError));
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVRD, SERVICE_ID_NV, (uint8_t)(-valueOrError));   // KeithB b40
 #endif
 #ifdef VLCB_DIAG
                 nvDiagnostics[NV_DIAGNOSTICS_NUM_FAIL].asUint++;
@@ -284,7 +284,7 @@ static Processed nvProcessMessage(Message * m) {
             if (m->len < 5) {
 //                sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_CMD);
 #ifdef VLCB_GRSP
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSET, SERVICE_ID_MNS, CMDERR_INV_CMD);
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSET, SERVICE_ID_NV, CMDERR_INV_CMD);   // KeithB b40
 #endif
 #ifdef VLCB_DIAG
                 nvDiagnostics[NV_DIAGNOSTICS_NUM_FAIL].asUint++;
@@ -294,7 +294,7 @@ static Processed nvProcessMessage(Message * m) {
             valueOrError = setNV(m->bytes[2], m->bytes[3]);
             if (valueOrError >0) {
                 sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(valueOrError));
-//                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSET, SERVICE_ID_MNS, (uint8_t)(valueOrError));
+//                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSET, SERVICE_ID_NV, (uint8_t)(valueOrError));
 #ifdef VLCB_DIAG
                 nvDiagnostics[NV_DIAGNOSTICS_NUM_FAIL].asUint++;
 #endif
@@ -302,14 +302,14 @@ static Processed nvProcessMessage(Message * m) {
             }
             sendMessage2(OPC_WRACK, nn.bytes.hi, nn.bytes.lo);
 #ifdef VLCB_GRSP
-            sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSET, SERVICE_ID_MNS, GRSP_OK);
+            sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSET, SERVICE_ID_NV, GRSP_OK);   // KeithB b40
 #endif
             return PROCESSED;
 #ifdef VLCB_NVSETRD
         case OPC_NVSETRD:
             if (m->len < 5) {
 //                sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, CMDERR_INV_CMD);
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSETRD, SERVICE_ID_MNS, CMDERR_INV_CMD);
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSETRD, SERVICE_ID_NV, CMDERR_INV_CMD);   // KeithB b40
 #ifdef VLCB_DIAG
                 nvDiagnostics[NV_DIAGNOSTICS_NUM_FAIL].asUint++;
 #endif
@@ -318,7 +318,7 @@ static Processed nvProcessMessage(Message * m) {
             valueOrError = setNV(m->bytes[2], m->bytes[3]);
             if (valueOrError >0) {
                 sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(valueOrError));
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSETRD, SERVICE_ID_MNS, (uint8_t)(valueOrError));
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSETRD, SERVICE_ID_NV, (uint8_t)(valueOrError));   // KeithB b40
 #ifdef VLCB_DIAG
                 nvDiagnostics[NV_DIAGNOSTICS_NUM_FAIL].asUint++;
 #endif
@@ -327,7 +327,7 @@ static Processed nvProcessMessage(Message * m) {
             valueOrError = getNV(m->bytes[2]);
             if (valueOrError < 0) {
                 sendMessage3(OPC_CMDERR, nn.bytes.hi, nn.bytes.lo, (uint8_t)(-valueOrError));
-                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSETRD, SERVICE_ID_MNS, (uint8_t)(-valueOrError));
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_NVSETRD, SERVICE_ID_NV, (uint8_t)(-valueOrError));   // KeithB b40
 #ifdef VLCB_DIAG
                 nvDiagnostics[NV_DIAGNOSTICS_NUM_FAIL].asUint++;
 #endif
@@ -353,8 +353,10 @@ static Processed nvProcessMessage(Message * m) {
  */
 static uint8_t nvGetESDdata(uint8_t id) {
     switch (id) {
-        case 1: return NV_NUM;
-        default: return 0;
+        case 1: 
+            return NV_NUM;
+        default: 
+            return 0;
     }
 }
 #endif

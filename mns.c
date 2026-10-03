@@ -123,7 +123,7 @@
 static void mnsFactoryReset(void) __reentrant;
 static void mnsPowerUp(void) __reentrant;
 static void mnsPoll(void) __reentrant;
-static Processed mnsProcessMessage(Message * m);
+static Processed mnsProcessMessage(Message * m) __reentrant;   /* KeithB: off the compiled stack - XC8 case 01901775 */
 static void mnsLowIsr(void) __reentrant;
 static uint8_t getParameter(uint8_t);
 #ifdef VLCB_DIAG
@@ -325,6 +325,7 @@ static void mnsPowerUp(void) {
     } else {
         mode_flags = (uint8_t)temp;
     }
+    last_mode_state = mode_state;       // KeithB b36: was 0, so the mode was rewritten to NVM on every boot
     mode_flags &= ~FLAG_MODE_FCUCOMPAT; // force FCU compat off
 #ifdef FCU_COMPAT
     mode_flags |= FLAG_MODE_FCUCOMPAT;  // force FCU compat on if defined
@@ -482,6 +483,9 @@ static Processed mnsProcessMessage(Message * m) {
                 sendMessage2(OPC_NNREL, previousNN.bytes.hi, previousNN.bytes.lo);
                 transport->waitForTxQueueToDrain();
             }
+#ifdef VLCB_EEPROM_ASYNC
+            flushNVM();     // KeithB b47, LCR-005: queued NVM writes must land before the reset
+#endif
             RESET();
 #ifdef VLCB_DIAG
         case OPC_RDGN:  // diagnostics
@@ -495,13 +499,15 @@ static Processed mnsProcessMessage(Message * m) {
             } else {
                 // bytes[2] is a serviceIndex
                 if (m->bytes[2] > NUM_SERVICES) {
-                    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_RDGN, 1, GRSP_INVALID_SERVICE);
+                    sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_RDGN, SERVICE_ID_MNS, GRSP_INVALID_SERVICE);   // KeithB b4
                     return PROCESSED;
                 }
                 if (services[m->bytes[2]-1]->getDiagnostic == NULL) {
                     // the service doesn't support diagnostics
-                    sendMessage5(OPC_DGN, nn.bytes.hi, nn.bytes.lo, OPC_RDGN, m->bytes[2], 0);
-                } 
+                    // KeithB b35: reply and stop; fell through to a NULL call (module reset)
+                    sendMessage6(OPC_DGN, nn.bytes.hi, nn.bytes.lo, m->bytes[2], 0, 0, 0);
+                    return PROCESSED;
+                }
                 if (m->bytes[3] == 0) {
                     // a DGN for all diagnostics for a particular service
                     startTimedResponse(TIMED_RESPONSE_RDGN, m->bytes[2], mnsTRallDiagnosticsCallback);
@@ -510,7 +516,7 @@ static Processed mnsProcessMessage(Message * m) {
                     DiagnosticVal * d = services[m->bytes[2]-1]->getDiagnostic(m->bytes[3]);
                     if (d == NULL) {
                         // the requested diagnostic doesn't exist
-                        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_RDGN, 1, GRSP_INVALID_DIAGNOSTIC);
+                        sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_RDGN, SERVICE_ID_MNS, GRSP_INVALID_DIAGNOSTIC);   // KeithB b4
                     } else {
                         // it was a request for a single diagnostic from a single service
                         sendMessage6(OPC_DGN, nn.bytes.hi, nn.bytes.lo, m->bytes[2], m->bytes[3],d->asBytes.hi, d->asBytes.lo);
@@ -594,6 +600,9 @@ static Processed mnsProcessMessage(Message * m) {
             return NOT_PROCESSED;
 #endif
         case OPC_NNRST: // reset CPU
+#ifdef VLCB_EEPROM_ASYNC
+            flushNVM();     // KeithB b47, LCR-005: queued NVM writes must land before the reset
+#endif
             RESET();
             return PROCESSED;   // should never get here
         default:
@@ -651,11 +660,11 @@ static void mnsPoll(void) {
 #ifdef VLCB_DIAG
     // Heartbeat message
     if (mode_state == MODE_NORMAL) {
-        if (tickTimeSince(heartbeatTimer) > 5*ONE_SECOND) {
+        if (tickTimeSinceNow(heartbeatTimer) > 5*ONE_SECOND) { // KeithB b40: tick value read once per pass (tickNowGet / tickTimeSinceNow)
             if (mode_flags & FLAG_MODE_HEARTBEAT) {
                 sendMessage5(OPC_HEARTB, nn.bytes.hi,nn.bytes.lo,heartbeatSequence++,mnsDiagnostics[MNS_DIAGNOSTICS_STATUS].asBytes.lo,0);
             }
-            heartbeatTimer.val = tickGet();
+            heartbeatTimer.val = tickNowGet();
             if (mnsDiagnostics[MNS_DIAGNOSTICS_STATUS].asBytes.lo > 0) {
                 mnsDiagnostics[MNS_DIAGNOSTICS_STATUS].asBytes.lo--;
             }
@@ -671,14 +680,19 @@ static void mnsPoll(void) {
     if (mode_state != last_mode_state) {
         // don't persist setup mode
         if ((mode_state == MODE_UNINITIALISED) || (mode_state == MODE_NORMAL)) {
-            writeNVM(MODE_FLAGS_NVM_TYPE, MODE_ADDRESS, mode_state);
+            writeNVM(MODE_NVM_TYPE, MODE_ADDRESS, mode_state);   // KeithB b36: was MODE_FLAGS_NVM_TYPE
+        }
+        // KeithB b39: leaving Normal for Uninitialised (MODE opcode or button) clears the saved NN
+        if ((mode_state == MODE_UNINITIALISED) && (setupModePreviousMode == MODE_NORMAL)) {
+            writeNVM(NN_NVM_TYPE, NN_ADDRESS+1, 0);
+            writeNVM(NN_NVM_TYPE, NN_ADDRESS, 0);
         }
         last_mode_state = mode_state;
     }
 #ifdef VLCB_DIAG
     // Module uptime
-    if (tickTimeSince(uptimeTimer) > ONE_SECOND) {
-        uptimeTimer.val = tickGet();
+    if (tickTimeSinceNow(uptimeTimer) > ONE_SECOND) {// KeithB b40: tick value read once per pass (tickNowGet / tickTimeSinceNow)
+        uptimeTimer.val = tickNowGet();
         mnsDiagnostics[MNS_DIAGNOSTICS_UPTIMEL].asUint++;
         if (mnsDiagnostics[MNS_DIAGNOSTICS_UPTIMEL].asUint == 0) {
             mnsDiagnostics[MNS_DIAGNOSTICS_UPTIMEH].asUint++;
@@ -692,10 +706,10 @@ static void mnsPoll(void) {
             // check the PB status
             if (APP_pbPressed() == 0) {
                 // pb has been released
-                pbTimer.val = tickGet();
+                pbTimer.val = tickNowGet();// KeithB b40: tick value read once per pass (tickNowGet / tickTimeSinceNow)
             } else {
                 // No need to release the PB
-                if (tickTimeSince(pbTimer) > 4*ONE_SECOND) {
+                if (tickTimeSinceNow(pbTimer) > 4*ONE_SECOND) { // KeithB b40: tick value read once per pass (tickNowGet / tickTimeSinceNow)
                     // Do state transition from Uninitialised to Setup
                     mode_state = MODE_PRESETUP;
                     setupModePreviousMode = MODE_UNINITIALISED;
@@ -710,7 +724,7 @@ static void mnsPoll(void) {
                 // Do state transition from Uninitialised to Setup
                 mode_state = MODE_SETUP;
                 setupModePreviousMode = MODE_UNINITIALISED;
-                pbTimer.val = tickGet();    // reset the timer ready for Setup mode
+                pbTimer.val = tickNowGet();    // reset the timer ready for Setup mode // KeithB b40: tick value read once per pass (tickNowGet / tickTimeSinceNow)
                 //start the request for NN
                 sendMessage2(OPC_RQNN, nn.bytes.hi, nn.bytes.lo);
                 setLEDsByMode();
@@ -721,12 +735,16 @@ static void mnsPoll(void) {
             if (APP_pbPressed() == 0) {
                 // PB has been released
 
-                if ((tickTimeSince(pbTimer) > HUNDRED_MILI_SECOND) && (tickTimeSince(pbTimer) < 2*ONE_SECOND)) {
+                if (pbWasPushed && (tickTimeSinceNow(pbTimer) > HUNDRED_MILI_SECOND) && (tickTimeSinceNow(pbTimer) < 2*ONE_SECOND)) {   // KeithB b36: pbWasPushed as in Normal
                     // a short press returns to previous mode
                     mode_state = setupModePreviousMode;
                     if (mode_state == MODE_NORMAL) {
                         // restore the NN
                         nn.word = previousNN.word;
+                        // KeithB b36: save it too. MODE SETUP (from Normal) writes NN 0 to NVM,
+                        // so after a cancel the module rebooted as Normal with NN 0
+                        writeNVM(NN_NVM_TYPE, NN_ADDRESS+1, nn.bytes.hi);
+                        writeNVM(NN_NVM_TYPE, NN_ADDRESS, nn.bytes.lo);
                         sendMessage2(OPC_NNACK, nn.bytes.hi, nn.bytes.lo);
 #ifdef VLCB_DIAG
                         mnsDiagnostics[MNS_DIAGNOSTICS_NNCHANGE].asUint++;
@@ -734,11 +752,11 @@ static void mnsPoll(void) {
                     }
                     setLEDsByMode();
                 }
-                if (tickTimeSince(pbTimer) > 4*ONE_SECOND) {
+                if (pbWasPushed && (tickTimeSinceNow(pbTimer) > 4*ONE_SECOND)) {   // KeithB b36
                     mode_state = MODE_UNINITIALISED;
                     setLEDsByMode();
                 }
-                pbTimer.val = tickGet();
+                pbTimer.val = tickNowGet();
                 pbWasPushed = FALSE;
             } else {
                 pbWasPushed = TRUE;
@@ -748,7 +766,7 @@ static void mnsPoll(void) {
             // check the PB status
             if (APP_pbPressed() == 0) {
                 // PB has been released
-                if (pbWasPushed && (tickTimeSince(pbTimer) > HUNDRED_MILI_SECOND) && (tickTimeSince(pbTimer) < 2*ONE_SECOND)) {
+                if (pbWasPushed && (tickTimeSinceNow(pbTimer) > HUNDRED_MILI_SECOND) && (tickTimeSinceNow(pbTimer) < 2*ONE_SECOND)) {
                     // Do State transition from Normal to Setup
                     previousNN.word = nn.word;  // save the old NN
                     nn.bytes.lo = nn.bytes.hi = 0;
@@ -759,7 +777,7 @@ static void mnsPoll(void) {
                     sendMessage2(OPC_RQNN, previousNN.bytes.hi, previousNN.bytes.lo);
                     setLEDsByMode();
                 }
-                if (pbWasPushed &&(tickTimeSince(pbTimer) >= 4*ONE_SECOND)) {
+                if (pbWasPushed &&(tickTimeSinceNow(pbTimer) >= 4*ONE_SECOND)) {
                     // was down for more than 4 sec, Move to Uninitialised
                     previousNN.word = nn.word;  // save the old NN
                     nn.bytes.lo = nn.bytes.hi = 0;
@@ -770,7 +788,7 @@ static void mnsPoll(void) {
                     sendMessage2(OPC_NNREL, previousNN.bytes.hi, previousNN.bytes.lo);
                     setLEDsByMode();
                 }
-                pbTimer.val = tickGet();
+                pbTimer.val = tickNowGet();
                 pbWasPushed = FALSE;
             } else {
                 pbWasPushed = TRUE;

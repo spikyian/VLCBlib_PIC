@@ -57,7 +57,7 @@
 
 static DiagnosticVal consumerDiagnostics[NUM_CONSUMER_DIAGNOSTICS+1];
 static void consumerPowerUp(void);
-static Processed consumerProcessMessage(Message * m);
+static Processed consumerProcessMessage(Message * m) __reentrant;   /* KeithB: off the compiled stack - XC8 case 01901775 */
 static DiagnosticVal * consumerGetDiagnostic(uint8_t index); 
 static uint8_t consumerEsdData(uint8_t index);
 static Processed consumerEventCheckLen(Message * m, uint8_t needed);
@@ -119,10 +119,12 @@ static Processed consumerProcessMessage(Message *m) {
             if (m->bytes[2] == MODE_EVENT_ACK_ON) {
                 // Enable event ack mode
                 mode_flags |= FLAG_MODE_EVENTACK;
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_CONSUMER, GRSP_OK);   // KeithB b40
                 return PROCESSED;
             } else if (m->bytes[2] == MODE_EVENT_ACK_OFF) {
                 // Stop event ack
                 mode_flags &= ~FLAG_MODE_EVENTACK;
+                sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_CONSUMER, GRSP_OK);   // KeithB b40
                 return PROCESSED;
             }
         } 
@@ -131,7 +133,7 @@ static Processed consumerProcessMessage(Message *m) {
 #endif
     
     if (m->len < 5) return NOT_PROCESSED;
-
+    enn = 1;    // KeithB b35: marker, replaced by the sender NN for long events
     switch (m->opc) {
         case OPC_ASON:
 #ifdef HANDLE_DATA_EVENTS
@@ -190,7 +192,10 @@ static Processed consumerProcessMessage(Message *m) {
         }
     }
 #else
-    enn = ((uint16_t)m->bytes[0])*256+m->bytes[1];
+    // KeithB b35: enn is 0 for short events (set above); only long events use the sender NN
+    if (enn != 0) {
+        enn = ((uint16_t)m->bytes[0])*256+m->bytes[1];
+    }
     tableIndex = findEvent(enn, ((uint16_t)m->bytes[2])*256+m->bytes[3]);
     if (tableIndex == NO_INDEX) return NOT_PROCESSED;
 
@@ -199,7 +204,7 @@ static Processed consumerProcessMessage(Message *m) {
     }
     // we have the event in the event table
     // check that we have a consumed Action
-    if ((mode_flags & FLAG_MODE_EVENTACK) && (isConsumedEvent(tableIndex))) {
+    if (mode_flags & FLAG_MODE_EVENTACK) {
         // sent the ack
         sendMessage7(OPC_ENACK, nn.bytes.hi, nn.bytes.lo, (uint8_t)(m->opc), m->bytes[0], m->bytes[1], m->bytes[2], m->bytes[3]);
 #ifdef VLCB_DIAG
@@ -247,11 +252,11 @@ static DiagnosticVal * consumerGetDiagnostic(uint8_t index) {
  * @return the ESD data
  */
 static uint8_t consumerEsdData(uint8_t index) {
-    switch (index){
-        case 0:
-            return CONSUMER_EV_NOT_SPECIFIED;
-        default:
-            return 0;
+    switch (index) {
+        case 1:     // KeithB b38: ESD data is requested with index 1..3, not 0
+             return CONSUMER_EV_NOT_SPECIFIED;
+         default:
+             return 0;
     }
 }
 #endif
