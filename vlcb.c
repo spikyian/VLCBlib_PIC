@@ -540,6 +540,18 @@ const Priority priorities[256] = {
 uint8_t eeBootFlag = 0;
 #endif
 
+/* Main loop pacing. Both optional; undefined (or 1) is today's behaviour.
+ * VLCB_LOOPS_PER_POLL n     loop() runs n times for each call of poll()
+ * VLCB_MESSAGES_PER_POLL m  poll() takes up to m waiting frames when it runs
+ * Receive capacity is m/n frames per loop() pass.
+ */
+#ifndef VLCB_LOOPS_PER_POLL
+#define VLCB_LOOPS_PER_POLL     1
+#endif
+#ifndef VLCB_MESSAGES_PER_POLL
+#define VLCB_MESSAGES_PER_POLL  1
+#endif
+
 
 /**
  * The module's transport interface.
@@ -824,6 +836,42 @@ static void checkPowerOnPb(void) {
 }
 
 /**
+ * Receive and handle one message from the transport. Any messages received are 
+ * passed to the application pre-process, then the services in order and application
+ * post-process. Also updates the RXMESS diagnostic and the status LED.
+ * @return 1 if a frame was taken from the transport (handled or not), 0 if none waiting
+ */
+static uint8_t pollReceiveOne(void) {
+    uint8_t i;
+    Message m;
+    Processed handled = NOT_PROCESSED;
+    if ((transport == NULL) || (transport->receiveMessage == NULL)) return 0;
+    if (!transport->receiveMessage(&m)) return 0;
+    if (m.len > 0) {
+        showStatus(STATUS_MESSAGE_RECEIVED);
+        handled = APP_preProcessMessage(&m); // Call App to check for any opcodes to be handled.
+        if (handled == NOT_PROCESSED) {
+            for (i=0; i<NUM_SERVICES; i++) {
+                if ((services[i] != NULL) && (services[i]->processMessage != NULL)) {
+                    if (services[i]->processMessage(&m) == PROCESSED) {
+                        handled = PROCESSED;
+                        break;
+                    }
+                }
+            }
+            if (handled == NOT_PROCESSED) {     // Call App to check for any opcodes to be handled.
+                handled = APP_postProcessMessage(&m);
+            }
+        }
+    }
+    if (handled) {
+        mnsDiagnostics[MNS_DIAGNOSTICS_RXMESS].asUint++;
+        showStatus(STATUS_MESSAGE_ACTED);
+    }
+    return 1;
+}
+
+/**
  * Poll each service.
  * VLCB function to perform necessary poll functionality and regularly 
  * poll each service.
@@ -836,8 +884,6 @@ static void checkPowerOnPb(void) {
  */
 static void poll(void) {
     uint8_t i;
-    Message m;
-    Processed handled;
     
     /* handle any timed responses */
     // KeithB b40: tick read once per pass (tickNowGet), precomputed timed-response period
@@ -858,35 +904,20 @@ static void poll(void) {
     
     leds_poll();
     
-    // Handle any incoming messages from the transport
-    handled = NOT_PROCESSED;
-    if (transport != NULL) {
-        if (transport->receiveMessage != NULL) {
-            if (transport->receiveMessage(&m)) {
-                if (m.len > 0) {
-                    showStatus(STATUS_MESSAGE_RECEIVED);
-                    handled = APP_preProcessMessage(&m); // Call App to check for any opcodes to be handled. 
-                    if (handled == NOT_PROCESSED) {
-                        for (i=0; i<NUM_SERVICES; i++) {
-                            if ((services[i] != NULL) && (services[i]->processMessage != NULL)) {
-                                if (services[i]->processMessage(&m) == PROCESSED) {
-                                    handled = PROCESSED;
-                                    break;
-                                }
-                            }
-                        }
-                        if (handled == NOT_PROCESSED) {     // Call App to check for any opcodes to be handled. 
-                            handled = APP_postProcessMessage(&m);
-                        }
-                    }
-                }
-            }
-        }
+#if defined(VLCB_RX_PER_POLL) && (VLCB_RX_PER_POLL > 1)
+    /* KeithB b45, VLCB_RX_PER_POLL (module.h, opt-in, default off): take up to
+     * VLCB_RX_PER_POLL received frames per pass instead of one, stopping as soon as
+     * none is waiting. One frame per pass caps a module's receive rate at its loop
+     * rate (CANCMD: ~765 frames/s, bench 25 Sep 2026, receive FIFO overflowing under a
+     * ~945 frames/s flood). Each frame is handled exactly as below. Modules that do
+     * not define it compile the original block, unchanged. */
+    for (i = 0; i < (uint8_t)VLCB_RX_PER_POLL; i++) {
+        if (!pollReceiveOne()) break;
     }
-    if (handled) {
-        mnsDiagnostics[MNS_DIAGNOSTICS_RXMESS].asUint++;
-        showStatus(STATUS_MESSAGE_ACTED);
-    }
+#else
+    // Handle a single incoming messages from the transport, if any available.
+    pollReceiveOne();    
+#endif
 }
 
 #if defined(_18F66K80_FAMILY_)
@@ -1192,10 +1223,15 @@ void main(void) {
     // enable the interrupts and ready to go
     bothEi();
     while(1) {
-        // poll the services as quickly as possible.
-        // up to service to ignore the polls it doesn't need.
-        tickNow.val = tickGet();    // KeithB b40: one tickGet() per pass (b42: written out so it cannot silently compile to nothing)
+        tickNow.val = tickGet();
+#if VLCB_LOOPS_PER_POLL > 1
+        if (++loopsSincePoll >= (uint8_t)VLCB_LOOPS_PER_POLL) {
+            loopsSincePoll = 0;
+            poll();
+        }
+#else
         poll();
+#endif
         loop();
     }
 }
