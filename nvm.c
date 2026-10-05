@@ -565,7 +565,7 @@ uint8_t writeNVM(NVMtype type, uint24_t index, uint8_t value) {
     switch(type) {
         case EEPROM_NVM_TYPE:
 #ifdef ASYNC_EEPROM
-            return readAsyncEEPROM((eeprom_address_t)index);
+            return writeAsyncEEPROM((eeprom_address_t)index, value);
 #else
             return EEPROM_Write((eeprom_address_t)index, value);
 #endif
@@ -585,7 +585,11 @@ uint8_t writeNVM(NVMtype type, uint24_t index, uint8_t value) {
 int16_t readNVM(NVMtype type, uint24_t index) {
     switch(type) {
         case EEPROM_NVM_TYPE:
+#ifdef ASYNC_EEPROM
+            return readAsyncEEPROM((eeprom_address_t)index);  // a pending value wins over the cell
+#else
             return EEPROM_Read((uint16_t)index);
+#endif
         case FLASH_NVM_TYPE:
 #if defined(_18F66K80_FAMILY_)
             return FLASH_Read((uint16_t)index);

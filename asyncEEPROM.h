@@ -46,32 +46,64 @@
  * @brief
  * Definitions and declarations for the asynchronous EEPROM writer.
  * @details
- * Different implementations of Async EEPROM writer exist. Include ONE of these
- * implementations in your project.
- */ 
+ * Two implementations exist. The application selects one by defining
+ * ASYNC_EEPROM in module.h as either BUFFER or QUEUE; with ASYNC_EEPROM
+ * undefined all EEPROM writes are synchronous as before.
+ *
+ * BUFFER (asyncEEPROM_buffer.c) keeps a RAM copy of the NUMBER_EEPROM bytes
+ * from EEPROM_BASE_ADDRESS and writes changed bytes back one per poll.
+ * Addresses outside that window are read and written synchronously.
+ *
+ * QUEUE (asyncEEPROM_queue.c) keeps a queue of ASYNC_EEPROM_QUEUE_SIZE
+ * pending (address, value) writes covering the whole EEPROM, with reads
+ * served from the queue first. Q83 only.
+ *
+ * Both are driven from the library: initRomOps() calls initAsyncEEPROM(),
+ * poll() calls pollAsyncEEPROM(), readNVM()/writeNVM() route EEPROM
+ * accesses through readAsyncEEPROM()/writeAsyncEEPROM(), and flushNVM()
+ * calls flushAsyncEEPROM() before any RESET.
+ */
+/** Values for ASYNC_EEPROM. */
+#define BUFFER  1
+#define QUEUE   2
+
+#ifdef ASYNC_EEPROM
+#if (ASYNC_EEPROM != BUFFER) && (ASYNC_EEPROM != QUEUE)
+#error "ASYNC_EEPROM must be BUFFER or QUEUE"
+#endif
+#endif
+
 /**
- * Initialise the Async EEPROM writer.
+ * Initialise the Async EEPROM writer. Called from initRomOps().
  */
 extern void initAsyncEEPROM(void);
 
 /**
-  * The poll routine which will perform a write to the EEPROM if one is required.
-  */
+ * The poll routine which will perform a write to the EEPROM if one is required.
+ * Called from the library poll().
+ */
 extern void pollAsyncEEPROM(void);
 
 /**
-  * The poll routine which will perform a write to the EEPROM if one is required.
-  */
+ * Read a byte of EEPROM, returning a pending (not yet written) value if there
+ * is one, otherwise the value in the EEPROM cell.
+ * @param address EEPROM address
+ * @return the byte
+ */
 extern uint8_t readAsyncEEPROM(eeprom_address_t address);
 
 /**
-  * The poll routine which will perform a write to the EEPROM if one is required.
-  */
-extern void writeAsyncEEPROM(eeprom_address_t address, uint8_t data);
+ * Write a byte of EEPROM. Normally records the write and returns at once;
+ * the write happens later from pollAsyncEEPROM().
+ * @param address EEPROM address
+ * @param data the value to be written
+ * @return GRSP_OK, or the error from a synchronous write when one was needed
+ */
+extern uint8_t writeAsyncEEPROM(eeprom_address_t address, uint8_t data);
 
 /**
-  * Flush out any remaining data to NVM.
-  */
+ * Write out all pending data to EEPROM. Blocks until done.
+ */
 extern void flushAsyncEEPROM(void);
 
 #endif

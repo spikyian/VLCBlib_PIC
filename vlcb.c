@@ -41,7 +41,6 @@
 #include "vlcb.h"
 #include "module.h"
 #include "nvm.h"
-#include "asyncEEPROM.h"
 #include "hardware.h"
 #include "ticktime.h"
 #include "timedResponse.h"
@@ -1223,11 +1222,14 @@ void main(void) {
     /* Without this EEPROM can get corrupted during power up. A  MCP111-450 
      * dongle does resolve this but is unnecessary with this software fix. 
      * Delay is approx 1 second. */
-    for (t1=0; t1<64; t1++) {
-        for (t2=0; t2<255; t2++) {
-            for (i=0; i<255; i++) {
-                // do something innocuous
-                APP_writeLED1(0);
+    {
+        uint8_t i, t1, t2;
+        for (t1=0; t1<64; t1++) {
+            for (t2=0; t2<255; t2++) {
+                for (i=0; i<255; i++) {
+                    // do something innocuous
+                    APP_writeLED1(0);
+                }
             }
         }
     }

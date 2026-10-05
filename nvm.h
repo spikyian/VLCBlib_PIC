@@ -160,7 +160,7 @@ extern void flushFlashBlock(void);
  */
 extern void initRomOps(void);
 
-/*
+/**
  * Read a byte from NVM.
  * @param type specify the type of NVM required
  * @param index is the address to be read
@@ -168,7 +168,7 @@ extern void initRomOps(void);
  */
 extern int16_t readNVM(NVMtype type, uint24_t index);
 
-/*
+/**
  * Write a byte to NVM with verification of success.
  * Goes through a write/read/verify loop until read matches written data.
  * May be blocking.
@@ -179,7 +179,22 @@ extern int16_t readNVM(NVMtype type, uint24_t index);
  */
 extern uint8_t writeNVM(NVMtype type, uint24_t index, uint8_t value);
 
-/*
+/**
+ * Read EEPROM.  
+ * @param index the address
+ * @return the value
+ */
+extern eeprom_data_t EEPROM_Read(eeprom_address_t index);
+
+/**
+ * Write a byte to EEPROM
+ * @param index the address
+ * @param value the value to be written
+ * @return 0 for success or error otherwise
+ */
+extern uint8_t EEPROM_Write(eeprom_address_t index, eeprom_data_t value);
+
+/**
  * Write a byte to EEPROM without verification.
  * @param type specify the type of NVM required
  * @param index is the address to be written
@@ -189,7 +204,10 @@ extern uint8_t writeNVM(NVMtype type, uint24_t index, uint8_t value);
 extern uint8_t EEPROM_WriteNoVerify(eeprom_address_t index, eeprom_data_t value);
 
 /**
- * Flush any cached data back to NVM.
+ * Write a byte to EEPROM with verification. Blocks until the write completes.
+ * @param index is the address to be written
+ * @param value the byte value to be written
+ * @return 0 for success or error number
  */
 extern void flushNVM(void);
 

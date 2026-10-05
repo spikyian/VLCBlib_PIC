@@ -35,38 +35,52 @@
 
 #ifdef ASYNC_EEPROM == QUEUE
 /**
+ * @file
+ * @brief
+ * Queued asynchronous EEPROM writer.
+ * @details
  * Maintains a queue of EEPROM changes required, storing address and value. The changes are stored
- * to EEPROM asynchonously.
+ * to EEPROM asynchronously, one at a time, from pollAsyncEEPROM(). Each write is started and the
+ * poll returns while the hardware does it; the next poll verifies the write and moves on.
+ * A later write to a cell that is still queued replaces the queued value. A cell that already
+ * holds the value is not written.
  *
- * Reads of EEPROM should be served from the RAM if available otherwise read from EEPROM.
+ * Reads are served from the queue if the cell has a pending write, otherwise from EEPROM.
+ * 
+ * The amount of RAM used depends upon the size of the queue specified. When writing to the queue
+ * if the queue is full then the queue is drained and the request is processed synchronously.
+ * The size of the queue is specified by ASYNC_EEPROM_QUEUE_SIZE (2..255).
  *
- * The amount of RAM used  depends upon the size of the queue specified. When writing to the queue
- * if the queue is full then the request is processed synchronously.
- * The size of the queue is specified by ASYNC_EEPROM_QUEUE_SIZE
+ * With VLCB_VDD_GUARD the writer does not start a write while Vdd is below the HLVD level; an
+ * entry held back for a second is dropped as refused (a synchronous write would refuse it too).
+ *
+ * Q83 only: the K80 write path waits for completion in hardware, so there is nothing to overlap.
  */
 
-/*
-+ * KeithB b47, LCR-004: background EEPROM writer (see nvm.h). Ported from the
-+ * CanCan v4.63 writer. Q83 only: the K80 write path waits for completion in
-+ * hardware, so there is nothing to overlap.
-+ */
 #if !defined(_18FXXQ83_FAMILY_)
-#error "EEPROM_ASYNC=QUEUE is implemented for the Q83 family only"
+#error "ASYNC_EEPROM=QUEUE is implemented for the Q83 family only"
+#endif
+#if !defined(ASYNC_EEPROM_QUEUE_SIZE)
+#error "ASYNC_EEPROM=QUEUE needs ASYNC_EEPROM_QUEUE_SIZE (2..255) in module.h"
 #endif
 #if ((ASYNC_EEPROM_QUEUE_SIZE) < 2) || ((ASYNC_EEPROM_QUEUE_SIZE) > 255)
 #error "ASYNC_EEPROM_QUEUE_SIZE must be 2..255 "
 #endif
 #include "ticktime.h"
+#ifdef VLCB_DIAG
+#include "mns.h"
+#endif
 
 #define NVM_ASYNC_DEPTH     ((uint8_t)(ASYNC_EEPROM_QUEUE_SIZE))
 #define NVM_ASYNC_ATTEMPTS  3
 #define NVM_ASYNC_WRAP(i)   ((uint8_t)(((uint16_t)(i)) % NVM_ASYNC_DEPTH))
 
-uint16_t nvmAsyncWrites = 0;
-uint16_t nvmAsyncFailures = 0;
-uint16_t nvmAsyncRefused = 0;
-uint16_t nvmAsyncFallbacks = 0;
-uint8_t  nvmAsyncHighWater = 0;
+/* Counters, readable by the application (e.g. for a diagnostic). */
+uint16_t nvmAsyncWrites = 0;        ///< writes completed and verified
+uint16_t nvmAsyncFailures = 0;      ///< entries dropped after NVM_ASYNC_ATTEMPTS failed writes
+uint16_t nvmAsyncRefused = 0;       ///< entries dropped because Vdd stayed low (VLCB_VDD_GUARD)
+uint16_t nvmAsyncFallbacks = 0;     ///< writes done synchronously because the queue was full
+uint8_t  nvmAsyncHighWater = 0;     ///< most entries ever queued
 
 static eeprom_address_t nvmAsyncAddr[NVM_ASYNC_DEPTH];
 static eeprom_data_t    nvmAsyncVal[NVM_ASYNC_DEPTH];
@@ -90,49 +104,34 @@ uint8_t nvmAsyncPending(void) {
 }
 
 /* 
- * Start a byte write and return at once (the Q83 write runs in hardware). 
+#ifdef VLCB_VDD_GUARD
+/**
+ * Is Vdd above the HLVD level right now? 1 = yes (or the HLVD is not running).
+ * The background writer never waits for the rail; it just tries again next poll.
  */
-static void nvmStartWrite(eeprom_address_t index, eeprom_data_t value) {
-    uint8_t interruptEnabled;
-    while (NVMCON0bits.GO)
-        ;
-    NVMCON1bits.WRERR = 0;
-    NVMADRU = 0x38;
-    NVMADRH = (uint8_t) (index >> 8);
-    NVMADRL = (uint8_t) index;
-    NVMDATL = value;
-    NVMCON1bits.NVMCMD = NVMCMD_WRITE;
-    interruptEnabled = geti();
-    bothDi();
-    NVMLOCK = 0x55;
-    NVMLOCK = 0xAA;
-    NVMCON0bits.GO = 1;
-    if (interruptEnabled) {
-        bothEi();
-    }
+static uint8_t nvmVddOkNow(void) {
++   if (!HLVDCON0bits.EN || !HLVDCON0bits.RDY) return 1;
+    return HLVDCON0bits.OUT ? 0 : 1;
 }
+#endif
 
-/* 
+/** 
  * The head write has finished (or timed out): verify it. 1 = good. 
  */
 static uint8_t nvmFinishWrite(eeprom_address_t index, eeprom_data_t value, uint8_t timedOut) {
     uint8_t ok;
-    if (timedOut) {
-        while (NVMCON0bits.GO)      // cannot start another NVM operation until it ends
-            ;
-    }
+    while (NVMCON0bits.GO)      // cannot start another NVM operation until it ends
+        ;
     ok = (!timedOut && !NVMCON1bits.WRERR) ? 1 : 0;
     NVMCON1bits.WRERR = 0;
-    NVMCON1bits.NVMCMD = NVMCMD_NOP;
     if (ok && (EEPROM_Read(index) != value)) {
         ok = 0;
     }
-    NVMADR = 0;
     return ok;
 }
 
-/*
- * Obtain the next item to be written to EEPROM.
+/**
+ * Drop the head entry.
  */
 static void nvmAsyncPop(void) {
     nvmAsyncHead = NVM_ASYNC_WRAP(nvmAsyncHead + 1u);
@@ -144,8 +143,9 @@ static void nvmAsyncPop(void) {
 #endif
 }
 
-/*
- * ??
+/**
+ * Account for the result of the head write: pop it if good, retry it up to
+ * NVM_ASYNC_ATTEMPTS times if not, then drop it as failed.
  */
 static void nvmAsyncSettle(uint8_t ok) {
     if (ok) {
@@ -164,8 +164,24 @@ static void nvmAsyncSettle(uint8_t ok) {
     }
 }
 
+/**
+ * Initialise the queue. Called from initRomOps().
+ */
+void initAsyncEEPROM(void) {
+    nvmAsyncHead = 0;
+    nvmAsyncCount = 0;
+    nvmAsyncBusy = 0;
+    nvmAsyncAttempt = 0;
+#ifdef VLCB_VDD_GUARD
+    nvmAsyncRefusing = 0;
+#endif
+}
+
+
+
 /* 
- * One step of the writer: start the head write, or settle it when done. 
+ * One step of the writer: start the head write, or settle it when done.
+ * Called from the library poll().
  */
 void pollAsyncEEPROM(void) {
     uint8_t h;
@@ -180,7 +196,7 @@ void pollAsyncEEPROM(void) {
         if (!nvmVddOkNow()) {
             if (!nvmAsyncRefusing) {
                 nvmAsyncRefusing = 1;
-                nvmAsyncRefusedSince.val = tickNowGet();   // same clock as tickTimeSinceNow (b40)
+                nvmAsyncRefusedSince.val = tickNowGet();
             } else if (tickTimeSinceNow(nvmAsyncRefusedSince) > ONE_SECOND) {
                 NVM_SAT_INC16(nvmAsyncRefused);
                 nvmAsyncPop();      // a rail that stays low must not pin the queue
@@ -189,7 +205,10 @@ void pollAsyncEEPROM(void) {
         }
         nvmAsyncRefusing = 0;
 #endif
-        nvmStartWrite(nvmAsyncAddr[h], nvmAsyncVal[h]);
+        // EEPROM_WriteNoVerify starts the write and returns while the hardware does it
+        if (EEPROM_WriteNoVerify(nvmAsyncAddr[h], nvmAsyncVal[h]) != GRSP_OK) {
+            return;                 // refused (VDD guard): try again next poll
+        }
         nvmAsyncStart.val = tickNowGet();
         nvmAsyncBusy = 1;
         return;
@@ -236,27 +255,31 @@ void flushAsyncEEPROM(void) {
     }
 }
 
-/*
- * Write a single byte value asynchronously by adding to the queue.
+/**
+ * Queue a byte write. Coalesces onto a waiting entry for the same cell. If
+ * the queue is full it is drained first and this write is done synchronously.
+ * @param address EEPROM address
+ * @param data the value to be written
+ * @return GRSP_OK, or the error from the synchronous write
  */
-static uint8_t nvmAsyncQueue(eeprom_address_t index, eeprom_data_t value) {
+static uint8_t nvmAsyncQueue(eeprom_address_t address, eeprom_data_t data) {
     uint8_t i, k;
     /* coalesce onto a waiting entry for the same cell (not the in-flight head) */
     for (i = (nvmAsyncBusy ? 1u : 0u); i < nvmAsyncCount; i++) {
         k = NVM_ASYNC_WRAP(nvmAsyncHead + i);
-        if (nvmAsyncAddr[k] == index) {
-            nvmAsyncVal[k] = value;
+        if (nvmAsyncAddr[k] == address) {
+            nvmAsyncVal[k] = data;
             return GRSP_OK;
         }
     }
     if (nvmAsyncCount >= NVM_ASYNC_DEPTH) {
         NVM_SAT_INC16(nvmAsyncFallbacks);
-        flushNVM();                             // older writes first, then this one in line
-        return EEPROM_Write(index, value);
+        flushAsyncEEPROM();                             // older writes first, then this one in line
+        return EEPROM_Write(address, data);
     }
     k = NVM_ASYNC_WRAP(nvmAsyncHead + nvmAsyncCount);
-    nvmAsyncAddr[k] = index;
-    nvmAsyncVal[k] = value;
+    nvmAsyncAddr[k] = address;
+    nvmAsyncVal[k] = data;
     nvmAsyncCount++;
     if (nvmAsyncCount > nvmAsyncHighWater) {
         nvmAsyncHighWater = nvmAsyncCount;
@@ -264,17 +287,21 @@ static uint8_t nvmAsyncQueue(eeprom_address_t index, eeprom_data_t value) {
     return GRSP_OK;
 }
 
-/* A queued value for this cell, newest first; -1 if none is queued. */
-static int16_t nvmAsyncLookup(eeprom_address_t index) {
+/**
+ * Read a byte: the newest queued value for the cell if there is one,
+ * otherwise the EEPROM cell.
+ * @param address EEPROM address
+ * @return the byte
+ */
+uint8_t readAsyncEEPROM(eeprom_address_t address) {
     uint8_t i, k;
     for (i = nvmAsyncCount; i > 0; i--) {
         k = NVM_ASYNC_WRAP(nvmAsyncHead + (uint8_t)(i - 1u));
-        if (nvmAsyncAddr[k] == index) {
-            return (int16_t) nvmAsyncVal[k];
+        if (nvmAsyncAddr[k] == address) {
+            return nvmAsyncAddr[k];
         }
     }
-    return -1;
+    return EEPROM_Read(address);
 }
-
 
 #endif
