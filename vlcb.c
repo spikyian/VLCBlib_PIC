@@ -41,6 +41,7 @@
 #include "vlcb.h"
 #include "module.h"
 #include "nvm.h"
+#include "asyncEEPROM.h"
 #include "hardware.h"
 #include "ticktime.h"
 #include "timedResponse.h"
@@ -743,7 +744,6 @@ void factoryReset(void) {
  */
 static void powerUp(void) {
     uint8_t i;
-    uint8_t divider;
        
     // Initialise the Tick timer. Uses low priority interrupts
     initTicker(0);
@@ -921,6 +921,7 @@ static void poll(void) {
         pollTimedResponse();
         timedResponseTime.val = tickNowGet();
     }
+    // Flush regularly to ensure NVM is kept up to date.
     if (tickTimeSinceNow(flashFlushTime) > ONE_SECOND) {
         flushFlashBlock();
         flashFlushTime.val = tickNowGet();
@@ -931,7 +932,12 @@ static void poll(void) {
             services[i]->poll();
         }
     }
+#ifdef ASYNC_EEPROM
+    // Call the Asynchronous EEPROM writer.
+    pollAsyncEEPROM();
+#endif
     
+    // Update the LEDs and handle flashing
     leds_poll();
     
 #if defined(VLCB_RX_PER_POLL) && (VLCB_RX_PER_POLL > 1)
@@ -1153,8 +1159,6 @@ void sendMessage(VlcbOpCodes opc, uint8_t len, uint8_t data1, uint8_t data2, uin
  * which calls the Application's loop() and each service poll().
  */
 void main(void) {
-    uint8_t i;
-    uint8_t t1,t2;
     
     /* KeithB b46: the application's safe pin state, before anything that takes
      * time (vlcb.h VLCB_EARLY_INIT). Nothing precedes this. 

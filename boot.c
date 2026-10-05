@@ -42,6 +42,7 @@
 #include "module.h"
 #include "boot.h"
 #include "mns.h"
+#include "nvm.h"
 /**
  * @file
  * @brief
@@ -248,6 +249,7 @@ static Processed bootProcessMessage(Message * m) {
         case OPC_BOOT:
             // Set the bootloader flag to be picked up by the bootloader
             writeNVM(BOOT_FLAG_NVM_TYPE, BOOT_FLAG_ADDRESS, 0xFF); 
+            flushNVM(); // KeithB b47, LCR-005: queued NVM writes must land before the reset
             RESET();     // will enter the bootloader
             return PROCESSED;
         default:

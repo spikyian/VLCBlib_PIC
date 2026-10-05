@@ -37,6 +37,9 @@
  * @date Mar 2024
  * 
  */ 
+#include <xc.h>
+#include "vlcb.h"
+#include "ticktime.h"
 #include "statusLeds.h"
 #include "statusDisplay.h"
 

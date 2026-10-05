@@ -1,4 +1,4 @@
-#ifndef _STATUSLEDS_H_
+#ifndef _ASYNCEEPROM_H_
 /**
  * @copyright Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
  */
@@ -38,33 +38,41 @@
  * @date Dec 2022
  * 
  */ 
-#define _STATUSLEDS_H_
+#define _ASYNCEEPROM_H_
+#include "vlcb.h"
 
-#include "statusDisplay.h"
 /**
  * @file
  * @brief
- * Definitions for the status of a single LED.
- */
+ * Definitions and declarations for the asynchronous EEPROM writer.
+ * @details
+ * Different implementations of Async EEPROM writer exist. Include ONE of these
+ * implementations in your project.
+ */ 
 /**
- * The status of the module's LEDs.
+ * Initialise the Async EEPROM writer.
  */
-typedef enum {
-    LED_OFF,            ///< fixed OFF
-    LED_ON,             ///< fixed ON
-    LED_FLASH_50_2HZ,   ///< 50% duty cycle  2Hz
-    LED_FLASH_50_1HZ,   ///< 50% duty cycle  1Hz
-    LED_FLASH_50_HALF_HZ,   ///< 50% duty cycle 0.5Hz
-    LED_SINGLE_FLICKER_OFF, ///< 250ms pulse off
-    LED_SINGLE_FLICKER_ON,  ///< 250ms pulse on
-    LED_LONG_FLICKER_OFF,   ///< 500ms pulse off
-    LED_LONG_FLICKER_ON,     ///< 500ms pulse on
-    LED_OFF_1S              /// 1 second off
-} LedState;
+extern void initAsyncEEPROM(void);
 
-// other externs
-extern void leds_powerUp(void);
-extern void leds_poll(void);
-extern void showStatus(StatusDisplay s);
+/**
+  * The poll routine which will perform a write to the EEPROM if one is required.
+  */
+extern void pollAsyncEEPROM(void);
+
+/**
+  * The poll routine which will perform a write to the EEPROM if one is required.
+  */
+extern uint8_t readAsyncEEPROM(eeprom_address_t address);
+
+/**
+  * The poll routine which will perform a write to the EEPROM if one is required.
+  */
+extern void writeAsyncEEPROM(eeprom_address_t address, uint8_t data);
+
+/**
+  * Flush out any remaining data to NVM.
+  */
+extern void flushAsyncEEPROM(void);
 
 #endif
+

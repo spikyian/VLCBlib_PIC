@@ -358,8 +358,6 @@ static void mnsPowerUp(void) {
  */
 static Processed mnsProcessMessage(Message * m) {
     uint8_t i;
-    uint8_t flags;
-    //const Service * s;
     uint8_t newMode;
 
     // Now do the MNS opcodes
@@ -483,6 +481,7 @@ static Processed mnsProcessMessage(Message * m) {
                 sendMessage2(OPC_NNREL, previousNN.bytes.hi, previousNN.bytes.lo);
                 transport->waitForTxQueueToDrain();
             }
+            flushNVM(); // KeithB b47, LCR-005: queued NVM writes must land before the reset
             RESET();
 #ifdef VLCB_DIAG
         case OPC_RDGN:  // diagnostics
@@ -597,6 +596,7 @@ static Processed mnsProcessMessage(Message * m) {
             return NOT_PROCESSED;
 #endif
         case OPC_NNRST: // reset CPU
+            flushNVM(); // KeithB b47, LCR-005: queued NVM writes must land before the reset
             RESET();
             return PROCESSED;   // should never get here
         default:
@@ -848,7 +848,7 @@ void setLEDsByMode(void) {
  * @return parameter value
  */
 static uint8_t getParameter(uint8_t idx) {
-    uint8_t i;
+
     switch(idx) {
     case PAR_NUM:       // 0 Number of parameters
         return 20;

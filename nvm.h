@@ -140,6 +140,15 @@ typedef uint16_t eeprom_address_t;
     #define	SET_EADDRH(val) EEADRH = val	// EEPROM high address is present, so write value
 #endif
 
+#ifdef ASYNC_EEPROM
+#include "asyncEEPROM.h"
+#endif
+
+
+/**
+ * Ensure that all cached NVM data is written out.
+ */
+extern void flushNVM(void);
 
 /**
  * Ensure that the current Flash cached in RAM is written out.
@@ -178,6 +187,11 @@ extern uint8_t writeNVM(NVMtype type, uint24_t index, uint8_t value);
  * @return 0 for success or error number
  */
 extern uint8_t EEPROM_WriteNoVerify(eeprom_address_t index, eeprom_data_t value);
+
+/**
+ * Flush any cached data back to NVM.
+ */
+extern void flushNVM(void);
 
 /**
  * Call back into the application to check if now is a good time to write the flash

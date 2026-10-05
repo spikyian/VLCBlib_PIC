@@ -165,6 +165,9 @@ void initRomOps(void) {
 #if defined(_18FXXQ83_FAMILY_)
     NVMCON1bits.WRERR = 0;
 #endif
+#ifdef ASYNC_EEPROM
+    initAsyncEEPROM();
+#endif
 }
 
 /**
@@ -393,7 +396,12 @@ void eraseFlashBlock(void) {
     }
 }
 
-
+void flushNVM(void) {
+    flushFlashBlock();
+#ifdef ASYNC_EEPROM
+    flushAsyncEEPROM();
+#endif
+}
 /**
  * Flush the current flash buffer out to flash.
  * Will suspend the CPU.
@@ -513,7 +521,6 @@ void loadFlashBlock(void) {
  * @return 0 for success or error otherwise
  */
 uint8_t FLASH_Write(flash_address_t index, flash_data_t value) {
-    uint8_t oldValue;
     
     /*
      * Writing flash is a bit of a pain as you must write in blocks. If you want to
@@ -557,7 +564,11 @@ uint8_t FLASH_Write(flash_address_t index, flash_data_t value) {
 uint8_t writeNVM(NVMtype type, uint24_t index, uint8_t value) {
     switch(type) {
         case EEPROM_NVM_TYPE:
+#ifdef ASYNC_EEPROM
+            return readAsyncEEPROM((eeprom_address_t)index);
+#else
             return EEPROM_Write((eeprom_address_t)index, value);
+#endif
         case FLASH_NVM_TYPE:
             return FLASH_Write((flash_address_t)index, value);
         default:
