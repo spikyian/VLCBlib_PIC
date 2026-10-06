@@ -33,7 +33,7 @@
 #include "nvm.h"
 #include "module.h"
 
-#ifdef ASYNC_EEPROM == QUEUE
+#if defined(ASYNC_EEPROM) && (ASYNC_EEPROM == QUEUE)
 /**
  * @file
  * @brief
@@ -103,14 +103,13 @@ uint8_t nvmAsyncPending(void) {
     return nvmAsyncCount;
 }
 
-/* 
 #ifdef VLCB_VDD_GUARD
 /**
  * Is Vdd above the HLVD level right now? 1 = yes (or the HLVD is not running).
  * The background writer never waits for the rail; it just tries again next poll.
  */
 static uint8_t nvmVddOkNow(void) {
-+   if (!HLVDCON0bits.EN || !HLVDCON0bits.RDY) return 1;
+   if (!HLVDCON0bits.EN || !HLVDCON0bits.RDY) return 1;
     return HLVDCON0bits.OUT ? 0 : 1;
 }
 #endif
@@ -262,7 +261,7 @@ void flushAsyncEEPROM(void) {
  * @param data the value to be written
  * @return GRSP_OK, or the error from the synchronous write
  */
-static uint8_t nvmAsyncQueue(eeprom_address_t address, eeprom_data_t data) {
+uint8_t writeAsyncEEPROM(eeprom_address_t address, uint8_t data) {
     uint8_t i, k;
     /* coalesce onto a waiting entry for the same cell (not the in-flight head) */
     for (i = (nvmAsyncBusy ? 1u : 0u); i < nvmAsyncCount; i++) {
@@ -298,7 +297,7 @@ uint8_t readAsyncEEPROM(eeprom_address_t address) {
     for (i = nvmAsyncCount; i > 0; i--) {
         k = NVM_ASYNC_WRAP(nvmAsyncHead + (uint8_t)(i - 1u));
         if (nvmAsyncAddr[k] == address) {
-            return nvmAsyncAddr[k];
+            return nvmAsyncVal[k];
         }
     }
     return EEPROM_Read(address);

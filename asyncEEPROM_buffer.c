@@ -33,7 +33,7 @@
 #include "nvm.h"
 #include "module.h"
 #include "vlcbdefs_enums.h"
-#include "nvm.h"
+
 #if defined(ASYNC_EEPROM) && (ASYNC_EEPROM == BUFFER)
 /**
  * @file
@@ -103,10 +103,10 @@ uint8_t writeAsyncEEPROM(eeprom_address_t address, uint8_t data) {
         // Synchronous call
         return EEPROM_Write(address, data);
     }
-    offset = (uint8_t)(address - EEPROM_BASE_ADDRESS);
+    offset = (uint16_t)(address - EEPROM_BASE_ADDRESS);
     if (eeValue[offset] != data) {
         eeValue[offset] = data;
-        setWriteNeeded(address);
+        setWriteNeeded(offset);
     }
     return GRSP_OK;
 }
@@ -160,7 +160,6 @@ void pollAsyncEEPROM(void) {
 }
 
 /**
- * Flush add data back to NVM.
  * Write all flagged bytes back to EEPROM. Blocks until done. A byte that
  * still does not verify after being written is left flagged.
  */

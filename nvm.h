@@ -203,13 +203,6 @@ extern uint8_t EEPROM_Write(eeprom_address_t index, eeprom_data_t value);
  */
 extern uint8_t EEPROM_WriteNoVerify(eeprom_address_t index, eeprom_data_t value);
 
-/**
- * Write a byte to EEPROM with verification. Blocks until the write completes.
- * @param index is the address to be written
- * @param value the byte value to be written
- * @return 0 for success or error number
- */
-extern void flushNVM(void);
 
 /**
  * Call back into the application to check if now is a good time to write the flash
