@@ -140,6 +140,22 @@ typedef uint16_t eeprom_address_t;
     #define	SET_EADDRH(val) EEADRH = val	// EEPROM high address is present, so write value
 #endif
 
+#if defined(VLCB_VDD_WRITE_GUARD) && !defined(VLCB_VDD_GUARD)
+#error "VLCB_VDD_WRITE_GUARD needs VLCB_VDD_GUARD, which sets the HLVD level and turns the HLVD on"
+#endif
+#if defined(VLCB_VDD_WRITE_GUARD) && (defined(_18FXXQ83_FAMILY_) || defined(_18F66K80_FAMILY_))
+/**
+ * VLCB_VDD_WRITE_GUARD: is Vdd above the HLVD level now? 1 = yes, or the HLVD is not
+ * running. Does not wait. Used by the background EEPROM writers.
+ */
+extern uint8_t vlcbVddOkNow(void);
+/**
+ * VLCB_VDD_WRITE_GUARD: wait up to VLCB_VDD_WRITE_WAIT_MS for Vdd to be above the
+ * HLVD level. 1 = it is (write may go ahead), 0 = still low (refuse the write).
+ */
+extern uint8_t vlcbVddWaitForWrite(void);
+#endif
+
 #ifdef ASYNC_EEPROM
 #include "asyncEEPROM.h"
 #endif

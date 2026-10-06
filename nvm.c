@@ -216,6 +216,53 @@ eeprom_data_t EEPROM_Read(eeprom_address_t index) {
 #endif
 }
 
+#if defined(VLCB_VDD_WRITE_GUARD) && (defined(_18FXXQ83_FAMILY_) || defined(_18F66K80_FAMILY_))
+#ifndef VLCB_VDD_WRITE_WAIT_MS
+#define VLCB_VDD_WRITE_WAIT_MS  5       /* ms to wait for Vdd before refusing a write; may be set in module.h */
+#endif
+#ifndef _XTAL_FREQ
+#define _XTAL_FREQ  ((unsigned long)clkMHz * 1000000UL)   /* for __delay_ms(): Fosc, as vlcb.c */
+#endif
+/* KeithB b46, VLCB_VDD_WRITE_GUARD (see vlcb.c; the HLVD is set up by
+ * VLCB_VDD_GUARD): before an NVM write, wait up to
+ * VLCB_VDD_WRITE_WAIT_MS for Vdd to be above the HLVD level. Returns 1 when it
+ * is (or the HLVD is not running, so a module that disables it is never
+ * blocked), 0 when the rail is still low after the wait: the caller then
+ * REFUSES the write. A refused write is data not saved (stale, still
+ * self-consistent, retried or reported); a write made into a sagging or
+ * collapsing rail is data corrupted - and at power-down every write would
+ * otherwise go ahead into the falling rail. On the K80 the EEPROM write path
+ * waits for completion, so this covers the whole write; the Q83 path returns
+ * at once.
+ * vlcbVddOkNow() is the same test without the wait, for the background
+ * EEPROM writers (ASYNC_EEPROM), which must not stall the main loop. */
+uint8_t vlcbVddOkNow(void) {
+#if defined(_18FXXQ83_FAMILY_)
+    if (!HLVDCON0bits.EN || !HLVDCON0bits.RDY) return 1;
+    return HLVDCON0bits.OUT ? 0 : 1;
+#else
+    if (!HLVDCONbits.HLVDEN || !HLVDCONbits.IRVST) return 1;
+    PIR2bits.HLVDIF = 0;                     /* level-sensitive: sets again at once if still below */
+    __delay_us(5);
+    return PIR2bits.HLVDIF ? 0 : 1;
+#endif
+}
+
+uint8_t vlcbVddWaitForWrite(void) {
+    uint8_t ms;
+    for (ms = 0; ms < (uint8_t)VLCB_VDD_WRITE_WAIT_MS; ms++) {
+        if (vlcbVddOkNow()) return 1;
+        __delay_ms(1);
+    }
+    return vlcbVddOkNow();                   /* 0: still low - the rail is sagging or going away - do not write */
+}
+#define VDD_GUARD_OK()  vlcbVddWaitForWrite()
+#define VDD_GUARD_ACTIVE 1          /* the write path has the refusal checks compiled in */
+#else
+#define VDD_GUARD_OK()  (1)
+#define VDD_GUARD_ACTIVE 0
+#endif
+
 /**
  * Write a byte to EEPROM
  * @param index the address
@@ -226,7 +273,17 @@ uint8_t EEPROM_Write(eeprom_address_t index, eeprom_data_t value) {
     uint8_t attempts = 3;   // KeithB b36: was an endless retry, a worn cell hung the module
 
     do {
-        EEPROM_WriteNoVerify(index, value);
+#if VDD_GUARD_ACTIVE
+        if (EEPROM_WriteNoVerify(index, value) != GRSP_OK) {   // KeithB b46: refused (rail low)
+#ifdef VLCB_DIAG
+            mnsDiagnostics[MNS_DIAGNOSTICS_MEMERRS].asUint++;
+            updateModuleErrorStatus();
+#endif
+            return GRSP_INVALID_COMMAND_PARAMETER;
+        }
+#else
+         EEPROM_WriteNoVerify(index, value);
+#endif
 
         // check that it worked
         if (EEPROM_Read(index) == value) {
@@ -256,6 +313,9 @@ uint8_t EEPROM_Write(eeprom_address_t index, eeprom_data_t value) {
  */
 uint8_t EEPROM_WriteNoVerify(eeprom_address_t index, eeprom_data_t value) {
     uint8_t interruptEnabled;
+#if VDD_GUARD_ACTIVE
+    if (!VDD_GUARD_OK()) return GRSP_INVALID_COMMAND_PARAMETER;   // KeithB b46: rail low - refused, not written
+#endif
     interruptEnabled = geti(); // store current global interrupt state
 #if defined (_18F66K80_FAMILY_)
     SET_EADDRH((index >> 8)&0xFF);      // High byte of address to write
@@ -420,7 +480,9 @@ void flushFlashBlock(void) {
     // Wait until App tells us it is a good time
     while (APP_isSuitableTimeToWriteFlash() == BAD_TIME)  // block awaiting a good time
         ;
-        
+#if VDD_GUARD_ACTIVE
+    if (!VDD_GUARD_OK()) return;    // KeithB b46: rail low - left pending (writeNeeded stays set), retried next flush
+#endif
     if (flashFlags.eraseNeeded) {
         eraseFlashBlock();
     }
@@ -540,6 +602,11 @@ uint8_t FLASH_Write(flash_address_t index, flash_data_t value) {
             // ok we want to write a different block so flush the current block
             // (flushFlashBlock erases first if needed)
             flushFlashBlock();
+#if VDD_GUARD_ACTIVE
+            if (flashFlags.writeNeeded) {   // KeithB b46: the flush was refused (rail low) -
+                return GRSP_INVALID_COMMAND_PARAMETER;   // keep that block pending, do not load over it
+            }
+#endif
         }
         
         // and load the new one

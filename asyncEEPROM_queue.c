@@ -51,7 +51,7 @@
  * if the queue is full then the queue is drained and the request is processed synchronously.
  * The size of the queue is specified by ASYNC_EEPROM_QUEUE_SIZE (2..255).
  *
- * With VLCB_VDD_GUARD the writer does not start a write while Vdd is below the HLVD level; an
+ * With VLCB_VDD_WRITE_GUARD the writer does not start a write while Vdd is below the HLVD level; an
  * entry held back for a second is dropped as refused (a synchronous write would refuse it too).
  *
  * Q83 only: the K80 write path waits for completion in hardware, so there is nothing to overlap.
@@ -78,7 +78,7 @@
 /* Counters, readable by the application (e.g. for a diagnostic). */
 uint16_t nvmAsyncWrites = 0;        ///< writes completed and verified
 uint16_t nvmAsyncFailures = 0;      ///< entries dropped after NVM_ASYNC_ATTEMPTS failed writes
-uint16_t nvmAsyncRefused = 0;       ///< entries dropped because Vdd stayed low (VLCB_VDD_GUARD)
+uint16_t nvmAsyncRefused = 0;       ///< entries dropped because Vdd stayed low (VLCB_VDD_WRITE_GUARD)
 uint16_t nvmAsyncFallbacks = 0;     ///< writes done synchronously because the queue was full
 uint8_t  nvmAsyncHighWater = 0;     ///< most entries ever queued
 
@@ -89,7 +89,7 @@ static uint8_t  nvmAsyncCount = 0;      // entries queued, including the one in 
 static uint8_t  nvmAsyncBusy = 0;       // head write started, not yet settled
 static uint8_t  nvmAsyncAttempt = 0;    // failed attempts on the head so far
 static TickValue nvmAsyncStart;         // when the head write started
-#ifdef VLCB_VDD_GUARD
+#ifdef VLCB_VDD_WRITE_GUARD
 static uint8_t  nvmAsyncRefusing = 0;   // head refused by the VDD guard, waiting for the rail
 static TickValue nvmAsyncRefusedSince;
 #endif
@@ -102,17 +102,6 @@ static TickValue nvmAsyncRefusedSince;
 uint8_t nvmAsyncPending(void) {
     return nvmAsyncCount;
 }
-
-#ifdef VLCB_VDD_GUARD
-/**
- * Is Vdd above the HLVD level right now? 1 = yes (or the HLVD is not running).
- * The background writer never waits for the rail; it just tries again next poll.
- */
-static uint8_t nvmVddOkNow(void) {
-   if (!HLVDCON0bits.EN || !HLVDCON0bits.RDY) return 1;
-    return HLVDCON0bits.OUT ? 0 : 1;
-}
-#endif
 
 /** 
  * The head write has finished (or timed out): verify it. 1 = good. 
@@ -137,7 +126,7 @@ static void nvmAsyncPop(void) {
     nvmAsyncCount--;
     nvmAsyncAttempt = 0;
     nvmAsyncBusy = 0;
-#ifdef VLCB_VDD_GUARD
+#ifdef VLCB_VDD_WRITE_GUARD
     nvmAsyncRefusing = 0;
 #endif
 }
@@ -171,7 +160,7 @@ void initAsyncEEPROM(void) {
     nvmAsyncCount = 0;
     nvmAsyncBusy = 0;
     nvmAsyncAttempt = 0;
-#ifdef VLCB_VDD_GUARD
+#ifdef VLCB_VDD_WRITE_GUARD
     nvmAsyncRefusing = 0;
 #endif
 }
@@ -191,8 +180,8 @@ void pollAsyncEEPROM(void) {
             nvmAsyncPop();          // already holds the value: no write, no wear
             return;
         }
-#ifdef VLCB_VDD_GUARD
-        if (!nvmVddOkNow()) {
+#ifdef VLCB_VDD_WRITE_GUARD
+        if (!vlcbVddOkNow()) {     // never wait for the rail here: try again next poll
             if (!nvmAsyncRefusing) {
                 nvmAsyncRefusing = 1;
                 nvmAsyncRefusedSince.val = tickNowGet();

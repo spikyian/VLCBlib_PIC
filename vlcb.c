@@ -557,14 +557,34 @@ uint8_t eeBootFlag = 0;
  *   Defined to the family's own HLVD level code - Q83: HLVDCON1 SEL (DS40002265C
  *   50.4.6; 0x0B = 3.64/4.00/4.36 V min/typ/max); K80: HLVDL<3:0> (DS30009977G
  *   D420; 0x0B = 3.82/3.91/4.10 V, the nearest to the Q83's 0x0B). Replaces the
- *   fixed ~1 s start-up delay with a wait for the supply, and guards every NVM
- *   write:
+ *   fixed ~1 s start-up delay with a wait for the supply:
  *   - main() enables HLVD at that level and waits until Vdd has been above it
  *     for VLCB_VDD_STABLE_MS (default 50) continuously, giving up and going on
  *     after VLCB_VDD_STARTUP_MAX_MS (default 2000) so a marginal supply still
  *     boots. A supply that is already up boots in ~50 ms instead of ~1 s.
- *   
- *   The module must leave the HLVD enabled (PMD on the Q83; it is at reset) and
+ *
+ * VLCB_VDD_WRITE_GUARD  (Q83 and K80 families; needs VLCB_VDD_GUARD)
+ *   Defined (no value) to also guard every NVM write, using the HLVD that
+ *   VLCB_VDD_GUARD has set up and turned on:
+ *   - writeNVM() (EEPROM byte, flash page) first waits up to
+ *     VLCB_VDD_WRITE_WAIT_MS (default 5) for Vdd to be above the level. If it
+ *     still is not, the write is REFUSED: an EEPROM byte returns
+ *     GRSP_INVALID_COMMAND_PARAMETER and counts a MEMERRS diagnostic; a flash
+ *     page stays pending (writeNeeded) and is retried at the next flush. A
+ *     dip that long is not a transient - it is the rail sagging or going
+ *     away - and a write made into it is the corruption; a refused write is
+ *     only data not saved. (Blocking longer would stall the main loop: a
+ *     factory reset is hundreds of writes.) This is what a brown-out reset
+ *     cannot do: BOR acts AFTER Vdd has dropped, and a reset during a write
+ *     is itself the corruption; the guard keeps writes out of the dip - and
+ *     out of power-down - in the first place. (nvm.c)
+ *     With ASYNC_EEPROM the background writer does not wait: while the rail is
+ *     low it starts no write and tries again on the next poll (BUFFER keeps the
+ *     byte flagged; QUEUE drops the entry as refused after one second).
+ *     flushNVM() before a RESET uses the waiting form. (asyncEEPROM_*.c)
+ *   Without VLCB_VDD_WRITE_GUARD, NVM writes are never refused (as before).
+ * 
+ *   For both: the module must leave the HLVD enabled (PMD on the Q83; it is at reset) and
  *   may re-programme it to the same level for its own use. K80: HLVDIF is
  *   level-sensitive (cleared while Vdd is still below, it sets again), which is
  *   how the K80 branch reads "Vdd above".

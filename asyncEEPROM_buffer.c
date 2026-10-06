@@ -45,6 +45,8 @@
  * one byte per poll: the byte is written, and on the next poll it is read back and its flag is
  * cleared only if the read matches (a failed write is tried again).
  * Reads of buffered addresses are served from the RAM buffer.
+ * With VLCB_VDD_WRITE_GUARD no write is started while Vdd is below the HLVD level;
+ * the bytes stay flagged and are written when the rail is back.
  *
  * The amount of RAM used can be minimised by ensuring that EEPROM usage is packed
  * together into a small range of addresses. The buffered address range starts at
@@ -142,6 +144,9 @@ void pollAsyncEEPROM(void) {
         }
         return;
     }
+#ifdef VLCB_VDD_WRITE_GUARD
+    if (!vlcbVddOkNow()) return;    // rail low: leave the flags set and try again next poll (never wait here)
+#endif
     // write the next
     for (i=0; i < NUMBER_EEPROM; i++) {
         currentMemory ++;
