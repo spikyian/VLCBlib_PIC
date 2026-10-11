@@ -24,15 +24,18 @@
 	module, so they can be used to provide FLiM facilities for any module 
 	using these libraries.
 	
-*/ 
 /* 
  * File:   actionQueue.c
  * Author: Ian
  *
  * Created on 1 June 2017, 13:14
- *
+ */
+/**
+ * @file
+ * @brief
+ * Implementation for a queue of Actions.
+ * @details
  * A queue of actions waiting to be processed by the main loop.
- * Implemented as two separated queues - a normal and an expedited priority queue.
  */
 
 

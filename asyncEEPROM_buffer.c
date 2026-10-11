@@ -34,7 +34,6 @@
 #include "module.h"
 #include "vlcbdefs_enums.h"
 
-#if defined(ASYNC_EEPROM) && (ASYNC_EEPROM == BUFFER)
 /**
  * @file
  * @brief
@@ -55,6 +54,7 @@
  * synchronously, so the buffer only needs to cover the application's own bytes
  * although the EEPROM used by the library may also be included.
  */
+#if defined(ASYNC_EEPROM) && (ASYNC_EEPROM == BUFFER)
 #if !defined(EEPROM_BASE_ADDRESS) || !defined(NUMBER_EEPROM)
 #error "ASYNC_EEPROM=BUFFER needs EEPROM_BASE_ADDRESS and NUMBER_EEPROM in module.h"
 #endif

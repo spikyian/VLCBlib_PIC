@@ -33,7 +33,7 @@
     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
 
 */
-/**
+/*
  * @author Ian Hogg 
  * @date Dec 2022
  * 
@@ -43,6 +43,8 @@
  * @file
  * @brief
  * Implementation of message queues used for receive and transmit buffers.
+ * @details
+ * A queue of VLCB/CBUS messages.
  */
 #include <xc.h>
 #include "vlcb.h"

@@ -38,11 +38,10 @@
  * @date Dec 2022
  * 
  */ 
-#if defined(_18FXXQ83_FAMILY_)
 /**
  * @file
  * @brief
- * Implementation of the VLCB CAN Service. 
+ * Implementation of the VLCB CAN Service for the CAN2 peripheral on the Q series PIC family.
  * @details
  * Uses Controller Area Network to carry VLCB messages.
  * This implementation works with the PIC18 CAN_2.0 peripheral.
@@ -61,6 +60,7 @@
  * We set up 1 RX Filters: One filter for all Normal (non extended frames) to 
  * put these frames into a RX FIFO.
  */
+#if defined(_18FXXQ83_FAMILY_)
 #include <xc.h>
 #include <string.h> // for memcpy
 #include "vlcb.h"

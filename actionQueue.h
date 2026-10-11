@@ -32,6 +32,13 @@
  * Created on 1 June 2017, 13:14
  *
  */
+/**
+ * @file
+ * @brief
+ * Definition of a queue of Actions.
+ * @details
+ * The data structures and functions for the Action queue.
+ */
 #ifndef __ACTIONQUEUE_H_
 #define __ACTIONQUEUE_H_
 

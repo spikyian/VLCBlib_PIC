@@ -41,8 +41,10 @@
 #include "statusDisplay.h"
 
 /**
- * LED handling.
- * 
+ * @file
+ * @brief
+ * Implementation of LED handling for modules with a single status LED.
+ * @details
  * This file supports modules with a single status LED. This is mormally a yellow LED
  * and maybe labelled FLiM.
  * The LED has a state here to indicate if it is on/off/flashing etc.

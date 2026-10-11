@@ -30,8 +30,13 @@
  * Author: Ian
  *
  * Created on 04 December 2017, 21:45
- *
+ */
+/**
+ * @file
+ * @brief
  * A queue of consumed actions.
+ * @details
+ * Definitions for the data structures and functions for an Action queue.
  */
 
 #ifndef QUEUE_H

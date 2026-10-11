@@ -38,11 +38,10 @@
  * @date Dec 2022
  * 
  */ 
-#if defined(_18F66K80_FAMILY_)
 /**
  * @file
  * @brief
- * Implementation of the VLCB CAN Service for the PIC ECAN peripheral. 
+ * Implementation of the VLCB CAN Service for the PIC ECAN peripheral on the K series PICs. 
  * @details
  * Uses Controller Area Network to carry VLCB messages.
  * This implementation works with the PIC18 ECAN.
@@ -52,6 +51,7 @@
  * Performs loopback of events for Consumes Own Event behaviour.
  * Collects diagnostic data to aid communications fault finding.
  */
+#if defined(_18F66K80_FAMILY_)
 #include <xc.h>
 #include <string.h> // for memcpy
 #include "vlcb.h"

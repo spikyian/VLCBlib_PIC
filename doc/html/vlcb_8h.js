@@ -9,12 +9,10 @@ var vlcb_8h =
     [ "EVENT_SET_MASK", "vlcb_8h.html#a5599ca1c7dbab5832ab986e73eddc913", null ],
     [ "EVENT_SHORT_MASK", "vlcb_8h.html#a1fc4b29ff184ee7bc9bd9e81fb16e68a", null ],
     [ "FLAG_MODE_EVENTACK", "vlcb_8h.html#ad6e7393de68571c21c3f75400cef993f", null ],
+    [ "FLAG_MODE_FCUCOMPAT", "vlcb_8h.html#a6488931f4d55fa14db0027f92a1d2bf9", null ],
     [ "FLAG_MODE_HEARTBEAT", "vlcb_8h.html#a25c7c3b061c39ecfddd3e724dedffdbc", null ],
     [ "FLAG_MODE_LEARN", "vlcb_8h.html#a200fefa4b58ef24b6ef79283f1dc3d54", null ],
-    [ "MANU_VLCB", "vlcb_8h.html#a80cb0124451e7f73bf7a95694045ea27", null ],
     [ "MODE_DEFAULT", "vlcb_8h.html#aa2ac0f45d353352c766262721c40e3b8", null ],
-    [ "MTYP_VLCB_16INP", "vlcb_8h.html#ae87acb3854722fc2ec59aa21fb47bf4b", null ],
-    [ "MTYP_VLCB_16OUT", "vlcb_8h.html#accba88edc3be81b6ebda0f9ce1a3da0d", null ],
     [ "NN_HI_DEFAULT", "vlcb_8h.html#ad4c0e050545da1fdb2b5ef23167c461d", null ],
     [ "NN_LO_DEFAULT", "vlcb_8h.html#a85628095cdb1b03744499866a5bf84f8", null ],
     [ "PAR_LOAD1", "vlcb_8h.html#a68ccbed9e2d14d1ca8788ffa73bf3731", null ],
@@ -34,6 +32,7 @@ var vlcb_8h =
     [ "Service", "vlcb_8h.html#a24ee4146cd03b57b0a4c23a33e476da9", null ],
     [ "ServicePresent", "vlcb_8h.html#ac61d37a9f9fe57e353805a08abe13134", null ],
     [ "Transport", "vlcb_8h.html#a783c8ee2ab0be96ceb090ded8ba8d8bc", null ],
+    [ "TxDrainResult", "vlcb_8h.html#a30b8f3ea36e4aa9e16c607d137e1485e", null ],
     [ "Word", "vlcb_8h.html#a4bbd0c6dc7d668b55f6a3eb986929862", null ],
     [ "Boolean", "vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13", [
       [ "FALSE", "vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13aa1e095cc966dbecf6a0d8aad75348d1a", null ],
@@ -75,6 +74,13 @@ var vlcb_8h =
       [ "NOT_PRESENT", "vlcb_8h.html#a854c33a3bc2b495fc2e3c229b661becfacf30d1e6a6b091ca668346f50810f125", null ],
       [ "PRESENT", "vlcb_8h.html#a854c33a3bc2b495fc2e3c229b661becfac2ecbd8ac68f5af3d40003641f599bd8", null ]
     ] ],
+    [ "TxDrainResult", "vlcb_8h.html#a63a0037562676bbcb20675db02bbc1d0", [
+      [ "DRAIN_OK", "vlcb_8h.html#a63a0037562676bbcb20675db02bbc1d0a9e6d20ea8f6895277107a93900d0da06", null ],
+      [ "OVERALL_TIMEOUT", "vlcb_8h.html#a63a0037562676bbcb20675db02bbc1d0af90e74bf5be5ee4339f662b3e207c01a", null ],
+      [ "MESSAGE_TIMEOUT", "vlcb_8h.html#a63a0037562676bbcb20675db02bbc1d0a167cead38e2533681cc8baef0da0a5df", null ],
+      [ "BUS_OFF_ERROR", "vlcb_8h.html#a63a0037562676bbcb20675db02bbc1d0a78b39b380aa83b8f07fb62931584ea54", null ]
+    ] ],
+    [ "APP_earlyInit", "vlcb_8h.html#ac3d7a95d72e7df9ef0598c8b241feaf2", null ],
     [ "APP_highIsr", "vlcb_8h.html#a98e396438d2f7a1c8c1ef1b537b71878", null ],
     [ "APP_isSuitableTimeToWriteFlash", "vlcb_8h.html#ae34d4d879380e8085b5e975b6186f58e", null ],
     [ "APP_lowIsr", "vlcb_8h.html#ae7ea9ef134a9df19b9ef7541a3bbf5eb", null ],

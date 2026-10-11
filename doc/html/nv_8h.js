@@ -2,6 +2,7 @@ var nv_8h =
 [
     [ "_NV_H_", "nv_8h.html#ac863c2ed790907c8aa5a22a377543245", null ],
     [ "NUM_NV_DIAGNOSTICS", "nv_8h.html#ad1f7641b557aac1f7af325367337c785", null ],
+    [ "NV_DIAG_COUNT", "nv_8h.html#a2756d67fad396cc64bb3e7b9cca20477", null ],
     [ "NV_DIAGNOSTICS_NUM_ACCESS", "nv_8h.html#a9ba127a005e57ca381fa2efc1ef27c93", null ],
     [ "NV_DIAGNOSTICS_NUM_FAIL", "nv_8h.html#a0caee9ec25e8b8405f7fa2f7fff44ec7", null ],
     [ "NvValidation", "nv_8h.html#afa5d50296c02a99bc7b1471ac6b7ceff", null ],

@@ -33,7 +33,6 @@
 #include "nvm.h"
 #include "module.h"
 
-#if defined(ASYNC_EEPROM) && (ASYNC_EEPROM == QUEUE)
 /**
  * @file
  * @brief
@@ -57,6 +56,7 @@
  * Q83 only: the K80 write path waits for completion in hardware, so there is nothing to overlap.
  */
 
+#if defined(ASYNC_EEPROM) && (ASYNC_EEPROM == QUEUE)
 #if !defined(_18FXXQ83_FAMILY_)
 #error "ASYNC_EEPROM=QUEUE is implemented for the Q83 family only"
 #endif

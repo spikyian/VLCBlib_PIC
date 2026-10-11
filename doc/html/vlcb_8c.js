@@ -1,5 +1,9 @@
 var vlcb_8c =
 [
+    [ "_XTAL_FREQ", "vlcb_8c.html#a024148e99a7143db044a48216664d03d", null ],
+    [ "PB_TIMEOUT", "vlcb_8c.html#a5cfeac0cd9156ae075b9a21b23966263", null ],
+    [ "VLCB_LOOPS_PER_POLL", "vlcb_8c.html#a313ad6ce2c3206139ea1a87c88ccdfc3", null ],
+    [ "VLCB_MESSAGES_PER_POLL", "vlcb_8c.html#ad838f5da2ba24b589c30741967f30915", null ],
     [ "APP_factoryReset", "vlcb_8c.html#aaefa2e9d7f924327aa066ed75aca0319", null ],
     [ "APP_postProcessMessage", "vlcb_8c.html#a664c7f5e506993130616dcf9604601d9", null ],
     [ "APP_preProcessMessage", "vlcb_8c.html#a7b80b521ea40399b62af546746ecd769", null ],
@@ -12,8 +16,6 @@ var vlcb_8c =
     [ "isEvent", "vlcb_8c.html#a38cce02004be097334eb440d61ba88a4", null ],
     [ "loop", "vlcb_8c.html#a0b33edabd7f1c4e4a0bf32c67269be2f", null ],
     [ "main", "vlcb_8c.html#a6288eba0f8e8ad3ab1544ad731eb7667", null ],
-    [ "pbDownTimer", "vlcb_8c.html#a44c244b308a4241ebe4b847481882686", null ],
-    [ "pbUpTimer", "vlcb_8c.html#a9bd3ac03ad976ef69a501e76a97c0132", null ],
     [ "sendMessage", "vlcb_8c.html#a53a16cd2ff2166ac7a6990bb10fb53a9", null ],
     [ "sendMessage0", "vlcb_8c.html#a29dc097f840bdf4656a07cd47db11418", null ],
     [ "sendMessage1", "vlcb_8c.html#a76660800f92d4cb8908f57f3079aa4ab", null ],
@@ -26,5 +28,6 @@ var vlcb_8c =
     [ "setTimedResponseDelay", "vlcb_8c.html#a3955f63350a3bbb9d97fb88653182497", null ],
     [ "setup", "vlcb_8c.html#a7dfd9b79bc5a37d7df40207afbc5431f", null ],
     [ "priorities", "vlcb_8c.html#ad9c0663c54097bc7c55d5dcbbc556424", null ],
+    [ "tickNow", "vlcb_8c.html#aa0dfa805ebfc55409ad3e8863c71d358", null ],
     [ "transport", "vlcb_8c.html#a3b936eacf5488a640c02f68564f54372", null ]
 ];

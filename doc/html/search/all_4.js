@@ -20,5 +20,6 @@ var searchData=
   ['digitalread_17',['digitalRead',['../arduino_8c.html#abced5d6e8a99364e785e40f90af06720',1,'digitalRead(uint8_t channel):&#160;arduino.c'],['../arduino_8h.html#abced5d6e8a99364e785e40f90af06720',1,'digitalRead(uint8_t channel):&#160;arduino.c']]],
   ['digitalwrite_18',['digitalWrite',['../arduino_8c.html#a6fb7d5ffc5b52012f0bc4604308e01e4',1,'digitalWrite(uint8_t channel, uint8_t value):&#160;arduino.c'],['../arduino_8h.html#a6fb7d5ffc5b52012f0bc4604308e01e4',1,'digitalWrite(uint8_t channel, uint8_t value):&#160;arduino.c']]],
   ['documentation_19',['Full documentation',['../md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html#autotoc_md32',1,'']]],
-  ['doneaction_20',['doneAction',['../action_queue_8c.html#ae72e9cf99ab7b42ae6e8bf9544997578',1,'doneAction(void):&#160;actionQueue.c'],['../action_queue_8h.html#ae72e9cf99ab7b42ae6e8bf9544997578',1,'doneAction(void):&#160;actionQueue.c']]]
+  ['doneaction_20',['doneAction',['../action_queue_8c.html#ae72e9cf99ab7b42ae6e8bf9544997578',1,'doneAction(void):&#160;actionQueue.c'],['../action_queue_8h.html#ae72e9cf99ab7b42ae6e8bf9544997578',1,'doneAction(void):&#160;actionQueue.c']]],
+  ['drain_5fok_21',['DRAIN_OK',['../vlcb_8h.html#a63a0037562676bbcb20675db02bbc1d0a9e6d20ea8f6895277107a93900d0da06',1,'vlcb.h']]]
 ];

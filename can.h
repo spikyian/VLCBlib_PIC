@@ -45,7 +45,7 @@
 /**
  * @file
  * @brief
- * Implementation of the VLCB CAN service. 
+ * Declaration of the VLCB CAN service. 
  * @details
  * Uses Controller Area Network to carry VLCB messages.
  * This implementation works with the PIC18 ECAN.

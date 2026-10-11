@@ -46,7 +46,7 @@
 /**
  * @file
  * @brief
- * LED handling for 2 LEDs.
+ * LED handling for modules with two status (green and yellow) LEDs.
  * 
  * @details
  * This file supports modules with two status LEDs. These are normally green and yellow.

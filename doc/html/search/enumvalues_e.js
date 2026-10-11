@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['timed_5fresponse_5fresult_5ffinished_0',['TIMED_RESPONSE_RESULT_FINISHED',['../timed_response_8h.html#a34f3661bc164f76318500bd6a0fafd48ad64900175940c22560d28dc4291a732c',1,'timedResponse.h']]],
-  ['timed_5fresponse_5fresult_5fnext_1',['TIMED_RESPONSE_RESULT_NEXT',['../timed_response_8h.html#a34f3661bc164f76318500bd6a0fafd48ad79cc241c78dde6ebd8c993bea6ec75e',1,'timedResponse.h']]],
-  ['timed_5fresponse_5fresult_5fretry_2',['TIMED_RESPONSE_RESULT_RETRY',['../timed_response_8h.html#a34f3661bc164f76318500bd6a0fafd48a8ca57f564c67ea764d4457d44c396ed7',1,'timedResponse.h']]],
-  ['true_3',['TRUE',['../vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13aa82764c3079aea4e60c80e45befbb839',1,'vlcb.h']]]
+  ['received_0',['RECEIVED',['../vlcb_8h.html#abdc1a2463d076f24a8b77a7223a22fe0a1cf265da0334753368223d47f242a8df',1,'vlcb.h']]],
+  ['result_5ffail_1',['RESULT_FAIL',['../vlcb_8h.html#a28287671eaf7406afd604bd055ba4066adbaa15b6c3bcc0196b4b314fac50e36c',1,'vlcb.h']]],
+  ['result_5fsuccess_2',['RESULT_SUCCESS',['../vlcb_8h.html#a28287671eaf7406afd604bd055ba4066af3d0d72febdcc6491554576ed31f686e',1,'vlcb.h']]]
 ];

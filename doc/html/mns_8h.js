@@ -1,7 +1,7 @@
 var mns_8h =
 [
     [ "_MNS_H_", "mns_8h.html#a5c635eb40ab29d835e172512b33a977d", null ],
-    [ "MNS_DIAGNOSTICS_ALL", "mns_8h.html#a0feb2ac3a4c895ebe269507c6c8220fb", null ],
+    [ "MNS_DIAGNOSTICS_COUNT", "mns_8h.html#a971802b0ac3d77fa1a15e09921ebb319", null ],
     [ "MNS_DIAGNOSTICS_MEMERRS", "mns_8h.html#a506d91d40f7dfa90cc579e21ed0c6850", null ],
     [ "MNS_DIAGNOSTICS_NNCHANGE", "mns_8h.html#a5614b154854a19ddb37c88b6adad8598", null ],
     [ "MNS_DIAGNOSTICS_RXMESS", "mns_8h.html#a95540f9efe2e4c00e4b27c8c420c34d4", null ],
