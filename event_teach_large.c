@@ -225,7 +225,7 @@
 // forward definitions
 static void teachFactoryReset(void);
 static void teachPowerUp(void);
-static Processed teachProcessMessage(Message * m);
+static Processed teachProcessMessage(Message * m) __reentrant;   /* KeithB: off the compiled stack - XC8 case 01901775 */
 static uint8_t teachGetESDdata(uint8_t id);
 static void clearAllEvents(void);
 Processed checkLen(Message * m, uint8_t needed, uint8_t service);

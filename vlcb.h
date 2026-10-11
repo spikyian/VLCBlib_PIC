@@ -464,6 +464,32 @@ extern ValidTime APP_isSuitableTimeToWriteFlash(void);
  */
 extern void APP_earlyInit(void);
 
+
+#ifdef VLCB_DEFAULT_ISR_HOOK
+#ifndef VLCB_DEFAULT_ISR_RESET
+#error "VLCB_DEFAULT_ISR_HOOK needs VLCB_DEFAULT_ISR_RESET (b47 LCR-001)"
+#endif
+extern void APP_unhandledInterrupt(void);
+#endif
+#if defined(VLCB_POLL_DIVIDER) && ((VLCB_POLL_DIVIDER) < 2 || (VLCB_POLL_DIVIDER) > 255)
+#error "VLCB_POLL_DIVIDER must be 2..255 (b47 LCR-003)"
+#endif
+#if defined(VLCB_VDD_GUARD) && (defined(_18FXXQ83_FAMILY_) || defined(_18F66K80_FAMILY_))
+#ifndef VLCB_VDD_STABLE_MS
+#define VLCB_VDD_STABLE_MS       50
+#endif
+#ifndef VLCB_VDD_STARTUP_MAX_MS
+#define VLCB_VDD_STARTUP_MAX_MS  2000
+#endif
+#ifndef VLCB_VDD_WRITE_WAIT_MS
+#define VLCB_VDD_WRITE_WAIT_MS   5
+#endif
+#ifndef _XTAL_FREQ
+#define _XTAL_FREQ  ((unsigned long)clkMHz * 1000000UL)   /* for __delay_ms(): Fosc, as ticktime.c */
+#endif
+extern uint8_t vlcbVddWaitForWrite(void);  /* nvm.c: the write guard, 1 = rail OK to write (also usable by an application) */
+#endif
+
 /*
  * The default value for the node number.
  */

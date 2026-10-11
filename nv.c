@@ -65,7 +65,7 @@
 void loadNvCache(void);
 static void nvFactoryReset(void);
 static void nvPowerUp(void);
-static Processed nvProcessMessage(Message *m);
+static Processed nvProcessMessage(Message *m) __reentrant;   /* KeithB: off the compiled stack - XC8 case 01901775 */
 static uint8_t nvGetESDdata(uint8_t id);
 TimedResponseResult nvTRnvrdCallback(uint8_t type, uint8_t serviceIndex, uint8_t step);
 #ifdef VLCB_DIAG

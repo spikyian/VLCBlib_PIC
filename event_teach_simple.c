@@ -97,7 +97,7 @@
 // forward definitions
 static void teachFactoryReset(void);
 static void teachPowerUp(void);
-static Processed teachProcessMessage(Message * m);
+static Processed teachProcessMessage(Message * m) __reentrant;   /* KeithB: off the compiled stack - XC8 case 01901775 */
 static uint8_t teachGetESDdata(uint8_t id);
 void clearAllEvents(void);
 Processed checkLen(Message * m, uint8_t needed, uint8_t service);
@@ -214,7 +214,7 @@ static void teachPowerUp(void) {
     // (it writes 0 or EVENT_FLAG_DEFAULT), so flags 0xFF with EN 0xFFFF is an erased row:
     // clear it. Nothing is written unless such a row exists.
     uint8_t healed = 0;
-    for (i=0; i<NUM_EVENTS; i++) {
+    for (i=0; i<PARAM_NUM_EVENTS; i++) {
         uint24_t row = EVENT_TABLE_ADDRESS + (uint24_t)EVENTTABLE_WIDTH * i;
        if (((uint8_t)readNVM(EVENT_TABLE_NVM_TYPE, row + EVENTTABLE_OFFSET_FLAGS) == 0xFF)
                 && ((uint8_t)readNVM(EVENT_TABLE_NVM_TYPE, row + EVENTTABLE_OFFSET_ENH) == 0xFF)

@@ -55,7 +55,7 @@
  * The service definition object is called eventAckService.
  */
 static void ackPowerUp(void);
-static Processed ackEventProcessMessage(Message * m);
+static Processed ackEventProcessMessage(Message * m) __reentrant;   /* KeithB: off the compiled stack - XC8 case 01901775 */
 static Processed ackEventCheckLen(Message * m, uint8_t needed);
 #ifdef VLCB_DIAG
 static DiagnosticVal * ackGetDiagnostic(uint8_t code);
