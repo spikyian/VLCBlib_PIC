@@ -106,5 +106,21 @@ extern uint8_t writeAsyncEEPROM(eeprom_address_t address, uint8_t data);
  */
 extern void flushAsyncEEPROM(void);
 
+#if defined(ASYNC_EEPROM) && (ASYNC_EEPROM == QUEUE)
+/* The QUEUE writer's status, for application diagnostics (defined in
+ * asyncEEPROM_queue.c). Declarations only: no code or RAM for an application
+ * that does not use them. */
+
+/**
+ * @return the number of writes still waiting, including the one in progress
+ */
+extern uint8_t nvmAsyncPending(void);
+extern uint16_t nvmAsyncWrites;     ///< writes completed and verified
+extern uint16_t nvmAsyncFailures;   ///< entries dropped after repeated failed writes
+extern uint16_t nvmAsyncRefused;    ///< entries dropped because Vdd stayed low (VLCB_VDD_WRITE_GUARD)
+extern uint16_t nvmAsyncFallbacks;  ///< writes done synchronously because the queue was full
+extern uint8_t  nvmAsyncHighWater;  ///< most entries ever queued
+#endif
+
 #endif
 
