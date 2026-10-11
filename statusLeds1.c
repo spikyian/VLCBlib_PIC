@@ -37,6 +37,12 @@
  * @date Mar 2024
  * 
  */ 
+/* statusLeds.h does not include vlcb.h or ticktime.h, so include what this
+ * file uses here, as statusLeds2.c does (uint8_t, TickValue, tickGet(),
+ * TEN_MILI_SECOND, and the APP_ LED calls from module.h via vlcb.h). */
+#include <xc.h>
+#include "vlcb.h"
+#include "ticktime.h"
 #include "statusLeds.h"
 #include "statusDisplay.h"
 
