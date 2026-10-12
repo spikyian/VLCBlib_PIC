@@ -32,6 +32,7 @@
 #include <xc.h>
 #include "nvm.h"
 #include "module.h"
+#include "asyncEEPROM.h"   // defines BUFFER and QUEUE for the test below
 
 /**
  * @file
