@@ -870,6 +870,7 @@ static void checkPowerOnPb(void) {
             i = pbDownTimer(5);
             if ((i>=2) && (i < 4)) {
                 factoryReset();
+                flushNVM(); // the defaults must be on EEPROM before the reset
                 RESET();    // KeithB b35: restart so NV cache and service state reload the defaults
             }
         }
