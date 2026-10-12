@@ -33,6 +33,7 @@
 #include "nvm.h"
 #include "module.h"
 #include "vlcbdefs_enums.h"
+#include "vlcb.h"           // VLCB_CLRWDT()
 
 /**
  * @file
@@ -179,6 +180,7 @@ void flushAsyncEEPROM(void) {
         }
     }
     for (i=0; i < NUMBER_EEPROM; i++) {
+        VLCB_CLRWDT();          // one byte per pass (see vlcb.h)
         if (testWriteNeeded(i)) {
             if (EEPROM_Write(EEPROM_BASE_ADDRESS + i, eeValue[i]) == GRSP_OK) {
                 clearWriteNeeded(i);
