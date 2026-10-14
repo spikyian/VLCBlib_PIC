@@ -805,6 +805,7 @@ static uint8_t pbDownTimer(uint8_t timeout) {
     // determine how long the button is held for
     pbTimer.val = tickGet();
     while (APP_pbPressed()) {
+        VLCB_CLRWDT();
         tickRefresh();      // KeithB b40: leds_poll() reads tickNow
         leds_poll();
         if (tickTimeSince(pbTimer) > timeout*ONE_SECOND) {
@@ -825,6 +826,7 @@ static uint8_t pbUpTimer(uint8_t timeout) {
     // determine how long the button is released for
     pbTimer.val = tickGet();
     while (! (APP_pbPressed())) {
+        VLCB_CLRWDT();
         tickRefresh();      // KeithB b40
         leds_poll();
         if (tickTimeSince(pbTimer) > timeout*ONE_SECOND) {
@@ -881,6 +883,7 @@ static void checkPowerOnPb(void) {
         // otherwise a press that outlived the timeout was seen by mnsPoll() as a >4s press
         // and dropped the module to Uninitialised.
         while (APP_pbPressed()) {
+            VLCB_CLRWDT();
             tickRefresh();      // KeithB b40
             leds_poll();
         }
@@ -1224,6 +1227,7 @@ void main(void) {
         HLVDCON = (uint8_t)(0x10u | ((VLCB_VDD_GUARD) & 0x0Fu));   /* HLVDEN, VDIRMAG 0: flags Vdd at or below the level */
 #endif
         while (waited < (uint16_t)VLCB_VDD_STARTUP_MAX_MS) {
+            VLCB_CLRWDT();
             __delay_ms(1);
             waited++;
 #if defined(_18FXXQ83_FAMILY_)

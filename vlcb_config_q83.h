@@ -111,8 +111,7 @@
 
 //CONFIG5
 #pragma config WDTCPS =  WDTCPS_31     // WDT Period selection bits->Divider ratio 1:65536; software control of WDTPS
-//#pragma config WDTE =    SWDTEN  // WDT operating mode->enabled/disabled by WDTCON0.SEN (resets to 0 = off), as the bootloader
-#pragma config WDTE = OFF     // WDT operating mode->WDT Disabled; SWDTEN is ignored
+#pragma config WDTE =    SWDTEN  // WDT operating mode->enabled/disabled by WDTCON0.SEN (resets to 0 = off), as the bootloader
 
 //CONFIG6
 #pragma config WDTCWS =  WDTCWS_7     // WDT Window Select bits->window always open (100%); software control; keyed access not required

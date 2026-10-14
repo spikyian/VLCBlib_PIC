@@ -221,6 +221,7 @@ void pollAsyncEEPROM(void) {
 void flushAsyncEEPROM(void) {
     uint8_t h;
     while (nvmAsyncCount != 0) {
+        VLCB_CLRWDT();          // one entry per pass (see vlcb.h)
         h = nvmAsyncHead;
         if (nvmAsyncBusy) {
             while (NVMCON0bits.GO)

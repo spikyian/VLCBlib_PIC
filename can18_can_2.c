@@ -699,7 +699,7 @@ static SendResult canSendMessage(Message * mp) {
  * Queue processing must be done with an interrupt since this is effectively a 
  * tight loop. An overall timeout value may be set with TX_DRAIN_TIMEOUT_MS
  * although this defaults to 500ms if not set in module.h. 
- * Beware the loop clears WDT during wait.
+ * Clears the watchdog through VLCB_CLRWDT() while it waits (see vlcb.h).
  * @return result of waiting indicating if the queue drained or whether we reached a timeout
  */
 static TxDrainResult canWaitForTxQueueToDrain(void) {
@@ -713,6 +713,7 @@ static TxDrainResult canWaitForTxQueueToDrain(void) {
     lastProgress.val = start.val;
 #endif
     while (C1FIFOCON2Hbits.TXREQ) {
+        VLCB_CLRWDT();
 #ifdef STRINGENT_TX_QUEUE_DRAIN
         if (C1FIFOSTA2Hbits.FIFOCI != lastCi) {     // a frame went out
             lastCi = C1FIFOSTA2Hbits.FIFOCI;

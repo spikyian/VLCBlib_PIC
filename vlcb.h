@@ -40,6 +40,27 @@
 #include "nvm.h"
 
 /**
+ * VLCB_CLRWDT(): clear the watchdog during the library's longer bounded waits.
+ *
+ * The library never enables the watchdog. With the Q83 template's WDTE = SWDTEN
+ * the WDT is off after every reset (WDTCON0.SEN resets to 0) and only runs if the
+ * application sets SEN. An application that does so should start it at the end of
+ * setup (the start-up waits in main() come before) and define in module.h:
+ *     #define VLCB_CLRWDT()   CLRWDT()
+ * Its WDT period must then exceed the longest single wait between two clears:
+ * one flash page erase and write, one EEPROM write, one VDD write-guard wait.
+ *
+ * It is called in waits that have a limit: the TX queue drain before a reset,
+ * each flash page write, each EEPROM byte of a flush, the power-on push button
+ * timers and the VDD start-up wait. It is not called in waits that could hang
+ * (oscillator ready, CAN mode change, APP_isSuitableTimeToWriteFlash()), so the
+ * watchdog still catches those. Left undefined it is empty and generates no code.
+ */
+#ifndef VLCB_CLRWDT
+#define VLCB_CLRWDT()
+#endif
+
+/**
  * @file
  * @brief
  * Baseline functionality required by VLCB and entry points into the application.

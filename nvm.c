@@ -458,6 +458,7 @@ void eraseFlashBlock(void) {
     if (interruptEnabled) {     // Only enable interrupts if they were enabled at function entry
         bothEi();                   /* Enable Interrupts */
     }
+    VLCB_CLRWDT();              // one page erase done (see vlcb.h)
 }
 
 void flushNVM(void) {
@@ -542,6 +543,7 @@ void flushFlashBlock(void) {
     }
     flashFlags.writeNeeded = 0;  // KeithB b36: keep 'loaded' unchanged
     flashFlags.eraseNeeded = 0;
+    VLCB_CLRWDT();              // one page write done (see vlcb.h)
 }
 
 /**
