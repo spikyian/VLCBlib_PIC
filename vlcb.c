@@ -855,7 +855,18 @@ static void checkPowerOnPb(void) {
     // check for the push button being pressed at power up
     if (APP_pbPressed()) {
         // determine how long the button is held for
+#ifndef BOOTLOADER_PRESENT
+        /* No bootloader: behind the bootloader the button has already been held
+         * for about 2 s when this timing starts. Without one, time from power-up
+         * for up to 30 s and take the 2 s off, so each band means the same total
+         * hold as on a bootloaded module. */
+        i = pbDownTimer(30);
+        if (i != PB_TIMEOUT) {
+            i = (i >= 2) ? (uint8_t)(i - 2) : 0;
+        }
+#else
         i = pbDownTimer(28);
+#endif
         if (i == 0) {
             // A press shorter than one second: do nothing   KeithB b40
             return;
