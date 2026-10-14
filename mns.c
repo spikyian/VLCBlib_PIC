@@ -563,9 +563,8 @@ static Processed mnsProcessMessage(Message * m) {
                     if (mode_state == MODE_NORMAL) { // check current mode
                         sendMessage2((newMode == MODE_SETUP) ? OPC_RQNN : OPC_NNREL, nn.bytes.hi, nn.bytes.lo);
                         sendMessage5(OPC_GRSP, nn.bytes.hi, nn.bytes.lo, OPC_MODE, SERVICE_ID_MNS, GRSP_OK);
-                        nn.bytes.lo = nn.bytes.hi = 0;
-                        writeNVM(NN_NVM_TYPE, NN_ADDRESS+1, nn.bytes.hi);
-                        writeNVM(NN_NVM_TYPE, NN_ADDRESS, nn.bytes.lo);
+                        nn.bytes.lo = nn.bytes.hi = 0;  // in RAM only, as for the push button: an SNN
+                                                        // saves the new NN, mnsPoll() saves NN 0 for Uninitialised
                         //return to setup
                         mode_state = (newMode == MODE_SETUP) ? MODE_SETUP : MODE_UNINITIALISED;
                         setupModePreviousMode = MODE_NORMAL;
@@ -735,8 +734,7 @@ static void mnsPoll(void) {
                     if (mode_state == MODE_NORMAL) {
                         // restore the NN
                         nn.word = previousNN.word;
-                        // KeithB b36: save it too. MODE SETUP (from Normal) writes NN 0 to NVM,
-                        // so after a cancel the module rebooted as Normal with NN 0
+                        // save it too, so that NVM is right whichever way Setup was entered
                         writeNVM(NN_NVM_TYPE, NN_ADDRESS+1, nn.bytes.hi);
                         writeNVM(NN_NVM_TYPE, NN_ADDRESS, nn.bytes.lo);
                         sendMessage2(OPC_NNACK, nn.bytes.hi, nn.bytes.lo);
