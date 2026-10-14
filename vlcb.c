@@ -1367,6 +1367,18 @@ void __interrupt(irq(default), base(IVT_BASE)) DEFAULT_ISR(void)
  * 
  * This default handler could call RESET() but that isn't any better to debug.
  */
-    
+#ifdef VLCB_DEFAULT_ISR_RESET
+    /* Opt-in: an enabled source with no handler never has its flag cleared, so
+     * returning re-enters this handler forever - a silent hang when the watchdog
+     * is off. Reset instead; after the restart PCON0.RI shows a RESET instruction
+     * caused it. With VLCB_DEFAULT_ISR_HOOK the application can record the event
+     * first (for example in RAM or EEPROM, to report after the restart), which
+     * makes it easier to find than a hang. The hook must not expect to return
+     * to normal operation. Undefined: empty body, as before. */
+#ifdef VLCB_DEFAULT_ISR_HOOK
+    APP_unhandledInterrupt();
+#endif
+    RESET();
+#endif
 }
 #endif
