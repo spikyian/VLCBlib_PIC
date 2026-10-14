@@ -46,6 +46,9 @@
 #include "timedResponse.h"
 #include "statusLeds.h"
 #include "mns.h"
+#ifdef ASYNC_EEPROM
+#include "asyncEEPROM.h"
+#endif
 
 /** @mainpage VLCB
  * *************************************************************************

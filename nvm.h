@@ -156,10 +156,6 @@ extern uint8_t vlcbVddOkNow(void);
 extern uint8_t vlcbVddWaitForWrite(void);
 #endif
 
-#ifdef ASYNC_EEPROM
-#include "asyncEEPROM.h"
-#endif
-
 
 /**
  * Ensure that all cached NVM data is written out.

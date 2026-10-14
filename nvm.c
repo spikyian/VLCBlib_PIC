@@ -73,10 +73,14 @@
  */
 
 #include <xc.h>
+#include "module.h"
 #include "vlcb.h"
 #include "hardware.h"
 #include "nvm.h"
 #include "mns.h"
+#ifdef ASYNC_EEPROM
+#include "asyncEEPROM.h"
+#endif
 
 #pragma optimize 1
 
