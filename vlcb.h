@@ -486,9 +486,14 @@ extern ValidTime APP_isSuitableTimeToWriteFlash(void);
 extern void APP_earlyInit(void);
 
 
+/*
+ * Optional, Q83 only, both off unless defined in module.h:
+ *   VLCB_DEFAULT_ISR_RESET  the default interrupt handler resets instead of returning
+ *   VLCB_DEFAULT_ISR_HOOK   ... after calling APP_unhandledInterrupt()
+ */
 #ifdef VLCB_DEFAULT_ISR_HOOK
 #ifndef VLCB_DEFAULT_ISR_RESET
-#error "VLCB_DEFAULT_ISR_HOOK needs VLCB_DEFAULT_ISR_RESET (b47 LCR-001)"
+#error "VLCB_DEFAULT_ISR_HOOK needs VLCB_DEFAULT_ISR_RESET"
 #endif
 extern void APP_unhandledInterrupt(void);
 #endif
