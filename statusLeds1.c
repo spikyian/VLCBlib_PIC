@@ -58,6 +58,7 @@
  * This looks a bit like a service but not exposed externally.
  * 
  */
+extern uint8_t mode_state;
 LedState    ledState;     // the requested state
 /**
  * Counters to control on/off period.
@@ -172,11 +173,19 @@ void showStatus(StatusDisplay s) {
         case STATUS_RESET_WARNING:
             ledState = LED_FLASH_50_2HZ;
             break;
+        /* A flicker ends with the LED on, so flicker only in Normal mode, where
+         * the LED is on. In Uninitialised and Setup the LED flashes to show the
+         * mode, and a flicker would leave it on. statusLeds2.c checks the mode
+         * in the same way. */
         case STATUS_MESSAGE_RECEIVED:
-            ledState = LED_SINGLE_FLICKER_OFF;
+            if (mode_state == MODE_NORMAL) {
+                ledState = LED_SINGLE_FLICKER_OFF;
+            }
             break;
         case STATUS_MESSAGE_ACTED:
-            ledState = LED_LONG_FLICKER_OFF;
+            if (mode_state == MODE_NORMAL) {
+                ledState = LED_LONG_FLICKER_OFF;
+            }
             break;
         case STATUS_TRANSMIT_ERROR:
         case STATUS_RECEIVE_ERROR:

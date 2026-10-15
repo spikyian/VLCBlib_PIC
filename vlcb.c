@@ -743,7 +743,7 @@ ServicePresent have(uint8_t id) {
  * Perform the factory reset for all services and VLCB base.
  * VLCB function to perform necessary factory reset functionality and also
  * call the factoryReset function for each service followed by the Application
- * factory reset APP_factoryReset().
+ * factory reset APP_factoryReset(). The NVM version is written last.
  */
 void factoryReset(void) {
     uint8_t i;
@@ -753,10 +753,13 @@ void factoryReset(void) {
             services[i]->factoryReset();
         }
     }
-    // now write the version number
-    writeNVM(VERSION_NVM_TYPE, VERSION_ADDRESS, APP_NVM_VERSION);
-    
     APP_factoryReset();
+
+    // Now write the version number, last and once everything else is in NVM:
+    // a module that loses power part way through the reset finds the old
+    // version at the next start and does the whole reset again.
+    flushNVM();
+    writeNVM(VERSION_NVM_TYPE, VERSION_ADDRESS, APP_NVM_VERSION);
 }
 
 /**
