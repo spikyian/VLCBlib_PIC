@@ -72,6 +72,18 @@
 #include "ticktime.h"
 #include "messageQueue.h"
 
+#if defined(CAN_SHARED_SERVICE)
+/* KeithB: opt-in (module.h defines CAN_SHARED_SERVICE). The VLCB CAN service
+ * shared by every controller (can_service.c) on this controller's layer
+ * (can_hw_q83.c), or on the application's own controller layer when module.h also
+ * defines CAN_HW_APP. See can_hw.h. Without CAN_SHARED_SERVICE the driver
+ * below is compiled exactly as before. */
+#ifndef CAN_HW_APP
+#include "can_hw_q83.c"
+#endif
+#include "can_service.c"
+#else /* !CAN_SHARED_SERVICE: the Q83 driver, unchanged */
+
 // Check that CAN_CLOCK_MHz has been set to a valid value
 #if !defined(CAN_CLOCK_MHz) || ((CAN_CLOCK_MHz != 16) && (CAN_CLOCK_MHz != 32) && (CAN_CLOCK_MHz != 64))
 #error "CAN_CLOCK_MHz must be 16, 32 or 64"
@@ -1035,4 +1047,5 @@ enum CAN_OP_MODES CAN1_OperationModeGet(void)
 {
     return C1CONUbits.OPMOD;
 }
+#endif /* CAN_SHARED_SERVICE */
 #endif
