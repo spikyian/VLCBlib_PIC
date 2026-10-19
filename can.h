@@ -88,6 +88,18 @@ extern const Service canService;
  */
 extern const Transport canTransport;
 
+#ifdef CAN_VIEW_SERVICE
+/* KeithB: opt-in (needs CAN_SHARED_SERVICE). A read-only CAN service for a
+ * controller the module reports but does not drive; see can_service.c. */
+extern const Service canViewService;
+#ifdef VLCB_SERVICE
+extern uint8_t APP_canViewEsdData(uint8_t id);
+#endif
+#ifdef VLCB_DIAG
+extern DiagnosticVal * APP_canViewDiagnostic(uint8_t index);
+#endif
+#endif
+
 #define NUM_CAN_DIAGNOSTICS 18      ///< The number of diagnostic values associated with this service
 #define CAN_DIAG_COUNT              0x00 ///< Count of the CAN diagnostics
 #define CAN_DIAG_RX_ERRORS          0x01 ///< CAN RX error counter
