@@ -7,7 +7,7 @@ CAN peripheral and a simulated CAN bus. Nothing here is built for the PIC.
 test/can/run.sh [path to VLCB-defs]     # default: ../VLCB-defs beside the library
 ```
 
-Needs gcc, python3 and a POSIX shell (Linux, macOS, or WSL on Windows).
+Needs gcc, python3, git (a clone, not a downloaded zip) and a POSIX shell (Linux, macOS, or WSL on Windows).
 
 ## What runs
 
@@ -19,11 +19,12 @@ running a few per cent apart, as real oscillators do.
 
 Two drivers are built for each family:
 
-- **existing**: `can18_can_2.c` / `can18_ecan.c` without `CAN_SHARED_SERVICE`,
-  that is the drivers as they were (`make_legacy.py` adds the model's sync
-  points to a copy)
-- **shared**: `can_service.c` on `can_hw_q83.c` / `can_hw_k80.c`
-  (`CAN_SHARED_SERVICE`)
+- **existing**: the drivers as they were before the shared CAN service,
+  `can18_can_2.c` / `can18_ecan.c` taken from git at `CAN_LEGACY_REV`
+  (default `5366386`; `make_legacy.py` adds the model's sync points to a copy),
+  kept to compare against
+- **shared**: the library's driver now, `can_service.c` on `can_hw_q83.c` /
+  `can_hw_k80.c`
 
 each with and without `CAN_ADDITIONAL_CANID_CHECKS` and `CONSUMED_EVENTS`,
 plus `CAN_RX_ACCEPT`.

@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
-"""Copy the library's CAN drivers, compiled without CAN_SHARED_SERVICE (the
-existing drivers, unchanged), into OUT with the register model's sync points
-added: the model applies a write's effect (UINC, RXFUL release, a mode
+"""Copy the earlier CAN drivers (can18_can_2.c and can18_ecan.c as they were
+before the shared CAN service, taken from git at REV) into OUT with the
+register model's sync points added: the model applies a write's effect (UINC, RXFUL release, a mode
 request) when q83_sync()/k80_sync() is called, where the PIC does it at once.
 Also points the Q83 message RAM at the model's array.
-    make_legacy.py LIBDIR OUT"""
-import re, sys, os
-lib, out = sys.argv[1], sys.argv[2]
+    make_legacy.py LIBDIR OUT REV"""
+import re, sys, os, subprocess
+lib, out, rev = sys.argv[1], sys.argv[2], sys.argv[3]
+def earlier(name):
+    return subprocess.run(["git", "-C", lib, "show", "%s:%s" % (rev, name)], check=True,
+                          capture_output=True, text=True).stdout.replace("\r\n", "\n")
 os.makedirs(out, exist_ok=True)
-s = open(os.path.join(lib, "can18_can_2.c")).read()
+s = earlier("can18_can_2.c")
 s = s.replace("#define CAN1_BUFFERS_BASE_ADDRESS           0x3BB0",
               "#define CAN1_BUFFERS_BASE_ADDRESS           ((uintptr_t)q83_msgram)")
 lines = []
@@ -22,7 +25,7 @@ for line in s.split("\n"):
 s = "\n".join(lines).replace("        while (C1CONUbits.OPMOD != requestMode)\n        {",
                              "        while (C1CONUbits.OPMOD != requestMode)\n        {   q83_sync();")
 open(os.path.join(out, "can18_can_2.c"), "w").write(s)
-s = open(os.path.join(lib, "can18_ecan.c")).read()
+s = earlier("can18_ecan.c")
 s = s.replace("while (CANSTATbits.OPMODE2 == 0);", "while (CANSTATbits.OPMODE2 == 0) k80_sync();")
 s = s.replace("while (CANSTATbits.OPMODE2 != 0);", "while (CANSTATbits.OPMODE2 != 0) k80_sync();")
 s = s.replace("ptr[CON] &= 0x7f;", "ptr[CON] &= 0x7f; k80_sync();")

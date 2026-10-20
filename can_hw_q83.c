@@ -38,11 +38,11 @@
  * @brief
  * CAN controller layer for the CAN 2.0 peripheral on the Q series (PIC18F27Q83 family).
  * @details
- * Opt-in (CAN_SHARED_SERVICE): included by can18_can_2.c, after its #includes,
+ * Included by can18_can_2.c, after its #includes,
  * ahead of can_service.c. Moves frames and counts what only the hardware sees;
  * every VLCB rule is in can_service.c. Interface: can_hw.h.
  *
- * The peripheral is set up exactly as can18_can_2.c sets it up (same FIFOs,
+ * The peripheral is set up exactly as the earlier Q83 driver set it up (same FIFOs,
  * filter, bit timing and interrupts):
  *   TXQ   - 4 deep, the self-enumeration RTR
  *   FIFO1 - 1 deep, the zero-length reply to another node's RTR
@@ -52,9 +52,9 @@
  * TXREQ in a single write, as DS40002265C 38.5.4 requires ("UINC and TXREQ
  * ... must be set at the same time after appending a message").
  */
-/* Compiled only through can18_can_2.c / can18_ecan.c with CAN_SHARED_SERVICE;
+/* Compiled only through can18_can_2.c / can18_ecan.c;
  * empty if a project builds this file on its own. */
-#if defined(CAN_SHARED_SERVICE) && defined(_CAN_H_)
+#if defined(_CAN_H_)
 #include "can_hw.h"
 
 #if !defined(CAN_CLOCK_MHz) || ((CAN_CLOCK_MHz != 16) && (CAN_CLOCK_MHz != 32) && (CAN_CLOCK_MHz != 64))
@@ -419,4 +419,4 @@ enum CAN_OP_MODES CAN1_OperationModeGet(void)
 {
     return C1CONUbits.OPMOD;
 }
-#endif /* CAN_SHARED_SERVICE && _CAN_H_ */
+#endif /* _CAN_H_ */

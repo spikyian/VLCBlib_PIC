@@ -38,13 +38,13 @@
  * @brief
  * The VLCB CAN service and transport, shared by every CAN controller.
  * @details
- * Opt-in: compiled only when module.h defines CAN_SHARED_SERVICE, by
- * can18_can_2.c (Q83) or can18_ecan.c (K80) after their own #includes. The
+ * Compiled by can18_can_2.c (Q83) or can18_ecan.c (K80), after their own
+ * #includes. The
  * controller is reached only through can_hw.h, so this file has no registers
  * in it and behaves the same on every platform.
  *
- * Provides canService and canTransport exactly as the existing drivers do, so
- * an application changes nothing but the #define:
+ * Provides canService and canTransport exactly as the earlier drivers did, so
+ * an application needs no change:
  *   - CANID held in NVM (CANID_NVM_TYPE, CANID_ADDRESS)
  *   - self-enumeration (RTR, collect replies for ENUMERATION_TIMEOUT, take the
  *     lowest free CANID 1..99), and the reply to other nodes' RTRs
@@ -75,9 +75,9 @@
  *                         module that must report a CAN controller it does not
  *                         drive itself (CanCan's other segment, say).
  */
-/* Compiled only through can18_can_2.c / can18_ecan.c with CAN_SHARED_SERVICE;
+/* Compiled only through can18_can_2.c / can18_ecan.c;
  * empty if a project builds this file on its own. */
-#if defined(CAN_SHARED_SERVICE) && defined(_CAN_H_)
+#if defined(_CAN_H_)
 #include "can_hw.h"
 
 #ifndef CAN_RX_CONTROL_PER_CALL
@@ -87,7 +87,7 @@
 static void canFactoryReset(void);
 static void canPowerUp(void);
 static void canPoll(void);
-static Processed canProcessMessage(Message * m) __reentrant;   /* KeithB: off the compiled stack - XC8 case 01901775 */
+static Processed canProcessMessage(Message * m) __reentrant;   /* off the compiled stack - XC8 case 01901775 */
 #if defined(_18F66K80_FAMILY_)
 static void canIsr(void);
 #endif
@@ -640,4 +640,4 @@ const Service canViewService = {
 #endif
 };
 #endif
-#endif /* CAN_SHARED_SERVICE && _CAN_H_ */
+#endif /* _CAN_H_ */

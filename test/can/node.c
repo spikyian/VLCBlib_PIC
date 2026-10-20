@@ -41,7 +41,7 @@ void api_powerup(void) { SYNC(); canService.powerUp(); SYNC(); }
 void api_poll(void) {
     SYNC();
     if (canService.poll) canService.poll();
-#if defined(_18F66K80_FAMILY_) && !defined(CAN_SHARED_SERVICE)
+#if defined(_18F66K80_FAMILY_) && defined(CAN_TEST_LEGACY)
     /* legacy K80 has no poll: it runs processEnumeration() from receive */
 #endif
     SYNC();

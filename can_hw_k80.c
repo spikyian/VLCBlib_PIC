@@ -38,23 +38,24 @@
  * @brief
  * CAN controller layer for the ECAN peripheral on the K series (PIC18F66K80 family).
  * @details
- * Opt-in (CAN_SHARED_SERVICE): included by can18_ecan.c, after its #includes,
+ * Included by can18_ecan.c, after its #includes,
  * ahead of can_service.c. Moves frames and counts what only the hardware sees;
  * every VLCB rule is in can_service.c. Interface: can_hw.h.
  *
- * The peripheral is set up as can18_ecan.c sets it up: ECAN mode 2, all eight
+ * The peripheral is set up as the earlier driver set it up: ECAN mode 2, all eight
  * receive buffers as a FIFO with the high-water-mark interrupt, TXB0 for data
  * frames fed from a software queue by the TX interrupt, TXB1 for the RTR and
  * TXB2 for the reply to other nodes' RTRs.
  *
- * Differences from can18_ecan.c, all in this opt-in path only:
+ * Differences from the earlier K80 driver (can18_ecan.c before the shared
+ * service):
  *  - The high-water-mark interrupt moves raw frames (RTR and zero-length
  *    frames included) into a ring; the service sees every frame through one
- *    path. can18_ecan.c moved only data frames into its queue, so while the
+ *    path. The earlier driver moved only data frames into its queue, so while the
  *    interrupt was draining the FIFO (under load) the module did not answer
  *    RTRs, collect enumeration replies or see a CANID conflict.
  *  - TXB1 (RTR) and TXB2 (RTR reply) carry all seven CANID bits.
- *    can18_ecan.c copied the low three bits from TXB0SIDL - the last data
+ *    The earlier driver copied the low three bits from TXB0SIDL - the last data
  *    frame sent, or 0 after power-up.
  *  - The interrupt only touches the receive FIFO while the main loop allows
  *    it (FIFOWMIE), and only the transmit queue while TXBnIE is set; a TX or
@@ -71,11 +72,11 @@
  *  - A frame loaded into TXB0 directly (queue empty) is given the same
  *    CAN_TX_TIMEOUT as one loaded by the interrupt.
  * The ECAN behaviour relied on (FIFO pointer in CANCON, RXFUL release, buffer
- * register layout, TXREQ/TXLARB/TXERR) is as can18_ecan.c uses it.
+ * register layout, TXREQ/TXLARB/TXERR) is as the earlier driver used it.
  */
-/* Compiled only through can18_can_2.c / can18_ecan.c with CAN_SHARED_SERVICE;
+/* Compiled only through can18_can_2.c / can18_ecan.c;
  * empty if a project builds this file on its own. */
-#if defined(CAN_SHARED_SERVICE) && defined(_CAN_H_)
+#if defined(_CAN_H_)
 #include "can_hw.h"
 
 #if !defined(CAN_CLOCK_MHz) || ((CAN_CLOCK_MHz != 16) && (CAN_CLOCK_MHz != 32) && (CAN_CLOCK_MHz != 64))
@@ -608,4 +609,4 @@ void canHwDiagRefresh(uint8_t index) {
     // TX and RX errors are counted as they happen (canTxError, IRXIF)
 }
 #endif
-#endif /* CAN_SHARED_SERVICE && _CAN_H_ */
+#endif /* _CAN_H_ */

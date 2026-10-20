@@ -89,7 +89,7 @@ extern const Service canService;
 extern const Transport canTransport;
 
 #ifdef CAN_VIEW_SERVICE
-/* KeithB: opt-in (needs CAN_SHARED_SERVICE). A read-only CAN service for a
+/* Opt-in (CAN_VIEW_SERVICE in module.h). A read-only CAN service for a
  * controller the module reports but does not drive; see can_service.c. */
 extern const Service canViewService;
 #ifdef VLCB_SERVICE

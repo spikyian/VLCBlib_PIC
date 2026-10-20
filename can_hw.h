@@ -42,10 +42,6 @@
  * The interface between the shared VLCB CAN service (can_service.c) and a CAN
  * controller (can_hw_q83.c, can_hw_k80.c, or one the application supplies).
  * @details
- * Opt-in: used only when module.h defines CAN_SHARED_SERVICE. Without it,
- * can18_can_2.c and can18_ecan.c compile exactly as before and nothing here
- * is used.
- *
  * Everything VLCB says about CAN - the CANID, self-enumeration, conflict
  * detection, ENUM and CANID, the diagnostics, the ESD and the Transport - is
  * in can_service.c, once, for every controller. A controller file only moves
@@ -53,10 +49,10 @@
  * protocol are therefore made once and reach every platform.
  *
  * The controller file is included by the family's existing driver file
- * (can18_can_2.c for the Q83, can18_ecan.c for the K80), so an application
- * opts in with one #define and no change to its project. An application with
+ * (can18_can_2.c for the Q83, can18_ecan.c for the K80), so a project builds
+ * the same files as before. An application with
  * a controller of its own (a bridge, say) also defines CAN_HW_APP and provides
- * these functions itself; can18_can_2.c then builds only the service.
+ * these functions itself; the driver file then builds only the service.
  *
  * All functions are called from the main loop only, except where noted.
  */
