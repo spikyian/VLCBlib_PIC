@@ -92,12 +92,3 @@ int api_regs(uint8_t *out, int max) {
     int n = sizeof k80 < (size_t)max ? (int)sizeof k80 : max; memcpy(out, (const void *)&k80, n); return n;
 #endif
 }
-#ifdef CAN_VIEW_SERVICE
-uint8_t APP_canViewEsdData(uint8_t id) { return (uint8_t)(0x70 + id); }
-DiagnosticVal * APP_canViewDiagnostic(uint8_t index) { static DiagnosticVal v; v.asUint = (uint16_t)(index * 3); return &v; }
-int api_view(uint8_t index) {
-    if (canViewService.serviceNo != SERVICE_ID_CAN || canViewService.version != canService.version) return -1;
-    if (canViewService.getESDdata(1) != 0x71) return -2;
-    return canViewService.getDiagnostic(index)->asUint;
-}
-#endif

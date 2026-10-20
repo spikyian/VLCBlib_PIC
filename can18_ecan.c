@@ -64,10 +64,7 @@
 #include "messageQueue.h"
 
 /* The VLCB CAN service (can_service.c) on the K80 controller layer
- * (can_hw_k80.c), or on the application's own controller layer when module.h
- * defines CAN_HW_APP. See can_hw.h. */
-#ifndef CAN_HW_APP
+ * (can_hw_k80.c). See can_hw.h. */
 #include "can_hw_k80.c"
-#endif
 #include "can_service.c"
 #endif

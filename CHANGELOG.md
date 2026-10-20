@@ -18,5 +18,4 @@ and uses it as the release notes.
   files as before (`can18_can_2.c` or `can18_ecan.c`) and need no change.
   The K80 gains `CAN_ADDITIONAL_CANID_CHECKS` and five fixes (RTR replies and
   conflict detection under load, CANID bits in the RTR and RTR reply, RTR and
-  zero-length frames reported as messages). New optional settings:
-  `CAN_RX_ACCEPT(opc)`, `CAN_VIEW_SERVICE`, `CAN_HW_APP`. Host tests in `test/can`.
+  zero-length frames reported as messages). Host tests in `test/can`.

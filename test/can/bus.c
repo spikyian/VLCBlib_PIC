@@ -350,23 +350,6 @@ static void t_flood(const char *vrx, const char *vtx, int every, int burst) {
     check(nodes[r].a.faults() == 0 && nodes[s].a.faults() == 0, "model faults");
 }
 
-/* T11: CAN_RX_ACCEPT drops unwanted opcodes, enumeration still sees the frames */
-static void t_accept(const char *v_accept, const char *v_other) {
-    reset_bus();
-    int a = add_node(v_accept, 5), b = add_node(v_other, 6);
-    powerup_all(); run(3);
-    send(b, OPC_ACON, 5, 0, 1, 0, 1);       /* 0x90: rejected by the accept filter */
-    send(b, OPC_ASON, 5, 0, 1, 0, 2);       /* accepted */
-    run(20);
-    check(nodes[a].nlog == 1 && nodes[a].log[0].opc == OPC_ASON, "a got %d (first %02x)", nodes[a].nlog, nodes[a].nlog ? nodes[a].log[0].opc : 0);
-    reset_bus();
-    a = add_node(v_accept, 7); b = add_node(v_other, 7);
-    powerup_all(); run(3);
-    send(b, OPC_ACON, 5, 0, 1, 0, 1);       /* dropped, but carries a's CANID */
-    run(2000);
-    check(nodes[a].a.diag(DIAG_CANID_CONFLICTS) >= 1, "conflict not seen through a dropped frame");
-}
-
 /* T12: the same script on legacy and shared drivers puts the same frames on the bus */
 static int trace_script(const char *v, BusFrame *out, int *nout, Msg *rx, int *nrx) {
     reset_bus();
@@ -430,17 +413,6 @@ static void t_regs(const char *vl, const char *vs, const int *allowed, int nallo
     }
 }
 
-/* T15: CAN_VIEW_SERVICE answers from the application */
-static void t_view(const char *v) {
-    reset_bus();
-    int a = add_node(v, 5);
-    powerup_all();
-    int (*f)(uint8_t) = (int (*)(uint8_t))dlsym(nodes[a].h, "api_view");
-    check(f != NULL, "no api_view");
-    if (f) { int r = f(4); check(r == 12, "view diagnostic 4 = %d (expect 12; <0: descriptor wrong)", r); }
-    check(nodes[a].a.diag(0) == 18, "canService unaffected");
-}
-
 #define T(name, call) do { snprintf(tname, sizeof tname, "%s", name); int f0 = fails; call; printf("%-62s %s\n", tname, fails == f0 ? "ok" : "FAILED"); } while (0)
 /* a test keithb's driver is expected to fail: shows the defect; counts as a failure only if it passes */
 static int xfails;
@@ -456,7 +428,7 @@ int main(int argc, char **argv) {
     for (int fi = 0; fi < 2; fi++) {
         const char *F = fam[fi];
         int k80 = fi == 1;
-        char v[64], w[64], x[64], y[64], z[64], n[128], sc[64], s0[64];
+        char v[64], w[64], x[64], y[64], n[128], sc[64], s0[64];
         printf("== %s\n", F);
         snprintf(sc, 64, "%s_split_chk", F); snprintf(s0, 64, "%s_split", F);
         for (int legacy = 0; legacy < 2; legacy++) {
@@ -502,10 +474,6 @@ int main(int argc, char **argv) {
           snprintf(v, 64, "%s_legacy_chk_coe", F); snprintf(w, 64, "%s_split_chk_coe", F);
           snprintf(n, 128, k80 ? "%s registers after power-up: same but TXB1SIDL, TXB2SIDL" : "%s registers after power-up: identical", F);
           T(n, t_regs(v, w, k80_sidl, k80 ? 2 : 0)); }
-        snprintf(z, 64, "%s_split_accept", F); snprintf(w, 64, "%s_split_chk", F);
-        snprintf(n, 128, "%s CAN_RX_ACCEPT", F); T(n, t_accept(z, w));
-        snprintf(z, 64, "%s_split_view", F);
-        snprintf(n, 128, "%s CAN_VIEW_SERVICE", F); T(n, t_view(z));
         snprintf(v, 64, "%s_legacy", F); snprintf(w, 64, "%s_split", F);
         snprintf(n, 128, "%s mixed bus: legacy and split nodes", F); T(n, t_basic(v, w); t_basic(w, v));
     }

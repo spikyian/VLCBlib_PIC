@@ -40,7 +40,7 @@
  * @file
  * @brief
  * The interface between the shared VLCB CAN service (can_service.c) and a CAN
- * controller (can_hw_q83.c, can_hw_k80.c, or one the application supplies).
+ * controller (can_hw_q83.c or can_hw_k80.c).
  * @details
  * Everything VLCB says about CAN - the CANID, self-enumeration, conflict
  * detection, ENUM and CANID, the diagnostics, the ESD and the Transport - is
@@ -50,9 +50,7 @@
  *
  * The controller file is included by the family's existing driver file
  * (can18_can_2.c for the Q83, can18_ecan.c for the K80), so a project builds
- * the same files as before. An application with
- * a controller of its own (a bridge, say) also defines CAN_HW_APP and provides
- * these functions itself; the driver file then builds only the service.
+ * the same files as before.
  *
  * All functions are called from the main loop only, except where noted.
  */

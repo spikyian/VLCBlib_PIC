@@ -60,20 +60,6 @@
  * Every frame the controller receives passes through canReceiveMessage(), so
  * RTR replies, enumeration results and conflict detection never depend on
  * how the controller buffers frames.
- *
- * Other opt-ins:
- *   CAN_RX_ACCEPT(opc)  - module.h may define it as an expression; a received
- *                         data frame whose opcode it rejects is dropped before
- *                         it is copied or reaches the services. Enumeration
- *                         still sees the frame. It must accept every opcode
- *                         any service in services[] or the application handles
- *                         (MNS, NV, teach, events ...): a rejected opcode is
- *                         never processed.
- *   CAN_VIEW_SERVICE    - also provides canViewService: a read-only CAN service
- *                         answering ESD and diagnostics from the application
- *                         (APP_canViewEsdData, APP_canViewDiagnostic), for a
- *                         module that must report a CAN controller it does not
- *                         drive itself (CanCan's other segment, say).
  */
 /* Compiled only through can18_can_2.c / can18_ecan.c;
  * empty if a project builds this file on its own. */
@@ -457,12 +443,6 @@ static MessageReceived canReceiveMessage(Message * m) {
             canHwRxRelease();
             continue;
         }
-#ifdef CAN_RX_ACCEPT
-        if (!(CAN_RX_ACCEPT(f.data[0]))) {  // the application never handles this opcode
-            canHwRxRelease();
-            continue;
-        }
-#endif
         m->len = f.dlc;
         m->opc = (VlcbOpCodes)f.data[0];
         m->bytes[0] = f.data[1];
@@ -614,30 +594,4 @@ static CanidResult setNewCanId(uint8_t newCanId) {
     }
 }
 
-#ifdef CAN_VIEW_SERVICE
-/**
- * A read-only CAN service for a controller this module reports but does not
- * drive. The application answers the ESD and the diagnostics, numbered as
- * canService's (CAN_DIAG_*). Add &canViewService to services[] after
- * &canService.
- */
-const Service canViewService = {
-    SERVICE_ID_CAN,     // id
-    2,                  // version
-    NULL,               // factoryReset
-    NULL,               // powerUp
-    NULL,               // processMessage
-    NULL,               // poll
-#if defined(_18F66K80_FAMILY_)
-    NULL,               // highIsr
-    NULL,               // lowIsr
-#endif
-#ifdef VLCB_SERVICE
-    APP_canViewEsdData, // get ESD data
-#endif
-#ifdef VLCB_DIAG
-    APP_canViewDiagnostic   // getDiagnostic
-#endif
-};
-#endif
 #endif /* _CAN_H_ */

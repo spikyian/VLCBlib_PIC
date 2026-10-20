@@ -26,8 +26,7 @@ Two drivers are built for each family:
 - **shared**: the library's driver now, `can_service.c` on `can_hw_q83.c` /
   `can_hw_k80.c`
 
-each with and without `CAN_ADDITIONAL_CANID_CHECKS` and `CONSUMED_EVENTS`,
-plus `CAN_RX_ACCEPT`.
+each with and without `CAN_ADDITIONAL_CANID_CHECKS` and `CONSUMED_EVENTS`.
 
 The tests cover: a frame end to end; six factory-reset nodes enumerating;
 a CANID conflict; the RTR reply's CANID; a received RTR not reported as a

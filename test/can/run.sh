@@ -31,8 +31,6 @@ for fam in q83 k80; do
     build ${fam}_${mode}_coe        $fam $mode -DCONSUMED_EVENTS
     build ${fam}_${mode}_chk_coe    $fam $mode -DCAN_ADDITIONAL_CANID_CHECKS -DCONSUMED_EVENTS
   done
-  build ${fam}_split_view $fam split -DCAN_VIEW_SERVICE
-  build ${fam}_split_accept $fam split -DCAN_ADDITIONAL_CANID_CHECKS "-DCAN_RX_ACCEPT(opc)=((opc)!=0x90)"
 done
 gcc -O1 -g -Wall -I"$T" "$T/bus.c" -o "$B/bus" -ldl
 gcc -std=gnu11 -O0 -w -D_18F66K80_FAMILY_ -I"$T/k80hook" -I"$T" -I"$LIB" -I"$B/defs" -DDRIVER='"can18_ecan.c"' \

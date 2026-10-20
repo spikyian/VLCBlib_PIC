@@ -1,5 +1,5 @@
 /* module.h for the CAN driver host tests. Options come from -D flags:
- *   CAN_TEST_LEGACY, CAN_ADDITIONAL_CANID_CHECKS, CONSUMED_EVENTS, CAN_RX_ACCEPT */
+ *   CAN_TEST_LEGACY, CAN_ADDITIONAL_CANID_CHECKS, CONSUMED_EVENTS */
 #ifndef _MODULE_H_
 #define _MODULE_H_
 #define VLCB
