@@ -31,11 +31,11 @@
  * and building it against an older library stops with an error (see vlcb.h).
  */
 
-#define VLCBLIB_VERSION_MAJOR       0   ///< incompatible changes for modules
+#define VLCBLIB_VERSION_MAJOR       1   ///< incompatible changes for modules
 #define VLCBLIB_VERSION_MINOR       0   ///< new features, compatible
 #define VLCBLIB_VERSION_PATCH       0   ///< fixes only
-#define VLCBLIB_VERSION_PRERELEASE  0   ///< 0 for a release, N for a pre-release such as -rcN
-#define VLCBLIB_VERSION_STRING      "0.0.0" ///< as the tag, without the v
+#define VLCBLIB_VERSION_PRERELEASE  1   ///< 0 for a release, N for a pre-release such as -rcN
+#define VLCBLIB_VERSION_STRING      "1.0.0-rc1" ///< as the tag, without the v
 
 /** A version as one number, for comparing in #if. */
 #define VLCBLIB_VERSION_NUMBER(major, minor, patch) \
