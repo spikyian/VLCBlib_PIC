@@ -464,9 +464,11 @@ void canHwTxRelease(uint8_t canId) {
     }
 }
 
+#ifdef CAN_ADDITIONAL_CANID_CHECKS
 Boolean canHwTxHeld(void) {
     return (txHold && (quantity(&txQueue) > 0)) ? TRUE : FALSE;
 }
+#endif
 
 void canHwSetCanId(uint8_t canId) {
     // all seven CANID bits: SIDH bits 3-0 = CANID 6-3, SIDL bits 7-5 = CANID 2-0

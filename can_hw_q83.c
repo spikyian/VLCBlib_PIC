@@ -280,9 +280,11 @@ void canHwTxRelease(uint8_t canId) {
     CAN_HW_SYNC();
 }
 
+#ifdef CAN_ADDITIONAL_CANID_CHECKS
 Boolean canHwTxHeld(void) {
     return (!C1FIFOSTA2Lbits.TFERFFIF && !C1FIFOCON2Hbits.TXREQ) ? TRUE : FALSE;
 }
+#endif
 
 void canHwSetCanId(uint8_t canId) {
     // FIFO1 has one slot, so the reply is always at its base address. It stays

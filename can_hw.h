@@ -102,7 +102,8 @@ void canHwTxData(const Message * m, uint8_t canId, Boolean hold);
 /** Stamp every held frame with canId and start transmitting them. */
 void canHwTxRelease(uint8_t canId);
 
-/** @return TRUE if frames are queued and not yet started (held). */
+/** @return TRUE if frames are queued and not yet started (held).
+ *  Used only with CAN_ADDITIONAL_CANID_CHECKS. */
 Boolean canHwTxHeld(void);
 
 /** The RTR and RTR reply frames carry this CANID from now on. */
