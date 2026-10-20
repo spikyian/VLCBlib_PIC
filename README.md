@@ -61,3 +61,26 @@ An VLCB module using this library needs to consider the following application re
   
 # Full documentation
 The full user documentation (look in the \*.h files) and developer documentation (look in the \*.c files) can be viewed by opening doc/html/index.html in your browser.
+
+## Versions and releases
+The library's version is in `vlcb_version.h` as macros, so it costs nothing
+unless a module uses it. Releases are numbered vMAJOR.MINOR.PATCH:
+- MAJOR: a change that needs modules to be changed,
+- MINOR: new features that existing modules do not need to change for,
+- PATCH: fixes only.
+
+A pre-release, such as a release candidate for testers, adds -rcN (or -alphaN, -betaN), e.g. v1.0.0-rc1.
+
+A module that needs a particular release says so in module.h:
+
+    #define VLCBLIB_REQUIRED    VLCBLIB_VERSION_NUMBER(1,0,0)
+
+and then will not build against an older library.
+
+To make a release, do not edit `vlcb_version.h` by hand. On GitHub go to
+Actions > Release > Run workflow, choose the branch, enter the version and
+press Run workflow. It sets the version in `vlcb_version.h` and `Doxyfile`,
+moves the Unreleased part of `CHANGELOG.md` under the version, commits and tags
+the commit, and creates the GitHub release with those notes. (If the branch is
+protected, allow GitHub Actions to push to it.)
+

@@ -36,8 +36,17 @@
 
 #include <xc.h>
 #include "module.h"
+#include "vlcb_version.h"
 #include "vlcbdefs_enums.h"
 #include "nvm.h"
+
+/*
+ * VLCBLIB_REQUIRED (module.h, optional): the oldest library release the module
+ * works with, e.g. #define VLCBLIB_REQUIRED VLCBLIB_VERSION_NUMBER(1,2,0)
+ */
+#if defined(VLCBLIB_REQUIRED) && (VLCBLIB_VERSION < (VLCBLIB_REQUIRED))
+#error "This module needs a newer VLCBlib_PIC: see VLCBLIB_REQUIRED in module.h and VLCBLIB_VERSION_STRING in vlcb_version.h"
+#endif
 
 /**
  * VLCB_CLRWDT(): clear the watchdog during the library's longer bounded waits.
