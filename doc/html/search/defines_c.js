@@ -18,5 +18,6 @@ var searchData=
   ['prm_5fcksum4_15',['PRM_CKSUM4',['../boot_8c.html#a4c270237a8aff6430e17f048b26f03f5',1,'boot.c']]],
   ['prm_5fcksum6_16',['PRM_CKSUM6',['../boot_8c.html#a3e483116b4789b4222bc201dc85c7548',1,'boot.c']]],
   ['producer_5fdiag_5fcount_17',['PRODUCER_DIAG_COUNT',['../event__producer_8h.html#abb74d8a536cb7842d9fee60952bce93d',1,'event_producer.h']]],
-  ['producer_5fdiag_5fnumproduced_18',['PRODUCER_DIAG_NUMPRODUCED',['../event__producer_8h.html#add89a476dd74b4bd4d8405e78ad9fd4c',1,'event_producer.h']]]
+  ['producer_5fdiag_5fnumproduced_18',['PRODUCER_DIAG_NUMPRODUCED',['../event__producer_8h.html#add89a476dd74b4bd4d8405e78ad9fd4c',1,'event_producer.h']]],
+  ['progmem_5fsize_19',['PROGMEM_SIZE',['../nvm_8c.html#a417273bfdc3786b851ab3c7b4aa09f15',1,'nvm.c']]]
 ];

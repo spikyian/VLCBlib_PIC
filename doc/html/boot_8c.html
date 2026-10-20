@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: C:/Users/ianwh/github/VLCBlib_PIC/boot.c File Reference</title>
+<title>VLCB library: boot.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -27,9 +27,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">My Project
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for PIC</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -95,7 +95,7 @@ $(function(){initNavTree('boot_8c.html',''); initResizable(); });
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
 <a href="#var-members">Variables</a>  </div>
-  <div class="headertitle"><div class="title">C:/Users/ianwh/github/VLCBlib_PIC/boot.c File Reference</div></div>
+  <div class="headertitle"><div class="title">boot.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -118,6 +118,9 @@ Macros</h2></td></tr>
 <tr class="separator:adfbe4243816f079d2f0a97ea29c2db6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c270237a8aff6430e17f048b26f03f5" id="r_a4c270237a8aff6430e17f048b26f03f5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c270237a8aff6430e17f048b26f03f5">PRM_CKSUM4</a>&#160;&#160;&#160;<a class="el" href="#adfbe4243816f079d2f0a97ea29c2db6a">PRM_CKSUM3</a></td></tr>
 <tr class="separator:a4c270237a8aff6430e17f048b26f03f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8de4f6b6d5ffe3a8e5b293929d85058e" id="r_a8de4f6b6d5ffe3a8e5b293929d85058e"><td class="memItemLeft" align="right" valign="top"><a id="a8de4f6b6d5ffe3a8e5b293929d85058e" name="a8de4f6b6d5ffe3a8e5b293929d85058e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PRM_CKSUM5</b>&#160;&#160;&#160;<a class="el" href="#a4c270237a8aff6430e17f048b26f03f5">PRM_CKSUM4</a>+P18F26K80</td></tr>
+<tr class="separator:a8de4f6b6d5ffe3a8e5b293929d85058e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e483116b4789b4222bc201dc85c7548" id="r_a3e483116b4789b4222bc201dc85c7548"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3e483116b4789b4222bc201dc85c7548">PRM_CKSUM6</a>&#160;&#160;&#160;PRM_CKSUM5</td></tr>
 <tr class="separator:a3e483116b4789b4222bc201dc85c7548"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -125,8 +128,6 @@ Macros</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:a6a89fc238ad82ace7c465216a3e5575d" id="r_a6a89fc238ad82ace7c465216a3e5575d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_service.html">Service</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6a89fc238ad82ace7c465216a3e5575d">bootService</a></td></tr>
 <tr class="separator:a6a89fc238ad82ace7c465216a3e5575d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2be0627bea289e008d468b07b24bda9" id="r_ac2be0627bea289e008d468b07b24bda9"><td class="memItemLeft" align="right" valign="top">Error unrecognised CPU&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac2be0627bea289e008d468b07b24bda9">type</a></td></tr>
-<tr class="separator:ac2be0627bea289e008d468b07b24bda9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of the VLCB BOOT service, supports the FCU and CBUS (PIC based) bootloading protocol. </p>
@@ -244,8 +245,8 @@ Variables</h2></td></tr>
 <div class="line">    bootProcessMessage, </div>
 <div class="line">    NULL,               </div>
 <div class="line"> </div>
-<div class="line"> </div>
-<div class="line"> </div>
+<div class="line">    NULL,               </div>
+<div class="line">    NULL,               </div>
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line"> </div>
@@ -255,20 +256,6 @@ Variables</h2></td></tr>
 <div class="line"> </div>
 <div class="line">}</div>
 </div><!-- fragment --><p>The service descriptor for the BOOT service. The application must include this descriptor within the application's const <a class="el" href="struct_service.html">Service</a> * const services[] array and include the necessary settings within module.h in order to make use of the PIC bootloading service. </p>
-
-</div>
-</div>
-<a id="ac2be0627bea289e008d468b07b24bda9" name="ac2be0627bea289e008d468b07b24bda9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2be0627bea289e008d468b07b24bda9">&#9670;&#160;</a></span>type</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Error unrecognised CPU type</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
 </div>
 </div>

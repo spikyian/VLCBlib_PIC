@@ -10,7 +10,6 @@ var event__teach__large_8c =
     [ "EVENTTABLE_ROW_WIDTH", "event__teach__large_8c.html#a06ff2b325b362e13f9e570d530089563", null ],
     [ "NO_INDEX", "event__teach__large_8c.html#ab6cb9b05ea204a7905d0ae0143950a03", null ],
     [ "addEvent", "event__teach__large_8c.html#ab0c26a766be6cd890ea7e04b18e54cd5", null ],
-    [ "checkLen", "event__teach__large_8c.html#a9bf07c27105f7c54f030818acb9ad9d1", null ],
     [ "checkRemoveTableEntry", "event__teach__large_8c.html#a2ccf826767b71505fb4b5ffb2b4ff5af", null ],
     [ "findEvent", "event__teach__large_8c.html#aef79de314cb4fdf348009d498ad5cbc6", null ],
     [ "getEN", "event__teach__large_8c.html#aaa1bcfeab543550146f0b9d15b4a1222", null ],

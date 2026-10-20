@@ -21,6 +21,7 @@ var vlcb_8h =
     [ "PAR_LOAD4", "vlcb_8h.html#ac4741010037ed25bea06561ca1442852", null ],
     [ "SERVICE_ID_ALL", "vlcb_8h.html#a8628c68948100f63909f5e070a052f05", null ],
     [ "SERVICE_ID_NOT_FOUND", "vlcb_8h.html#a9a82ed58543deac142c125962348c5e7", null ],
+    [ "VLCB_CLRWDT", "vlcb_8h.html#a60ae7e918d1609bca22f92d1b35bd83f", null ],
     [ "Boolean", "vlcb_8h.html#ad665bd4a0bff725979ec9dfbda92f5f5", null ],
     [ "Message", "vlcb_8h.html#a82fffef6ac8d8a796ab35b7d6a7a0dcb", null ],
     [ "MessageReceived", "vlcb_8h.html#ac86cce95c833e0b474dfd99d0afa0399", null ],

@@ -1,9 +1,6 @@
 var vlcb_8c =
 [
-    [ "_XTAL_FREQ", "vlcb_8c.html#a024148e99a7143db044a48216664d03d", null ],
     [ "PB_TIMEOUT", "vlcb_8c.html#a5cfeac0cd9156ae075b9a21b23966263", null ],
-    [ "VLCB_LOOPS_PER_POLL", "vlcb_8c.html#a313ad6ce2c3206139ea1a87c88ccdfc3", null ],
-    [ "VLCB_MESSAGES_PER_POLL", "vlcb_8c.html#ad838f5da2ba24b589c30741967f30915", null ],
     [ "APP_factoryReset", "vlcb_8c.html#aaefa2e9d7f924327aa066ed75aca0319", null ],
     [ "APP_postProcessMessage", "vlcb_8c.html#a664c7f5e506993130616dcf9604601d9", null ],
     [ "APP_preProcessMessage", "vlcb_8c.html#a7b80b521ea40399b62af546746ecd769", null ],

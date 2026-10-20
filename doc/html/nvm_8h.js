@@ -1,6 +1,10 @@
 var nvm_8h =
 [
     [ "_NVM_H_", "nvm_8h.html#af414c577fd0f54d1a739a49086531e50", null ],
+    [ "eeprom_address_t", "nvm_8h.html#a7a61772455acf72b30881bb0c1807d8b", null ],
+    [ "eeprom_data_t", "nvm_8h.html#adc00a74d8315a1dbf3f4e970dee14eea", null ],
+    [ "flash_address_t", "nvm_8h.html#a7a9b2de58e1a7feb8e66319b4ff4898b", null ],
+    [ "flash_data_t", "nvm_8h.html#a55e42207a64de404bca02864514e5f6d", null ],
     [ "ValidTime", "nvm_8h.html#a4e97ec56ed0b3a64f449dfc278703063", null ],
     [ "NVMtype", "nvm_8h.html#a4edc8ede417a683709eaaf0ed26f441e", [
       [ "EEPROM_NVM_TYPE", "nvm_8h.html#a4edc8ede417a683709eaaf0ed26f441eaa272fbcc6d8c8cf7d60d682eb6bab24c", null ],

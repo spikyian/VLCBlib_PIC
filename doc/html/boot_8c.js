@@ -5,6 +5,5 @@ var boot_8c =
     [ "PRM_CKSUM3", "boot_8c.html#adfbe4243816f079d2f0a97ea29c2db6a", null ],
     [ "PRM_CKSUM4", "boot_8c.html#a4c270237a8aff6430e17f048b26f03f5", null ],
     [ "PRM_CKSUM6", "boot_8c.html#a3e483116b4789b4222bc201dc85c7548", null ],
-    [ "bootService", "boot_8c.html#a6a89fc238ad82ace7c465216a3e5575d", null ],
-    [ "type", "boot_8c.html#ac2be0627bea289e008d468b07b24bda9", null ]
+    [ "bootService", "boot_8c.html#a6a89fc238ad82ace7c465216a3e5575d", null ]
 ];

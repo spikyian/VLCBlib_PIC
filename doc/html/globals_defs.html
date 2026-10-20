@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: Globals</title>
+<title>VLCB library: Globals</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -27,9 +27,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">My Project
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for PIC</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -92,7 +92,7 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 </div>
 
 <div class="contents">
-<div class="textblock">Here is a list of all macros with links to the files they belong to:</div>
+<div class="textblock">Here is a list of all documented macros with links to the documentation:</div>
 
 <h3><a id="index__5F" name="index__5F"></a>- _ -</h3><ul>
 <li>_ARDUINO_H_&#160;:&#160;<a class="el" href="arduino_8h.html#ae30690e9b43dab7b541ab34c3734f88e">arduino.h</a></li>
@@ -105,11 +105,7 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 <li>_NV_H_&#160;:&#160;<a class="el" href="nv_8h.html#ac863c2ed790907c8aa5a22a377543245">nv.h</a></li>
 <li>_NVM_H_&#160;:&#160;<a class="el" href="nvm_8h.html#af414c577fd0f54d1a739a49086531e50">nvm.h</a></li>
 <li>_QUEUE_H_&#160;:&#160;<a class="el" href="message_queue_8h.html#a1794c45f3c6fb77a12c97a5c910779de">messageQueue.h</a></li>
-<li>_STATUS_DISPLAY_H_&#160;:&#160;<a class="el" href="status_display_8h.html#a3784f4e207ba7ed657d341112d85ea72">statusDisplay.h</a></li>
 <li>_STATUSLEDS_H_&#160;:&#160;<a class="el" href="status_leds_8h.html#a3d7c68d2da2e5df947f79d980067fb6c">statusLeds.h</a></li>
-<li>_TICKTIME_H_&#160;:&#160;<a class="el" href="ticktime_8h.html#a6965b2dfbf12496eceb76f96f6033628">ticktime.h</a></li>
-<li>_TIMEDRESPONSE_H&#160;:&#160;<a class="el" href="timed_response_8h.html#a460aad6b95ef739409be41ac68c3c443">timedResponse.h</a></li>
-<li>_XTAL_FREQ&#160;:&#160;<a class="el" href="vlcb_8c.html#a024148e99a7143db044a48216664d03d">vlcb.c</a></li>
 </ul>
 
 
@@ -122,6 +118,7 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 <h3><a id="index_b" name="index_b"></a>- b -</h3><ul>
 <li>BLOCK&#160;:&#160;<a class="el" href="nvm_8c.html#ab8b4481f7d97c22165b8895a205e934e">nvm.c</a></li>
 <li>BUFFER&#160;:&#160;<a class="el" href="async_e_e_p_r_o_m_8h.html#a05ec23ea9e68706e210bd8f965beee10">asyncEEPROM.h</a></li>
+<li>BUFFER_RAM_START_ADDRESS&#160;:&#160;<a class="el" href="nvm_8c.html#a9def0a7d8c17786461ea2eee89f5a51c">nvm.c</a></li>
 </ul>
 
 
@@ -150,33 +147,25 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 <li>CONSUMER_DIAG_COUNT&#160;:&#160;<a class="el" href="event__consumer__action_8h.html#a97b8701908b74cd414ebee0f8e425ccf">event_consumer_action.h</a>, <a class="el" href="event__consumer__action_state_8h.html#a97b8701908b74cd414ebee0f8e425ccf">event_consumer_actionState.h</a>, <a class="el" href="event__consumer__simple_8h.html#a97b8701908b74cd414ebee0f8e425ccf">event_consumer_simple.h</a></li>
 <li>CONSUMER_DIAG_NUMACKED&#160;:&#160;<a class="el" href="event__consumer__simple_8h.html#a95e475b3b46417c446ef7fd31081a895">event_consumer_simple.h</a></li>
 <li>CONSUMER_DIAG_NUMCONSUMED&#160;:&#160;<a class="el" href="event__consumer__action_8h.html#ae3f7c7a95b07b482db77fcbbcce35f79">event_consumer_action.h</a>, <a class="el" href="event__consumer__action_state_8h.html#ae3f7c7a95b07b482db77fcbbcce35f79">event_consumer_actionState.h</a>, <a class="el" href="event__consumer__simple_8h.html#ae3f7c7a95b07b482db77fcbbcce35f79">event_consumer_simple.h</a></li>
-<li>CPUF18F&#160;:&#160;<a class="el" href="devincs_8h.html#a7c5f2948561711b7989aff48772aca89">devincs.h</a></li>
 </ul>
 
 
 <h3><a id="index_e" name="index_e"></a>- e -</h3><ul>
-<li>EE1024&#160;:&#160;<a class="el" href="devincs_8h.html#a823ab76df619a65ce3d9002a5f09dd94">devincs.h</a></li>
+<li>EEPROM_SIZE&#160;:&#160;<a class="el" href="nvm_8c.html#ae3ef7bba113f663df6996f286b632a3f">nvm.c</a></li>
+<li>EEPROM_START_ADDRESS&#160;:&#160;<a class="el" href="nvm_8c.html#a96932befbe81496318633eab6e623adb">nvm.c</a></li>
 <li>ENUM_ARRAY_SIZE&#160;:&#160;<a class="el" href="can_8h.html#ad6fabdad5b08944e7ec8ccb98a8febcf">can.h</a></li>
 <li>ENUMERATION_HOLDOFF&#160;:&#160;<a class="el" href="can_8h.html#aabc5c9ad540bf9ebad39f0db93725929">can.h</a></li>
 <li>ENUMERATION_TIMEOUT&#160;:&#160;<a class="el" href="can_8h.html#a11f43a49a8f7e14cef3ddc69baf10153">can.h</a></li>
 <li>EVENT_CLR_MASK&#160;:&#160;<a class="el" href="event__teach_8h.html#a23612a14a15126da904d4b84fa851e82">event_teach.h</a>, <a class="el" href="vlcb_8h.html#a23612a14a15126da904d4b84fa851e82">vlcb.h</a></li>
-<li>EVENT_FLAG_DEFAULT&#160;:&#160;<a class="el" href="event__teach__indexed_8c.html#ac00f67bbcb55361a500b2943a31743ba">event_teach_indexed.c</a>, <a class="el" href="event__teach__simple_8c.html#ac00f67bbcb55361a500b2943a31743ba">event_teach_simple.c</a></li>
 <li>EVENT_ON_MASK&#160;:&#160;<a class="el" href="event__teach_8h.html#aae21a70035c121d75ba6e48ad6dd2e0e">event_teach.h</a>, <a class="el" href="vlcb_8h.html#aae21a70035c121d75ba6e48ad6dd2e0e">vlcb.h</a></li>
-<li>EVENT_ROW_ADDRESS&#160;:&#160;<a class="el" href="event__teach__simple_8c.html#a280a28dba513a3b5b894292365472dbc">event_teach_simple.c</a></li>
 <li>EVENT_SET_MASK&#160;:&#160;<a class="el" href="event__teach_8h.html#a5599ca1c7dbab5832ab986e73eddc913">event_teach.h</a>, <a class="el" href="vlcb_8h.html#a5599ca1c7dbab5832ab986e73eddc913">vlcb.h</a></li>
 <li>EVENT_SHORT_MASK&#160;:&#160;<a class="el" href="event__teach_8h.html#a1fc4b29ff184ee7bc9bd9e81fb16e68a">event_teach.h</a>, <a class="el" href="vlcb_8h.html#a1fc4b29ff184ee7bc9bd9e81fb16e68a">vlcb.h</a></li>
-<li>EVENT_TABLE_WIDTH&#160;:&#160;<a class="el" href="event__teach__indexed_8c.html#ace6efb6651c8d5a0917fb04322fa012e">event_teach_indexed.c</a></li>
 <li>EVENTTABLE_OFFSET_EN&#160;:&#160;<a class="el" href="event__teach__large_8c.html#a18783131dda4394667f41cb813ad21f7">event_teach_large.c</a>, <a class="el" href="event__teach__large_8h.html#a18783131dda4394667f41cb813ad21f7">event_teach_large.h</a></li>
-<li>EVENTTABLE_OFFSET_ENH&#160;:&#160;<a class="el" href="event__teach__indexed_8c.html#ab3d278e4d8b6d864ff24262b27f79183">event_teach_indexed.c</a>, <a class="el" href="event__teach__simple_8c.html#ab3d278e4d8b6d864ff24262b27f79183">event_teach_simple.c</a></li>
-<li>EVENTTABLE_OFFSET_ENL&#160;:&#160;<a class="el" href="event__teach__indexed_8c.html#ad3428ccfbebc6d99876505ed6e39e969">event_teach_indexed.c</a>, <a class="el" href="event__teach__simple_8c.html#ad3428ccfbebc6d99876505ed6e39e969">event_teach_simple.c</a></li>
-<li>EVENTTABLE_OFFSET_EVS&#160;:&#160;<a class="el" href="event__teach__indexed_8c.html#a7260c350fcb83f00a88e51a4315e27da">event_teach_indexed.c</a>, <a class="el" href="event__teach__large_8c.html#a7260c350fcb83f00a88e51a4315e27da">event_teach_large.c</a>, <a class="el" href="event__teach__large_8h.html#a7260c350fcb83f00a88e51a4315e27da">event_teach_large.h</a>, <a class="el" href="event__teach__simple_8c.html#a7260c350fcb83f00a88e51a4315e27da">event_teach_simple.c</a></li>
-<li>EVENTTABLE_OFFSET_FLAGS&#160;:&#160;<a class="el" href="event__teach__indexed_8c.html#a1cdd20e3ef223f7ae11e791f60a5a835">event_teach_indexed.c</a>, <a class="el" href="event__teach__large_8c.html#a1cdd20e3ef223f7ae11e791f60a5a835">event_teach_large.c</a>, <a class="el" href="event__teach__large_8h.html#a1cdd20e3ef223f7ae11e791f60a5a835">event_teach_large.h</a>, <a class="el" href="event__teach__simple_8c.html#a1cdd20e3ef223f7ae11e791f60a5a835">event_teach_simple.c</a></li>
+<li>EVENTTABLE_OFFSET_EVS&#160;:&#160;<a class="el" href="event__teach__large_8c.html#a7260c350fcb83f00a88e51a4315e27da">event_teach_large.c</a>, <a class="el" href="event__teach__large_8h.html#a7260c350fcb83f00a88e51a4315e27da">event_teach_large.h</a></li>
+<li>EVENTTABLE_OFFSET_FLAGS&#160;:&#160;<a class="el" href="event__teach__large_8c.html#a1cdd20e3ef223f7ae11e791f60a5a835">event_teach_large.c</a>, <a class="el" href="event__teach__large_8h.html#a1cdd20e3ef223f7ae11e791f60a5a835">event_teach_large.h</a></li>
 <li>EVENTTABLE_OFFSET_NEXT&#160;:&#160;<a class="el" href="event__teach__large_8c.html#ad4a56380432dd046cc09e41b62b9689c">event_teach_large.c</a>, <a class="el" href="event__teach__large_8h.html#ad4a56380432dd046cc09e41b62b9689c">event_teach_large.h</a></li>
 <li>EVENTTABLE_OFFSET_NN&#160;:&#160;<a class="el" href="event__teach__large_8c.html#a3e855a60c5952255d6b2fccdb7b45528">event_teach_large.c</a>, <a class="el" href="event__teach__large_8h.html#a3e855a60c5952255d6b2fccdb7b45528">event_teach_large.h</a></li>
-<li>EVENTTABLE_OFFSET_NNH&#160;:&#160;<a class="el" href="event__teach__indexed_8c.html#a1aef11f775591f3d7137d4f70cf1510a">event_teach_indexed.c</a>, <a class="el" href="event__teach__simple_8c.html#a1aef11f775591f3d7137d4f70cf1510a">event_teach_simple.c</a></li>
-<li>EVENTTABLE_OFFSET_NNL&#160;:&#160;<a class="el" href="event__teach__indexed_8c.html#adb82275ab002ea7c59a80791f4d50503">event_teach_indexed.c</a>, <a class="el" href="event__teach__simple_8c.html#adb82275ab002ea7c59a80791f4d50503">event_teach_simple.c</a></li>
 <li>EVENTTABLE_ROW_WIDTH&#160;:&#160;<a class="el" href="event__teach__large_8c.html#a06ff2b325b362e13f9e570d530089563">event_teach_large.c</a>, <a class="el" href="event__teach__large_8h.html#a06ff2b325b362e13f9e570d530089563">event_teach_large.h</a></li>
-<li>EVENTTABLE_WIDTH&#160;:&#160;<a class="el" href="event__teach__indexed_8c.html#ad057d68b1805992292d5bc71e21f938f">event_teach_indexed.c</a>, <a class="el" href="event__teach__simple_8c.html#ad057d68b1805992292d5bc71e21f938f">event_teach_simple.c</a></li>
 </ul>
 
 
@@ -187,11 +176,13 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 <li>FLAG_MODE_FCUCOMPAT&#160;:&#160;<a class="el" href="vlcb_8h.html#a6488931f4d55fa14db0027f92a1d2bf9">vlcb.h</a></li>
 <li>FLAG_MODE_HEARTBEAT&#160;:&#160;<a class="el" href="vlcb_8h.html#a25c7c3b061c39ecfddd3e724dedffdbc">vlcb.h</a></li>
 <li>FLAG_MODE_LEARN&#160;:&#160;<a class="el" href="vlcb_8h.html#a200fefa4b58ef24b6ef79283f1dc3d54">vlcb.h</a></li>
+<li>FLASH_PAGE_SIZE&#160;:&#160;<a class="el" href="nvm_8c.html#a4cc14e2c99ae7f8e5a8e371d03c8532c">nvm.c</a></li>
 <li>FORTY_MILI_SECOND&#160;:&#160;<a class="el" href="ticktime_8h.html#a5caee098612767a4220cd2f0c5d34283">ticktime.h</a></li>
 </ul>
 
 
 <h3><a id="index_g" name="index_g"></a>- g -</h3><ul>
+<li>geti&#160;:&#160;<a class="el" href="hardware_8h.html#a5db3050b08b6cce080a339d212a0c9bd">hardware.h</a></li>
 <li>GREEN_LED&#160;:&#160;<a class="el" href="status_leds2_8c.html#a01649d652fa50957c6ef3c32b1238038">statusLeds2.c</a></li>
 </ul>
 
@@ -220,7 +211,6 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 <li>MNS_DIAGNOSTICS_UPTIMEL&#160;:&#160;<a class="el" href="mns_8h.html#a5a25d4cad4cd9217654172ac7ba0aa56">mns.h</a></li>
 <li>MNS_VERSION&#160;:&#160;<a class="el" href="mns_8c.html#afca0dd15dbf75ba1f070213af700bf8a">mns.c</a></li>
 <li>MODE_DEFAULT&#160;:&#160;<a class="el" href="vlcb_8h.html#aa2ac0f45d353352c766262721c40e3b8">vlcb.h</a></li>
-<li>MODE_PRESETUP&#160;:&#160;<a class="el" href="mns_8c.html#a7078eda05fc1f49c664dbf4a54a48395">mns.c</a></li>
 </ul>
 
 
@@ -238,14 +228,6 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 <li>NV_DIAG_COUNT&#160;:&#160;<a class="el" href="nv_8h.html#a2756d67fad396cc64bb3e7b9cca20477">nv.h</a></li>
 <li>NV_DIAGNOSTICS_NUM_ACCESS&#160;:&#160;<a class="el" href="nv_8h.html#a9ba127a005e57ca381fa2efc1ef27c93">nv.h</a></li>
 <li>NV_DIAGNOSTICS_NUM_FAIL&#160;:&#160;<a class="el" href="nv_8h.html#a0caee9ec25e8b8405f7fa2f7fff44ec7">nv.h</a></li>
-<li>NVMCMD_ERASEPAGE&#160;:&#160;<a class="el" href="nvm_8c.html#a37b6cf1b75e0bcb6d3baae7b04525909">nvm.c</a></li>
-<li>NVMCMD_NOP&#160;:&#160;<a class="el" href="nvm_8c.html#ad29fab7c9593aeccca62b1f5af919c83">nvm.c</a></li>
-<li>NVMCMD_READ&#160;:&#160;<a class="el" href="nvm_8c.html#a5192c5aa585bcfcb8fca69c105ab74d3">nvm.c</a></li>
-<li>NVMCMD_READ_POSTINC&#160;:&#160;<a class="el" href="nvm_8c.html#a9f7e1737dd2d1e68a2b42f3c31c220c4">nvm.c</a></li>
-<li>NVMCMD_READPAGE&#160;:&#160;<a class="el" href="nvm_8c.html#ac21881f9bf0f6c7f52e952e5bf206050">nvm.c</a></li>
-<li>NVMCMD_WRITE&#160;:&#160;<a class="el" href="nvm_8c.html#a6842bd21662aff3dad9c6f2243eca598">nvm.c</a></li>
-<li>NVMCMD_WRITE_POSTINC&#160;:&#160;<a class="el" href="nvm_8c.html#a17a0ea290c8e88670a2947a9c8ddeda7">nvm.c</a></li>
-<li>NVMCMD_WRITEPAGE&#160;:&#160;<a class="el" href="nvm_8c.html#a563ac478b3b1ecd286e7f1236c8c7b15">nvm.c</a></li>
 </ul>
 
 
@@ -278,11 +260,7 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 <li>PRM_CKSUM6&#160;:&#160;<a class="el" href="boot_8c.html#a3e483116b4789b4222bc201dc85c7548">boot.c</a></li>
 <li>PRODUCER_DIAG_COUNT&#160;:&#160;<a class="el" href="event__producer_8h.html#abb74d8a536cb7842d9fee60952bce93d">event_producer.h</a></li>
 <li>PRODUCER_DIAG_NUMPRODUCED&#160;:&#160;<a class="el" href="event__producer_8h.html#add89a476dd74b4bd4d8405e78ad9fd4c">event_producer.h</a></li>
-</ul>
-
-
-<h3><a id="index_q" name="index_q"></a>- q -</h3><ul>
-<li>QUEUE&#160;:&#160;<a class="el" href="async_e_e_p_r_o_m_8h.html#aafc57d44738df70f43ac87ed969eed47">asyncEEPROM.h</a></li>
+<li>PROGMEM_SIZE&#160;:&#160;<a class="el" href="nvm_8c.html#a417273bfdc3786b851ab3c7b4aa09f15">nvm.c</a></li>
 </ul>
 
 
@@ -298,10 +276,7 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 <li>TEN_MILI_SECOND&#160;:&#160;<a class="el" href="ticktime_8h.html#a0f81465e923ee193bfcd549a71af0245">ticktime.h</a></li>
 <li>TEN_SECOND&#160;:&#160;<a class="el" href="ticktime_8h.html#a3f6fef41ef52e036596790ef501223a9">ticktime.h</a></li>
 <li>tickGetDiff&#160;:&#160;<a class="el" href="ticktime_8h.html#a2bca2573b95044ac71ba65dac2d09ae9">ticktime.h</a></li>
-<li>tickNowGet&#160;:&#160;<a class="el" href="ticktime_8h.html#ac528b6abee80dae0c1743af51d19acd2">ticktime.h</a></li>
-<li>tickRefresh&#160;:&#160;<a class="el" href="ticktime_8h.html#a819013cd791558025c4e082f8209a20b">ticktime.h</a></li>
 <li>tickTimeSince&#160;:&#160;<a class="el" href="ticktime_8h.html#ae08491b4116abab16186791e7299b3d3">ticktime.h</a></li>
-<li>tickTimeSinceNow&#160;:&#160;<a class="el" href="ticktime_8h.html#a3c420d02ec81ae5e2d6271bf495e1e97">ticktime.h</a></li>
 <li>TIMED_RESPONSE_NERD&#160;:&#160;<a class="el" href="timed_response_8h.html#a180f1d9fab871221f22bad58ce80615a">timedResponse.h</a></li>
 <li>TIMED_RESPONSE_NONE&#160;:&#160;<a class="el" href="timed_response_8h.html#a36befa0f8ca9990acd08bf2cc8f85387">timedResponse.h</a></li>
 <li>TIMED_RESPONSE_NVRD&#160;:&#160;<a class="el" href="timed_response_8h.html#af269c160cbd659f6777768f9ebd39779">timedResponse.h</a></li>
@@ -318,10 +293,7 @@ $(function(){initNavTree('globals_defs.html',''); initResizable(); });
 
 
 <h3><a id="index_v" name="index_v"></a>- v -</h3><ul>
-<li>VDD_GUARD_ACTIVE&#160;:&#160;<a class="el" href="nvm_8c.html#a8b53adaa0a7d17957a664ca3584e242e">nvm.c</a></li>
-<li>VDD_GUARD_OK&#160;:&#160;<a class="el" href="nvm_8c.html#a1e8a054c53164591263f81df9f194dca">nvm.c</a></li>
-<li>VLCB_LOOPS_PER_POLL&#160;:&#160;<a class="el" href="vlcb_8c.html#a313ad6ce2c3206139ea1a87c88ccdfc3">vlcb.c</a></li>
-<li>VLCB_MESSAGES_PER_POLL&#160;:&#160;<a class="el" href="vlcb_8c.html#ad838f5da2ba24b589c30741967f30915">vlcb.c</a></li>
+<li>VLCB_CLRWDT&#160;:&#160;<a class="el" href="vlcb_8h.html#a60ae7e918d1609bca22f92d1b35bd83f">vlcb.h</a></li>
 </ul>
 
 

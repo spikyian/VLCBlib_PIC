@@ -24,19 +24,8 @@
 */
 var NAVTREE =
 [
-  [ "My Project", "index.html", [
+  [ "VLCB library", "index.html", [
     [ "VLCB", "index.html", "index" ],
-    [ "VLCBlib_PIC", "md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html", [
-      [ "The module application", "md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html#autotoc_md25", [
-        [ "Inputs", "md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html#autotoc_md26", null ],
-        [ "Outputs", "md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html#autotoc_md27", null ],
-        [ "On power on", "md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html#autotoc_md28", null ],
-        [ "Regular poll", "md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html#autotoc_md29", null ]
-      ] ],
-      [ "A module designer needs to:", "md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html#autotoc_md30", null ],
-      [ "Other information", "md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html#autotoc_md31", null ],
-      [ "Full documentation", "md__c_1_2_users_2ianwh_2github_2_v_l_c_blib___p_i_c_2_r_e_a_d_m_e.html#autotoc_md32", null ]
-    ] ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
@@ -63,9 +52,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "action_queue_8c.html",
-"event__teach__large_8c.html#a3e855a60c5952255d6b2fccdb7b45528",
-"nvm_8h_source.html",
-"vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544"
+"event__teach__large_8c.html#a275d5d58705f018ba8ea8a05477ba716",
+"status_leds1_8c.html#a57751f3ccc9df6b53064e8a8546fd665",
+"vlcb_8h.html#ad665bd4a0bff725979ec9dfbda92f5f5"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

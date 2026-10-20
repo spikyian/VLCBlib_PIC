@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: C:/Users/ianwh/github/VLCBlib_PIC/event_producer.h Source File</title>
+<title>VLCB library: event_producer.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -27,9 +27,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">My Project
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for PIC</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -97,7 +97,7 @@ $(function(){initNavTree('event__producer_8h_source.html',''); initResizable(); 
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">C:/Users/ianwh/github/VLCBlib_PIC/event_producer.h</div></div>
+  <div class="headertitle"><div class="title">event_producer.h</div></div>
 </div><!--header-->
 <div class="contents">
 <a href="event__producer_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef _EVENT_PRODUCER_H_</span></div>
@@ -157,9 +157,9 @@ $(function(){initNavTree('event__producer_8h_source.html',''); initResizable(); 
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="keyword">extern</span> <a class="code hl_enumeration" href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a> <a class="code hl_function" href="event__producer_8h.html#af83038e138b25b0d5090ba4ec02c76b0">sendProducedEvent</a>(Happening h, <a class="code hl_enumeration" href="vlcb_8h.html#ab951f47efbc96e7b5586e5a45b4aaa93">EventState</a> state);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="event__producer_8h.html#ad269d38207acac331e28845f16429440">sendSimpleProducedEvent</a>(uint8_t tableIndex, <a class="code hl_enumeration" href="vlcb_8h.html#ab951f47efbc96e7b5586e5a45b4aaa93">EventState</a> state);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="keyword">extern</span> <span class="keywordtype">void</span> sendSimpleProducedEvent(uint8_t tableIndex, <a class="code hl_enumeration" href="vlcb_8h.html#ab951f47efbc96e7b5586e5a45b4aaa93">EventState</a> state);</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="event__producer_8h.html#aaac50e46656d7d8605d14b508fffe792">deleteHappeningRange</a>(Happening happening, uint8_t number);</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="event__producer_8h.html#a69d821c1bc736f6eb62a465284c974f8">   98</a></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="event__producer_8h.html#a69d821c1bc736f6eb62a465284c974f8">incrementProducerCounter</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="keyword">extern</span> <span class="keywordtype">void</span> incrementProducerCounter(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">//AREQ stuff</span></div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="event__producer_8h.html#ac65e80dd8b8853aa2dd02b560d1731e6">  107</a></span><span class="keyword">extern</span> <a class="code hl_enumeration" href="vlcb_8h.html#ab951f47efbc96e7b5586e5a45b4aaa93">EventState</a> <a class="code hl_function" href="event__producer_8h.html#ac65e80dd8b8853aa2dd02b560d1731e6">APP_GetEventState</a>(Happening h);   <span class="comment">// for the action/happenings model</span></div>
@@ -168,18 +168,16 @@ $(function(){initNavTree('event__producer_8h_source.html',''); initResizable(); 
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="event__producer_8h.html#a6baf69e979c7346938f43191e580cea9">  122</a></span><span class="keyword">extern</span> uint8_t <a class="code hl_function" href="event__producer_8h.html#a6baf69e979c7346938f43191e580cea9">APP_isProducedEvent</a>(uint8_t tableIndex);   <span class="comment">// for the simple model</span></div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aevent__producer_8h_html_a359105dd00b667367d55aacda58e0ee8"><div class="ttname"><a href="event__producer_8h.html#a359105dd00b667367d55aacda58e0ee8">APP_GetEventIndexState</a></div><div class="ttdeci">EventState APP_GetEventIndexState(uint8_t tableIndex)</div></div>
-<div class="ttc" id="aevent__producer_8h_html_a69d821c1bc736f6eb62a465284c974f8"><div class="ttname"><a href="event__producer_8h.html#a69d821c1bc736f6eb62a465284c974f8">incrementProducerCounter</a></div><div class="ttdeci">void incrementProducerCounter(void)</div></div>
 <div class="ttc" id="aevent__producer_8h_html_a6baf69e979c7346938f43191e580cea9"><div class="ttname"><a href="event__producer_8h.html#a6baf69e979c7346938f43191e580cea9">APP_isProducedEvent</a></div><div class="ttdeci">uint8_t APP_isProducedEvent(uint8_t tableIndex)</div></div>
 <div class="ttc" id="aevent__producer_8h_html_a6d039ebee6188cb69fc81dedf126c334"><div class="ttname"><a href="event__producer_8h.html#a6d039ebee6188cb69fc81dedf126c334">eventProducerService</a></div><div class="ttdeci">const Service eventProducerService</div><div class="ttdef"><b>Definition</b> event_producer_happening.c:84</div></div>
 <div class="ttc" id="aevent__producer_8h_html_aaac50e46656d7d8605d14b508fffe792"><div class="ttname"><a href="event__producer_8h.html#aaac50e46656d7d8605d14b508fffe792">deleteHappeningRange</a></div><div class="ttdeci">void deleteHappeningRange(Happening happening, uint8_t number)</div><div class="ttdef"><b>Definition</b> event_producer_happening.c:287</div></div>
 <div class="ttc" id="aevent__producer_8h_html_ac65e80dd8b8853aa2dd02b560d1731e6"><div class="ttname"><a href="event__producer_8h.html#ac65e80dd8b8853aa2dd02b560d1731e6">APP_GetEventState</a></div><div class="ttdeci">EventState APP_GetEventState(Happening h)</div></div>
-<div class="ttc" id="aevent__producer_8h_html_ad269d38207acac331e28845f16429440"><div class="ttname"><a href="event__producer_8h.html#ad269d38207acac331e28845f16429440">sendSimpleProducedEvent</a></div><div class="ttdeci">void sendSimpleProducedEvent(uint8_t tableIndex, EventState state)</div><div class="ttdef"><b>Definition</b> event_producer_simple.c:191</div></div>
 <div class="ttc" id="aevent__producer_8h_html_af83038e138b25b0d5090ba4ec02c76b0"><div class="ttname"><a href="event__producer_8h.html#af83038e138b25b0d5090ba4ec02c76b0">sendProducedEvent</a></div><div class="ttdeci">Boolean sendProducedEvent(Happening h, EventState state)</div><div class="ttdef"><b>Definition</b> event_producer_happening.c:217</div></div>
 <div class="ttc" id="aevent__teach_8h_html"><div class="ttname"><a href="event__teach_8h.html">event_teach.h</a></div><div class="ttdoc">Implementation of the VLCB Event Teach service.</div></div>
-<div class="ttc" id="astruct_service_html"><div class="ttname"><a href="struct_service.html">Service</a></div><div class="ttdef"><b>Definition</b> vlcb.h:299</div></div>
-<div class="ttc" id="aunion_word_html"><div class="ttname"><a href="union_word.html">Word</a></div><div class="ttdef"><b>Definition</b> vlcb.h:119</div></div>
-<div class="ttc" id="avlcb_8h_html_ab951f47efbc96e7b5586e5a45b4aaa93"><div class="ttname"><a href="vlcb_8h.html#ab951f47efbc96e7b5586e5a45b4aaa93">EventState</a></div><div class="ttdeci">EventState</div><div class="ttdef"><b>Definition</b> vlcb.h:131</div></div>
-<div class="ttc" id="avlcb_8h_html_ae7d38601dfbd73adbe5c1b3ec34e0e13"><div class="ttname"><a href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a></div><div class="ttdeci">Boolean</div><div class="ttdef"><b>Definition</b> vlcb.h:92</div></div>
+<div class="ttc" id="astruct_service_html"><div class="ttname"><a href="struct_service.html">Service</a></div><div class="ttdef"><b>Definition</b> vlcb.h:320</div></div>
+<div class="ttc" id="aunion_word_html"><div class="ttname"><a href="union_word.html">Word</a></div><div class="ttdef"><b>Definition</b> vlcb.h:140</div></div>
+<div class="ttc" id="avlcb_8h_html_ab951f47efbc96e7b5586e5a45b4aaa93"><div class="ttname"><a href="vlcb_8h.html#ab951f47efbc96e7b5586e5a45b4aaa93">EventState</a></div><div class="ttdeci">EventState</div><div class="ttdef"><b>Definition</b> vlcb.h:152</div></div>
+<div class="ttc" id="avlcb_8h_html_ae7d38601dfbd73adbe5c1b3ec34e0e13"><div class="ttname"><a href="vlcb_8h.html#ae7d38601dfbd73adbe5c1b3ec34e0e13">Boolean</a></div><div class="ttdeci">Boolean</div><div class="ttdef"><b>Definition</b> vlcb.h:113</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

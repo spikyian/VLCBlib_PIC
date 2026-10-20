@@ -1,17 +1,7 @@
 var event__teach__indexed_8c =
 [
-    [ "EVENT_FLAG_DEFAULT", "event__teach__indexed_8c.html#ac00f67bbcb55361a500b2943a31743ba", null ],
-    [ "EVENT_TABLE_WIDTH", "event__teach__indexed_8c.html#ace6efb6651c8d5a0917fb04322fa012e", null ],
-    [ "EVENTTABLE_OFFSET_ENH", "event__teach__indexed_8c.html#ab3d278e4d8b6d864ff24262b27f79183", null ],
-    [ "EVENTTABLE_OFFSET_ENL", "event__teach__indexed_8c.html#ad3428ccfbebc6d99876505ed6e39e969", null ],
-    [ "EVENTTABLE_OFFSET_EVS", "event__teach__indexed_8c.html#a7260c350fcb83f00a88e51a4315e27da", null ],
-    [ "EVENTTABLE_OFFSET_FLAGS", "event__teach__indexed_8c.html#a1cdd20e3ef223f7ae11e791f60a5a835", null ],
-    [ "EVENTTABLE_OFFSET_NNH", "event__teach__indexed_8c.html#a1aef11f775591f3d7137d4f70cf1510a", null ],
-    [ "EVENTTABLE_OFFSET_NNL", "event__teach__indexed_8c.html#adb82275ab002ea7c59a80791f4d50503", null ],
-    [ "EVENTTABLE_WIDTH", "event__teach__indexed_8c.html#ad057d68b1805992292d5bc71e21f938f", null ],
     [ "addIndexedEvent", "event__teach__indexed_8c.html#a6c36d431fdfc148298a12bfbef902e33", null ],
     [ "APP_addIndexedEvent", "event__teach__indexed_8c.html#a7e6d1c800e8b25ff2c82a0db90726ada", null ],
-    [ "checkLen", "event__teach__indexed_8c.html#a9bf07c27105f7c54f030818acb9ad9d1", null ],
     [ "clearAllEvents", "event__teach__indexed_8c.html#a4393a17e7de4cabd8d428d71445ca455", null ],
     [ "findEvent", "event__teach__indexed_8c.html#aef79de314cb4fdf348009d498ad5cbc6", null ],
     [ "getEN", "event__teach__indexed_8c.html#aaa1bcfeab543550146f0b9d15b4a1222", null ],

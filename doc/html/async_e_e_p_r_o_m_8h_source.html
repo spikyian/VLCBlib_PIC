@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: C:/Users/ianwh/github/VLCBlib_PIC/asyncEEPROM.h Source File</title>
+<title>VLCB library: asyncEEPROM.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -27,9 +27,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">My Project
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for PIC</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -97,7 +97,7 @@ $(function(){initNavTree('async_e_e_p_r_o_m_8h_source.html',''); initResizable()
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">C:/Users/ianwh/github/VLCBlib_PIC/asyncEEPROM.h</div></div>
+  <div class="headertitle"><div class="title">asyncEEPROM.h</div></div>
 </div><!--header-->
 <div class="contents">
 <a href="async_e_e_p_r_o_m_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef _ASYNCEEPROM_H_</span></div>
@@ -136,7 +136,7 @@ $(function(){initNavTree('async_e_e_p_r_o_m_8h_source.html',''); initResizable()
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#include &quot;<a class="code" href="vlcb_8h.html">vlcb.h</a>&quot;</span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="async_e_e_p_r_o_m_8h.html#a05ec23ea9e68706e210bd8f965beee10">   67</a></span><span class="preprocessor">#define BUFFER  1</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="async_e_e_p_r_o_m_8h.html#aafc57d44738df70f43ac87ed969eed47">   68</a></span><span class="preprocessor">#define QUEUE   2</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#define QUEUE   2</span></div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#ifdef ASYNC_EEPROM</span></div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#if (ASYNC_EEPROM != BUFFER) &amp;&amp; (ASYNC_EEPROM != QUEUE)</span></div>
@@ -148,19 +148,33 @@ $(function(){initNavTree('async_e_e_p_r_o_m_8h_source.html',''); initResizable()
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="async_e_e_p_r_o_m_8h.html#aabb48351e8bd26b13ab9f9c187cbc685">   85</a></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="async_e_e_p_r_o_m_8h.html#aabb48351e8bd26b13ab9f9c187cbc685">pollAsyncEEPROM</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="async_e_e_p_r_o_m_8h.html#a416e65a08e8edacc1711e15368ce5066">   93</a></span><span class="keyword">extern</span> uint8_t <a class="code hl_function" href="async_e_e_p_r_o_m_8h.html#a416e65a08e8edacc1711e15368ce5066">readAsyncEEPROM</a>(eeprom_address_t address);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="async_e_e_p_r_o_m_8h.html#a416e65a08e8edacc1711e15368ce5066">   93</a></span><span class="keyword">extern</span> uint8_t <a class="code hl_function" href="async_e_e_p_r_o_m_8h.html#a416e65a08e8edacc1711e15368ce5066">readAsyncEEPROM</a>(<a class="code hl_typedef" href="nvm_8h.html#a7a61772455acf72b30881bb0c1807d8b">eeprom_address_t</a> address);</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="async_e_e_p_r_o_m_8h.html#abb18eb0dff7b03fc415cab0decef8b23">  102</a></span><span class="keyword">extern</span> uint8_t <a class="code hl_function" href="async_e_e_p_r_o_m_8h.html#abb18eb0dff7b03fc415cab0decef8b23">writeAsyncEEPROM</a>(eeprom_address_t address, uint8_t data);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="async_e_e_p_r_o_m_8h.html#abb18eb0dff7b03fc415cab0decef8b23">  102</a></span><span class="keyword">extern</span> uint8_t <a class="code hl_function" href="async_e_e_p_r_o_m_8h.html#abb18eb0dff7b03fc415cab0decef8b23">writeAsyncEEPROM</a>(<a class="code hl_typedef" href="nvm_8h.html#a7a61772455acf72b30881bb0c1807d8b">eeprom_address_t</a> address, uint8_t data);</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="async_e_e_p_r_o_m_8h.html#a2805e41f245e7c72b0a4686a9d92a529">  107</a></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code hl_function" href="async_e_e_p_r_o_m_8h.html#a2805e41f245e7c72b0a4686a9d92a529">flushAsyncEEPROM</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="preprocessor">#if defined(ASYNC_EEPROM) &amp;&amp; (ASYNC_EEPROM == QUEUE)</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment">/* The QUEUE writer&#39;s status, for application diagnostics (defined in</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment"> * asyncEEPROM_queue.c). Declarations only: no code or RAM for an application</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment"> * that does not use them. */</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="keyword">extern</span> uint8_t nvmAsyncPending(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="keyword">extern</span> uint16_t nvmAsyncWrites;     </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="keyword">extern</span> uint16_t nvmAsyncFailures;   </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="keyword">extern</span> uint16_t nvmAsyncRefused;    </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="keyword">extern</span> uint16_t nvmAsyncFallbacks;  </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="keyword">extern</span> uint8_t  nvmAsyncHighWater;  </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
 <div class="ttc" id="aasync_e_e_p_r_o_m_8h_html_a2805e41f245e7c72b0a4686a9d92a529"><div class="ttname"><a href="async_e_e_p_r_o_m_8h.html#a2805e41f245e7c72b0a4686a9d92a529">flushAsyncEEPROM</a></div><div class="ttdeci">void flushAsyncEEPROM(void)</div></div>
 <div class="ttc" id="aasync_e_e_p_r_o_m_8h_html_a416e65a08e8edacc1711e15368ce5066"><div class="ttname"><a href="async_e_e_p_r_o_m_8h.html#a416e65a08e8edacc1711e15368ce5066">readAsyncEEPROM</a></div><div class="ttdeci">uint8_t readAsyncEEPROM(eeprom_address_t address)</div></div>
 <div class="ttc" id="aasync_e_e_p_r_o_m_8h_html_aabb48351e8bd26b13ab9f9c187cbc685"><div class="ttname"><a href="async_e_e_p_r_o_m_8h.html#aabb48351e8bd26b13ab9f9c187cbc685">pollAsyncEEPROM</a></div><div class="ttdeci">void pollAsyncEEPROM(void)</div></div>
 <div class="ttc" id="aasync_e_e_p_r_o_m_8h_html_abb18eb0dff7b03fc415cab0decef8b23"><div class="ttname"><a href="async_e_e_p_r_o_m_8h.html#abb18eb0dff7b03fc415cab0decef8b23">writeAsyncEEPROM</a></div><div class="ttdeci">uint8_t writeAsyncEEPROM(eeprom_address_t address, uint8_t data)</div></div>
 <div class="ttc" id="aasync_e_e_p_r_o_m_8h_html_afc2349d48ceb5514efc77b10506ae4dc"><div class="ttname"><a href="async_e_e_p_r_o_m_8h.html#afc2349d48ceb5514efc77b10506ae4dc">initAsyncEEPROM</a></div><div class="ttdeci">void initAsyncEEPROM(void)</div></div>
+<div class="ttc" id="anvm_8h_html_a7a61772455acf72b30881bb0c1807d8b"><div class="ttname"><a href="nvm_8h.html#a7a61772455acf72b30881bb0c1807d8b">eeprom_address_t</a></div><div class="ttdeci">uint24_t eeprom_address_t</div><div class="ttdoc">Data type for the EEPROM address.</div><div class="ttdef"><b>Definition</b> nvm.h:102</div></div>
 <div class="ttc" id="avlcb_8h_html"><div class="ttname"><a href="vlcb_8h.html">vlcb.h</a></div><div class="ttdoc">Baseline functionality required by VLCB and entry points into the application.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

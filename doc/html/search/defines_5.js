@@ -6,5 +6,6 @@ var searchData=
   ['flag_5fmode_5ffcucompat_3',['FLAG_MODE_FCUCOMPAT',['../vlcb_8h.html#a6488931f4d55fa14db0027f92a1d2bf9',1,'vlcb.h']]],
   ['flag_5fmode_5fheartbeat_4',['FLAG_MODE_HEARTBEAT',['../vlcb_8h.html#a25c7c3b061c39ecfddd3e724dedffdbc',1,'vlcb.h']]],
   ['flag_5fmode_5flearn_5',['FLAG_MODE_LEARN',['../vlcb_8h.html#a200fefa4b58ef24b6ef79283f1dc3d54',1,'vlcb.h']]],
-  ['forty_5fmili_5fsecond_6',['FORTY_MILI_SECOND',['../ticktime_8h.html#a5caee098612767a4220cd2f0c5d34283',1,'ticktime.h']]]
+  ['flash_5fpage_5fsize_6',['FLASH_PAGE_SIZE',['../nvm_8c.html#a4cc14e2c99ae7f8e5a8e371d03c8532c',1,'FLASH_PAGE_SIZE:&#160;nvm.c'],['../nvm_8c.html#a4cc14e2c99ae7f8e5a8e371d03c8532c',1,'FLASH_PAGE_SIZE:&#160;nvm.c']]],
+  ['forty_5fmili_5fsecond_7',['FORTY_MILI_SECOND',['../ticktime_8h.html#a5caee098612767a4220cd2f0c5d34283',1,'ticktime.h']]]
 ];

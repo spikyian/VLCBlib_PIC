@@ -980,14 +980,14 @@ static void poll(void) {
     // Update the LEDs and handle flashing
     leds_poll();
     
-#if defined(VLCB_RX_PER_POLL) && (VLCB_RX_PER_POLL > 1)
-    /* KeithB b45, VLCB_RX_PER_POLL (module.h, opt-in, default off): take up to
-     * VLCB_RX_PER_POLL received frames per pass instead of one, stopping as soon as
+#if defined(VLCB_MESSAGES_PER_POLL) && (VLCB_MESSAGES_PER_POLL > 1)
+    /* KeithB b45, VLCB_MESSAGES_PER_POLL (module.h, opt-in, default off): take up to
+     * VLCB_MESSAGES_PER_POLL received frames per pass instead of one, stopping as soon as
      * none is waiting. One frame per pass caps a module's receive rate at its loop
      * rate (CANCMD: ~765 frames/s, bench 25 Sep 2026, receive FIFO overflowing under a
      * ~945 frames/s flood). Each frame is handled exactly as below. Modules that do
      * not define it compile the original block, unchanged. */
-    for (i = 0; i < (uint8_t)VLCB_RX_PER_POLL; i++) {
+    for (i = 0; i < (uint8_t)VLCB_MESSAGES_PER_POLL; i++) {
         if (!pollReceiveOne()) break;
     }
 #else

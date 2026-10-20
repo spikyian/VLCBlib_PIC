@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: C:/Users/ianwh/github/VLCBlib_PIC/asyncEEPROM_buffer.c File Reference</title>
+<title>VLCB library: asyncEEPROM_buffer.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -27,9 +27,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">My Project
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for PIC</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -92,7 +92,7 @@ $(function(){initNavTree('async_e_e_p_r_o_m__buffer_8c.html',''); initResizable(
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">C:/Users/ianwh/github/VLCBlib_PIC/asyncEEPROM_buffer.c File Reference</div></div>
+  <div class="headertitle"><div class="title">asyncEEPROM_buffer.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -101,7 +101,9 @@ $(function(){initNavTree('async_e_e_p_r_o_m__buffer_8c.html',''); initResizable(
 <div class="textblock"><code>#include &lt;xc.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="nvm_8h_source.html">nvm.h</a>&quot;</code><br />
 <code>#include &quot;module.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="async_e_e_p_r_o_m_8h_source.html">asyncEEPROM.h</a>&quot;</code><br />
 <code>#include &quot;vlcbdefs_enums.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="vlcb_8h_source.html">vlcb.h</a>&quot;</code><br />
 </div><a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Buffered asynchronous EEPROM writer. </p>
 <p>Maintains a RAM copy of EEPROM so that changes can be stored immediately and the application does not need to wait. The writes to EEPROM are handled asynchronously from <a class="el" href="async_e_e_p_r_o_m_8h.html#aabb48351e8bd26b13ab9f9c187cbc685">pollAsyncEEPROM()</a>, one byte per poll: the byte is written, and on the next poll it is read back and its flag is cleared only if the read matches (a failed write is tried again). Reads of buffered addresses are served from the RAM buffer. With VLCB_VDD_WRITE_GUARD no write is started while Vdd is below the HLVD level; the bytes stay flagged and are written when the rail is back.</p>

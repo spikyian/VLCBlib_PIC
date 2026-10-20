@@ -9,6 +9,5 @@ var searchData=
   ['mns_5fdiagnostics_5fuptimeh_6',['MNS_DIAGNOSTICS_UPTIMEH',['../mns_8h.html#af23d00b578b6331b864c76ca71926609',1,'mns.h']]],
   ['mns_5fdiagnostics_5fuptimel_7',['MNS_DIAGNOSTICS_UPTIMEL',['../mns_8h.html#a5a25d4cad4cd9217654172ac7ba0aa56',1,'mns.h']]],
   ['mns_5fversion_8',['MNS_VERSION',['../mns_8c.html#afca0dd15dbf75ba1f070213af700bf8a',1,'mns.c']]],
-  ['mode_5fdefault_9',['MODE_DEFAULT',['../vlcb_8h.html#aa2ac0f45d353352c766262721c40e3b8',1,'vlcb.h']]],
-  ['mode_5fpresetup_10',['MODE_PRESETUP',['../mns_8c.html#a7078eda05fc1f49c664dbf4a54a48395',1,'mns.c']]]
+  ['mode_5fdefault_9',['MODE_DEFAULT',['../vlcb_8h.html#aa2ac0f45d353352c766262721c40e3b8',1,'vlcb.h']]]
 ];

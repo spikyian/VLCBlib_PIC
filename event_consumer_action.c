@@ -268,7 +268,7 @@ void deleteActionRange(Action action, uint8_t number) {
         }
     }
     flushFlashImage();
-#ifdef HASH_TABLE
+#ifdef EVENT_HASH_TABLE
     rebuildHashtable();                
 #endif
 }

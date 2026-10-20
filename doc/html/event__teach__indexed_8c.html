@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: C:/Users/ianwh/github/VLCBlib_PIC/event_teach_indexed.c File Reference</title>
+<title>VLCB library: event_teach_indexed.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -27,9 +27,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">My Project
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for PIC</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -96,7 +96,7 @@ $(function(){initNavTree('event__teach__indexed_8c.html',''); initResizable(); }
 <a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
-  <div class="headertitle"><div class="title">C:/Users/ianwh/github/VLCBlib_PIC/event_teach_indexed.c File Reference</div></div>
+  <div class="headertitle"><div class="title">event_teach_indexed.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -111,34 +111,44 @@ $(function(){initNavTree('event__teach__indexed_8c.html',''); initResizable(); }
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ad057d68b1805992292d5bc71e21f938f" id="r_ad057d68b1805992292d5bc71e21f938f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad057d68b1805992292d5bc71e21f938f">EVENTTABLE_WIDTH</a>&#160;&#160;&#160;(sizeof(<a class="el" href="struct_event.html">Event</a>) + 1 + PARAM_NUM_EV_EVENT)</td></tr>
+<tr class="memitem:ad057d68b1805992292d5bc71e21f938f" id="r_ad057d68b1805992292d5bc71e21f938f"><td class="memItemLeft" align="right" valign="top"><a id="ad057d68b1805992292d5bc71e21f938f" name="ad057d68b1805992292d5bc71e21f938f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>EVENTTABLE_WIDTH</b>&#160;&#160;&#160;(sizeof(<a class="el" href="struct_event.html">Event</a>) + 1 + PARAM_NUM_EV_EVENT)</td></tr>
 <tr class="separator:ad057d68b1805992292d5bc71e21f938f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1aef11f775591f3d7137d4f70cf1510a" id="r_a1aef11f775591f3d7137d4f70cf1510a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1aef11f775591f3d7137d4f70cf1510a">EVENTTABLE_OFFSET_NNH</a>&#160;&#160;&#160;0</td></tr>
+<tr class="memitem:a1aef11f775591f3d7137d4f70cf1510a" id="r_a1aef11f775591f3d7137d4f70cf1510a"><td class="memItemLeft" align="right" valign="top"><a id="a1aef11f775591f3d7137d4f70cf1510a" name="a1aef11f775591f3d7137d4f70cf1510a"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>EVENTTABLE_OFFSET_NNH</b>&#160;&#160;&#160;0</td></tr>
 <tr class="separator:a1aef11f775591f3d7137d4f70cf1510a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb82275ab002ea7c59a80791f4d50503" id="r_adb82275ab002ea7c59a80791f4d50503"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adb82275ab002ea7c59a80791f4d50503">EVENTTABLE_OFFSET_NNL</a>&#160;&#160;&#160;1</td></tr>
+<tr class="memitem:adb82275ab002ea7c59a80791f4d50503" id="r_adb82275ab002ea7c59a80791f4d50503"><td class="memItemLeft" align="right" valign="top"><a id="adb82275ab002ea7c59a80791f4d50503" name="adb82275ab002ea7c59a80791f4d50503"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>EVENTTABLE_OFFSET_NNL</b>&#160;&#160;&#160;1</td></tr>
 <tr class="separator:adb82275ab002ea7c59a80791f4d50503"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3d278e4d8b6d864ff24262b27f79183" id="r_ab3d278e4d8b6d864ff24262b27f79183"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab3d278e4d8b6d864ff24262b27f79183">EVENTTABLE_OFFSET_ENH</a>&#160;&#160;&#160;2</td></tr>
+<tr class="memitem:ab3d278e4d8b6d864ff24262b27f79183" id="r_ab3d278e4d8b6d864ff24262b27f79183"><td class="memItemLeft" align="right" valign="top"><a id="ab3d278e4d8b6d864ff24262b27f79183" name="ab3d278e4d8b6d864ff24262b27f79183"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>EVENTTABLE_OFFSET_ENH</b>&#160;&#160;&#160;2</td></tr>
 <tr class="separator:ab3d278e4d8b6d864ff24262b27f79183"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3428ccfbebc6d99876505ed6e39e969" id="r_ad3428ccfbebc6d99876505ed6e39e969"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3428ccfbebc6d99876505ed6e39e969">EVENTTABLE_OFFSET_ENL</a>&#160;&#160;&#160;3</td></tr>
+<tr class="memitem:ad3428ccfbebc6d99876505ed6e39e969" id="r_ad3428ccfbebc6d99876505ed6e39e969"><td class="memItemLeft" align="right" valign="top"><a id="ad3428ccfbebc6d99876505ed6e39e969" name="ad3428ccfbebc6d99876505ed6e39e969"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>EVENTTABLE_OFFSET_ENL</b>&#160;&#160;&#160;3</td></tr>
 <tr class="separator:ad3428ccfbebc6d99876505ed6e39e969"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cdd20e3ef223f7ae11e791f60a5a835" id="r_a1cdd20e3ef223f7ae11e791f60a5a835"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1cdd20e3ef223f7ae11e791f60a5a835">EVENTTABLE_OFFSET_FLAGS</a>&#160;&#160;&#160;4</td></tr>
+<tr class="memitem:a1cdd20e3ef223f7ae11e791f60a5a835" id="r_a1cdd20e3ef223f7ae11e791f60a5a835"><td class="memItemLeft" align="right" valign="top"><a id="a1cdd20e3ef223f7ae11e791f60a5a835" name="a1cdd20e3ef223f7ae11e791f60a5a835"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>EVENTTABLE_OFFSET_FLAGS</b>&#160;&#160;&#160;4</td></tr>
 <tr class="separator:a1cdd20e3ef223f7ae11e791f60a5a835"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7260c350fcb83f00a88e51a4315e27da" id="r_a7260c350fcb83f00a88e51a4315e27da"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7260c350fcb83f00a88e51a4315e27da">EVENTTABLE_OFFSET_EVS</a>&#160;&#160;&#160;5</td></tr>
+<tr class="memitem:a7260c350fcb83f00a88e51a4315e27da" id="r_a7260c350fcb83f00a88e51a4315e27da"><td class="memItemLeft" align="right" valign="top"><a id="a7260c350fcb83f00a88e51a4315e27da" name="a7260c350fcb83f00a88e51a4315e27da"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>EVENTTABLE_OFFSET_EVS</b>&#160;&#160;&#160;5</td></tr>
 <tr class="separator:a7260c350fcb83f00a88e51a4315e27da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac00f67bbcb55361a500b2943a31743ba" id="r_ac00f67bbcb55361a500b2943a31743ba"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac00f67bbcb55361a500b2943a31743ba">EVENT_FLAG_DEFAULT</a>&#160;&#160;&#160;1</td></tr>
+<tr class="memitem:ac00f67bbcb55361a500b2943a31743ba" id="r_ac00f67bbcb55361a500b2943a31743ba"><td class="memItemLeft" align="right" valign="top"><a id="ac00f67bbcb55361a500b2943a31743ba" name="ac00f67bbcb55361a500b2943a31743ba"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>EVENT_FLAG_DEFAULT</b>&#160;&#160;&#160;1</td></tr>
 <tr class="separator:ac00f67bbcb55361a500b2943a31743ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace6efb6651c8d5a0917fb04322fa012e" id="r_ace6efb6651c8d5a0917fb04322fa012e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ace6efb6651c8d5a0917fb04322fa012e">EVENT_TABLE_WIDTH</a>&#160;&#160;&#160;PARAM_NUM_EV_EVENT</td></tr>
+<tr class="memitem:ace6efb6651c8d5a0917fb04322fa012e" id="r_ace6efb6651c8d5a0917fb04322fa012e"><td class="memItemLeft" align="right" valign="top"><a id="ace6efb6651c8d5a0917fb04322fa012e" name="ace6efb6651c8d5a0917fb04322fa012e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>EVENT_TABLE_WIDTH</b>&#160;&#160;&#160;PARAM_NUM_EV_EVENT</td></tr>
 <tr class="separator:ace6efb6651c8d5a0917fb04322fa012e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a4393a17e7de4cabd8d428d71445ca455" id="r_a4393a17e7de4cabd8d428d71445ca455"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4393a17e7de4cabd8d428d71445ca455">clearAllEvents</a> (void)</td></tr>
 <tr class="separator:a4393a17e7de4cabd8d428d71445ca455"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bf07c27105f7c54f030818acb9ad9d1" id="r_a9bf07c27105f7c54f030818acb9ad9d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544">Processed</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9bf07c27105f7c54f030818acb9ad9d1">checkLen</a> (<a class="el" href="struct_message.html">Message</a> *m, uint8_t needed, uint8_t service)</td></tr>
+<tr class="memitem:a9bf07c27105f7c54f030818acb9ad9d1" id="r_a9bf07c27105f7c54f030818acb9ad9d1"><td class="memItemLeft" align="right" valign="top"><a id="a9bf07c27105f7c54f030818acb9ad9d1" name="a9bf07c27105f7c54f030818acb9ad9d1"></a>
+<a class="el" href="vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544">Processed</a>&#160;</td><td class="memItemRight" valign="bottom"><b>checkLen</b> (<a class="el" href="struct_message.html">Message</a> *m, uint8_t needed, uint8_t service)</td></tr>
 <tr class="separator:a9bf07c27105f7c54f030818acb9ad9d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7afd0605b0c9b64d0aec16c7e8ac562c" id="r_a7afd0605b0c9b64d0aec16c7e8ac562c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="timed_response_8h.html#a34f3661bc164f76318500bd6a0fafd48">TimedResponseResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7afd0605b0c9b64d0aec16c7e8ac562c">nerdCallback</a> (uint8_t <a class="el" href="boot_8c.html#ac2be0627bea289e008d468b07b24bda9">type</a>, uint8_t serviceIndex, uint8_t step)</td></tr>
+<tr class="memitem:a7afd0605b0c9b64d0aec16c7e8ac562c" id="r_a7afd0605b0c9b64d0aec16c7e8ac562c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="timed_response_8h.html#a34f3661bc164f76318500bd6a0fafd48">TimedResponseResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7afd0605b0c9b64d0aec16c7e8ac562c">nerdCallback</a> (uint8_t type, uint8_t serviceIndex, uint8_t step)</td></tr>
 <tr class="separator:a7afd0605b0c9b64d0aec16c7e8ac562c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a119c32fa845221e45656dcbc493732c5" id="r_a119c32fa845221e45656dcbc493732c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="timed_response_8h.html#a34f3661bc164f76318500bd6a0fafd48">TimedResponseResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a119c32fa845221e45656dcbc493732c5">reqevCallback</a> (uint8_t <a class="el" href="boot_8c.html#ac2be0627bea289e008d468b07b24bda9">type</a>, uint8_t serviceIndex, uint8_t step)</td></tr>
+<tr class="memitem:a119c32fa845221e45656dcbc493732c5" id="r_a119c32fa845221e45656dcbc493732c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="timed_response_8h.html#a34f3661bc164f76318500bd6a0fafd48">TimedResponseResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a119c32fa845221e45656dcbc493732c5">reqevCallback</a> (uint8_t type, uint8_t serviceIndex, uint8_t step)</td></tr>
 <tr class="separator:a119c32fa845221e45656dcbc493732c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ecc0cd4c43c7100796706b8b415d9fc" id="r_a0ecc0cd4c43c7100796706b8b415d9fc"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ecc0cd4c43c7100796706b8b415d9fc">getNN</a> (uint8_t tableIndex)</td></tr>
 <tr class="separator:a0ecc0cd4c43c7100796706b8b415d9fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -188,134 +198,7 @@ Variables</h2></td></tr>
 <dl class="section warning"><dt>Warning</dt><dd>BEWARE must set NUM_EVENTS to a maximum of 255! If set to 256 then the for (uint8_t i=0; i&lt;NUM_EVENTS; i++) loops will never end as they use an uint8_t instead of int for space/performance reasons.</dd>
 <dd>
 BEWARE Concurrency: The functions which use the eventtable and hash/lookup must not be used whilst there is a chance of the functions which modify the eventtable of RAM based hash/lookup tables being called. These functions should therefore either be called from the same thread or disable interrupts. </dd></dl>
-</div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ac00f67bbcb55361a500b2943a31743ba" name="ac00f67bbcb55361a500b2943a31743ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac00f67bbcb55361a500b2943a31743ba">&#9670;&#160;</a></span>EVENT_FLAG_DEFAULT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define EVENT_FLAG_DEFAULT&#160;&#160;&#160;1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ace6efb6651c8d5a0917fb04322fa012e" name="ace6efb6651c8d5a0917fb04322fa012e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace6efb6651c8d5a0917fb04322fa012e">&#9670;&#160;</a></span>EVENT_TABLE_WIDTH</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define EVENT_TABLE_WIDTH&#160;&#160;&#160;PARAM_NUM_EV_EVENT</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ab3d278e4d8b6d864ff24262b27f79183" name="ab3d278e4d8b6d864ff24262b27f79183"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab3d278e4d8b6d864ff24262b27f79183">&#9670;&#160;</a></span>EVENTTABLE_OFFSET_ENH</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define EVENTTABLE_OFFSET_ENH&#160;&#160;&#160;2</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ad3428ccfbebc6d99876505ed6e39e969" name="ad3428ccfbebc6d99876505ed6e39e969"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3428ccfbebc6d99876505ed6e39e969">&#9670;&#160;</a></span>EVENTTABLE_OFFSET_ENL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define EVENTTABLE_OFFSET_ENL&#160;&#160;&#160;3</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a7260c350fcb83f00a88e51a4315e27da" name="a7260c350fcb83f00a88e51a4315e27da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7260c350fcb83f00a88e51a4315e27da">&#9670;&#160;</a></span>EVENTTABLE_OFFSET_EVS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define EVENTTABLE_OFFSET_EVS&#160;&#160;&#160;5</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a1cdd20e3ef223f7ae11e791f60a5a835" name="a1cdd20e3ef223f7ae11e791f60a5a835"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1cdd20e3ef223f7ae11e791f60a5a835">&#9670;&#160;</a></span>EVENTTABLE_OFFSET_FLAGS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define EVENTTABLE_OFFSET_FLAGS&#160;&#160;&#160;4</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a1aef11f775591f3d7137d4f70cf1510a" name="a1aef11f775591f3d7137d4f70cf1510a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1aef11f775591f3d7137d4f70cf1510a">&#9670;&#160;</a></span>EVENTTABLE_OFFSET_NNH</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define EVENTTABLE_OFFSET_NNH&#160;&#160;&#160;0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="adb82275ab002ea7c59a80791f4d50503" name="adb82275ab002ea7c59a80791f4d50503"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb82275ab002ea7c59a80791f4d50503">&#9670;&#160;</a></span>EVENTTABLE_OFFSET_NNL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define EVENTTABLE_OFFSET_NNL&#160;&#160;&#160;1</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ad057d68b1805992292d5bc71e21f938f" name="ad057d68b1805992292d5bc71e21f938f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad057d68b1805992292d5bc71e21f938f">&#9670;&#160;</a></span>EVENTTABLE_WIDTH</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define EVENTTABLE_WIDTH&#160;&#160;&#160;(sizeof(<a class="el" href="struct_event.html">Event</a>) + 1 + PARAM_NUM_EV_EVENT)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a id="a6c36d431fdfc148298a12bfbef902e33" name="a6c36d431fdfc148298a12bfbef902e33"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6c36d431fdfc148298a12bfbef902e33">&#9670;&#160;</a></span>addIndexedEvent()</h2>
 
@@ -449,32 +332,6 @@ BEWARE Concurrency: The functions which use the eventtable and hash/lookup must 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>error number </dd></dl>
-
-</div>
-</div>
-<a id="a9bf07c27105f7c54f030818acb9ad9d1" name="a9bf07c27105f7c54f030818acb9ad9d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9bf07c27105f7c54f030818acb9ad9d1">&#9670;&#160;</a></span>checkLen()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="vlcb_8h.html#a60587b24892ebc76ee16bbfdb4d52544">Processed</a> checkLen </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="struct_message.html">Message</a> *</td>          <td class="paramname"><span class="paramname"><em>m</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>needed</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>service</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
 </div>
 </div>
@@ -836,8 +693,8 @@ BEWARE Concurrency: The functions which use the eventtable and hash/lookup must 
 <div class="line">    teachProcessMessage,</div>
 <div class="line">    NULL,               </div>
 <div class="line"> </div>
-<div class="line"> </div>
-<div class="line"> </div>
+<div class="line">    NULL,               </div>
+<div class="line">    NULL,               </div>
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line"> </div>

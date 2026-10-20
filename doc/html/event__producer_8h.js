@@ -8,8 +8,6 @@ var event__producer_8h =
     [ "APP_GetEventState", "event__producer_8h.html#ac65e80dd8b8853aa2dd02b560d1731e6", null ],
     [ "APP_isProducedEvent", "event__producer_8h.html#a6baf69e979c7346938f43191e580cea9", null ],
     [ "deleteHappeningRange", "event__producer_8h.html#aaac50e46656d7d8605d14b508fffe792", null ],
-    [ "incrementProducerCounter", "event__producer_8h.html#a69d821c1bc736f6eb62a465284c974f8", null ],
     [ "sendProducedEvent", "event__producer_8h.html#af83038e138b25b0d5090ba4ec02c76b0", null ],
-    [ "sendSimpleProducedEvent", "event__producer_8h.html#ad269d38207acac331e28845f16429440", null ],
     [ "eventProducerService", "event__producer_8h.html#a6d039ebee6188cb69fc81dedf126c334", null ]
 ];

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>My Project: C:/Users/ianwh/github/VLCBlib_PIC/hardware.h File Reference</title>
+<title>VLCB library: hardware.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -27,9 +27,9 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">My Project
+   <div id="projectname">VLCB library<span id="projectnumber">&#160;1</span>
    </div>
-   <div id="projectbrief">VLCB library for PIC</div>
+   <div id="projectbrief">VLCB C library for PIC</div>
   </td>
  </tr>
  </tbody>
@@ -92,7 +92,9 @@ $(function(){initNavTree('hardware_8h.html',''); initResizable(); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">C:/Users/ianwh/github/VLCBlib_PIC/hardware.h File Reference</div></div>
+  <div class="summary">
+<a href="#define-members">Macros</a>  </div>
+  <div class="headertitle"><div class="title">hardware.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -100,9 +102,66 @@ $(function(){initNavTree('hardware_8h.html',''); initResizable(); });
 <a href="#details">More...</a></p>
 
 <p><a href="hardware_8h_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a5db3050b08b6cce080a339d212a0c9bd" id="r_a5db3050b08b6cce080a339d212a0c9bd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5db3050b08b6cce080a339d212a0c9bd">geti</a>()&#160;&#160;&#160;(INTCONbits.GIEH)</td></tr>
+<tr class="separator:a5db3050b08b6cce080a339d212a0c9bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a489073e9c6e932899d7e061374950267" id="r_a489073e9c6e932899d7e061374950267"><td class="memItemLeft" align="right" valign="top"><a id="a489073e9c6e932899d7e061374950267" name="a489073e9c6e932899d7e061374950267"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>bothEi</b>()&#160;&#160;&#160;{INTCONbits.GIEH = 1; INTCONbits.GIEL = 1;}</td></tr>
+<tr class="separator:a489073e9c6e932899d7e061374950267"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a757ba31b7c560a9c9fbfffcc3542093d" id="r_a757ba31b7c560a9c9fbfffcc3542093d"><td class="memItemLeft" align="right" valign="top"><a id="a757ba31b7c560a9c9fbfffcc3542093d" name="a757ba31b7c560a9c9fbfffcc3542093d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>bothDi</b>()&#160;&#160;&#160;{INTCONbits.GIEH = 0; INTCONbits.GIEL = 0;}</td></tr>
+<tr class="separator:a757ba31b7c560a9c9fbfffcc3542093d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5db3050b08b6cce080a339d212a0c9bd" id="r_a5db3050b08b6cce080a339d212a0c9bd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5db3050b08b6cce080a339d212a0c9bd">geti</a>()&#160;&#160;&#160;(INTCON0bits.GIE)</td></tr>
+<tr class="separator:a5db3050b08b6cce080a339d212a0c9bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a489073e9c6e932899d7e061374950267" id="r_a489073e9c6e932899d7e061374950267"><td class="memItemLeft" align="right" valign="top"><a id="a489073e9c6e932899d7e061374950267" name="a489073e9c6e932899d7e061374950267"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>bothEi</b>()&#160;&#160;&#160;{INTCON0bits.GIE = 1;}</td></tr>
+<tr class="separator:a489073e9c6e932899d7e061374950267"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a757ba31b7c560a9c9fbfffcc3542093d" id="r_a757ba31b7c560a9c9fbfffcc3542093d"><td class="memItemLeft" align="right" valign="top"><a id="a757ba31b7c560a9c9fbfffcc3542093d" name="a757ba31b7c560a9c9fbfffcc3542093d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>bothDi</b>()&#160;&#160;&#160;{INTCON0bits.GIE = 0;}</td></tr>
+<tr class="separator:a757ba31b7c560a9c9fbfffcc3542093d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Macros for enabling and disabling interrupts. </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a5db3050b08b6cce080a339d212a0c9bd" name="a5db3050b08b6cce080a339d212a0c9bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5db3050b08b6cce080a339d212a0c9bd">&#9670;&#160;</a></span>geti <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define geti</td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td>&#160;&#160;&#160;(INTCONbits.GIEH)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>How to determine whether interrupts are enabled </p>
+
+</div>
+</div>
+<a id="a5db3050b08b6cce080a339d212a0c9bd" name="a5db3050b08b6cce080a339d212a0c9bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5db3050b08b6cce080a339d212a0c9bd">&#9670;&#160;</a></span>geti <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define geti</td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td>&#160;&#160;&#160;(INTCON0bits.GIE)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>How to determine whether interrupts are enabled </p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
