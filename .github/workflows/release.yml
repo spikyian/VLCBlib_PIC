@@ -1,0 +1,79 @@
+# Release VLCBlib_PIC.
+#
+# Actions > Release > Run workflow: choose the branch (keithb or main), enter
+# the version (1.0.0, or 1.0.0-rc1 for a release candidate) and Run. The
+# workflow then
+#   1. sets the version in vlcb_version.h and Doxyfile, and moves the
+#      Unreleased section of CHANGELOG.md under the version (not for an -rc),
+#   2. commits that as "Release vX.Y.Z" on the branch and tags it vX.Y.Z,
+#   3. creates the GitHub release, marked as a pre-release for an -rc, with
+#      the CHANGELOG section (or GitHub's list of merged pull requests) as notes.
+#
+# Nothing is changed if any step fails before the push.
+
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version, e.g. 1.0.0 or 1.0.0-rc1"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ inputs.version }}
+    steps:
+      - name: Only from a branch
+        if: github.ref_type != 'branch'
+        run: |
+          echo "::error::Run the Release workflow from a branch, not a tag"
+          exit 1
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check the tag does not exist yet
+        run: |
+          if git rev-parse -q --verify "refs/tags/v${VERSION}" >/dev/null; then
+            echo "::error::Tag v${VERSION} already exists"
+            exit 1
+          fi
+
+      - name: Set the version
+        run: python3 .github/scripts/set_version.py "${VERSION}" --notes "${RUNNER_TEMP}/notes.md"
+
+      - name: Commit, tag and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add vlcb_version.h Doxyfile
+          if [ -f CHANGELOG.md ]; then git add CHANGELOG.md; fi
+          git commit -m "Release v${VERSION}"
+          git tag -a "v${VERSION}" -m "VLCBlib_PIC v${VERSION}"
+          git push origin "HEAD:refs/heads/${GITHUB_REF_NAME}" "refs/tags/v${VERSION}"
+
+      - name: Create the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          args=(--title "VLCBlib_PIC v${VERSION}" --verify-tag)
+          case "${VERSION}" in *-*) args+=(--prerelease) ;; esac
+          if [ -s "${RUNNER_TEMP}/notes.md" ]; then
+            args+=(--notes-file "${RUNNER_TEMP}/notes.md")
+          else
+            args+=(--generate-notes)
+          fi
+          gh release create "v${VERSION}" "${args[@]}"
+
