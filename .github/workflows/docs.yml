@@ -1,0 +1,50 @@
+# Build the Doxygen documentation and publish it on GitHub Pages.
+#
+# Runs on every push to main, or by hand from Actions > Docs > Run workflow.
+# One-time set-up: Settings > Pages > Build and deployment > Source:
+# "GitHub Actions". The site is then at https://<owner>.github.io/VLCBlib_PIC/
+#
+# Nothing generated is committed: Doxygen runs here from the Doxyfile in the
+# repository root, so the published pages always match the code on main.
+
+name: Docs
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Doxygen
+        run: sudo apt-get update && sudo apt-get install -y doxygen
+
+      - name: Run Doxygen
+        run: doxygen Doxyfile
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: doc/html
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
