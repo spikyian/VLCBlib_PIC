@@ -54,13 +54,14 @@ An VLCB module using this library needs to consider the following application re
      - A macro to set up the ports for the LEDs and push button.
 
 ## Other information
-   - The module mode is available using the uint8_t mode global variable.
+   - The module Uninitialised/Setup/Normal state is available using the uint8_t mode_state global variable.
+   - Other stateful mode flags are available in the uint8_t mode_flags variable.
    - The module's node number is available as Word nn global variable.
    - A module may define a function to process VLCB messages before being handled by the library.
    - A module may also define a function to process VLCB messages if not handled by the library. 
   
 # Full documentation
-The full user documentation (look in the \*.h files) and developer documentation (look in the \*.c files) can be viewed by opening doc/html/index.html in your browser.
+The full user documentation (look in the \*.h files) and developer documentation (look in the \*.c files) can be viewed by opening [https://spikyian.github.io/VLCBlib_PIC/](https://spikyian.github.io/VLCBlib_PIC/) in your browser.
 
 ## Versions and releases
 The library's version is in `vlcb_version.h` as macros, so it costs nothing
