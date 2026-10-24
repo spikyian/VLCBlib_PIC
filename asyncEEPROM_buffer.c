@@ -30,8 +30,8 @@
     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
  */
 #include <xc.h>
-#include "nvm.h"
 #include "module.h"
+#include "nvm.h"
 #include "asyncEEPROM.h"
 #include "vlcbdefs_enums.h"
 #include "vlcb.h"           // VLCB_CLRWDT()
