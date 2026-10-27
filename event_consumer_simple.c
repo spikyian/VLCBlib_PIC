@@ -199,11 +199,12 @@ static Processed consumerProcessMessage(Message *m) {
     tableIndex = findEvent(enn, ((uint16_t)m->bytes[2])*256+m->bytes[3]);
     if (tableIndex == NO_INDEX) return NOT_PROCESSED;
 
+    // we have the event in the event table
+    // check that we have a consumed Action
     if (!isConsumedEvent(tableIndex)) {
         return NOT_PROCESSED;
     }
-    // we have the event in the event table
-    // check that we have a consumed Action
+    
     if (mode_flags & FLAG_MODE_EVENTACK) {
         // send the ack
         sendMessage7(OPC_ENACK, nn.bytes.hi, nn.bytes.lo, (uint8_t)(m->opc), m->bytes[0], m->bytes[1], m->bytes[2], m->bytes[3]);

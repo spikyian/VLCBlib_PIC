@@ -148,18 +148,23 @@ static uint16_t findCacheModuleNN;   // KeithB b42: rows with EVENT_FLAG_DEFAULT
 static uint8_t  findCacheIndex = NO_INDEX; /// A cache of the index of the last found entry in the event table.
 static void invalidateFindEventCache(void);
 
-/*
- * Each row in the event table consists of:
- * Event + flags + ev[PARAM_NUM_EV_EVENT] i.e. a total of 5 + PARAM_NUM_EV_EVENT bytes 
- */
 
-#define EVENTTABLE_WIDTH (sizeof(Event) + 1 + PARAM_NUM_EV_EVENT)
+
+
 #define EVENTTABLE_OFFSET_NNH   0
 #define EVENTTABLE_OFFSET_NNL   1
 #define EVENTTABLE_OFFSET_ENH   2
 #define EVENTTABLE_OFFSET_ENL   3
 #define EVENTTABLE_OFFSET_FLAGS 4
 #define EVENTTABLE_OFFSET_EVS   5
+#ifndef EVENTTABLE_PADDING
+#define EVENTTABLE_PADDING      0
+#endif
+/*
+ * Each row in the event table consists of:
+ * Event + flags + ev[PARAM_NUM_EV_EVENT] + padding i.e. a total of 5 + PARAM_NUM_EV_EVENT + padding bytes 
+ */
+#define EVENTTABLE_WIDTH (sizeof(Event) + 1 + PARAM_NUM_EV_EVENT + EVENTTABLE_PADDING)
 // KeithB b40: flash address of an event table row
 #define EVENT_ROW_ADDRESS(tableIndex)   ((uint24_t)EVENT_TABLE_ADDRESS + (uint24_t)EVENTTABLE_WIDTH * (tableIndex))
 // The flags

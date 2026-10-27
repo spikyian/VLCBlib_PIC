@@ -679,12 +679,14 @@ void loop(void);
  * Code to ensure that after bootloading the version is invalid so that a factoryReset will take 
  * place. Sets the data version to 0xFF
  */
+#if VERSION_NVM_TYPE == EEPROM_NVM_TYPE
 /** @private */
 asm("PSECT eeprom_data,class=EEDATA");
 /** @private */
 asm("ORG " ___mkstr(VERSION_ADDRESS));
 /** @private */
 asm("db 0xFF");
+#endif
 
 /////////////////////////////////////////////
 // SERVICE CHECKING FUNCTIONS
